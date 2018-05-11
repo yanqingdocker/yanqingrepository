@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv=Content-Type content="text/html; charset=utf-8">
+    <title>会员管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- CSS Libs -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap-switch.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/checkbox3.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/dataTables.bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/css/select2.min.css">
+    <!-- CSS App -->
+    <link  rel="stylesheet" type="text/css"  href="/css/sweet-alert.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/themes/flat-blue.css">
+    <link rel="stylesheet" type="text/css" href="/css/css.css">
+    <script  type="text/javascript" src="/js/jquery1.12.4.js"></script>
+    <script  type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script  type="text/javascript" src="/js/bootstrapValidator.min.js"></script>
+    <script  type="text/javascript" src="/js/jquery.dataTables.min.js"></script>
+    <script  type="text/javascript" src="/js/dataTables.bootstrap.min.js"></script>
+    <script  type="text/javascript" src="/js/sweet-alert.min.js"></script>
+    <script  type="text/javascript" src="/js/common.js"></script>
+</head>
+
+<body class="flat-blue common_body">
+<div class="bs-component">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">系统首页</a></li>
+        <li class="breadcrumb-item">会员管理</li>
+        <li class="breadcrumb-item active">会员列表</li>
+    </ol>
+</div>
+<div class="page-title">
+    <span class="title">会员列表</span>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <div class="card-body">
+                <table class="datatable table table-striped" id="table" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th width="30"></th>
+                        <th>真实姓名</th>
+                        <th>身份证号</th>
+                        <th>手机号</th>
+                        <th>是否认证</th>
+                        <th>邮箱</th>
+                        <th>地址</th>
+                        <th>注册时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+
+                </table>
+                <div class="batch_play inblock">
+                    <div class="checkcustom ml10 mr10 inblock checkbox3 checkbox-success checkbox-check checkbox-round  checkbox-light">
+                        <input rel='box_check_all' id="box_check_all" type="checkbox" name="" /><label class="box_check_all blue" for="box_check_all">全选</label>
+                    </div>
+                    <div class="inblock"> <a href="javascript:;" onclick="deletbatch()" class="blue mr10">删除</a>|<a class="blue ml10" href="/manage/changeinfo">添加</a></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(function () {
+        $('#table').DataTable( {
+            "serverSide": true,
+            searching: true,
+            lengthChange: true,
+            paging: true,
+            scrollCollapse: true,
+            serverSide: false,
+            search: true,
+            processing: true,
+            /* scrollY: 500,   表格的高度限制*/
+            scrollX: "100%",
+            scrollXInner: "100%",
+            scrollCollapse: true,
+            jQueryUI: false,
+            autoWidth: true,
+            autoSearch: false,
+            language: {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项搜索结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 条数据",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "暂无数据",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            },
+            ajax: {
+                url: "/user/queryAll",
+                dataSrc: '',
+            },
+            "columns": [
+                {"data": "id" ,
+                    render:function(e){
+                        var html="<div class='checkcustom tc checkbox3 checkbox-success checkbox-check checkbox-round  checkbox-light'> " +
+                            "<input type='checkbox'  id='checkx"+e+"' name='checklist' value='"+e+"'> " +
+                            "<label for='checkx"+e+"' ></label></div>";
+                        return html;
+                    }
+                },
+                {"data": "username" },
+                {"data": "idcard" },
+                {"data": "phone" },
+                {"data": "isauthentication" },
+                {"data": "email" },
+                {"data": "address" },
+                {"data": "createtime" },
+                {"data": "id",
+                    render:function(e,type,full,row){
+                        return "<a href='javascript:;'  onclick='deletemsg("+full.id+")'  class=\"icon_delete\" title=\"删除\">删除</a>";
+                    }
+                }
+            ]
+        } );
+    })
+    // 点击check添加样式
+    $(document).on('click','.checkcustom label',function(){
+        $(this).toggleClass("on");
+    });
+
+    /*check全选*/
+    $("input[rel='box_check_all']").on("click",function(){
+        if($(this).prop("checked")===true){
+            $("input[name='checklist']").prop("checked",$(this).prop("checked")).siblings().addClass("on")
+
+        }else{
+            $("input[name='checklist']").prop("checked",false).siblings().removeClass("on")
+        }
+    });
+
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,168 @@
+.mr0{margin-right: 0 !important;}
+.pr0{padding-right: 0 !important;}
+.common_body{ padding-right: 15px;}
+.tl{ text-align: left}
+.tr{ text-align: right}
+.tc{ text-align: center}
+
+.card.green {
+    background-color: #1ABC9C;
+    color: #FFF;
+}
+.checkbox3.checkbox-inline{  margin-right: 0}
+.checkbox3 label::before{ width: 15px; height: 15px;}
+.checkbox3 label::after, .radio3 label::after{top: 2px}
+.checkbox3.checkbox-check label::after{width: 13px}
+.checkbox3.checkbox-success.checkbox-light input:checked+label::before{    background-color: #0099ff;
+    border-color: #0099ff;}
+.checkbox3.checkbox-success.checkbox-light input:checked+label::after {
+    color: #fff;
+}
+.breadcrumb {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    padding: 0.75rem 1rem;padding-left: 0;
+    margin-bottom: 1rem;
+    list-style: none;
+    background:none;
+    border-radius: 0.25rem;
+}
+.breadcrumb-item + .breadcrumb-item {
+    padding-left: 0.5rem;
+}
+.breadcrumb-item.active {
+    color: #868e96;
+}
+.breadcrumb-item + .breadcrumb-item::before {
+    display: inline-block;
+    padding-right: 0.5rem;
+    color: #868e96;
+    content: "/";
+}
+.breadcrumb-item a{ color: #0099ff}
+.flat-blue .pagination .active > a, .flat-blue .pagination .active > a:focus, .flat-blue .pagination .active > a:hover, .flat-blue .pagination .active span, .flat-blue .pagination .active > span:focus, .flat-blue .pagination .active > span:hover {
+    z-index: 1;
+    color: #fff;
+    background-color: #0099ff;
+    border-color: #0099ff;
+}
+.page-link:not(:disabled):not(.disabled) {
+    cursor: pointer;
+}
+.page-item.disabled .page-link {
+    color: #868e96;
+    pointer-events: none;
+    cursor: auto;
+    background-color: #fff;
+    border-color: #dee2e6;
+}
+table.dataTable thead th:first-child{ padding-left:10px}
+table.dataTable.no-footer {
+    border-bottom: 1px solid #EAEAEA;
+}
+.panel-body li{}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

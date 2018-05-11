@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.caogen.mapper.OperaMapper" >
+
+    <resultMap id="BaseResultMap" type="cn.com.caogen.entity.Operation" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="countid" property="countid" jdbcType="VARCHAR" />
+        <result column="counttype" property="countType" jdbcType="VARCHAR" />
+        <result column="num" property="num" jdbcType="DOUBLE" />
+        <result column="operatype" property="operaType" jdbcType="VARCHAR" />
+        <result column="operatime" property="operaTime" jdbcType="VARCHAR" />
+        <result column="operauser" property="operaUser" jdbcType="VARCHAR" />
+        <result column="oi" property="oi" jdbcType="INTEGER" />
+        <result column="operaip" property="operaIp" jdbcType="VARCHAR" />
+
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+    id,countid,counttype,num,operatype,operatime,operauser,oi,operaip
+     </sql>
+    <insert id="add" parameterType="cn.com.caogen.entity.Appliy">
+        insert into operalog (countid,counttype,num,operatype,operatime,operauser,oi,operaip) values
+        (#{countid,jdbcType=VARCHAR},#{countType,jdbcType=VARCHAR},#{num,jdbcType=DOUBLE},#{operaType,jdbcType=VARCHAR},#{operaTime,jdbcType=VARCHAR},#{operaUser,jdbcType=VARCHAR},#{oi,jdbcType=INTEGER},#{operaIp,jdbcType=VARCHAR});
+    </insert>
+    <select id="queryAll"  resultMap="BaseResultMap" >
+        select <include refid="Base_Column_List"/> from operalog
+
+    </select>
+
+    <select id="queryCondition"  resultMap="BaseResultMap" parameterType="Map">
+        select <include refid="Base_Column_List"/> from operalog where 1=1
+        <if test="countid != null">
+            and countid =#{countid}
+        </if>
+        <if test="operauser != null">
+            and operauser =#{operauser}
+        </if>
+        <if test="operatype != null">
+            and operatype =#{operatype}
+        </if>
+        <if test="counttype != null">
+            and counttype =#{counttype}
+        </if>
+        <if test="oi != null">
+            and oi =#{oi}
+        </if>
+
+    </select>
+
+
+
+    <select id="queryByDate" resultMap="BaseResultMap" parameterType="Map">
+        select <include refid="Base_Column_List"/> from operalog
+
+        <choose>
+            <when test="date!=null and date == '1'.toString()">
+                where to_days(operatime) = to_days(now());
+            </when>
+            <when test="date!=null and date == '7'.toString()">
+                where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(operatime);
+            </when>
+            <when test="date!=null and date == '30'.toString()">
+                where DATE_FORMAT( operatime, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' );
+            </when>
+            <when test="date!=null and date == '90'.toString()">
+                where  QUARTER(operatime)=QUARTER(now());
+            </when>
+            <when test="date!=null and date == '360'.toString()">
+                where YEAR(operatime)=YEAR(NOW());
+            </when>
+            <otherwise>
+                where false
+            </otherwise>
+
+        </choose>
+
+    </select>
+
+
+
+</mapper>

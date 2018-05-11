@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"  content="width=device-width, user-scalable=no, initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <title>登录页</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" type="text/css" href="../statics/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../statics/css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="../statics/css/css.css"/>
+    <script  type="text/javascript" src="../statics/js/jquery1.12.4.js"></script>
+    <script  type="text/javascript" src="../statics/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../statics/js/jquery.validation.min.js"></script>
+    <script  type="text/javascript" src="../statics/js/bootstrapValidator.min.js"></script>
+
+    <!--[if lte IE 9]>
+    <script  type="text/javascript" src="../statics/js/html5.min.js"></script>
+    <script  type="text/javascript" src="../statics/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="login_bg">
+    <div class="m " style="width: 455px;margin-top: 150px">
+        <div class="login_logo tc"><img src="../statics/images/logo.png" ></div>
+        <div class="w100 inblock">
+            <form class="form-horizontal" id="lgform"  method="post"data-toggle="validator">
+                <div class="login_form">
+                    <div class="login_input mb15">
+                        <i class="icon user"></i><input type="text" class="form-control" size="40" maxlength="50" placeholder="手机号/用户名" name="Telephone">
+                    </div>
+                    <div class="login_input mb15">
+                        <i class="icon password"></i><input type="text" class="form-control" placeholder="密码" size="40" maxlength="20" name="Password">
+                    </div>
+                    <div class="w100 inbloc  k">
+                        <div class="l ">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="RememberMe" id="customCheck1" checked="">
+                                <label class="custom-control-label white"  for="customCheck1">记住密码</label>
+                            </div>
+                        </div>
+                        <div class="r">
+                            <a href="find_psw.html" class="white">忘记密码</a><span class="white mr5 ml5">|</span><a href="register.html" class="white">注册</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="bs-component mt30"><button type="submit" id="lgsumbit" class="btn btn-primary btn-lg btn-block red_bg register_btn" data-loading-text="登录中...">登 录</button></div>
+            </form>
+
+        </div>
+    </div>
+    <div class="modal fade " id="modaltp" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="text/javascript">
+        var action=pmtool.geturlParam("action");
+        $(function(){
+            $("#lgform").validate({
+                errorPlacement:function(error,element){
+                    if(element.attr("name")=='randcode'){
+                        error.insertAfter(element.next())
+                    }
+                },
+                rules:{
+                    'username':{
+                        "required":true,
+                        'minlength':6
+                    },
+                    'password':{
+                        "required":true,
+                        'minlength':6
+                    },
+                    'randcode':{
+                        "required":true,
+                    }
+
+                },
+                messages:{
+                    'username':{
+                        "required":"请输入用户名",
+                        'minlength':"登录名最小6个字符"
+                    },
+                    'password':{
+                        "required":"请输入密码",
+                        'minlength':"密码至少6位"
+                    },
+                    'randcode':{
+                        "required":"验证码不能为空"
+                    }
+                }
+            });
+            $("#lgform").on('submit',function(e){
+                //console.log("c",$('#lgform').valid())
+                e.preventDefault();
+                if(!$('#lgform').valid()){
+                    return;
+                }else{
+
+                    var $btn = $("#lgsumbit").button('loading');
+                    $.ajax({
+                        url: "/api/user/passport/login",
+                        data:$("#lgform").serializeArray(),
+                        dataType:'json',
+                        type:'POST'
+                    }).done(function(r){
+                        if(r.success){
+                            location.href="/index.html";
+                        }else{
+                            $("#modaltp").modal();
+                            $('#modaltp').find('.modal-body').html(r.msg);
+                            setTimeout(function(){
+                                $btn.button('reset')
+                            },1000)
+                        }
+                    }).fail(function(r){
+
+                    });
+
+                }
+
+            });
+            if(action=="auto_login"){
+                auto_login();
+            }
+        })
+        //自动登录操作
+        function auto_login(){
+            var username=pmtool.geturlParam("username");
+            var password=pmtool.geturlParam("password");
+            var sign=pmtool.geturlParam("sign");
+            var login_sign=pmtool.geturlParam("login_sign");
+            $.ajax({
+                url: "/api/plugins/auction/user/login",
+                data:{
+                    username:username,
+                    password:password,
+                    sign:sign,
+                    login_sign:login_sign
+                },
+                dataType:'json',
+                type:'POST'
+            }).done(function(r){
+                if(r.success){
+                    location.href="index.html";
+                }else{
+                    //location.href="/user/login.shtml";
+                }
+            }).fail(function(r){
+
+            });
+        }
+
+    </script>
+
+</body>
+</html>

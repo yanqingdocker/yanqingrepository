@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv=Content-Type content="text/html; charset=utf-8">
+    <title>后台管理系统登录页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap-switch.min.css">
+    <!-- CSS App -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/css.css">
+    <link  rel="stylesheet" type="text/css"  href="/css/sweet-alert.css"/>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script  type="text/javascript" src="/js/bootstrapValidator.min.js"></script>
+    <script  type="text/javascript" src="/js/sweet-alert.min.js"></script>
+    <script type="text/javascript" src="/js/common.js"></script>
+</head>
+
+<body class="login_page">
+<div class="box">
+    <h2 class="white mb30">阿凡钱庄后台管理系统</h2>
+    <div class="form_bg ">
+        <form id="myform">
+            <div class="form-group">
+                <label class="col-form-label" >用户名</label>
+                <input type="text" size="32" maxlength="30" name="username">
+            </div>
+            <div class="form-group">
+                <label class="col-form-label" >密&nbsp;&nbsp;&nbsp;码</label>
+                <input type="password" size="32" maxlength="20" name="password">
+            </div>
+            <div class="form-group mt10">
+                <button class="login_button" onclick="submitform()">登  录</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function submitform() {
+        $('#myform').data('bootstrapValidator').enableFieldValidators('username', true);
+        $('#myform').data('bootstrapValidator').enableFieldValidators('password', true);
+        $('#myform').data('bootstrapValidator').validate();//手动对表单进行校检
+        if (!$('#myform').data('bootstrapValidator').isValid()) {//判断校检是否通过
+            return;
+        } else {
+            $.ajax({
+                type: "post", // 用POST方式传输
+                dataType: 'json',
+                url: "/muser/login", // 目标地址
+                data:  $("#myform").serialize(),
+                error: function (data) {
+                    sweetAlert("", "请求失败！", "error");
+                },
+                success: function (data) {
+                    if (data.code=="success") {
+
+                        sweetAlert({
+                            title: "登陆成功！",
+                            text: "1秒后自动跳转。",
+                            type: "success",
+                            showConfirmButton: false,
+                        });
+                        setTimeout(function(){ window.location.href = "/index";},1000);
+                    }
+                    else {
+                        sweetAlert("", data.message, "error");
+                        // $('#loginbtn').prop('disabled', false);
+                    }
+                }
+            })
+        }
+    }
+    $(function () {
+        $('#myform').bootstrapValidator({
+            feedbackIcons: {
+                //valid: 'glyphicon glyphicon-ok',
+                //invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                'username': {
+                    validators: {
+                        notEmpty: {
+                            message: '用户名不可以为空'
+                        }
+                    }
+                },
+                'password': {
+                    validators: {
+                        notEmpty: {
+                            message: '密码不能为空'
+                        },
+                        // stringLength: {
+                        //     /*长度提示*/
+                        //     min: 6,
+                        //     max: 30,
+                        //     message: '密码长度必须在6到30之间'
+                        // },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_\.]+$/,
+                            message: '密码由数字字母下划线和.组成'
+                        }
+                    }
+                }
+            }
+        })
+    });
+
+</script>
+
+</body>
+
+</html>

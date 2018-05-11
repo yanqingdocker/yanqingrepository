@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"  content="width=device-width, user-scalable=no, initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <title>找回密码</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" type="text/css" href="../statics/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../statics/css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="../statics/css/css.css"/>
+    <script  type="text/javascript" src="../statics/js/jquery1.12.4.js"></script>
+    <script  type="text/javascript" src="../statics/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/lib/jquery.form.min.js"></script>
+    <script type="text/javascript" src="/lib/formvalidator_min.js"></script>
+    <script type="text/javascript" src="/lib/formvalidatorregex.js"></script>
+    <script type="text/javascript"  src="../lib/cms_beta.min.js"></script>
+    <script type="text/javascript"  src="../lib/cms_factory.min.js"></script>
+    <script type="text/javascript"  src="../statics/js/chekcode.js"></script>
+
+    <!--[if lte IE 9]>
+    <script  type="text/javascript" src="../statics/js/html5.min.js"></script>
+    <script  type="text/javascript" src="../statics/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body >
+    <div class="find_top">
+        <div class="container">
+            <div class="inblock l">
+                <img src="../statics/images/logo.png" style="height:50px">
+            </div>
+            <div class="inblock r">
+                <a href="javascript:history.back(-1)" >返回</a>
+            </div>
+        </div>
+    </div>
+    <div class=" mt60 ">
+        <h2 class="tc "><img src="../statics/images/icon_findpsw.png" class="mr30" style="width: 60px; ">找回密码 </h2>
+        <div class="border_t mt50">
+            <div class="find_step1">
+                <div class="tc mt50">
+                    <img src="../statics/images/find_step1.png" >
+                </div>
+                <div class="m step_block mt50" >
+                        <form action="" method="">
+                            <div class="form-group">
+                                <label class="col-form-label" for="inputDefault">请输入您需要找回的账号：</label>
+                                <input type="text" class="form-control" placeholder="请输入手机号" maxlength="11" id="inputDefault">
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control w50 l mr15 mb15" maxlength="11"  id="code_input"  placeholder="请输入验证码"  type="text">
+                                <input type = "button" id="code" onclick="createCode()"/>
+                                <span onclick="getcode()" class="code_change">看不清?</span>
+                            </div>
+                            <div class="bs-component mt20 inblock w100 tc">
+                                 <button type="submit" id="login_btn" onclick = "validate()" class="btn btn-primary f14">下一步</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!--step1 end-->
+
+                <div class="find_step1" style="display: none">
+                    <div class="tc mt50">
+                        <img src="../statics/images/find_step2.png" >
+                    </div>
+                    <div class="m step_block mt50" >
+                    <form action="" method="">
+                        <div class="form-group">
+                            <label class="col-form-label" for="inputDefault">请输入您的新密码：</label>
+                            <input type="text" class="form-control" placeholder="请输入新密码" maxlength="11" >
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" for="inputDefault">请确认您的新密码：</label>
+                            <input class="form-control " maxlength="11"  placeholder="请输入新密码"  type="text">
+                        </div>
+                        <div class="bs-component mt20 inblock w100 tc">
+                            <button type="submit" class="btn btn-primary f14">保  存</button>
+                        </div>
+                    </form>
+                </div>
+                </div>
+                <!--step2 end-->
+
+            </div>
+        </div>
+
+
+<script type="text/javascript">
+    function getcode(){
+        code = "";
+        var codeLength = 4;//验证码的长度
+        var checkCode = document.getElementById("code");
+        var random = new Array(0,1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R',
+                'S','T','U','V','W','X','Y','Z');//随机数
+        for(var i = 0; i < codeLength; i++) {//循环操作
+            var index = Math.floor(Math.random()*36);//取得随机数的索引（0~35）
+            code += random[index];//根据索引取得随机数加到code上
+        }
+        checkCode.value = code;//把code值赋给验证码
+    }
+</script>
+</body>
+</html>
