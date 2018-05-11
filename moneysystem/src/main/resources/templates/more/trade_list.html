@@ -96,12 +96,13 @@
                     <table width="100%"  cellspacing="0" cellpadding="0" border="1" id="table"  class="table">
                         <thead>
                         <tr>
-                            <th>时间</th>
+                            <th>序号</th>
                             <th>账户卡号</th>
                             <th>货币类型</th>
                             <th>收入/支出</th>
                             <th>金额</th>
                             <th>业务类型</th>
+                            <th>时间</th>
                         </tr>
                         </thead>
                     </table>
@@ -165,8 +166,13 @@
                     window.location.href = "/login";
                 }
             },
+            "fnDrawCallback"    : function(){
+                this.api().column(0).nodes().each(function(cell, i) {
+                    cell.innerHTML =  i + 1;
+                });
+            },
             "columns": [
-                {"data": "operaTime" },
+                {"data": "id" },
                 {"data": "countid" },
                 {"data": "countType" ,
                     render:function(e,type,full,row){
@@ -196,6 +202,7 @@
                     }
                 },
                 {"data": "operaType" },
+                {"data": "operaTime" }
             ]
         } );
     })
