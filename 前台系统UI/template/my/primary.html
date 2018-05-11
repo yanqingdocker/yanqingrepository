@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"  content="width=device-width, user-scalable=no, initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <title>我的资料</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" type="text/css" href="../../statics/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../../statics/css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="../../statics/css/css.css"/>
+    <script  type="text/javascript" src="../../statics/js/jquery1.12.4.js"></script>
+    <script  type="text/javascript" src="../../statics/js/bootstrap.min.js"></script>
+    <script  type="text/javascript" src="../../statics/js/index.js"></script>
+
+    <!--[if lte IE 9]>
+    <script type="text/javascript" src="../../statics/js/html5.min.js"></script>
+    <script type="text/javascript" src="../../statics/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<!--header star-->
+<div class="navbar navbar-default navbar-fixed-top top-main ">
+    <div class="container-fluid top-bar p0 car_bg f12 bl3">
+        <div class="container row m p0">
+            <div class="col-lg-6"></div>
+            <div class="col-lg-6 tr">
+                <div id="log_bar_link" class="log_bar_link r gray" style="display:none;">
+                    <a class=" pr10" href="../login.html">登录</a><span class="white">|</span>
+                    <a class=" pl10" href="../register.html">注册</a>
+                </div>
+                <div class="nav r user_info" >
+                    <div class=" dropdown ">
+                        <a class="nav-link dropdown-toggle">admin<i class="icon_down"></i></a>
+                        <div class="dropdown-menu " style="display: none" >
+                            <a class="dropdown-item" href="../my/my_account.html">我的账户</a>
+                            <a class="dropdown-item" href="../my/my_money.html">我的余额</a>
+                            <a class="dropdown-item" href="../my/primary.html">我的资料</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container row p0 m ">
+        <div class="col-lg-2 "><a href=""><img class="logo" src="../../statics/images/logo.png" alt="" ></a></div>
+        <div class="col-lg-10 mt20">
+            <!--nav-->
+            <div class="row">
+                <div class="col-lg-12 nav ">
+                    <ul class="nav-con navbar-nav">
+                        <li ><a href="../index.html" id="h_index" class="cur">首页</a></li>
+                        <li class=" dropdown ">
+                            <a class="nav-link dropdown-toggle">我的<i class="icon_down"></i></a>
+                            <div class="dropdown-menu " style="display: none" >
+                                <a class="dropdown-item" href="../my/my_account.html">我的账户</a>
+                                <a class="dropdown-item" href="../my/my_money.html">我的余额</a>
+                                <a class="dropdown-item" href="../my/primary.html">我的资料</a>
+                                <!--<a class="dropdown-item" href="my/message.html">我的消息</a>-->
+                            </div>
+                        </li>
+                        <li ><a href="../nonCardCash/cash_in.html" >无卡取现</a></li>
+                        <li><a href="../currency_exchange/exchange.html" >货币兑换</a></li>
+                        <li class=" dropdown ">
+                            <a class="nav-link dropdown-toggle">更多<i class="icon_down"></i></a>
+                            <div class="dropdown-menu " style="display: none" >
+                                <a class="dropdown-item" href="../more/financial.html">智慧理财</a>
+                                <a class="dropdown-item" href="../more/life_payment.html">生活缴费</a>
+                                <a class="dropdown-item" href="../more/trade_list.html">交易记录</a>
+                                <a class="dropdown-item" href="../more/active_list.html">活动记录</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            <!--nav-->
+        </div>
+    </div>
+</div>
+<!--header end-->
+
+<div class=" p0 m0 fix-frist-top pt30">
+    <div class="container row  p0 m">
+        <div class="col-lg-3 ">
+            <div class="panel panel-default bid_menu">
+                <h4 class=" menu_title">我的</h4>
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default membercollhead">
+                        <div class="panel-heading" role="tab" id="heading1">
+                            <h4 class="panel-title">
+                                <a href="my_account.html" class="collapsed">
+                                    <i></i>我的账户
+                                </a>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="panel panel-default membercollhead">
+                        <div class="panel-heading" role="tab" id="heading2">
+                            <h4 class="panel-title">
+                                <a href="my_money.html" class="collapsed">
+                                    <i></i>我的余额
+                                </a>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="panel panel-default membercollhead">
+                        <div class="panel-heading" role="tab" id="heading4">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse4" aria-expanded="true" aria-controls="collapse4" class="">
+                                    <i></i>我的资料
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapse4" class=" collapse in" role="tabpanel" aria-labelledby="heading4" aria-expanded="true">
+                            <div class="">
+                                <ul>
+                                    <li class="cur"><a href="information.html">基本信息</a></li>
+                                    <li><a href="login_psw.html">登录密码</a></li>
+                                    <li ><a href="pay_psw.html">资金密码</a></li>
+                                    <li ><a href="bank_card.html">银行卡绑定</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--左侧菜单end-->
+
+        <div class="col-lg-9 r_whitebg">
+            <!--<div class="bs-component title_tab inblock w100">-->
+                <!--<ul class=" nav-tabs inblock w100">-->
+                    <!--<li class="nav-item cur">-->
+                        <!--<a class="nav-link  " href="information.html" ><i class="icon_user"></i>基本信息</a>-->
+                    <!--</li>-->
+                    <!--<li class="nav-item">-->
+                        <!--<a class="nav-link" href="login_psw.html" ><i class="icon_psw"></i>登录密码</a>-->
+                    <!--</li>-->
+                    <!--<li class="nav-item">-->
+                        <!--<a class="nav-link" href="pay_psw.html" ><i class="icon_zjpsw"></i>资金密码</a>-->
+                    <!--</li>-->
+                    <!--<li class="nav-item">-->
+                        <!--<a class="nav-link" href="bank_card.html" ><i class="icon_card"></i>银行卡绑定</a>-->
+                    <!--</li>-->
+
+                <!--</ul>-->
+            <!--</div>-->
+            <div class="row mt20">
+                <div class="inblock w100">
+                    <form action="" method="">
+                        <div class="form-group">
+                            <label class="col-form-label" for="inputzh">姓名<span class="warning">*</span></label>
+                            <input class="form-control" placeholder="请输入账号" id="inputzh" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label w100" >身份证/护照<span class="warning">*</span></label>
+                            <select class="custom-select w45 l mb15">
+                                <option value="1">身份证</option>
+                                <option value="2">护照</option>
+                            </select>
+                            <input class="form-control w50 l ml10 mb15"  placeholder="请输入证件号码" id="inputnum" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label w100 mt10" for="inputmail">E-mail</label>
+                            <input class="form-control" placeholder="请输入E-mail" id="inputmail" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" for="inputdata">生日</label>
+                            <input class="form-control" placeholder="请输入生日" id="inputdata" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" for="address">地址</label>
+                            <input class="form-control" placeholder="请输入地址" id="address" type="text">
+                        </div>
+
+                        <button type="button" class="btn btn-primary btn-lg btn-block f14"> 保 存</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--通用脚本-->
+<div class="footer">
+    <div class="container row p0 m mt20 border-t tc pt20 pb20 ">
+        <a href="../index.html" target="_blank">首页</a><span>|</span>
+        <a href="../my/primary.html" target="_blank">我的</a><span>|</span>
+        <a href="../nonCardCash/cash_in.html" target="_blank">无卡取现</a><span>|</span>
+        <a href="../currency_exchange/exchange.html" target="_blank">货币兑换</a><span>|</span>
+        <a href="../more/financial.html" target="_blank">更多</a>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $(".nav-tabs .nav-item").on({click:function(){
+            $(this).addClass("cur").siblings().removeClass("cur");
+        }
+        })
+    })
+</script>
+</body>
+</html>
