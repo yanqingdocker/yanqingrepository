@@ -43,6 +43,7 @@ public class AppliyController {
      */
     @RequestMapping(path = "queryAll",method = RequestMethod.GET)
     public String queryAll(){
+        logger.info("queryAll start:");
         Map<String,Object> parmMap=new HashMap<String,Object>();
         List<Appliy> appliyList=appliyService.query(new HashMap<String,Object>());
         return JSONArray.fromObject(appliyList).toString();
