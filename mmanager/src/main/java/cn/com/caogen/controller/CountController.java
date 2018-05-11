@@ -64,7 +64,7 @@ public class CountController {
                 return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.NOT_AUTHENTION)).toString();
             }
         } else {
-            logger.error("startOrstopcount id or state is null");
+            logger.error("startOrstopcount id or state is null;");
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ERROR_ARGS)).toString();
         }
 

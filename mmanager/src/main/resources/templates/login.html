@@ -24,11 +24,11 @@
         <form id="myform">
             <div class="form-group">
                 <label class="col-form-label" >用户名</label>
-                <input type="text" size="32" maxlength="30" name="username">
+                <input type="text" size="32" maxlength="30" name="username" onkeydown="javascript: if(event.keyCode == 13) submitform();">
             </div>
             <div class="form-group">
                 <label class="col-form-label" >密&nbsp;&nbsp;&nbsp;码</label>
-                <input type="password" size="32" maxlength="20" name="password">
+                <input type="password" size="32" maxlength="20" name="password" onkeydown="javascript: if(event.keyCode == 13) submitform();">
             </div>
             <div class="form-group mt10">
                 <button class="login_button" onclick="submitform()">登  录</button>

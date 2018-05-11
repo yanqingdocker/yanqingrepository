@@ -4,8 +4,7 @@
     <meta http-equiv=Content-Type content="text/html; charset=utf-8">
     <title>账户管理</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSS Libs -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="/css/animate.min.css">
@@ -15,9 +14,17 @@
     <link rel="stylesheet" type="text/css" href="/css/dataTables.bootstrap.css">
     <link rel="stylesheet" type="text/css" href="/css/select2.min.css">
     <!-- CSS App -->
+    <link  rel="stylesheet" type="text/css"  href="/css/sweet-alert.css"/>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/themes/flat-blue.css">
     <link rel="stylesheet" type="text/css" href="/css/css.css">
+    <script  type="text/javascript" src="/js/jquery1.12.4.js"></script>
+    <script  type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script  type="text/javascript" src="/js/bootstrapValidator.min.js"></script>
+    <script  type="text/javascript" src="/js/jquery.dataTables.min.js"></script>
+    <script  type="text/javascript" src="/js/dataTables.bootstrap.min.js"></script>
+    <script  type="text/javascript" src="/js/sweet-alert.min.js"></script>
+    <script  type="text/javascript" src="/js/common.js"></script>
 </head>
 
 <body class="flat-blue common_body">
@@ -37,194 +44,18 @@
             <div class="card-header">
             </div>
             <div class="card-body">
-                <table class="datatable table table-striped" cellspacing="0" width="100%">
+                <table class="datatable table table-striped" id="table" cellspacing="0" width="100%">
                     <thead>
                     <tr>
-                        <th width="30"><div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light">
-                            <input type="checkbox" id="checkbox-fa-light-all" checked="">
-                            <label for="checkbox-fa-light-all">
-                            </label>
-                        </div></th>
-                        <th>用户名</th>
-                        <th>真实姓名</th>
-                        <th>手机号</th>
-                        <th>注册时间</th>
-                        <th>登陆次数</th>
+                        <th>账户ID</th>
+                        <th>货币类型</th>
+                        <th>余额</th>
+                        <th>账户状态</th>
+                        <th>创建时间</th>
                         <th>操作</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                        <td><div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light">
-                            <input type="checkbox" id="checkbox-fa-light-1" checked="">
-                            <label for="checkbox-fa-light-1">
-                            </label>
-                        </div></td>
-                        <td>admin</td>
-                        <td>张三</td>
-                        <td>18356522123</td>
-                        <td>2018-04-21</td>
-                        <td>30</td>
-                        <td>修改</td>
-                    </tr>
-                    <tr>
-                        <td><div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light">
-                            <input type="checkbox" id="checkbox-fa-light-2" checked="">
-                            <label for="checkbox-fa-light-2">
-                            </label>
-                        </div></td>
-                        <td>admin</td>
-                        <td>李四</td>
-                        <td>18356522123</td>
-                        <td>2018-04-21</td>
-                        <td>3</td>
-                        <td>修改</td>
-                    </tr>
-                    <tr>
-                        <td><div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light">
-                            <input type="checkbox" id="checkbox-fa-light-3" checked="">
-                            <label for="checkbox-fa-light-3">
-                            </label>
-                        </div></td>
-                        <td>admin</td>
-                        <td>张三</td>
-                        <td>18356522123</td>
-                        <td>2018-04-21</td>
-                        <td>13</td>
-                        <td>修改</td>
-                    </tr>
-                    <tr>
-                        <td><div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light">
-                            <input type="checkbox" id="checkbox-fa-light-1" checked="">
-                            <label for="checkbox-fa-light-1">
-                            </label>
-                        </div></td>
-                        <td>admin</td>
-                        <td>张三</td>
-                        <td>18356522123</td>
-                        <td>2018-04-21</td>
-                        <td>33</td>
-                        <td>修改</td>
-                    </tr>
-                    <tr>
-                        <td><div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light">
-                            <input type="checkbox" id="checkbox-fa-light-1" checked="">
-                            <label for="checkbox-fa-light-1">
-                            </label>
-                        </div></td>
-                        <td>admin</td>
-                        <td>张三</td>
-                        <td>18356522123</td>
-                        <td>2018-04-21</td>
-                        <td>1</td>
-                        <td>修改</td>
-                    </tr>
-                    <tr>
-                        <td><div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light">
-                            <input type="checkbox" id="checkbox-fa-light-1" checked="">
-                            <label for="checkbox-fa-light-1">
-                            </label>
-                        </div></td>
-                        <td>admin</td>
-                        <td>张三</td>
-                        <td>18356522123</td>
-                        <td>2018-04-21</td>
-                        <td>5</td>
-                        <td>修改</td>
-                    </tr>
-                    <tr>
-                        <td><div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light">
-                            <input type="checkbox" id="checkbox-fa-light-1" checked="">
-                            <label for="checkbox-fa-light-1">
-                            </label>
-                        </div></td>
-                        <td>admin</td>
-                        <td>张三</td>
-                        <td>18356522123</td>
-                        <td>2018-04-21</td>
-                        <td>10</td>
-                        <td>修改</td>
-                    </tr>  <tr>
-                        <td><div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light">
-                            <input type="checkbox" id="checkbox-fa-light-1" checked="">
-                            <label for="checkbox-fa-light-1">
-                            </label>
-                        </div></td>
-                        <td>admin</td>
-                        <td>张三</td>
-                        <td>18356522123</td>
-                        <td>2018-04-21</td>
-                        <td>22</td>
-                        <td>修改</td>
-                    </tr>  <tr>
-                        <td><div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light">
-                            <input type="checkbox" id="checkbox-fa-light-1" checked="">
-                            <label for="checkbox-fa-light-1">
-                            </label>
-                        </div></td>
-                        <td>admin</td>
-                        <td>张三</td>
-                        <td>18356522123</td>
-                        <td>2018-04-21</td>
-                        <td>24</td>
-                        <td>修改</td>
-                    </tr>  <tr>
-                        <td><div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light">
-                            <input type="checkbox" id="checkbox-fa-light-1" checked="">
-                            <label for="checkbox-fa-light-1">
-                            </label>
-                        </div></td>
-                        <td>admin</td>
-                        <td>张三</td>
-                        <td>18356522123</td>
-                        <td>2018-04-22</td>
-                        <td>4</td>
-                        <td>修改</td>
-                    </tr>  <tr>
-                        <td><div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light">
-                            <input type="checkbox" id="checkbox-fa-light-1" checked="">
-                            <label for="checkbox-fa-light-1">
-                            </label>
-                        </div></td>
-                        <td>admin</td>
-                        <td>张三</td>
-                        <td>18356522123</td>
-                        <td>2018-04-04</td>
-                        <td>55</td>
-                        <td>修改</td>
-                    </tr>  <tr>
-                        <td><div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light">
-                            <input type="checkbox" id="checkbox-fa-light-1" checked="">
-                            <label for="checkbox-fa-light-1">
-                            </label>
-                        </div></td>
-                        <td>admin</td>
-                        <td>六六六</td>
-                        <td>18356522123</td>
-                        <td>2018-04-01</td>
-                        <td>24</td>
-                        <td>修改</td>
-                    </tr>
-                    <tr>
-                        <td><div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light">
-                            <input type="checkbox" id="checkbox-fa-light-1" checked="">
-                            <label for="checkbox-fa-light-1">
-                            </label>
-                        </div></td>
-                        <td>admin</td>
-                        <td>王五</td>
-                        <td>18356522123</td>
-                        <td>2018-04-10</td>
-                        <td>77</td>
-                        <td>修改</td>
-                    </tr>
 
-
-
-
-
-
-                    </tbody>
                 </table>
             </div>
 
@@ -232,17 +63,104 @@
     </div>
 </div>
 
-<!-- Javascript Libs -->
-<script type="text/javascript" src="/js/jquery.min.js"></script>
-<script type="text/javascript" src="/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/js/bootstrap-switch.min.js"></script>
 
-<script type="text/javascript" src="/js/jquery.matchHeight-min.js"></script>
-<script type="text/javascript" src="/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="/js/dataTables.bootstrap.min.js"></script>
-<script type="text/javascript" src="/js/select2.full.min.js"></script>
-<!-- Javascript -->
-<script type="text/javascript" src="/js/app.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#table').DataTable({
+            "serverSide": true,
+            searching: true,
+            lengthChange: true,
+            paging: true,
+            scrollCollapse: true,
+            serverSide: false,
+            search: true,
+            processing: true,
+            /* scrollY: 500,   表格的高度限制*/
+            scrollX: "100%",
+            scrollXInner: "100%",
+            scrollCollapse: true,
+            jQueryUI: false,
+            autoWidth: true,
+            autoSearch: false,
+            language: {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项搜索结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 条数据",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "暂无数据",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            },
+            ajax: {
+                url: "/count/queryAllCount",
+                dataSrc: '',
+            },
+            "columns": [
+                {"data": "cardId"},
+                {"data": "countType"},
+                {"data": "blance"},
+                {"data": "state",
+                    render:function(e,type,full,row){
+                        if(full.state==1){
+                            return "冻结";
+                        }
+                        else{
+                            return "正常";
+                        }
+                    }
+                },
+                {"data": "createTime"},
+                {"data": "state",
+                    render:function(e,type,full,row){
+                        if(full.state==1){
+                            return "<a href='javascript:;'  onclick='changestatus("+full.id+",0)'  class=\"blue\" title=\"解冻\">解冻</a>";
+                        }
+                        else{
+                            return "<a href='javascript:;'  onclick='changestatus("+full.id+",1)'  class=\"blue\" title=\"冻结\">冻结</a>";
+                        }
+                    }
+                }
+            ]
+        });
+    })
+    function changestatus(id,state) {
+        $.ajax({
+            url: '/count/startOrstopCount',
+            data: {id:id,state:state},
+            type: 'post',
+            success: function (data) {
+                if (strToJson(data).code == "success") {
+                    sweetAlert("", "恭喜您！操作成功！", "success");
+                    setTimeout(function () {
+                        window.location.href = "/member/account_list";
+                    }, 1500);
+                }
+                else {
+                    sweetAlert("", strToJson(data).message, "error");
+                }
+
+            },
+            error: function () {
+                sweetAlert("", "请求失败！", "error");
+            }
+        });
+    }
+</script>
 </body>
 
 </html>

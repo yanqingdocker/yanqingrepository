@@ -51,8 +51,7 @@
                         <th>真实姓名</th>
                         <th>身份证号</th>
                         <th>手机号</th>
-                        <th>是否认证</th>
-                        <th>邮箱</th>
+                        <th>认证</th>
                         <th>地址</th>
                         <th>注册时间</th>
                         <th>操作</th>
@@ -132,8 +131,16 @@
                 {"data": "username" },
                 {"data": "idcard" },
                 {"data": "phone" },
-                {"data": "isauthentication" },
-                {"data": "email" },
+                {"data": "isauthentication",
+                    render:function(e,type,full,row){
+                        if(full.isauthentication==1){
+                            return "<span class='green'>是</span>";
+                        }
+                        else{
+                            return "<span class='red'>否</span>";
+                        }
+                    }
+                },
                 {"data": "address" },
                 {"data": "createtime" },
                 {"data": "id",
