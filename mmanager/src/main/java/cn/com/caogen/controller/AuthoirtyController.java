@@ -34,6 +34,7 @@ public class AuthoirtyController {
      */
     @RequestMapping(path = "add",method =RequestMethod.POST )
     public String add(@RequestParam("authoirtyname") String authoirtyname,@RequestParam("url") String url){
+        logger.info("add start");
         if(!StringUtil.checkStrs(authoirtyname,url)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
