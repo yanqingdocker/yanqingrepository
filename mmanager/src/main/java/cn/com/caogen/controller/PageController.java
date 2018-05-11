@@ -194,4 +194,63 @@ public class PageController {
     public String log() {
         return "oplog/log";
     }
+
+    /**
+     *收入分析--月分析
+     *
+     * @return
+     */
+    @RequestMapping("/incomeAnalysis/month")
+    public String month() {
+        return "incomeAnalysis/month";
+    }
+
+    /**
+     *收入分析--周分析
+     *
+     * @return
+     */
+    @RequestMapping("/incomeAnalysis/week")
+    public String week() {
+        return "incomeAnalysis/week";
+    }
+    /**
+     *收入分析--季度分析
+     *
+     * @return
+     */
+    @RequestMapping("/incomeAnalysis/quarter")
+    public String quarter() {
+        return "spentAnalysis/quarter";
+    }
+
+    /**
+     *支出分析--月分析
+     *
+     * @return
+     */
+    @RequestMapping("/spentAnalysis/month")
+    public String spentmonth() {
+        return "spentAnalysis/month";
+    }
+
+    /**
+     *支出分析--周分析
+     *
+     * @return
+     */
+    @RequestMapping("/spentAnalysis/week")
+    public String spentweek() {
+        return "spentAnalysis/week";
+    }
+
+    /**
+     *支出分析--季度分析
+     *
+     * @return
+     */
+    @RequestMapping("/spentAnalysis/quarter")
+    public String spentquarter() {
+        return "spentAnalysis/quarter";
+    }
 }

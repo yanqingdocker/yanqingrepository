@@ -1,6 +1,6 @@
 package cn.com.caogen;
 
-import cn.com.caogen.filter.SystemFilter;
+
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
