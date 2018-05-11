@@ -184,7 +184,15 @@ public class PageController {
     public String changeinfo() {
         return "manage/changeinfo";
     }
-
+    /**
+     *后台管理员--管理员权限
+     *
+     * @return
+     */
+    @RequestMapping("/manage/manage_power")
+    public String manage_power() {
+        return "manage/manage_power";
+    }
     /**
      *日志管理
      *
