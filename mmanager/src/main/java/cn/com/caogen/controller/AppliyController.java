@@ -56,6 +56,7 @@ public class AppliyController {
      */
     @RequestMapping(path = "querybyUserid",method = RequestMethod.GET)
     public String querybyUserid(HttpServletRequest request){
+        logger.info("querybyUserid start:");
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("userid",request.getSession().getAttribute("userid"));
         List<Appliy> appliyList=appliyService.query(new HashMap<String,Object>());
