@@ -47,6 +47,7 @@
                 <table class="datatable table table-striped" id="table" cellspacing="0" width="100%">
                     <thead>
                     <tr>
+                        <th>序号</th>
                         <th>账户ID</th>
                         <th>货币类型</th>
                         <th>余额</th>
@@ -106,11 +107,17 @@
                     "sSortDescending": ": 以降序排列此列"
                 }
             },
+            "fnDrawCallback"    : function(){
+                this.api().column(0).nodes().each(function(cell, i) {
+                    cell.innerHTML =  i + 1;
+                });
+            },
             ajax: {
                 url: "/count/queryAllCount",
                 dataSrc: '',
             },
             "columns": [
+                {"data": "id"},
                 {"data": "cardId"},
                 {"data": "countType"},
                 {"data": "blance"},

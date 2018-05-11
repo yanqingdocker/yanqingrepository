@@ -49,6 +49,7 @@
                 <table class="datatable table table-striped" id="table" cellspacing="0" width="100%">
                     <thead>
                     <tr>
+                        <th>序号</th>
                         <th>银行卡号</th>
                         <th>持卡人姓名</th>
                         <th>开户行</th>
@@ -108,6 +109,11 @@
                     "sSortDescending": ": 以降序排列此列"
                 }
             },
+            "fnDrawCallback"    : function(){
+                        　　this.api().column(0).nodes().each(function(cell, i) {
+                            　　　　cell.innerHTML =  i + 1;
+                             　　});
+                         },
             ajax: {
                 url: "/bank/queryAll",
                 dataSrc: '',

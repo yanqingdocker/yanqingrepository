@@ -46,7 +46,7 @@
                 <table class="datatable table table-striped" id="table" cellspacing="0" width="100%">
                     <thead>
                     <tr>
-                        <!--<th width="30"></th>-->
+                        <th>序号</th>
                         <th>角色名</th>
                         <th>创建时间</th>
                         <th>操作</th>
@@ -162,6 +162,11 @@
                 url: "/role/queryAll",
                 dataSrc: '',
             },
+            "fnDrawCallback"    : function(){
+                this.api().column(0).nodes().each(function(cell, i) {
+                    cell.innerHTML =  i + 1;
+                });
+            },
             "columns": [
                 // {"data": "id" ,
                 //     render:function(e){
@@ -171,6 +176,7 @@
                 //         return html;
                 //     }
                 // },
+                {"data": "id" },
                 {"data": "rolename" },
                 {"data": "createtime" },
                 {"data": "id",

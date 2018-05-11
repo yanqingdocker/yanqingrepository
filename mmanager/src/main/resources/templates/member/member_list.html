@@ -48,6 +48,7 @@
                     <thead>
                     <tr>
                         <th width="30"></th>
+                        <th>序号</th>
                         <th>真实姓名</th>
                         <th>身份证号</th>
                         <th>手机号</th>
@@ -115,9 +116,15 @@
                     "sSortDescending": ": 以降序排列此列"
                 }
             },
+
             ajax: {
                 url: "/user/queryAll",
                 dataSrc: '',
+            },
+            "fnDrawCallback"    : function(){
+                this.api().column(1).nodes().each(function(cell, i) {
+                    cell.innerHTML =  i + 1;
+                });
             },
             "columns": [
                 {"data": "id" ,
@@ -128,6 +135,7 @@
                         return html;
                     }
                 },
+                {"data": "username" },
                 {"data": "username" },
                 {"data": "idcard" },
                 {"data": "phone" },

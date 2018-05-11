@@ -203,6 +203,7 @@ table.dataTable thead .sorting {background: none}
     font-size: 16px;
 }
 
+.select_input{ height: 35px;border: 1px solid #c5c5c5;}
 
 
 
