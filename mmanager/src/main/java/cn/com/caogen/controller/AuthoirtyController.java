@@ -54,6 +54,7 @@ public class AuthoirtyController {
      */
     @RequestMapping(path = "update",method =RequestMethod.POST )
     public String update(@RequestParam("id") String id,@RequestParam("authoirtyname") String authoirtyname,@RequestParam("url") String url){
+        logger.info("add update");
         if(!StringUtil.checkStrs(id,authoirtyname,url)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
