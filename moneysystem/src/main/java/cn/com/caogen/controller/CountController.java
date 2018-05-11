@@ -174,6 +174,9 @@ public class CountController {
     public String queryCount(@RequestParam("id") String id) {
 
         logger.info("queryCount start ");
+        if (!StringUtil.checkStrs(id)) {
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ERROR_ARGS)).toString();
+        }
 
         return JSONObject.fromObject(countServiceImpl.queryById(id)).toString();
     }

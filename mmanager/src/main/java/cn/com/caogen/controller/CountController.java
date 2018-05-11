@@ -278,7 +278,7 @@ public class CountController {
         }
         count.setBlance(count.getBlance()+Double.parseDouble(num));
         countServiceImpl.updateCount(String.valueOf(count.getId()),count.getBlance(),null,null);
-        countServiceImpl.saveOperaLog(count.getCardId(),count.getCountType(),Double.parseDouble(num),"现金存入",count.getUserId(),0,IpUtil.getIpAddr(request));
+        countServiceImpl.saveOperaLog(count.getCardId(),count.getCountType(),Double.parseDouble(num),ConstantUtil.SERVICETYPE_INMONEY,count.getUserId(),0,IpUtil.getIpAddr(request));
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 
@@ -315,7 +315,7 @@ public class CountController {
         }
         count.setBlance(count.getBlance()-Double.parseDouble(num));
         countServiceImpl.updateCount(String.valueOf(count.getId()),count.getBlance(),null,null);
-        countServiceImpl.saveOperaLog(count.getCardId(),count.getCountType(),Double.parseDouble(num),"现金转出",count.getUserId(),0,IpUtil.getIpAddr(request));
+        countServiceImpl.saveOperaLog(count.getCardId(),count.getCountType(),Double.parseDouble(num),ConstantUtil.SERVICETYPE_OUTMONEY,count.getUserId(),0,IpUtil.getIpAddr(request));
 
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
