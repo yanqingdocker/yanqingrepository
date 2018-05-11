@@ -105,14 +105,14 @@
                     "sSortDescending": ": 以降序排列此列"
                 }
             },
+            ajax: {
+                url: "/appliy/queryAll",
+                dataSrc: '',
+            },
             "fnDrawCallback"    : function(){
                 this.api().column(0).nodes().each(function(cell, i) {
                     cell.innerHTML =  i + 1;
                 });
-            },
-            ajax: {
-                url: "/appliy/queryAll",
-                dataSrc: '',
             },
             "columns": [
                 {"data": "id"},
