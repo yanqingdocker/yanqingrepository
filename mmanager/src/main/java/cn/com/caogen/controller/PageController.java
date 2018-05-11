@@ -67,6 +67,15 @@ public class PageController {
         return "member/alipay_list";
     }
     /**
+     *会员管理--银行卡绑定
+     *
+     * @return
+     */
+    @RequestMapping("/member/bankcard_list")
+    public String bankcard_list() {
+        return "member/bankcard_list";
+    }
+    /**
      *消息通知--会员认证审批
      *
      * @return
@@ -175,6 +184,7 @@ public class PageController {
     public String changeinfo() {
         return "manage/changeinfo";
     }
+
     /**
      *日志管理
      *
