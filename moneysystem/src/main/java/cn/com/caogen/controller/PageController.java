@@ -14,7 +14,7 @@ public class PageController {
     /**
      * 访问index界面
      *
-     * @return
+     * @returnmy/my_account
      */
     @RequestMapping("/index")
     public String index() {
