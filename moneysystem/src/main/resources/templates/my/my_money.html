@@ -132,7 +132,7 @@
                 for (var i=0;i<item.length;i++){
                     if(item[i].countType=="CNY"){
                         $("#rmb_count").html(item[i].cardId);
-                        if(item[i].state==0){
+                        if(item[i].state==1){
                             var rmbbalance=item[i].blance;
                             $("#rmb_balance").html(rmbbalance.toFixed(2));
                         }
@@ -141,7 +141,7 @@
                     }
                     else if(item[i].countType=="USD") {
                         $("#dollar_count").html(item[i].cardId);
-                        if(item[i].state==0) {
+                        if(item[i].state==1) {
                             var dollarcount = item[i].blance;
                             $("#dollar_balance").html(dollarcount.toFixed(2));
                         }
