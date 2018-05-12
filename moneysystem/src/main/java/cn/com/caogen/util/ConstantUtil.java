@@ -38,5 +38,8 @@ public class ConstantUtil {
     public static final String DATE_QUARTER="90";
     public static final String DATE_YEAR="360";
     public static final String QUERYDATE="date";
+    public static final String SERVICETYPE_EXCHANGE="兑换";
+    public static final String SERVICETYPE_SWITCH="转账";
+    public static final String SERVICETYPE_RECHARGE="充值";
 
 }

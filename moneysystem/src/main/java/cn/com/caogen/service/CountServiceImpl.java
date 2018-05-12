@@ -197,8 +197,8 @@ public class CountServiceImpl implements ICountService {
             destCount.setBlance(destCount.getBlance()+moneynum);
             checkCode=DataMonitor.getValiateCode(destCount,"id","checkCode","exception","state");
             countMapper.update(destCount);
-            saveOperaLog(srcCount.getCardId(),srcCount.getCountType(),moneynum,"转账",srcCount.getUserId(),0,operaip);
-            saveOperaLog(destCount.getCardId(),destCount.getCountType(),moneynum,"转账",destCount.getUserId(),1,operaip);
+            saveOperaLog(srcCount.getCardId(),srcCount.getCountType(),moneynum,ConstantUtil.SERVICETYPE_SWITCH,srcCount.getUserId(),0,operaip);
+                saveOperaLog(destCount.getCardId(),destCount.getCountType(),moneynum,ConstantUtil.SERVICETYPE_SWITCH,destCount.getUserId(),1,operaip);
 
         }catch (Exception e){
             //有一个不成功能则回滚事务
@@ -261,8 +261,8 @@ public class CountServiceImpl implements ICountService {
             //目标账户增加金额
             destCount.setBlance(destCount.getBlance()+destmoney);
             countMapper.update(destCount);
-            saveOperaLog(srcCount.getCardId(),srcCount.getCountType(),srcmoney,"兑换",srcCount.getUserId(),0,operaip);
-            saveOperaLog(destCount.getCardId(),destCount.getCountType(),destmoney,"兑换",destCount.getUserId(),1,operaip);
+            saveOperaLog(srcCount.getCardId(),srcCount.getCountType(),srcmoney,ConstantUtil.SERVICETYPE_EXCHANGE,srcCount.getUserId(),0,operaip);
+            saveOperaLog(destCount.getCardId(),destCount.getCountType(),destmoney,ConstantUtil.SERVICETYPE_EXCHANGE,destCount.getUserId(),1,operaip);
 
         }catch (Exception e){
             //有一个不成功能则回滚事务
