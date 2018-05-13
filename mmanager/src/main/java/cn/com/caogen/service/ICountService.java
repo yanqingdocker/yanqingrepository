@@ -19,5 +19,7 @@ public interface ICountService {
 
     public Count queryById(String id);
 
+    Double queryblancebyType(String type);
+
 
 }

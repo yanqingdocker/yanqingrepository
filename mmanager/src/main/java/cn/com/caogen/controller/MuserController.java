@@ -120,6 +120,7 @@ public class MuserController {
                 if(username.equals(muser.getUsername())&&password.equals(muser.getPassword())){
                     checkSession(muser.getId(),request,response);
                     request.getSession().setAttribute("userid",muser.getId());
+                    request.getSession().setAttribute("username",muser.getUsername());
                     return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
                 }
             }

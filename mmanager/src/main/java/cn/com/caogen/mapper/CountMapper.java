@@ -3,6 +3,7 @@ package cn.com.caogen.mapper;
 import cn.com.caogen.entity.Count;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -17,4 +18,5 @@ public interface CountMapper {
     List<Count> queryAll();
     List<Count> queryByUserId(int userid);
     Count queryById(int id);
+    Double queryblancebyType(String type);
 }

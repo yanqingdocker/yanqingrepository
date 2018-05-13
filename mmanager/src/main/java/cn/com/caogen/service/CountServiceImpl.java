@@ -18,6 +18,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -175,6 +176,12 @@ public class CountServiceImpl implements ICountService {
             updateCount(String.valueOf(count.getId()),0,"0",null);
         }
         return count;
+    }
+
+    @Override
+    public Double queryblancebyType(String type) {
+
+        return countMapper.queryblancebyType(type);
     }
 
     /**

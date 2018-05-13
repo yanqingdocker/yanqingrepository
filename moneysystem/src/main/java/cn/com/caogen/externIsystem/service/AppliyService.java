@@ -1,8 +1,6 @@
 package cn.com.caogen.externIsystem.service;
 
-import cn.com.caogen.util.ImageUtil;
 import cn.com.caogen.util.StringUtil;
-import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -11,11 +9,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.junit.jupiter.api.Test;
-
-import javax.servlet.http.HttpServletRequest;
-import java.net.URL;
-import java.net.URLConnection;
 
 /**
  * author:huyanqing

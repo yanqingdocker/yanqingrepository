@@ -223,7 +223,8 @@ public class CountController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.NOTTYPECOUNT)).toString();
 
         }
-        countServiceImpl.countswitch(srccount, destCount, moneynum,IpUtil.getIpAddr(request));
+        String operuser="会员-"+(String)request.getSession().getAttribute("username");
+        countServiceImpl.countswitch(srccount, destCount, moneynum,IpUtil.getIpAddr(request),operuser);
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
 
     }
@@ -251,7 +252,8 @@ public class CountController {
         if (!StringUtil.checkStrs(srccountid, destcountid, String.valueOf(srcmoney), String.valueOf(destmoney), payPwd)) {
             return net.sf.json.JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ERROR_ARGS)).toString();
         }
-        return countServiceImpl.exchange(srccountid, destcountid, srcmoney, destmoney, payPwd,IpUtil.getIpAddr(request));
+        String operuser="会员-"+(String)request.getSession().getAttribute("username");
+        return countServiceImpl.exchange(srccountid, destcountid, srcmoney, destmoney, payPwd,IpUtil.getIpAddr(request),operuser);
 
     }
 

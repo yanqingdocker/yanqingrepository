@@ -278,7 +278,8 @@ public class CountController {
         }
         count.setBlance(count.getBlance()+Double.parseDouble(num));
         countServiceImpl.updateCount(String.valueOf(count.getId()),count.getBlance(),null,null);
-        countServiceImpl.saveOperaLog(count.getCardId(),count.getCountType(),Double.parseDouble(num),ConstantUtil.SERVICETYPE_INMONEY,count.getUserId(),0,IpUtil.getIpAddr(request));
+        String operuser="操作员-"+(String)request.getSession().getAttribute("username");
+        countServiceImpl.saveOperaLog(count.getCardId(),count.getCountType(),Double.parseDouble(num),ConstantUtil.SERVICETYPE_INMONEY,operuser,ConstantUtil.MONEY_IN,IpUtil.getIpAddr(request));
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 
@@ -315,11 +316,22 @@ public class CountController {
         }
         count.setBlance(count.getBlance()-Double.parseDouble(num));
         countServiceImpl.updateCount(String.valueOf(count.getId()),count.getBlance(),null,null);
-        countServiceImpl.saveOperaLog(count.getCardId(),count.getCountType(),Double.parseDouble(num),ConstantUtil.SERVICETYPE_OUTMONEY,count.getUserId(),0,IpUtil.getIpAddr(request));
+        String operuser="操作员-"+(String)request.getSession().getAttribute("username");
+        countServiceImpl.saveOperaLog(count.getCardId(),count.getCountType(),Double.parseDouble(num),ConstantUtil.SERVICETYPE_OUTMONEY,operuser,ConstantUtil.MONEY_OUT,IpUtil.getIpAddr(request));
 
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 
+
+    @RequestMapping(path = "/queryblancebyType", method = RequestMethod.GET)
+    public String queryblancebyType(@RequestParam("type") String type) {
+        logger.info("queryAllCount start ");
+        String result=String.valueOf(countServiceImpl.queryblancebyType(type));
+        StringBuffer rs=new StringBuffer();
+        rs.append("{'type':'").append(type).append("',").append("'blance':'").append(result).append("'}");
+        System.out.print(rs.toString());
+        return JSONObject.fromObject(rs.toString()).toString();
+    }
 
     /**
      * 查询系统中所有账户

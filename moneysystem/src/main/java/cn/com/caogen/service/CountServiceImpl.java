@@ -154,7 +154,7 @@ public class CountServiceImpl implements ICountService {
                     String checkCode=DataMonitor.getValiateCode(count,"id","checkCode","exception","state");
                     if(!checkCode.equals(count.getCheckCode())){
                         count.setState("0");
-                        updateCount(String.valueOf(count.getId()),0,"0",null);
+                        updateCount(String.valueOf(count.getId()),0,ConstantUtil.COUNT_EXCEPTION,null);
                     }
                 }
                 return countList;
@@ -170,7 +170,7 @@ public class CountServiceImpl implements ICountService {
         String checkCode=DataMonitor.getValiateCode(count,"id","checkCode","exception","state");
         if(!checkCode.equals(count.getCheckCode())){
             count.setState("0");
-            updateCount(String.valueOf(count.getId()),0,"0",null);
+            updateCount(String.valueOf(count.getId()),0,ConstantUtil.COUNT_EXCEPTION,null);
         }
         return count;
     }
@@ -182,7 +182,7 @@ public class CountServiceImpl implements ICountService {
      * @param moneynum
      */
     @Transactional
-    public void countswitch(Count srcCount, Count destCount,Double moneynum,String operaip) {
+    public void countswitch(Count srcCount, Count destCount,Double moneynum,String operaip,String operauser) {
 
         DefaultTransactionDefinition def=new DefaultTransactionDefinition();
         def.setName("countswitch");
@@ -192,13 +192,15 @@ public class CountServiceImpl implements ICountService {
             //原账户扣除金额
             srcCount.setBlance(srcCount.getBlance()-moneynum);
             String checkCode=DataMonitor.getValiateCode(srcCount,"id","checkCode","exception","state");
+            srcCount.setCheckCode(checkCode);
             countMapper.update(srcCount);
             //目标账户增加金额
             destCount.setBlance(destCount.getBlance()+moneynum);
             checkCode=DataMonitor.getValiateCode(destCount,"id","checkCode","exception","state");
+            destCount.setCheckCode(checkCode);
             countMapper.update(destCount);
-            saveOperaLog(srcCount.getCardId(),srcCount.getCountType(),moneynum,ConstantUtil.SERVICETYPE_SWITCH,srcCount.getUserId(),0,operaip);
-                saveOperaLog(destCount.getCardId(),destCount.getCountType(),moneynum,ConstantUtil.SERVICETYPE_SWITCH,destCount.getUserId(),1,operaip);
+            saveOperaLog(srcCount.getCardId(),srcCount.getCountType(),moneynum,ConstantUtil.SERVICETYPE_SWITCH,operauser,ConstantUtil.MONEY_OUT,operaip);
+            saveOperaLog(destCount.getCardId(),destCount.getCountType(),moneynum,ConstantUtil.SERVICETYPE_SWITCH,operauser,ConstantUtil.MONEY_IN,operaip);
 
         }catch (Exception e){
             //有一个不成功能则回滚事务
@@ -234,7 +236,7 @@ public class CountServiceImpl implements ICountService {
      * @return
      */
     @Transactional
-    public String exchange(String srccountid, String destcountid, Double srcmoney, Double destmoney,String paypwd,String operaip) {
+    public String exchange(String srccountid, String destcountid, Double srcmoney, Double destmoney,String paypwd,String operaip,String operauser) {
         //校验账户是否存在
         Count srcCount=countMapper.queryById(Integer.parseInt(srccountid));
         Count destCount=countMapper.queryById(Integer.parseInt(destcountid));
@@ -257,12 +259,16 @@ public class CountServiceImpl implements ICountService {
         try{
             //原账户扣除金额
             srcCount.setBlance(srcCount.getBlance()-srcmoney);
+            String checkCode=DataMonitor.getValiateCode(srcCount,"id","checkCode","exception","state");
+            srcCount.setCheckCode(checkCode);
             countMapper.update(srcCount);
             //目标账户增加金额
             destCount.setBlance(destCount.getBlance()+destmoney);
+            checkCode=DataMonitor.getValiateCode(destCount,"id","checkCode","exception","state");
+            destCount.setCheckCode(checkCode);
             countMapper.update(destCount);
-            saveOperaLog(srcCount.getCardId(),srcCount.getCountType(),srcmoney,ConstantUtil.SERVICETYPE_EXCHANGE,srcCount.getUserId(),0,operaip);
-            saveOperaLog(destCount.getCardId(),destCount.getCountType(),destmoney,ConstantUtil.SERVICETYPE_EXCHANGE,destCount.getUserId(),1,operaip);
+            saveOperaLog(srcCount.getCardId(),srcCount.getCountType(),srcmoney,ConstantUtil.SERVICETYPE_EXCHANGE,operauser,ConstantUtil.MONEY_OUT,operaip);
+            saveOperaLog(destCount.getCardId(),destCount.getCountType(),destmoney,ConstantUtil.SERVICETYPE_EXCHANGE,operauser,ConstantUtil.MONEY_IN,operaip);
 
         }catch (Exception e){
             //有一个不成功能则回滚事务

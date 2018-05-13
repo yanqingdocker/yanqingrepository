@@ -1,7 +1,10 @@
 package cn.com.caogen.controller;
 
+import cn.com.caogen.entity.Count;
 import cn.com.caogen.entity.Operation;
 import cn.com.caogen.entity.User;
+import cn.com.caogen.service.CountServiceImpl;
+import cn.com.caogen.service.ICountService;
 import cn.com.caogen.service.IOperaService;
 import cn.com.caogen.service.UserServiceImpl;
 import cn.com.caogen.util.ConstantUtil;
@@ -16,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,6 +37,8 @@ public class OperaController {
     private IOperaService operaServiceimpl;
     @Autowired
     private UserServiceImpl userServiceimpl;
+    @Autowired
+    private CountServiceImpl countServiceimpl;
     @RequestMapping(path = "/queryContition",method = RequestMethod.GET)
     public String queryContition(HttpServletRequest request){
         Operation operation=new Operation();
@@ -64,10 +71,17 @@ public class OperaController {
      */
     @RequestMapping(path = "/queryByUserid",method = RequestMethod.GET)
     public String queryByUserid(HttpServletRequest request){
-        User user=userServiceimpl.querybyId((int)request.getSession().getAttribute("userid"));
-        Map<String,Object> parmMap=new HashMap<String,Object>();
-        parmMap.put("operauser",user.getUserid());
-        return JSONArray.fromObject(operaServiceimpl.queryAll(parmMap)).toString();
+       List<Count> countList=countServiceimpl.queryByUserId((int)request.getSession().getAttribute("userid"));
+       List<Operation> operationList=new ArrayList<Operation>();
+       for(Count count:countList){
+           Map<String,Object> parmMap=new HashMap<String,Object>();
+           parmMap.put("countid",count.getCardId());
+           List<Operation> list=operaServiceimpl.queryAll(parmMap);
+           operationList.addAll(list);
+           parmMap=null;
+       }
+
+        return JSONArray.fromObject(operationList).toString();
     }
 
     /**

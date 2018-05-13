@@ -69,7 +69,7 @@ public class MobileController {
                     //充值提交成功,更新账户余额
                     count.setBlance(count.getBlance()-num);
                     countServiceImpl.updateCount(String.valueOf(count.getId()),count.getBlance(),null,null);
-                    countServiceImpl.saveOperaLog(count.getCardId(),count.getCountType(),num,"话费充值",count.getUserId(),0,IpUtil.getIpAddr(request));
+                    countServiceImpl.saveOperaLog(count.getCardId(),count.getCountType(),num,ConstantUtil.SERVICETYPE_PHONERECHARGE,(String)request.getSession().getAttribute("username"),ConstantUtil.MONEY_OUT,IpUtil.getIpAddr(request));
                 } else {
                     return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL)).toString();
                 }

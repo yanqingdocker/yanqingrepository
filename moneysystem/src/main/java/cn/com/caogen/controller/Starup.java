@@ -34,8 +34,8 @@ public class Starup implements CommandLineRunner {
      */
     @Override
     public void run(String... args) throws Exception {
-        String result = RateService.getRequest2();
-        result=DataMonitor.reSet(result);
+            String result = RateService.getRequest2();
+            result=DataMonitor.reSet(result);
 
             stringRedisTemplate.opsForValue().set(ConstantUtil.ONE, result);
 
@@ -54,9 +54,7 @@ public class Starup implements CommandLineRunner {
 
             stringRedisTemplate.opsForValue().set(ConstantUtil.SIX, result);
 
-
             stringRedisTemplate.opsForValue().set(ConstantUtil.SENVEN, result);
-
 
     }
 }

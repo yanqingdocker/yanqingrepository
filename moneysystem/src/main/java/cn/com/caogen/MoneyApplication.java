@@ -33,12 +33,12 @@ public class MoneyApplication {
         SpringApplication.run(MoneyApplication.class, args);
 
     }
- /*   @Bean
+    @Bean
     public FilterRegistrationBean indexFilter(){
 
         FilterRegistrationBean registration = new FilterRegistrationBean(new SystemFilter());
         return registration;
-    }*/
+    }
 
 
 }

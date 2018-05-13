@@ -1,16 +1,12 @@
 package cn.com.caogen.controller;
 
 import cn.com.caogen.entity.Appliy;
-import cn.com.caogen.externIsystem.service.AppliyService;
 import cn.com.caogen.service.AppliyServiceImpl;
-import cn.com.caogen.service.IAppliyService;
 import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.DateUtil;
-import cn.com.caogen.util.ImageUtil;
 import cn.com.caogen.util.ResponseMessage;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.omg.PortableInterceptor.InterceptorOperations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

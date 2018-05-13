@@ -54,4 +54,11 @@
         select <include refid="Base_Column_List"/> from count where id=#{id}
     </select>
 
+    <select id="queryblancebyType" parameterType="String" resultType="double">
+        select sum(blance) from count where counttype=#{type}
+    </select>
+
+
+
+
 </mapper>
