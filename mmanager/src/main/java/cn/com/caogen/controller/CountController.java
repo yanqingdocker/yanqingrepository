@@ -8,6 +8,7 @@ import cn.com.caogen.service.ICountService;
 import cn.com.caogen.service.IUserService;
 import cn.com.caogen.util.*;
 import net.sf.json.JSON;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -324,13 +325,22 @@ public class CountController {
 
 
     @RequestMapping(path = "/queryblancebyType", method = RequestMethod.GET)
-    public String queryblancebyType(@RequestParam("type") String type) {
+    public String queryblancebyType() {
         logger.info("queryAllCount start ");
-        String result=String.valueOf(countServiceImpl.queryblancebyType(type));
+        String cny=String.valueOf(countServiceImpl.queryblancebyType(ConstantUtil.MONEY_CNY));
+        String usd=String.valueOf(countServiceImpl.queryblancebyType(ConstantUtil.MONEY_USD));
         StringBuffer rs=new StringBuffer();
-        rs.append("{'type':'").append(type).append("',").append("'blance':'").append(result).append("'}");
-        System.out.print(rs.toString());
-        return JSONObject.fromObject(rs.toString()).toString();
+        rs.append("[{'type':'")
+                .append(ConstantUtil.MONEY_CNY).
+                append("',").
+                append("'blance':'")
+                .append(cny).append("'},{'type':'")
+                .append(ConstantUtil.MONEY_USD)
+                .append("',")
+                .append("'blance':'")
+                .append(usd)
+                .append("'}]");
+        return JSONArray.fromObject(rs.toString()).toString();
     }
 
     /**

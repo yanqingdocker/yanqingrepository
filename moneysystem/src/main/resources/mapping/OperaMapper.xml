@@ -23,7 +23,7 @@
         (#{countid,jdbcType=VARCHAR},#{countType,jdbcType=VARCHAR},#{num,jdbcType=DOUBLE},#{operaType,jdbcType=VARCHAR},#{operaTime,jdbcType=VARCHAR},#{operaUser,jdbcType=VARCHAR},#{oi,jdbcType=INTEGER},#{operaIp,jdbcType=VARCHAR});
     </insert>
     <select id="queryAll"  resultMap="BaseResultMap" >
-        select <include refid="Base_Column_List"/> from operalog
+        select <include refid="Base_Column_List"/> from operalog and Order By operatime Desc
 
     </select>
 
@@ -44,7 +44,7 @@
        <if test="oi != null">
            and oi =#{oi}
        </if>
-
+        and Order By operatime Desc;
     </select>
 
 
