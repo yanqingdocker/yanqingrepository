@@ -44,5 +44,6 @@ public class ConstantUtil {
     public static final int MONEY_OUT=0;//支出
     public static final String COUNT_NORMAL="1";//账户正常
     public static final String COUNT_EXCEPTION="0";//账户异常
+    public static final String MONEY_OI="oi";
 
 }

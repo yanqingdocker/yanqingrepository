@@ -4,15 +4,15 @@ import cn.com.caogen.entity.Operation;
 import cn.com.caogen.entity.User;
 import cn.com.caogen.service.IOperaService;
 import cn.com.caogen.service.UserServiceImpl;
-import cn.com.caogen.util.ConstantUtil;
-import cn.com.caogen.util.DateUtil;
-import cn.com.caogen.util.IpUtil;
+import cn.com.caogen.util.*;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -75,11 +75,14 @@ public class OperaController {
      * @return
      */
     @RequestMapping(path = "/queryByDay",method = RequestMethod.GET)
-    public String queryByDay(){
-
+    public String queryByDay(@RequestParam("oi") String oi){
+        if(!StringUtil.checkStrs(oi)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
+        }
 
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put(ConstantUtil.QUERYDATE,ConstantUtil.DATE_TODAY);
+        parmMap.put(ConstantUtil.MONEY_OI,Integer.parseInt(oi));
         return JSONArray.fromObject(operaServiceimpl.queryByDate(parmMap)).toString();
     }
 
@@ -89,9 +92,13 @@ public class OperaController {
      * @return
      */
     @RequestMapping(path = "/queryByWeek",method = RequestMethod.GET)
-    public String queryByWeek(){
+    public String queryByWeek(@RequestParam("oi") String oi){
+        if(!StringUtil.checkStrs(oi)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
+        }
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put(ConstantUtil.QUERYDATE,ConstantUtil.DATE_WEEK);
+        parmMap.put(ConstantUtil.MONEY_OI,Integer.parseInt(oi));
         return JSONArray.fromObject(operaServiceimpl.queryByDate(parmMap)).toString();
     }
 
@@ -100,9 +107,13 @@ public class OperaController {
      * @return
      */
     @RequestMapping(path = "/queryByMonth",method = RequestMethod.GET)
-    public String queryByMonth(){
+    public String queryByMonth(@RequestParam("oi") String oi){
+        if(!StringUtil.checkStrs(oi)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
+        }
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put(ConstantUtil.QUERYDATE,ConstantUtil.DATE_MONTH);
+        parmMap.put(ConstantUtil.MONEY_OI,Integer.parseInt(oi));
         return JSONArray.fromObject(operaServiceimpl.queryByDate(parmMap)).toString();
     }
 
@@ -111,9 +122,13 @@ public class OperaController {
      * @return
      */
     @RequestMapping(path = "/queryByquarter",method = RequestMethod.GET)
-    public String queryByquarter(){
+    public String queryByquarter(@RequestParam("oi") String oi){
+        if(!StringUtil.checkStrs(oi)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
+        }
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put(ConstantUtil.QUERYDATE,ConstantUtil.DATE_QUARTER);
+        parmMap.put(ConstantUtil.MONEY_OI,Integer.parseInt(oi));
         return JSONArray.fromObject(operaServiceimpl.queryByDate(parmMap)).toString();
     }
 
@@ -122,9 +137,13 @@ public class OperaController {
      * @return
      */
     @RequestMapping(path = "/queryByYear",method = RequestMethod.GET)
-    public String queryByYear(){
+    public String queryByYear(@RequestParam("oi") String oi){
+        if(!StringUtil.checkStrs(oi)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
+        }
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put(ConstantUtil.QUERYDATE,ConstantUtil.DATE_YEAR);
+        parmMap.put(ConstantUtil.MONEY_OI,Integer.parseInt(oi));
         return JSONArray.fromObject(operaServiceimpl.queryByDate(parmMap)).toString();
     }
 

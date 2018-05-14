@@ -49,30 +49,30 @@
 
 
 
-    <select id="queryByDate" resultMap="BaseResultMap" parameterType="Map">
+    <select id="queryByDate" resultMap="BaseResultMap" parameterType="int">
         select <include refid="Base_Column_List"/> from operalog
 
         <choose>
             <when test="date!=null and date == '1'.toString()">
-                where to_days(operatime) = to_days(now());
+                where to_days(operatime) = to_days(now())
             </when>
             <when test="date!=null and date == '7'.toString()">
-                where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(operatime);
+                where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(operatime)
             </when>
             <when test="date!=null and date == '30'.toString()">
-                where DATE_FORMAT( operatime, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' );
+                where DATE_FORMAT( operatime, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
             </when>
             <when test="date!=null and date == '90'.toString()">
-                where  QUARTER(operatime)=QUARTER(now());
+                where  QUARTER(operatime)=QUARTER(now())
             </when>
             <when test="date!=null and date == '360'.toString()">
-                where YEAR(operatime)=YEAR(NOW());
+                where YEAR(operatime)=YEAR(NOW())
             </when>
             <otherwise>
                 where false
             </otherwise>
-
         </choose>
+        and oi=#{oi};
 
     </select>
 
