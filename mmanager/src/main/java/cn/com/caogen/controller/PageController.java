@@ -75,6 +75,16 @@ public class PageController {
     public String bankcard_list() {
         return "member/bankcard_list";
     }
+
+    /**
+     *会员管理--账户交易记录
+     *
+     * @return
+     */
+    @RequestMapping("/member/opera_log")
+    public String opera_log() {
+        return "member/opera_log";
+    }
     /**
      *消息通知--会员认证审批
      *

@@ -156,7 +156,7 @@ table.dataTable.no-footer {
 
 .flat-blue .side-menu .navbar-header{ background: none}
 .flat-blue .side-menu .navbar-header .title{background: url("../images/logo.png") no-repeat center; width: 83px; height: 26px; background-size: contain;margin-top: 15px}
-.app-container .content-container .side-menu:hover .navbar-brand .title,.app-container.expanded .content-container .side-menu .navbar-brand .title{background: url("../images/logo.png") no-repeat center; width: 120px; height: 34px; background-size: contain;margin-top: 15px}
+.app-container .content-container .side-menu:hover .navbar-brand .title,.app-container.expanded .content-container .side-menu .navbar-brand .title{background: url("../images/logo.jpg") no-repeat center; width: 120px; height: 34px; background-size: contain;margin-top: 15px}
 .flat-blue .navbar > .container-fluid, .flat-blue .navbar.navbar-default > .container-fluid{ height: 64px;}
 
 /*主框架*/
@@ -206,13 +206,29 @@ table.dataTable thead .sorting {background: none}
 .select_input{ height: 35px;border: 1px solid #c5c5c5;}
 .sweet-alert{ z-index: 99999999;    border: 1px solid #f5f5f5;}
 
+.money_block{ width: 50%; float: left}
+.money_block .rmb {
+    background: url(../images/bg_rmb.png) no-repeat;
+    width: 100%;
+    height: 90px;
+    background-size: contain;
+}
+.money_block .dollar {
+    background: url(../images/bg_my.png) no-repeat;
+    width: 100%;
+    height: 90px;
+    background-size: contain;
+}
+.money_block .rmb .red {
+    color: #86030a;
+}
+.money_block .dollar .green {
+    color: #2f7a00;
+}
 
-
-
-
-
-
-
+div.dataTables_wrapper div.dataTables_processing{background: #fff;}
+.red{color: #e73939}
+.green{ color: #23a220}
 
 
 
