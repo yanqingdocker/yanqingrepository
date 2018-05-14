@@ -53,7 +53,7 @@ public class OperaController {
      */
     @RequestMapping(path = "/queryAll",method = RequestMethod.GET)
     public String queryAll(){
-
+        logger.info("queryAll start:");
         return JSONArray.fromObject(operaServiceimpl.queryAll()).toString();
     }
 
@@ -64,6 +64,7 @@ public class OperaController {
      */
     @RequestMapping(path = "/queryByUserid",method = RequestMethod.GET)
     public String queryByUserid(HttpServletRequest request){
+        logger.info("queryAll start:");
         User user=userServiceimpl.querybyId((int)request.getSession().getAttribute("userid"));
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("operauser",user.getUserid());
@@ -76,7 +77,9 @@ public class OperaController {
      */
     @RequestMapping(path = "/queryByDay",method = RequestMethod.GET)
     public String queryByDay(@RequestParam("oi") String oi){
+        logger.info("queryByDay start: oi="+oi);
         if(!StringUtil.checkStrs(oi)){
+            logger.error("queryByDay:"+ConstantUtil.ERROR_ARGS);
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
 
@@ -93,7 +96,9 @@ public class OperaController {
      */
     @RequestMapping(path = "/queryByWeek",method = RequestMethod.GET)
     public String queryByWeek(@RequestParam("oi") String oi){
+        logger.info("queryByWeek start: oi="+oi);
         if(!StringUtil.checkStrs(oi)){
+            logger.error("queryByWeek:"+ConstantUtil.ERROR_ARGS);
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
         Map<String,Object> parmMap=new HashMap<String,Object>();
@@ -108,7 +113,9 @@ public class OperaController {
      */
     @RequestMapping(path = "/queryByMonth",method = RequestMethod.GET)
     public String queryByMonth(@RequestParam("oi") String oi){
+        logger.info("queryByMonth start: oi="+oi);
         if(!StringUtil.checkStrs(oi)){
+            logger.error("queryByMonth:"+ConstantUtil.ERROR_ARGS);
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
         Map<String,Object> parmMap=new HashMap<String,Object>();
@@ -123,7 +130,9 @@ public class OperaController {
      */
     @RequestMapping(path = "/queryByquarter",method = RequestMethod.GET)
     public String queryByquarter(@RequestParam("oi") String oi){
+        logger.info("queryByquarter start: oi="+oi);
         if(!StringUtil.checkStrs(oi)){
+            logger.error("queryByYear:"+ConstantUtil.ERROR_ARGS);
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
         Map<String,Object> parmMap=new HashMap<String,Object>();
@@ -138,7 +147,9 @@ public class OperaController {
      */
     @RequestMapping(path = "/queryByYear",method = RequestMethod.GET)
     public String queryByYear(@RequestParam("oi") String oi){
+        logger.info("queryByYear start: oi="+oi);
         if(!StringUtil.checkStrs(oi)){
+            logger.error(" queryByYear:"+ConstantUtil.ERROR_ARGS);
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
         Map<String,Object> parmMap=new HashMap<String,Object>();

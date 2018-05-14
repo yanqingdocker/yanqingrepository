@@ -77,23 +77,29 @@ public class BankController {
             String bankType = jsonObject.getString("banktype");
 
             if (StringUtil.checkStrs(username, idcard, bankcard, phone)) {
-                boolean falg = BackCardService.checkBackCard(username, idcard, bankcard, phone);
-                if (falg) {
-                    Map<String, String> parmMap = new HashMap<String, String>();
-                    parmMap.put("username", username);
-                    parmMap.put("idcard", idcard);
-                    parmMap.put("bankcard", bankcard);
-                    parmMap.put("phone", phone);
-                    parmMap.put("address", address);
-                    parmMap.put("userid", userid);
-                    parmMap.put("banktype", bankType);
-                    bankCardService.add(parmMap);
-                    return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
-                } else {
-                    return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, "验证不通过")).toString();
+                Map<String,Object> queryMap=new HashMap<String,Object>();
+                queryMap.put("bankcard",bankcard);
+                List<BankCard> bankCards=bankCardService.queryCondition(queryMap);
+                if(!bankCards.isEmpty()){
+                    return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ALERADY_BANK)).toString();
                 }
+                boolean falg = BackCardService.checkBackCard(username, idcard, bankcard, phone);
+                if (!falg) {
+                    return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.BANK_NOTAUTH)).toString();
+                }
+                Map<String, String> parmMap = new HashMap<String, String>();
+                parmMap.put("username", username);
+                parmMap.put("idcard", idcard);
+                parmMap.put("bankcard", bankcard);
+                parmMap.put("phone", phone);
+                parmMap.put("address", address);
+                parmMap.put("userid", userid);
+                parmMap.put("banktype", bankType);
+                bankCardService.add(parmMap);
+                return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
+
             }
-            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, "绑定失败")).toString();
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }else {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
@@ -124,6 +130,16 @@ public class BankController {
         logger.info("query start");
         Map<String, Object> parmMap = new HashMap<String, Object>();
         parmMap.put("userid", (int) request.getSession().getAttribute("userid"));
+        List<BankCard> bankCardList = bankCardService.queryCondition(parmMap);
+        return JSONArray.fromObject(bankCardList).toString();
+    }
+    /**
+     * 查询当前用户下的银行卡
+     */
+    @RequestMapping(path = "/queryAll", method = RequestMethod.GET)
+    public String queryAll(HttpServletRequest request) {
+        logger.info("query start");
+        Map<String, Object> parmMap = new HashMap<String, Object>();
         List<BankCard> bankCardList = bankCardService.queryCondition(parmMap);
         return JSONArray.fromObject(bankCardList).toString();
     }

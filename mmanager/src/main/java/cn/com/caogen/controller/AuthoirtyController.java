@@ -56,10 +56,12 @@ public class AuthoirtyController {
     public String update(@RequestParam("id") String id,@RequestParam("authoirtyname") String authoirtyname,@RequestParam("url") String url){
         logger.info("add update");
         if(!StringUtil.checkStrs(id,authoirtyname,url)){
+            logger.error("update"+ConstantUtil.ERROR_ARGS);
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
         Authoirty authoirty=authoirtyService.queryById(Integer.parseInt(id));
         if(authoirty==null){
+            logger.info("update: authirty is null");
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL)).toString();
         }
         authoirty.setAuthoirtyname(authoirtyname);
@@ -76,7 +78,9 @@ public class AuthoirtyController {
      */
     @RequestMapping(path = "/delete",method =RequestMethod.GET )
     public String delete(@RequestParam("ids") String ids){
+        logger.info("delete start: ids="+ids);
         if (!StringUtil.checkStrs(ids)) {
+            logger.error("delete"+ConstantUtil.ERROR_ARGS);
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
         authoirtyService.delete(ids);
@@ -91,6 +95,7 @@ public class AuthoirtyController {
      */
     @RequestMapping(path = "queryAll",method =RequestMethod.GET )
     public String queryAll(){
+        logger.info("queryAll");
         return JSONArray.fromObject(authoirtyService.queryAll()).toString();
     }
 

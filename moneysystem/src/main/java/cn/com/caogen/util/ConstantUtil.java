@@ -47,5 +47,7 @@ public class ConstantUtil {
     public static final int MONEY_OUT=0;//支出
     public static final String COUNT_NORMAL="1";//账户正常
     public static final String COUNT_EXCEPTION="0";//账户异常
+    public static final String ALERADY_BANK="此银行卡已经被绑定过";
+    public static final String BANK_NOTAUTH="验证不通过,清核对信息";
 
 }
