@@ -22,12 +22,8 @@
         insert into operalog (countid,counttype,num,operatype,operatime,operauser,oi,operaip) values
         (#{countid,jdbcType=VARCHAR},#{countType,jdbcType=VARCHAR},#{num,jdbcType=DOUBLE},#{operaType,jdbcType=VARCHAR},#{operaTime,jdbcType=VARCHAR},#{operaUser,jdbcType=VARCHAR},#{oi,jdbcType=INTEGER},#{operaIp,jdbcType=VARCHAR});
     </insert>
-    <select id="queryAll"  resultMap="BaseResultMap" >
-        select <include refid="Base_Column_List"/> from operalog and Order By operatime Desc
 
-    </select>
-
-    <select id="queryCondition"  resultMap="BaseResultMap" parameterType="Map">
+   <!-- <select id="queryCondition"  resultMap="BaseResultMap" parameterType="Map">
         select <include refid="Base_Column_List"/> from operalog where 1=1
         <if test="countid != null">
             and countid =#{countid}
@@ -44,37 +40,34 @@
        <if test="oi != null">
            and oi =#{oi}
        </if>
-        and Order By operatime Desc;
+        order by operatime desc
+
+    </select>-->
+    <select id="queryAll"  resultMap="BaseResultMap" >
+        select <include refid="Base_Column_List"/> from operalog
+
+    </select>
+
+    <select id="queryCondition"  resultMap="BaseResultMap" parameterType="map">
+        select <include refid="Base_Column_List"/> from operalog where true
+        <if test="countid != null">
+            and countid =#{countid}
+        </if>
+        <!--<if test="operauser != null">
+            and operauser =#{operauser}
+        </if>
+        <if test="operatype != null">
+            and operatype =#{operatype}
+        </if>
+        <if test="counttype != null">
+            and counttype =#{counttype}
+        </if>
+        <if test="oi != null">
+            and oi =#{oi}
+        </if>-->
     </select>
 
 
-
-     <select id="queryByDate" resultMap="BaseResultMap" parameterType="Map">
-         select <include refid="Base_Column_List"/> from operalog
-
-         <choose>
-             <when test="date!=null and date == '1'.toString()">
-                 where to_days(operatime) = to_days(now());
-             </when>
-             <when test="date!=null and date == '7'.toString()">
-                 where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(operatime);
-             </when>
-             <when test="date!=null and date == '30'.toString()">
-                 where DATE_FORMAT( operatime, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' );
-             </when>
-             <when test="date!=null and date == '90'.toString()">
-                 where  QUARTER(operatime)=QUARTER(now());
-             </when>
-             <when test="date!=null and date == '360'.toString()">
-                 where YEAR(operatime)=YEAR(NOW());
-             </when>
-             <otherwise>
-                 where false
-             </otherwise>
-
-         </choose>
-
-     </select>
 
 
 
