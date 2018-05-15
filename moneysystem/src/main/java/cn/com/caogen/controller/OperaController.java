@@ -76,6 +76,7 @@ public class OperaController {
        for(Count count:countList){
            Map<String,Object> parmMap=new HashMap<String,Object>();
            parmMap.put("countid",count.getCardId());
+
            List<Operation> list=operaServiceimpl.queryAll(parmMap);
            operationList.addAll(list);
            parmMap=null;
