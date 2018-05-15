@@ -18,7 +18,11 @@
     <resultMap id="allInfo" type="java.util.Map">
         <result column="sum" property="sum" jdbcType="DOUBLE"/>
         <result column="operatype" property="operatype" jdbcType="VARCHAR"/>
+    </resultMap>
 
+    <resultMap id="allcount" type="java.util.Map">
+        <result column="counttype" property="counttype" jdbcType="INTEGER"/>
+        <result column="operatype" property="operatype" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List" >
@@ -28,7 +32,7 @@
         insert into operalog (countid,counttype,num,operatype,operatime,operauser,oi,operaip) values
         (#{countid,jdbcType=VARCHAR},#{countType,jdbcType=VARCHAR},#{num,jdbcType=DOUBLE},#{operaType,jdbcType=VARCHAR},#{operaTime,jdbcType=VARCHAR},#{operaUser,jdbcType=VARCHAR},#{oi,jdbcType=INTEGER},#{operaIp,jdbcType=VARCHAR});
     </insert>
-    <select id="queryAll"  resultType="BaseResultMap" >
+    <select id="queryAll"  resultMap="BaseResultMap" >
         select <include refid="Base_Column_List"/> from operalog  Order By operatime Desc
 
     </select>
@@ -50,11 +54,16 @@
         <if test="oi != null">
             and oi =#{oi}
         </if>
-         Order By operatime Desc
+        Order By operatime Desc
     </select>
 
     <select id="queryoperatype" resultMap="allInfo">
         select sum(num) as sum, operatype from operalog GROUP BY operatype
+
+    </select>
+
+    <select id="queryoperacount" resultMap="allcount">
+        select count(operatype) as counttype, operatype from operalog  where to_days(operatime) = to_days(now()) GROUP BY operatype
 
     </select>
 

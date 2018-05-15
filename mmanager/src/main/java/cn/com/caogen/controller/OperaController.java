@@ -170,6 +170,12 @@ public class OperaController {
         return JSONArray.fromObject(list).toString();
     }
 
+    @RequestMapping(path="queryoperacount",method = RequestMethod.GET)
+    public String queryoperacount(){
+        List<Map<String,Object>> list=operaServiceimpl .queryoperacount();
+        return JSONArray.fromObject(list).toString();
+    }
+
 
 
 }

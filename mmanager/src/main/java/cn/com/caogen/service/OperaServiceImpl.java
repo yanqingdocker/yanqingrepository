@@ -41,4 +41,9 @@ public class OperaServiceImpl implements IOperaService {
     public List<Map<String, Object>> queryoperatype() {
         return operaMapper.queryoperatype();
     }
+
+    @Override
+    public List<Map<String, Object>> queryoperacount() {
+        return operaMapper.queryoperacount();
+    }
 }
