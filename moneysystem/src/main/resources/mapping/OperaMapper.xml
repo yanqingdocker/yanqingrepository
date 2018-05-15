@@ -53,7 +53,7 @@
         <if test="countid != null">
             and countid =#{countid}
         </if>
-        <!--<if test="operauser != null">
+        <if test="operauser != null">
             and operauser =#{operauser}
         </if>
         <if test="operatype != null">
@@ -64,7 +64,7 @@
         </if>
         <if test="oi != null">
             and oi =#{oi}
-        </if>-->
+        </if>
     </select>
 
 

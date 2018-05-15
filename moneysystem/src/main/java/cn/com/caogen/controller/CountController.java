@@ -268,6 +268,11 @@ public class CountController {
         return countServiceImpl.queryAll();
     }
 
+    @RequestMapping(path="queryMoneyType",method = RequestMethod.GET)
+    public String getMoneyType(){
+        return JSONObject.fromObject(ConstantUtil.MONEY_TYPES).toString();
+    }
+
     public boolean checkUser(String telphone) {
         logger.info("checkUser start: telphone="+telphone);
         Map<String, Object> map = new HashMap<String, Object>();

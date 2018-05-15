@@ -49,5 +49,6 @@ public class ConstantUtil {
     public static final String BANK_NOTAUTH="验证不通过,清核对信息";
     public static final String MONEY_USD="USD";
     public static final String MONEY_CNY="CNY";
+    public static final String[] MONEY_TYPES=new String[]{"CNY","USD"};
 
 }
