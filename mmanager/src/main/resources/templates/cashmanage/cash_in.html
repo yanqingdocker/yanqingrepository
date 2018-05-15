@@ -26,7 +26,7 @@
     <script  type="text/javascript" src="/js/dataTables.bootstrap.min.js"></script>
     <script  type="text/javascript" src="/js/sweet-alert.min.js"></script>
     <script  type="text/javascript" src="/js/common.js"></script>
-
+    <script  type="text/javascript" src="/js/caculator.js"></script>
 </head>
 
 <body class="flat-blue common_body">
@@ -45,8 +45,8 @@
         <div class="card">
             <div class="card-header">
             </div>
-            <div class="card-body">
-                <form id="myform" class="form-horizontal">
+            <div class="card-body inblock w100 pb30">
+                <form id="myform" class="form-horizontal l" style="width: 600px;">
                     <div class="form-group">
                         <label  class="col-sm-2 control-label">会员手机号</label>
                         <div class="col-sm-10">
@@ -74,6 +74,34 @@
                         </div>
                     </div>
                 </form>
+                <!--计算器-->
+                <div id="calcuator" class="l " style="margin-left: 150px">
+                    <input type="text" id="input-box" value="0" size="21" maxlength="21" readonly="readonly" />
+                    <div id="btn-list">
+                        <div onclick="operator('clear')" class=" btn-30 btn-radius color-red clear-marginleft">C</div>
+                        <div onclick="operator('opposite')" class=" btn-30 btn-radius color-blue">+/-</div>
+                        <div onclick="operator('percent')" class=" btn-30 btn-radius color-blue">%</div>
+                        <div onclick="operator('backspace')" class=" btn-70 btn-radius color-red font-14">←</div>
+                        <div onclick="typetoinput('7')" class=" btn-30 btn-radius clear-marginleft">7</div>
+                        <div onclick="typetoinput('8')" class=" btn-30 btn-radius">8</div>
+                        <div onclick="typetoinput('9')" class=" btn-30 btn-radius">9</div>
+                        <div onclick="operator('plus')" class=" btn-30 btn-radius color-blue font-14">+</div>
+                        <div onclick="operator('minus')" class=" btn-30 btn-radius color-blue font-14">-</div>
+                        <div onclick="typetoinput('4')" class=" btn-30 btn-radius clear-marginleft">4</div>
+                        <div onclick="typetoinput('5')" class=" btn-30 btn-radius">5</div>
+                        <div onclick="typetoinput('6')" class=" btn-30 btn-radius">6</div>
+                        <div onclick="operator('multiply')" class=" btn-30 btn-radius color-blue font-14">×</div>
+                        <div onclick="operator('divide')" class=" btn-30 btn-radius color-blue font-12">÷</div>
+                        <div onclick="typetoinput('1')" class=" btn-30 btn-radius clear-marginleft">1</div>
+                        <div onclick="typetoinput('2')" class=" btn-30 btn-radius">2</div>
+                        <div onclick="typetoinput('3')" class=" btn-30 btn-radius">3</div>
+                        <div onclick="operator('pow')" class=" btn-30 btn-radius color-blue font-14">×²</div>
+                        <div onclick="operator('sqrt')" class=" btn-30 btn-radius color-blue font-12">√</div>
+                        <div onclick="typetoinput('0')" class=" btn-70 btn-radius clear-marginleft">0</div>
+                        <div onclick="typetoinput('.')" class=" btn-30 btn-radius">.</div>
+                        <div onclick="operator('result')" class=" btn-70 btn-radius color-red font-14">=</div>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -120,8 +148,9 @@
                         notEmpty: {
                             message: '存入金额不能为空'
                         },
-                        digits: {
-                            message: '金额只能包含数字。'
+                        regexp: {
+                            regexp: /^[0-9_\.]+$/,
+                            message: '用户名只能由数字组成。'
                         }
                     }
                 }

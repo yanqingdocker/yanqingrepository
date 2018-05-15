@@ -157,7 +157,7 @@ table.dataTable.no-footer {
 
 .flat-blue .side-menu .navbar-header{ background: none}
 .flat-blue .side-menu .navbar-header .title{background: url("../images/logo.png") no-repeat center; width: 83px; height: 26px; background-size: contain;margin-top: 15px}
-.app-container .content-container .side-menu:hover .navbar-brand .title,.app-container.expanded .content-container .side-menu .navbar-brand .title{background: url("../images/logo.jpg") no-repeat center; width: 120px; height: 34px; background-size: contain;margin-top: 15px}
+.app-container .content-container .side-menu:hover .navbar-brand .title,.app-container.expanded .content-container .side-menu .navbar-brand .title{background: url("../images/logo.png") no-repeat center; width: 120px; height:45px; background-size: contain;margin-top: 10px}
 .flat-blue .navbar > .container-fluid, .flat-blue .navbar.navbar-default > .container-fluid{ height: 64px;}
 
 /*主框架*/
@@ -231,9 +231,18 @@ div.dataTables_wrapper div.dataTables_processing{background: #fff;}
 .red{color: #e73939}
 .green{ color: #23a220}
 
-
-
-
+/*计算器*/
+#calcuator{ width:268px; height:300px; padding:10px; border:1px solid #e5e5e5; background:#f8f8f8; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius:3px; box-shadow:0px 0px 10px #f2f2f2; -moz-box-shadow:0px 0px 10px #f2f2f2; -webkit-box-shadow:0px 0px 10px #f2f2f2; margin: 0px auto; }
+#calcuator #input-box{ margin:0; width:245px; padding:9px 5px; height:40px;border:1px solid #e5e5e5; border-radius:3px; -webkit-border-radius:3px; -moz-border-radius:3px; background:#FFF; text-align:right; line-height:40px; font-size:16px; font-family:Verdana, Geneva, sans-serif; color:#666; outline:none;  text-transform:uppercase;}
+#calcuator #btn-list{ width:250px; overflow:hidden;}
+#calcuator #btn-list .btn-radius{ border-radius:2px; -webkit-border-radius:2px; -moz-border-radius:2px; border:1px solid #e5e5e5; background:-webkit-gradient(linear, 0 0, 0 100%, from(#f7f7f7), to(#ebebeb)); background:-moz-linear-gradient(top, #f7f7f7,#ebebeb);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#f7f7f7,endColorstr=#ebebeb,grandientType=1); line-height:29px; text-align:center; text-shadow:0px 1px 1px #FFF; font-weight:bold; font-family:Verdana, Geneva, sans-serif; color:#666; float:left; margin-left:11px; margin-top:11px; font-size:16px; cursor:pointer;}
+#calcuator #btn-list .btn-radius:active{ background:#ffffff;}
+#calcuator #btn-list .clear-marginleft{ margin-left:0;}
+#calcuator #btn-list .font-14{ font-size:20px;}
+#calcuator #btn-list .color-red{ color:#ff5050}
+#calcuator #btn-list .color-blue{ color:#00b4ff}
+#calcuator #btn-list .btn-30{ width:40px; height:35px;}
+#calcuator #btn-list .btn-70{ width:91px; height:35px;}
 
 
 

@@ -23,7 +23,7 @@ document.writeln("</div>");
 document.writeln(" </div>");
 document.writeln(" <div class=\"navbar_block\">");
 document.writeln("  <div class=\"container row p0 m \">");
-document.writeln(" <div class=\"col-lg-2 \"><a href=\"/index\"><img class=\"logo\" src=\"/images/logo.jpg\" alt=\"\" ></a></div>");
+document.writeln(" <div class=\"col-lg-2 \"><a href=\"/index\"><img class=\"logo\" src=\"/images/logo.png\" alt=\"\" ></a></div>");
 document.writeln(" <div class=\"col-lg-10 mt20\">\n ");
 document.writeln(" <!--nav--><div class=\"row\">");
 document.writeln(" <div class=\"col-lg-12 nav \" >\n ");
