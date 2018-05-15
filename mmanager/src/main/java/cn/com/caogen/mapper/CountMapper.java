@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * author:huyanqing
@@ -18,5 +19,5 @@ public interface CountMapper {
     List<Count> queryAll();
     List<Count> queryByUserId(int userid);
     Count queryById(int id);
-    Double queryblancebyType(String type);
+    List<Map<String,Object>> queryblancebyType();
 }

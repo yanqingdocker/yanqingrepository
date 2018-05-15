@@ -2,6 +2,9 @@ package cn.com.caogen.service;
 
 import cn.com.caogen.entity.Count;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * author:huyanqing
  * Date:2018/4/20
@@ -19,7 +22,7 @@ public interface ICountService {
 
     public Count queryById(String id);
 
-    Double queryblancebyType(String type);
+    List<Map<String,Object>> queryblancebyType();
 
 
 }

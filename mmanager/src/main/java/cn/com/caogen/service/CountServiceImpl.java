@@ -20,6 +20,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * author:huyanqing
@@ -179,9 +180,9 @@ public class CountServiceImpl implements ICountService {
     }
 
     @Override
-    public Double queryblancebyType(String type) {
+    public  List<Map<String,Object>> queryblancebyType() {
 
-        return countMapper.queryblancebyType(type);
+        return countMapper.queryblancebyType();
     }
 
     /**

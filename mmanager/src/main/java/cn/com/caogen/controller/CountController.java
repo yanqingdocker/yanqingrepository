@@ -326,21 +326,9 @@ public class CountController {
 
     @RequestMapping(path = "/queryblancebyType", method = RequestMethod.GET)
     public String queryblancebyType() {
-        logger.info("queryAllCount start ");
-        String cny=String.valueOf(countServiceImpl.queryblancebyType(ConstantUtil.MONEY_CNY));
-        String usd=String.valueOf(countServiceImpl.queryblancebyType(ConstantUtil.MONEY_USD));
-        StringBuffer rs=new StringBuffer();
-        rs.append("[{'type':'")
-                .append(ConstantUtil.MONEY_CNY).
-                append("',").
-                append("'blance':'")
-                .append(cny).append("'},{'type':'")
-                .append(ConstantUtil.MONEY_USD)
-                .append("',")
-                .append("'blance':'")
-                .append(usd)
-                .append("'}]");
-        return JSONArray.fromObject(rs.toString()).toString();
+        logger.info("queryblancebyType start ");
+        List<Map<String,Object>> list=countServiceImpl.queryblancebyType();
+        return JSONArray.fromObject(list).toString();
     }
 
     /**

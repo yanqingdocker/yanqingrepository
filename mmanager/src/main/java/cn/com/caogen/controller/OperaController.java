@@ -2,6 +2,7 @@ package cn.com.caogen.controller;
 
 import cn.com.caogen.entity.Operation;
 import cn.com.caogen.entity.User;
+import cn.com.caogen.mapper.OperaMapper;
 import cn.com.caogen.service.IOperaService;
 import cn.com.caogen.service.UserServiceImpl;
 import cn.com.caogen.util.*;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,6 +32,8 @@ public class OperaController {
     private static Logger logger = LoggerFactory.getLogger(OperaController.class);
     @Autowired
     private IOperaService operaServiceimpl;
+    @Autowired
+    private OperaMapper operaMapper;
     @Autowired
     private UserServiceImpl userServiceimpl;
     @RequestMapping(path = "/queryContition",method = RequestMethod.GET)
@@ -157,6 +161,15 @@ public class OperaController {
         parmMap.put(ConstantUtil.MONEY_OI,Integer.parseInt(oi));
         return JSONArray.fromObject(operaServiceimpl.queryByDate(parmMap)).toString();
     }
+
+
+    @RequestMapping(path="queryoperatype",method = RequestMethod.GET)
+    public String queryoperatype(){
+        List<Map<String,Object>> list=operaServiceimpl .queryoperatype();
+
+        return JSONArray.fromObject(list).toString();
+    }
+
 
 
 }

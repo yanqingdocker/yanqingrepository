@@ -14,4 +14,5 @@ public interface IOperaService {
     public List<Operation> queryAll();
     public List<Operation> queryAll(Map<String, Object> parmMap);
     List<Operation> queryByDate(Map<String, Object> parmMap);
+    List<Map<String,Object>> queryoperatype();
 }

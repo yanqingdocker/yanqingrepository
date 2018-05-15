@@ -36,4 +36,9 @@ public class OperaServiceImpl implements IOperaService {
     public List<Operation> queryByDate(Map<String, Object> parmMap) {
         return operaMapper.queryByDate(parmMap);
     }
+
+    @Override
+    public List<Map<String, Object>> queryoperatype() {
+        return operaMapper.queryoperatype();
+    }
 }

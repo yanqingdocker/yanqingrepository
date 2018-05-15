@@ -14,6 +14,12 @@
         <result column="checkcode" property="checkCode" jdbcType="VARCHAR" />
     </resultMap>
 
+    <resultMap id="allInfo" type="java.util.Map">
+        <result column="sum" property="sum" jdbcType="DOUBLE"/>
+        <result column="counttype" property="counttype" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
     <sql id="Base_Column_List" >
      id, cardid, counttype, state,userid,blance,paypwd,createtime,checkcode
      </sql>
@@ -54,8 +60,8 @@
         select <include refid="Base_Column_List"/> from count where id=#{id}
     </select>
 
-    <select id="queryblancebyType" parameterType="String" resultType="double">
-        select sum(blance) from count where counttype=#{type}
+    <select id="queryblancebyType" resultMap="allInfo">
+        select sum(blance) as sum,counttype from count  group by counttype
     </select>
 
 

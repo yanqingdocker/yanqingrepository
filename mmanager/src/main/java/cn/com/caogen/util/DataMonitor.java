@@ -2,6 +2,8 @@ package cn.com.caogen.util;
 
 import cn.com.caogen.entity.User;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
@@ -9,6 +11,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 
 /**
  * author:huyanqing
@@ -68,5 +71,23 @@ public class DataMonitor {
 
         }
         return code;
+    }
+
+    public static String reSet(String str){
+        JSONObject jsonObject=JSONArray.fromObject(str).getJSONObject(0).getJSONObject("USDCNY");
+        Set<String> keys=jsonObject.keySet();
+        for(String key:keys){
+            if(key.equals("date")){
+                jsonObject.element(key,DateUtil.getDate());
+            }
+        }
+        JSONObject jsonObject1=JSONArray.fromObject(str).getJSONObject(0);
+        keys=jsonObject1.keySet();
+        for(String key:keys){
+            if(key.equals("USDCNY")){
+                jsonObject1.element(key,jsonObject);
+            }
+        }
+        return jsonObject1.toString();
     }
 }
