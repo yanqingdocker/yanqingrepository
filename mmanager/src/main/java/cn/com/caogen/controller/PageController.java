@@ -239,7 +239,7 @@ public class PageController {
      */
     @RequestMapping("/incomeAnalysis/quarter")
     public String quarter() {
-        return "spentAnalysis/quarter";
+        return "incomeAnalysis/quarter";
     }
 
     /**

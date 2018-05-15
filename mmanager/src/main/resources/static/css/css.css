@@ -85,6 +85,7 @@
     background-color: #1ABC9C;
     color: #FFF;
 }
+.col-lg-6{ width: 50%;float: left;}
 .checkbox3.checkbox-inline{  margin-right: 0}
 .checkbox3 label::before{ width: 15px; height: 15px;}
 .checkbox3 label::after, .radio3 label::after{top: 2px}

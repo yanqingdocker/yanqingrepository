@@ -54,6 +54,7 @@ function currency_type(types) {
             return "美元"
             break;
         default:
+            break;
     }
 }
 
