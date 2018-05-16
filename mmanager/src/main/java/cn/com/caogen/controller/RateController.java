@@ -3,12 +3,14 @@ package cn.com.caogen.controller;
 import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.IpUtil;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,5 +59,11 @@ public class RateController {
         return IpUtil.getIpAddr(request);
     }
 
-
+    @RequestMapping(path = "/getSingleRate", method = RequestMethod.GET)
+    public String getSingleRate(@RequestParam("type") String type){
+        String rs=stringRedisTemplate.opsForValue().get(ConstantUtil.SENVEN);
+        JSONObject jsonObject=JSONObject.fromObject(rs);
+        String rate=jsonObject.getJSONObject(type).getString("openPri");
+        return rate;
+    }
 }
