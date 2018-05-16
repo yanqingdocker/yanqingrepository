@@ -635,3 +635,20 @@ table.table thead .sorting:after,table.table thead .sorting_asc:after{ backgroun
     .loginwidth{ width: 455px;}
     .navbar-collapse.collapse{ overflow: auto}
 }
+
+/*汇率弹出框*/
+.modal-dialog .ratebtn{ background: #007aff;color: #fff;padding: 4px 12px; font-size: 14px; border-radius: 4px; margin-right: 8px;}{}
+.modal-dialog .tips{  margin-left: 15px;margin-bottom: 5px;color: red;}
+
+
+
+
+
+
+
+
+
+
+
+
+
