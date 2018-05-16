@@ -63,7 +63,9 @@ public class RateController {
     public String getSingleRate(@RequestParam("type") String type){
         String rs=stringRedisTemplate.opsForValue().get(ConstantUtil.SENVEN);
         JSONObject jsonObject=JSONObject.fromObject(rs);
-        String rate=jsonObject.getJSONObject(type).getString("openPri");
-        return rate;
+        String buyPid=jsonObject.getJSONObject(type).getString("buyPid");
+        String sellPic=jsonObject.getJSONObject(type).getString("sellPic");
+
+        return buyPid+","+sellPic;
     }
 }
