@@ -75,17 +75,17 @@
 
             <div class="bs-component title_tab inblock w100 mt50">
                 <ul class=" nav-tabs inblock w100">
+                    <!--<li class="nav-item cur">-->
+                    <!--<a class="nav-link  " href="exchange_list" target= "iframename "><i class="icon_jy"></i>交易明细列表</a>-->
+                    <!--</li>-->
                     <li class="nav-item cur">
-                        <a class="nav-link  " href="exchange_list" target= "iframename "><i class="icon_jy"></i>交易明细列表</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="exchange_rate_list" target= "iframename "><i class="icon_hl"></i>汇率列表</a>
+                        <a class="nav-link" href="exchange_rate_list" target= "iframename "><i class="icon_hl"></i>最新汇率列表</a>
                     </li>
 
                 </ul>
             </div>
             <div class="row mt20">
-                <iframe name= "iframename " src="exchange_list" style="padding: 0 20px; width: 100%; border:none;min-height: 300px" scrolling="no" ></iframe>
+                <iframe name= "iframename " src="exchange_rate_list" style="padding: 0 20px; width: 100%; border:none;min-height: 300px" scrolling="no" ></iframe>
 
             </div>
         </div>
@@ -257,7 +257,7 @@
                     <input class="form-control" placeholder="0.00"  disabled="" type="text">
                 </div>
                 <div class="form-group">
-                    <label class="col-form-label" for="inputpws">资金密码<span class="warning">*</span></label>
+                    <label class="col-form-label" >资金密码<span class="warning">*</span></label>
                     <input class="form-control" placeholder=""  type="text">
                 </div>
 
@@ -312,12 +312,12 @@
                 var obj = new Array();//美元人民币
                 var rmb = new Array();//人民币美元
                 var datetime = new Array();
-                for (var i=1;i<7;i++)
+                for (var i=0;i<data.length;i++)
                 {
                     arr.push(data[i]);
                     // console.log(arr);
                 }
-                for (var j=0;j<6;j++)
+                for (var j=0;j<data.length;j++)
                 {
                     var jsondata =arr[j];
                     // console.log(jsondata);
@@ -348,29 +348,32 @@
                         data:['美元人民币','人民币美元']
                     },
                     toolbox: {
-                        show : true,
-                        feature : {
-                            mark : {show: true},
-                            dataView : {show: true, readOnly: false},
-                            magicType : {show: true, type: ['line', 'bar']},
-                            restore : {show: true},
-                            saveAsImage : {show: true}
+                        show: true,
+                        orient: 'vertical',
+                        left: 'right',
+                        top: 'center',
+                        feature: {
+                            // mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            magicType: {show: true, type: ['line', 'bar']},
+                            restore: {show: true},
+                            saveAsImage: {show: true}
                         }
                     },
                     calculable : true,
                     xAxis : [
                         {
                             type : 'category',
-                            boundaryGap : false,
+                            boundaryGap : true,//不从零刻度开始
                             data : datetime,
                         }
                     ],
                     yAxis : [
                         {
                             type: 'value',
-                            min: 6.3,
-                            max: 6.4,
-                            interval:0.01,
+                            min: 6.4,
+                            max: 0,
+                            interval:0.5,
                             splitArea: {
                                 show: true
                             }
@@ -386,6 +389,12 @@
                                     {type : 'max', name: '最大值'},
                                     {type : 'min', name: '最小值'}
                                 ]
+                            },
+                            label:{
+                                normal:{
+                                    show:true,            //显示数字
+                                    position: 'top'        //这里可以自己选择位置
+                                }
                             },
                             markLine : {
                                 data : [
@@ -414,6 +423,12 @@
                                     {type : 'max', name: '最大值'},
                                     {type : 'min', name: '最小值'}
                                 ]
+                            },
+                            label:{
+                                normal:{
+                                    show:true,            //显示数字
+                                    position: 'top'        //这里可以自己选择位置
+                                }
                             },
                             markLine : {
                                 data : [

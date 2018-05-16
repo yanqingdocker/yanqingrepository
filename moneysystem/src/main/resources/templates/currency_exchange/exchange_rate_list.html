@@ -67,11 +67,13 @@
             },
             success: function (data) {
                 var arr = new Array();
-                for (var i = 0; i < 7; i++) {
+                for (var i = 0; i < data.length; i++) {
                     arr.push(data[i]);
                     // console.log(arr);
                 }
-                var jsondata = arr[6];
+                var datalen=arr.length;
+                console.log(arr.length);
+                var jsondata = arr[datalen];
                 // console.log(jsondata);
                 var rmb_sellprice=1/jsondata.USDCNY.sellPic;
                 var rmb_buyprice=1/jsondata.USDCNY.buyPic;
