@@ -81,19 +81,18 @@
             success: function (data) {
                 var  arr=new Array();
                 var  dollar=new Array();
-                for(var i=0;i<strToJson(data).length;i++){
-                    if(strToJson(data)[i].type=="CNY"){
-                        var rmbfix=strToJson(data)[i].blance;
+                var obj=strToJson(data);
+                for(var i=0;i<obj.length;i++){
+                    if(obj[i].counttype=="CNY"){
+                        var rmbfix=obj[i].sum;
                         $("#rmb_bank").html((rmbfix*10000/10000).toFixed(4));
-
+                        arr.push(obj[i].sum);
                     }
-                    if(strToJson(data)[i].type=="USD"){
-                        var dollarfix=strToJson(data)[i].blance;
+                    if(obj[i].counttype=="USD"){
+                        var dollarfix=obj[i].sum;
                         $("#dollar_bank").html((dollarfix*10000/10000).toFixed(4));
-
+                        dollar.push(obj[i].sum);
                     }
-                    arr.push(strToJson(data)[0].blance);
-                    dollar.push(strToJson(data)[1].blance);
                 }
                 var  option = {
                     title : {
