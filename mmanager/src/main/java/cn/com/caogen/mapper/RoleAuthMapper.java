@@ -14,4 +14,6 @@ import java.util.List;
 public interface RoleAuthMapper {
     void add(RoleAuth roleAuth);
     List<RoleAuth> queryByRoleId(int roleid);
+
+    void batchAdd(List<RoleAuth> roleAuths);
 }

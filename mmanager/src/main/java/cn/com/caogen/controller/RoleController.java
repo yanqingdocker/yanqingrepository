@@ -1,7 +1,9 @@
 package cn.com.caogen.controller;
 
 import cn.com.caogen.entity.Role;
+import cn.com.caogen.entity.RoleAuth;
 import cn.com.caogen.service.IRoleService;
+import cn.com.caogen.service.RoleAuthServiceImpl;
 import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.ResponseMessage;
 import cn.com.caogen.util.StringUtil;
@@ -29,6 +31,8 @@ public class RoleController {
     private static Logger logger = LoggerFactory.getLogger(RoleController.class);
     @Autowired
     private IRoleService roleServiceimpl;
+    @Autowired
+    private RoleAuthServiceImpl roleAuthService;
 
     /**
      * 增加角色
@@ -36,11 +40,19 @@ public class RoleController {
      * @return
      */
     @RequestMapping(path = "addRole",method = RequestMethod.POST)
-    public String addRole(@RequestParam("rolename") String rolename){
+    public String addRole(@RequestParam("rolename") String rolename,@RequestParam("authdis") String authdis){
         if(!StringUtil.checkStrs(rolename)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
         roleServiceimpl.add(rolename);
+        List<Role> roles=roleServiceimpl.queryAll();
+        int roleid=0;
+        for (Role temp:roles){
+            if(temp.getRolename().equals(rolename)){
+                roleid=temp.getId();
+            }
+        }
+        roleAuthService.batchAdd(roleid,authdis);
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 

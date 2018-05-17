@@ -2,6 +2,7 @@ package cn.com.caogen.controller;
 
 import cn.com.caogen.entity.Muser;
 import cn.com.caogen.service.IUserService;
+import cn.com.caogen.service.UserRoleServiceImpl;
 import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.ResponseMessage;
 import cn.com.caogen.util.StringUtil;
@@ -33,6 +34,8 @@ public class MuserController {
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private IUserService userServiceImpl;
+    @Autowired
+    private UserRoleServiceImpl userRoleService;
     private static Map<String,HttpSession> sessionMap =new HashMap<String,HttpSession>();
 
     private static Map<String,HttpServletResponse> respMap =new HashMap<String,HttpServletResponse>();
@@ -90,7 +93,7 @@ public class MuserController {
      * @return
      */
     @RequestMapping(path ="/add", method = RequestMethod.POST)
-    public String add(@RequestParam("username") String username,@RequestParam("password") String password) {
+    public String add(@RequestParam("username") String username,@RequestParam("password") String password,@RequestParam("roleids") String roleids) {
         logger.info("add start: ");
         if(!StringUtil.checkStrs(username,password)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
@@ -99,6 +102,15 @@ public class MuserController {
         muser.setUsername(username);
         muser.setPassword(password);
         userServiceImpl.addMuser(muser);
+        List<Muser> musers=userServiceImpl.queryMusers();
+        int userid=0;
+        for (Muser temp:musers){
+            if(temp.getUsername().equals(muser.getUsername())&&temp.getPassword().equals(muser.getPassword())){
+                userid=temp.getId();
+                break;
+            }
+        }
+        userRoleService.batchAdd(userid,roleids);
         return net.sf.json.JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 

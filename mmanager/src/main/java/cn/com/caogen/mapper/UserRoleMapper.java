@@ -14,4 +14,5 @@ import java.util.List;
 public interface UserRoleMapper {
     void add(UserRole userRole);
     List<UserRole> queryByUserId(int userid);
+    void batchAdd(List<UserRole> roles);
 }
