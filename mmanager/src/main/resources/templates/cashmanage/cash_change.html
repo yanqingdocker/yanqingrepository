@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv=Content-Type content="text/html; charset=utf-8">
+    <title>现金兑换</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS Libs -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap-switch.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/checkbox3.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/dataTables.bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/css/select2.min.css">
+    <!-- CSS App -->
+    <link  rel="stylesheet" type="text/css"  href="/css/sweet-alert.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/themes/flat-blue.css">
+    <link rel="stylesheet" type="text/css" href="/css/css.css">
+    <script  type="text/javascript" src="/js/jquery1.12.4.js"></script>
+    <script  type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script  type="text/javascript" src="/js/bootstrapValidator.min.js"></script>
+    <script  type="text/javascript" src="/js/jquery.dataTables.min.js"></script>
+    <script  type="text/javascript" src="/js/dataTables.bootstrap.min.js"></script>
+    <script  type="text/javascript" src="/js/sweet-alert.min.js"></script>
+    <script  type="text/javascript" src="/js/common.js"></script>
+    <script  type="text/javascript" src="/js/caculator.js"></script>
+</head>
+
+<body class="flat-blue common_body">
+<div class="bs-component">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/mainframe">系统首页</a></li>
+        <li class="breadcrumb-item">现金管理</li>
+        <li class="breadcrumb-item active">现金兑换</li>
+    </ol>
+</div>
+<div class="page-title">
+    <span class="title">现金兑换</span>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <div class="card-body inblock w100 pb30">
+                <form id="myform" class="form-horizontal w100" >
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >手持货币类型<span class="warning">*</span></label>
+                        <select class="select_input col-sm-3 ml15 account acountbefore"  field="monneytype" id="scmoney">
+                        </select>
+                        <input type="hidden" id="destcounttype" name="destcounttype">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >兑换货币类型<span class="warning">*</span></label>
+                        <select class="select_input col-sm-3 ml15 account acountbehind" field="monneytype" id="dhmoney" >
+
+                        </select>
+                        <input type="hidden" id="srccounttype" name="srccounttype">
+                    </div>
+                    <div class="w100 inblock" style="margin-left: 17%">
+                        <div class="tips red"></div>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">今日汇率</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="num"  class="form-control thisrate" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">兑换金额<span class="warning">*</span></label>
+                        <div class="col-sm-10">
+                            <input type="text" name="destnum" id="beforemoney" class="form-control" placeholder="请输入存入金额" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">兑换后金额</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="srcnum" class="form-control" id="aftermoney" placeholder="0.00" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="button" class="btn btn-default" onclick="submitform()">提 交兑换</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        loadaccount();//加载账户类型
+        $(".tips").html("请选择不同的货币类型");
+        $('#myform').bootstrapValidator({
+            feedbackIcons: {
+                //valid: 'glyphicon glyphicon-ok',
+                //invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                'destnum': {
+                    validators: {
+                        notEmpty: {
+                            message: '兑换金额不能为空'
+                        },
+                        regexp: {
+                            regexp: /^[0-9_\.]+$/,
+                            message: '金额只能由数字组成。'
+                        }
+                    }
+                }
+
+            }
+        });
+    })
+    // 加载平台货币类型
+    function loadaccount() {
+        var before = $(".acountbefore option:selected").attr("data-id");
+        var behind = $(".acountbehind option:selected").attr("data-id");
+        if (before == behind) {
+            $(".thisrate").val("1");
+        }
+        $.ajax({
+            url: '/count/queryMoneyType',
+            data: null,
+            type: 'get',
+            success: function (data) {
+                var jsonObj = $.parseJSON(data);//json字符串转数组
+                console.log(jsonObj.length);
+                for (var i=0;i<jsonObj.length;i++)
+                {
+                    var html ='<option data-id="'+jsonObj[i]+'" value="'+jsonObj[i]+'">'+jsonObj[i]+'('+currency_type(jsonObj[i])+')'+'</option>';
+                    $(".account").append(html);
+
+                }
+
+
+            }
+        });
+    }
+    // 自选兑换账户改变，汇率同时改变
+    $(".account").change(function () {
+        $("#beforemoney").val("");
+        $("#aftermoney").val("");
+        var before = $(".acountbefore option:selected").attr("data-id");
+        var behind = $(".acountbehind option:selected").attr("data-id");
+        var types = before + behind;
+        var turntype = behind + before;
+        if (before == behind) {
+            $(".thisrate").val("1");
+            $(".tips").html("请选择不同的货币类型");
+        }
+
+        else if (allrate(types)=="1") {
+            $(".tips").html("");
+            $.ajax({
+                url: "/rate/getSingleRate",
+                type: "get",
+                data: {type: types},
+                dataType: "JSON",
+                success: function (data) {
+                    $(".thisrate").val(data.buyPic);
+                },
+                error: function (data) {
+                    //终止请求动作.
+                    data.abort();
+
+                }
+            });
+        }
+        else if(allrate(turntype)=="1") {
+            $(".tips").html("");
+            $.ajax({
+                url: "/rate/getSingleRate",
+                type: "get",
+                data: {type: turntype},
+                dataType: "JSON",
+                success: function (data) {
+                    var realrate=1/data.sellPic;
+                    $(".thisrate").val(realrate.toFixed(4));
+                },
+                error: function (data) {
+                    //终止请求动作.
+                    data.abort();
+
+                }
+            });
+        }
+    }) ;
+    // 自选兑换，兑换后金额
+    $("#beforemoney").change(function () {
+        var before= $("#beforemoney").val();
+        var rate= $(".thisrate").val();
+        var changeafter=before*rate;
+        $("#aftermoney").val( Math.round(changeafter*10000)/10000);
+    });
+    // 自选兑换查询是否在汇率表中
+    function allrate(type){
+        var value="";
+        $.ajax({
+            url: "/rate/queryAll",
+            type: "get",
+            data: null,
+            dataType: "JSON",
+            async: false,
+            error: function (data) {
+                $.Popup.error("表单数据不合法!");
+            },
+            success: function (data) {
+                var arr = new Array();
+                //取最新的一条记录
+                for (var i = data.length-1; i < data.length; i++) {
+                    arr.push(data[i]);
+                }
+                var obj=arr[0];
+                for( key in obj){
+                    // 注意在json中获取，要用 data[key]   不要用data.key
+                    var code=obj[key].code;
+                    if(type==code){
+                        value=1;
+                    }
+
+                }
+            }
+
+        });
+        return value;
+    }
+
+    // 提交表单
+    function submitform() {
+        $('#myform').data('bootstrapValidator').enableFieldValidators('destnum', true);
+        $('#myform').data('bootstrapValidator').validate();//手动对表单进行校检
+        if (!$('#myform').data('bootstrapValidator').isValid()) {//判断校检是否通过
+            return;
+        } else {
+            var valuea = $('#scmoney').val();
+            $('#destcounttype').val(valuea);
+            var valueb = $('#dhmoney').val();
+            $('#srccounttype').val(valueb);
+            $.ajax({
+                url: '/cashpool/exchange',
+                data: $('#myform').serialize(),
+                type: 'post',
+                success: function (data) {
+                    if (strToJson(data).code == "success") {
+                        sweetAlert("", "恭喜您！现金兑换成功！", "success");
+                        setTimeout(function () {
+                            window.location.href = "/member/opera_log";
+                        }, 1500);
+                    }
+                    else {
+                        sweetAlert("", strToJson(data).message, "error");
+                    }
+
+                },
+                error: function () {
+                    sweetAlert("", "请求失败！", "error");
+                }
+            });
+        }
+    }
+</script>
+</body>
+
+</html>
