@@ -108,13 +108,13 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-lg-6 tc">
-                                <select class="custom-select  w100 recharcount" id="beforecount"></select>
+                                <select class="custom-select  w100 recharcount zxaccount" id="beforecount"></select>
                                 <label class="col-form-label mt10">可兑余额：<b class="red" id="blance"></b></label>
                                 <input type="hidden" name="srcountid" id="srcountid">
                             </div>
                             <div class="col-lg-6 tc">
                                 <button type="button" class="btn btn-primary w100 mb10 fno" onclick="balance()"> 查询余额</button>
-                                <label class="col-form-label" >当日汇率：<b class="red rate" id="dollatrate"></b><b class="red rate" id="rmbtrate" style="display: none"></b>
+                                <label class="col-form-label" >当日汇率：<b class="red rate" id="nowrate" ></b>
                                 </label>
                             </div>
                         </div>
@@ -256,7 +256,6 @@
 <!--通用脚本-->
 <script  type="text/javascript" src="/js/footer.js"></script>
 <input type="hidden" id="modoltype"><!--弹出窗口类型-->
-<input type="hidden" id="moneyrate"><!--实际做乘法的汇率-->
 <script type="text/javascript">
     $("#nav_exchange").addClass("cur");//导航栏添加焦点
     var before = $(".acountbefore option:selected").attr("data-id");
@@ -303,14 +302,7 @@
                     datetime.push(jsondata.USDCNY.date.substring(5,10));
 
                 }
-                var nlentgh=arr.length;
-                var lastsrate=arr[nlentgh-1].USDCNY.buyPic;//today USD 买入价
-                var lastselle=arr[nlentgh-1].USDCNY.sellPic;//today USD 卖出价
-                $("#dollatrate").html(lastsrate);
-                var fixrmb=1/lastselle;//today CNY rate
-                $("#rmbtrate").html(fixrmb.toFixed(4));
 
-                // console.log(datetime);
                 var  option = {
                     title : {
                         text: '最近一周汇率变化',
@@ -601,56 +593,56 @@
         });
         return value;
     }
-    // 账户改变，汇率同时改变
-    $("#beforecount").change(function(){
-        balance();//要触发的事件
-        $.ajax({
-            url: "/rate/queryAll",
-            type: "get",
-            data: null,
-            dataType: "JSON",
-            success: function (data) {
-                var arr = new Array();
-                var obj = new Array();//美元人民币
-                var rmb = new Array();//人民币美元
-                var datetime = new Array();
-                for (var i=0;i<7;i++)
-                {
-                    arr.push(data[i]);
-                    // console.log(arr);
-                }
-                for (var j=0;j<arr.length;j++)
-                {
-                    var jsondata =arr[j];
-                    obj.push(jsondata.USDCNY.openPri);
-                    var rmbfix=1/jsondata.USDCNY.openPri;
-                    rmb.push(rmbfix.toFixed(4));
-                    datetime.push(jsondata.USDCNY.date.substring(5,10));
+    // 单个弹框账户改变，汇率同时改变
+    $("#beforecount ").change(function () {
+        $("#srcmoney").val("");
+        $("#exchangemoney").val("");
+        $(".tips").html("");
+        var before = $("#beforecount option:selected").attr("data-id");
+        var behind =  $("#modoltype").val();
+        var types = before + behind;
+        var turntype = behind + before;
+        if (before == behind) {
+            console.log("11232");
+            $(".tips").html("请选择不同的货币单位");
+            $("#nowrate").html("1");
+        }
+
+        else if (allrate(types)=="1") {
+            $.ajax({
+                url: "/rate/getSingleRate",
+                type: "get",
+                data: {type: types},
+                dataType: "JSON",
+                success: function (data) {
+                    $("#nowrate").html(data.buyPic);
+                },
+                error: function (data) {
+                    //终止请求动作.
+                    data.abort();
 
                 }
-                var nlentgh=arr.length;
-                var usdrate=arr[nlentgh-1].USDCNY.buyPic;//today USD 买入价
-                var lastsell=arr[nlentgh-1].USDCNY.sellPic;//today USD 卖出价
-                var cnyrate=1/lastsell; //人民币汇率
-                var type = $("#modoltype").val(); //弹出框窗口类型
-                var comparetype = $("#beforecount option:selected").attr("data-id");
-                if (comparetype == type) {
-                    $("#moneyrate").val(1);
-                }
-                else if(comparetype=="USD"){
-                    $("#moneyrate").val(usdrate);
-                }
-                else if(comparetype=="CNY"){
-                    $("#moneyrate").val(cnyrate.toFixed(4));
-                }
-                exchange_money();//触发计算兑换金额
+            });
+        }
+        else if(allrate(turntype)=="1") {
 
-            },
-            error: function () {
-                sweetAlert("","请求失败！", "error");
-            }
-        });
-    });
+            $.ajax({
+                url: "/rate/getSingleRate",
+                type: "get",
+                data: {type: turntype},
+                dataType: "JSON",
+                success: function (data) {
+                    var realrate=1/data.sellPic;
+                    $("#nowrate").html(realrate.toFixed(4));
+                },
+                error: function (data) {
+                    //终止请求动作.
+                    data.abort();
+
+                }
+            });
+        }
+    }) ;
 
     // 点击弹出框
     function modal_buy(title){
@@ -713,7 +705,7 @@
     // 兑换金额换算
     function exchange_money() {
         var changebefor=  $("#srcmoney").val();//兑换金额
-        var realrate=$("#moneyrate").val();//汇率
+        var realrate=$("#nowrate").html();//汇率
         var changeafter=realrate*changebefor;//兑换后金额
         $("#exchangemoney").val(Math.round(changeafter*10000)/10000);
 

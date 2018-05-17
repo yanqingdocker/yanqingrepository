@@ -90,10 +90,16 @@
 <div class="inblock w100 mt10 white_bg" id="chartmain" style="width:100%; height: 400px; padding: 20px"></div>
 <div class="inblock w100 mt20 white_bg" id="chartout" style="width:100%; height: 400px; padding: 20px"></div>
 <div class="inblock w100 mt20 white_bg pt30" >
+    <div class="tabbutton w100 inblock pl20 pr20">
+        <a href="javascript:;" data-id="1" class="cur">今日</a>
+        <a href="javascript:;" data-id="7">本周</a>
+        <a href="javascript:;" data-id="30">本月</a>
+        <a href="javascript:;" data-id="90">季度</a>
+    </div>
     <div class="  mt10 white_bg" id="chartpie" style="width:80%; height: 500px; padding: 20px; margin: 0 auto;"></div>
 </div>
 </div>
-
+<input type="hidden" id="dateinput" value="1">
 <script type="text/javascript">
     $(function(){
         tradenum();//统计各类型数量
@@ -104,6 +110,12 @@
         trademoney(myChart);//收入折线图
         tradeout(outChart);//支出折线图
         tradepie(mypie);//收支饼状图
+        $(".tabbutton a").click(function(){
+            var value=$(this).attr("data-id");
+            $("#dateinput").val(value);
+            $(this).addClass("cur").siblings().removeClass("cur");
+            tradepie(mypie);//收支饼状图
+        });
     })
 
     //统计各类型收入折线图
@@ -463,9 +475,10 @@
     }
     //统计各类型金额总和饼状图
     function tradepie(mypie) {
+        var date=$("#dateinput").val();
         $.ajax({
             url: '/opera/queryoperatype',
-            data: {date:"1"},
+            data: {date:date},
             type: 'get',
             success: function (data) {
                 var cnypie=[{value:0,name:'充值'},{value:0,name:'兑换'},{value:0,name:'现金存入'},{value:0,name:'现金转出'},{value:0,name:'现金兑换'},{value:0,name:'转账'}];
