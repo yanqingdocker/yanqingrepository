@@ -80,10 +80,9 @@
             </div>
             <div class="modal-body">
                 <form id="myform" >
-                    <!--<div class="form-group">-->
-                    <!--<label class="col-form-label" >用户名：</label> <span id="username"></span>-->
-                    <!---->
-                    <!--</div>-->
+                    <div class="form-group">
+                    <label class="col-form-label" >用户名：</label> <span id="username"></span>
+                    </div>
                     <input type="hidden" id="userid" name="id">
                     <div class="form-group">
                         <label class="col-form-label" >密码：</label>
@@ -167,7 +166,7 @@
                 {"data": "password" },
                 {"data": "id",
                     render:function(e,type,full,row){
-                        return "<a href='javascript:;'  onclick='deletbatch("+full.id+")'  class=\"icon_delete\" title=\"删除\">删除</a> | <a href='javascript:;'  data-toggle=\"modal\" data-target=\"#myModal_dollar\" onclick='changepsw("+full.id+")' class='blue' >修改</a>";
+                        return "<a href='javascript:;'  onclick='deletbatch("+full.id+")'  class=\"icon_delete\" title=\"删除\">删除</a> | <a href='javascript:;'  data-toggle=\"modal\" data-target=\"#myModal_dollar\" onclick='changepsw("+full.id+")' data-id="+full.username+" class='blue' >修改</a>";
                     }
                 }
             ]
@@ -242,7 +241,7 @@
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 closeOnConfirm: false,
-                closeOnCancel: false
+                closeOnCancel: true
             },
             function(isConfirm){
                 if (isConfirm) {
@@ -306,7 +305,8 @@
     }
     function changepsw(id) {
         $("#userid").val(id);
-
+       var name= $(this).attr("data-id");
+        $("#username").val(name);
     }
 </script>
 

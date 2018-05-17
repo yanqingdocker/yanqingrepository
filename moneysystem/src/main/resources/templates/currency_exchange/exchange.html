@@ -106,6 +106,7 @@
             <div class="modal-body">
                 <form id="buyform">
                     <div class="form-group">
+                        <p class="tips"></p>
                         <div class="row">
                             <div class="col-lg-6 tc">
                                 <select class="custom-select  w100 recharcount zxaccount" id="beforecount"></select>
@@ -261,7 +262,7 @@
     var before = $(".acountbefore option:selected").attr("data-id");
     var behind = $(".acountbehind option:selected").attr("data-id");
     if (before == behind) {
-        $(".tips").html("请选择不同的货币单位");
+        $(".tips").html("请选择不同的货币类型进行兑换");
         $(".thisrate").html("1");
     }
     loadcount();
@@ -486,7 +487,7 @@
         var types = before + behind;
         var turntype = behind + before;
         if (before == behind) {
-            $(".tips").html("请选择不同的货币单位");
+            $(".tips").html("请选择不同的货币类型进行兑换");
             $(".thisrate").html("1");
         }
 
