@@ -160,7 +160,7 @@
                         <div class="row">
                             <p class="tips"></p>
                             <div class="col-lg-5 tc pr0">
-                                <select class="custom-select w100 recharcount  acountbefore" >
+                                <select class="custom-select w100 recharcount zxaccount  acountbefore" >
 
                                 </select>
                                 <input type="hidden" name="srcountid" id="beforeid">
@@ -171,25 +171,21 @@
                                 <img src="/images/exchange.png" style="width: 35px">
                             </div>
                             <div class="col-lg-5 tc pl0">
-                                <select class="custom-select recharcount  acountbehind w100">
+                                <select class="custom-select recharcount zxaccount acountbehind w100">
 
                                 </select>
-                                <label class="col-form-label mt10" ><a href="javascript:;" class="ratebtn" onclick="searchrate()">查询</a>当日汇率：<b class="thisrate red"></b></label>
+                                <input type="hidden"  id="behindid"  name="destcountid" >
+                                <label class="col-form-label mt10" >当日汇率：<b class="thisrate red"></b></label>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-form-label">兑换金额<span class="warning">*</span></label>
-                        <input class="form-control" placeholder="请输入兑换金额" name="srcmoney"  type="text">
+                        <input class="form-control" placeholder="请输入兑换金额" name="srcmoney"  type="text"  id="beforemoney">
                     </div>
                     <div class="form-group">
                         <label class="col-form-label">兑换后金额<span class="warning">*</span></label>
-                        <input class="form-control" placeholder="0.00" name="srcmoney" readonly type="text">
-                    </div>
-                    <div class="form-group">
-                        <label class="col-form-label" >兑换到目标账户<span class="warning">*</span></label>
-                        <input type="text" class="form-control" disabled >
-                        <input type="hidden"  id="behindid"  name="destcountid" >
+                        <input class="form-control" placeholder="0.00" name="destmoney" readonly type="text" id="aftermoney">
                     </div>
                     <div class="form-group">
                         <label class="col-form-label">资金密码<span class="warning">*</span></label>
@@ -263,6 +259,12 @@
 <input type="hidden" id="moneyrate"><!--实际做乘法的汇率-->
 <script type="text/javascript">
     $("#nav_exchange").addClass("cur");//导航栏添加焦点
+    var before = $(".acountbefore option:selected").attr("data-id");
+    var behind = $(".acountbehind option:selected").attr("data-id");
+    if (before == behind) {
+        $(".tips").html("请选择不同的货币单位");
+        $(".thisrate").html("1");
+    }
     loadcount();
     //初始化echarts实例
     var myChart = echarts.init(document.getElementById('chartmain'));
@@ -458,7 +460,19 @@
         })
     }
 
-    //自选兑换账户余额
+    //自选兑换自动获取账户余额
+    $(".acountbefore").change(function () {
+        var countid= $(".acountbefore").val();
+        $.ajax({
+            url: '/count/queryCount',
+            data: {id:countid},
+            type: 'get',
+            success: function (data) {
+                $(".thisbalance").html(strToJson(data).blance);
+            }
+        })
+    });
+    //自选兑换查询账户余额
     function searchbalance() {
         var countid= $(".acountbefore").val();
         $.ajax({
@@ -469,9 +483,11 @@
                 $(".thisbalance").html(strToJson(data).blance);
             }
         })
-    }
+    };
     // 自选兑换账户改变，汇率同时改变
-    function searchrate() {
+    $(".zxaccount").change(function () {
+        $("#beforemoney").val("");
+        $("#aftermoney").val("");
         $(".tips").html("");
         var before = $(".acountbefore option:selected").attr("data-id");
         var behind = $(".acountbehind option:selected").attr("data-id");
@@ -479,6 +495,7 @@
         var turntype = behind + before;
         if (before == behind) {
             $(".tips").html("请选择不同的货币单位");
+            $(".thisrate").html("1");
         }
 
         else if (allrate(types)=="1") {
@@ -515,15 +532,23 @@
                 }
             });
         }
-    }
+    }) ;
+    // 自选兑换，兑换后金额
+    $("#beforemoney").change(function () {
+        var before= $("#beforemoney").val();
+        var rate= $(".thisrate").html();
+        var changeafter=before*rate
+        console.log(rate);
+        $("#aftermoney").val( Math.round(changeafter*10000)/10000);
+    });
     // 自选兑换表单提交
     function onuform() {
         var beforereal=$(".acountbefore").val();
         $("#beforeid").val(beforereal);
         var beforereal=$(".acountbehind").val();
-        $("#beforeid").val(beforereal);
+        $("#behindid").val(beforereal);
         //ajax的形式提交表单
-        var str=$("#buyform").serializeObject(); //此处调用的就是我们写好的引入的方法，会将带有name的input，全部转为JSON。
+        var str=$("#onuform").serializeObject(); //此处调用的就是我们写好的引入的方法，会将带有name的input，全部转为JSON。
         var datas=JSON.stringify(str) ;//返回一个新字符串
         $.ajax({
             url:'/count/exchange',
@@ -535,7 +560,7 @@
                     setTimeout(function(){ window.location.href = "/more/trade_history";},1500);
                 }
                 else{
-                    sweetAlert("","兑换失败", "error");
+                    sweetAlert("",strToJson(data).message, "error");
                 }
             },
             error: function () {
@@ -544,7 +569,7 @@
         });
     }
 
-    // 查询是否在汇率表中
+    // 自选兑换查询是否在汇率表中
     function allrate(type){
         var value="";
         $.ajax({
@@ -676,7 +701,7 @@
                     setTimeout(function(){ window.location.href = "/more/trade_history";},1500);
                 }
                 else{
-                    sweetAlert("","兑换失败", "error");
+                    sweetAlert("",strToJson(data).message, "error");
                 }
             },
             error: function () {

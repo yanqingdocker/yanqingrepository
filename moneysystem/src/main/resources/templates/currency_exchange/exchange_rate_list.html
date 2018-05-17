@@ -30,28 +30,15 @@
     <table width="100%"  cellspacing="0" cellpadding="0" border="1" id="table"  class="table">
         <thead>
         <tr>
-            <th>编号</th>
+            <th class="tc" width="80">编号</th>
             <th>兑换方式</th>
             <th>卖出价</th>
             <th>买入价</th>
-            <th width="200">更新时间</th>
+            <th class="tc" width="200">更新时间</th>
         </tr>
         </thead>
-        <tbody>
-        <tr>
-            <td>1</td>
-            <td>美元 兑 人民币</td>
-            <td id="sell_price_my"></td>
-            <td id="buy_price_my"></td>
-            <td class="fresh_time"></td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>人民币 兑 美元</td>
-            <td id="sell_price_rmb"></td>
-            <td id="buy_price_rmb"></td>
-            <td class="fresh_time"></td>
-        </tr>
+        <tbody id="trblock">
+
         </tbody>
     </table>
 </div>
@@ -67,24 +54,32 @@
             },
             success: function (data) {
                 var arr = new Array();
-                for (var i = 0; i < data.length; i++) {
+                //取最新的一条记录
+                for (var i = data.length-1; i < data.length; i++) {
                     arr.push(data[i]);
-                    // console.log(arr);
                 }
-                var datalen=arr.length;
-                console.log(arr.length);
-                var jsondata = arr[datalen];
-                // console.log(jsondata);
-                var rmb_sellprice=1/jsondata.USDCNY.sellPic;
-                var rmb_buyprice=1/jsondata.USDCNY.buyPic;
-                $("#sell_price_my").html(jsondata.USDCNY.sellPic);//美元卖出
-                $("#buy_price_my").html(jsondata.USDCNY.buyPic);//美元买入
-                $("#sell_price_rmb").html(rmb_sellprice.toFixed(4));//人民币卖出
-                $("#buy_price_rmb").html(rmb_buyprice.toFixed(4));//人民币买入
-                $(".fresh_time").html(jsondata.USDCNY.date+" "+jsondata.USDCNY.datatime)
+                var html="";
+                var obj=arr[0];
+                var num=1;
+                for( key in obj){
+                    // console.log(obj[key]);
+                    // 注意在json中获取，要用 data[key]   不要用data.key
+                    html='<tr>+\n' +
+                        '     <td  class="tc" >'+num+'</td>+\n' +
+                        '     <td>'+obj[key].currency+'</td>+\n' +
+                        '     <td>'+obj[key].buyPic+'</td>+\n' +
+                        '     <td>'+obj[key].sellPic+'</td>+\n' +
+                        '     <td>'+obj[key].date+' '+obj[key].datatime+'</td>+\n' +
+                        '     </tr>'
+                    $("#trblock").append(html);
+                    num=num+1;
+                }
+
+
 
             }
         });
+
 
     })
 
