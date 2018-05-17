@@ -138,9 +138,8 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label class="col-form-label w100" >货币类型<span class="warning">*</span></label>
-                        <select class="custom-select  w100"  id="selectval" field="monneytype">
-                            <option value="CNY" >人民币</option>
-                            <option value="USD">美元</option>
+                        <select class="custom-select  w100 account"  id="selectval" field="monneytype">
+
                         </select>
                     </div>
                     <div class="form-group">
@@ -165,6 +164,7 @@
                 $(this).addClass("cur").siblings().removeClass("cur");
             }
         });
+        loadaccount();//加载平台货币类型
         $("#nav_my").addClass("cur");//导航栏添加焦点
         $('#table').DataTable( {
             "serverSide": true,
@@ -274,73 +274,66 @@
             }
         })
     })
-
-    // 禁用/启用账户
-    // function changestatus(status,listid){
-    //     $.ajax({
-    //         type: "post", // 用POST方式传输
-    //         dataType: 'json',
-    //         url: "/count/startOrstopCount", // 目标地址
-    //         data: { state :status,id:listid },
-    //         error: function (data) {
-    //             sweetAlert({
-    //                     title: "操作失败！检查是否登录",
-    //                     showCancelButton: true,
-    //                     type: "warning",
-    //                     confirmButtonText: "去登录",
-    //                     cancelButtonText: "取消",
-    //                     closeOnConfirm: false
-    //                 },
-    //                 function(isConfirm){
-    //                     if (isConfirm) {
-    //                         window.location.href = "/login";
-    //                     }
-    //                 });
-    //         },
-    //         success: function (data) {
-    //             if (data.code=="success") {
-    //                 sweetAlert("", "恭喜您！操作成功！", "success");
-    //                 setTimeout(function(){ window.location.href = "/my/my_account";},1500);
-    //             } else {
-    //                 sweetAlert({
-    //                     title:"操作失败!",
-    //                     text: data.message,
-    //                     type: "error",
-    //                     showCancelButton: true,
-    //                     confirmButtonText: "确定",
-    //                     cancelButtonText: "取消",
-    //                     closeOnConfirm: false,
-    //                     closeOnCancel: true
-    //                 });
-    //             }
-    //         }
-    //     });
-    // }
-    // 注销账户
-    function logoutCount(countid){
+    // 加载平台货币类型
+    function loadaccount() {
         $.ajax({
-            type: "post", // 用POST方式传输
-            dataType: 'json',
-            url: "/count/logoutCount", // 目标地址
-            data: { id :countid },
+            url: '/count/queryMoneyType',
+            data: null,
+            type: 'get',
             success: function (data) {
-                if (data.code=="success") {
-                    sweetAlert("", "恭喜您！注销成功！", "success");
-                    setTimeout(function(){ window.location.href = "/my/my_account";},1500);
-                } else {
-                    sweetAlert({
-                        title:"操作失败!",
-                        text: data.message,
-                        type: "error",
-                        showCancelButton: true,
-                        confirmButtonText: "确定",
-                        cancelButtonText: "取消",
-                        closeOnConfirm: false,
-                        closeOnCancel: true
-                    });
+                var jsonObj = $.parseJSON(data);//json字符串转数组
+                console.log(jsonObj.length);
+                for (var i=0;i<jsonObj.length;i++)
+                {
+                    var html ='<option data-id="'+jsonObj[i]+'" value="'+jsonObj[i]+'">'+jsonObj[i]+'('+currency_type(jsonObj[i])+')'+'</option>';
+                    $(".account").append(html);
+
                 }
+
+
             }
         });
+    }
+    // 注销账户
+    function logoutCount(countid){
+        sweetAlert({
+                title: "确定删除吗？",
+                text: "你将无法恢复该账号",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            },
+            function(isConfirm){
+                if (isConfirm) {
+                    $.ajax({
+                        type: "post", // 用POST方式传输
+                        dataType: 'json',
+                        url: "/count/logoutCount", // 目标地址
+                        data: { id :countid },
+                        success: function (data) {
+                            if (data.code=="success") {
+                                sweetAlert("", "恭喜您！注销成功！", "success");
+                                setTimeout(function(){ window.location.href = "/my/my_account";},1500);
+                            } else {
+                                sweetAlert({
+                                    title:"操作失败!",
+                                    text: data.message,
+                                    type: "error",
+                                    showCancelButton: true,
+                                    confirmButtonText: "确定",
+                                    cancelButtonText: "取消",
+                                    closeOnConfirm: false,
+                                    closeOnCancel: true
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+
     }
     // 申请账户
     function submitform() {

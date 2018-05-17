@@ -8,6 +8,7 @@ import cn.com.caogen.service.ICountService;
 import cn.com.caogen.service.IUserService;
 import cn.com.caogen.util.*;
 import net.sf.json.JSON;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -270,7 +271,7 @@ public class CountController {
 
     @RequestMapping(path="queryMoneyType",method = RequestMethod.GET)
     public String getMoneyType(){
-        return JSONObject.fromObject(ConstantUtil.MONEY_TYPES).toString();
+        return JSONArray.fromObject(ConstantUtil.MONEY_TYPES).toString();
     }
 
     public boolean checkUser(String telphone) {
