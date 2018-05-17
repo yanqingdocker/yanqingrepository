@@ -67,10 +67,10 @@ public class CashPoolController {
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("srccount",srcCashPool);
         parmMap.put("destcount",destCashPool);
-        parmMap.put("srcnum",srcnum);
-        parmMap.put("destnum",destnum);
+        parmMap.put("srcnum",destnum);
+        parmMap.put("destnum",srcnum);
         parmMap.put("ip",IpUtil.getIpAddr(request));
-        parmMap.put("operauser","admin");
+        parmMap.put("operauser",operuser);
         cashPoolService.exchange(parmMap);
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
 
