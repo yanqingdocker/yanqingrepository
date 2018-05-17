@@ -58,7 +58,7 @@
         Order By operatime Desc
     </select>
 
-    <select id="queryoperatype" resultMap="allInfo">
+    <select id="queryoperatype" resultMap="allInfo" parameterType="int">
         select sum(num) as sum, counttype,operatype from operalog
         <choose>
             <when test="date!=null and date == '1'.toString()">
@@ -80,7 +80,7 @@
                 where false
             </otherwise>
         </choose>
-             and GROUP BY operatype,counttype
+              GROUP BY operatype,counttype
 
     </select>
 

@@ -79,7 +79,7 @@
         var myChart = echarts.init(document.getElementById('chartmain'));
         $.ajax({
             url: '/opera/queryByYear',
-            data:{oi:1},
+            data:{oi:0},
             type: 'get',
             success: function (data) {
                 var rmbnum=0;
@@ -103,20 +103,20 @@
                 for(var j=0;j<arrcny.length;j++){
                     var weekdate=arrcny[j].operaTime.substring(5,7);
                     // var b = new Date(Date.parse(weekdate.replace(/\-/g,"/")));
-                    totalrmb=totalrmb+arrcny[j].num;
+                    totalrmb=totalrmb-arrcny[j].num;
                     //获取当前季度：
                     currQuarter = Math.floor( ( weekdate % 3 == 0 ? ( weekdate / 3 ) : ( weekdate / 3 + 1 ) ) );
                     if(currQuarter==1){
                         var datetime=["12月","1月","2月"];
                         switch (parseInt(weekdate)) {
                             case 12:
-                                mcny[0]=mcny[0]+arrcny[j].num;
+                                mcny[0]=mcny[0]-arrcny[j].num;
                                 break;
                             case 1:
-                                mcny[1]=mcny[1]+arrcny[j].num;
+                                mcny[1]=mcny[1]-arrcny[j].num;
                                 break;
                             case 2:
-                                mcny[2]=mcny[2]+arrcny[j].num;
+                                mcny[2]=mcny[2]-arrcny[j].num;
                                 break;
                             default:
                                 break;
@@ -126,13 +126,13 @@
                         var datetime=["3月","4月","5月"];
                         switch (parseInt(weekdate)) {
                             case 3:
-                                mcny[0]=mcny[0]+arrcny[j].num;
+                                mcny[0]=mcny[0]-arrcny[j].num;
                                 break;
                             case 4:
-                                mcny[1]=mcny[1]+arrcny[j].num;
+                                mcny[1]=mcny[1]-arrcny[j].num;
                                 break;
                             case 5:
-                                mcny[2]=mcny[2]+arrcny[j].num;
+                                mcny[2]=mcny[2]-arrcny[j].num;
                                 break;
                             default:
                                 break;
@@ -142,13 +142,13 @@
                         var datetime=["6月","7月","8月"];
                         switch (parseInt(weekdate)) {
                             case 6:
-                                mcny[0]=mcny[0]+arrcny[j].num;
+                                mcny[0]=mcny[0]-arrcny[j].num;
                                 break;
                             case 7:
-                                mcny[1]=mcny[1]+arrcny[j].num;
+                                mcny[1]=mcny[1]-arrcny[j].num;
                                 break;
                             case 8:
-                                mcny[2]=mcny[2]+arrcny[j].num;
+                                mcny[2]=mcny[2]-arrcny[j].num;
                                 break;
                             default:
                                 break;
@@ -158,13 +158,13 @@
                         var datetime=["9月","10月","11月"];
                         switch (parseInt(weekdate)) {
                             case 9:
-                                mcny[0]=mcny[0]+arrcny[j].num;
+                                mcny[0]=mcny[0]-arrcny[j].num;
                                 break;
                             case 10:
-                                mcny[1]=mcny[1]+arrcny[j].num;
+                                mcny[1]=mcny[1]-arrcny[j].num;
                                 break;
                             case 11:
-                                mcny[2]=mcny[2]+arrcny[j].num;
+                                mcny[2]=mcny[2]-arrcny[j].num;
                                 break;
                             default:
                                 break;
@@ -177,19 +177,19 @@
                 var totaldollar=0;
                 for(var j=0;j<arrdollar.length;j++){
                     var weekdate=arrdollar[j].operaTime.substring(5,7);
-                    totaldollar=totaldollar+arrdollar[j].num;
+                    totaldollar=totaldollar-arrdollar[j].num;
                     //获取当前季度：
                     currQuarter = Math.floor( ( weekdate % 3 == 0 ? ( weekdate / 3 ) : ( weekdate / 3 + 1 ) ) );
                     if(currQuarter==1){
                         switch (parseInt(weekdate)) {
                             case 12:
-                                musd[0]=musd[0]+arrdollar[j].num;
+                                musd[0]=musd[0]-arrdollar[j].num;
                                 break;
                             case 1:
-                                musd[1]=musd[1]+arrdollar[j].num;
+                                musd[1]=musd[1]-arrdollar[j].num;
                                 break;
                             case 2:
-                                musd[2]=musd[2]+arrdollar[j].num;
+                                musd[2]=musd[2]-arrdollar[j].num;
                                 break;
                             default:
                                 break;
@@ -198,13 +198,13 @@
                     if(currQuarter==2){
                         switch (parseInt(weekdate)) {
                             case 3:
-                                musd[0]=musd[0]+arrdollar[j].num;
+                                musd[0]=musd[0]-arrdollar[j].num;
                                 break;
                             case 4:
-                                musd[1]=musd[1]+arrdollar[j].num;
+                                musd[1]=musd[1]-arrdollar[j].num;
                                 break;
                             case 5:
-                                musd[2]=musd[2]+arrdollar[j].num;
+                                musd[2]=musd[2]-arrdollar[j].num;
                                 break;
                             default:
                                 break;
@@ -213,13 +213,13 @@
                     if(currQuarter==3){
                         switch (parseInt(weekdate)) {
                             case 6:
-                                musd[0]=musd[0]+arrdollar[j].num;
+                                musd[0]=musd[0]-arrdollar[j].num;
                                 break;
                             case 7:
-                                musd[1]=musd[1]+arrdollar[j].num;
+                                musd[1]=musd[1]-arrdollar[j].num;
                                 break;
                             case 8:
-                                musd[2]=musd[2]+arrdollar[j].num;
+                                musd[2]=musd[2]-arrdollar[j].num;
                                 break;
                             default:
                                 break;
@@ -228,13 +228,13 @@
                     if(currQuarter==4){
                         switch (parseInt(weekdate)) {
                             case 9:
-                                musd[0]=musd[0]+arrdollar[j].num;
+                                musd[0]=musd[0]-arrdollar[j].num;
                                 break;
                             case 10:
-                                musd[1]=musd[1]+arrdollar[j].num;
+                                musd[1]=musd[1]-arrdollar[j].num;
                                 break;
                             case 11:
-                                musd[2]=musd[2]+arrdollar[j].num;
+                                musd[2]=musd[2]-arrdollar[j].num;
                                 break;
                             default:
                                 break;
@@ -397,7 +397,7 @@
             },
             ajax: {
                 url: "/opera/queryByYear",
-                data:{oi:1},
+                data:{oi:0},
                 dataSrc: '',
             },
             "fnDrawCallback"    : function(){
@@ -410,7 +410,11 @@
                 {"data": "countid"},
                 {"data": "countType"},
                 {"data": "operaType"},
-                {"data": "num"},
+                {"data": "num" ,
+                    render:function(e,type,full,row){
+                        return "<span class='red'>"+full.num+"</span>";
+                    }
+                },
                 {"data": "operaUser"},
                 {"data": "operaIp"},
                 {"data": "operaTime"}

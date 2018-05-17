@@ -132,13 +132,22 @@ public class PageController {
         return "exchangeRate/rate";
     }
     /**
-     *平台资金库
+     *资金库--平台资金库
      *
      * @return
      */
     @RequestMapping("/capitalbank/capital_bank")
     public String capital_bank() {
         return "capitalbank/capital_bank";
+    }
+    /**
+     *资金库--现金资金库
+     *
+     * @return
+     */
+    @RequestMapping("/capitalbank/cash_bank")
+    public String cash_bank() {
+        return "capitalbank/cash_bank";
     }
     /**
      *现金管理--现金存入
@@ -157,6 +166,15 @@ public class PageController {
     @RequestMapping("/cashmanage/cash_out")
     public String cash_out() {
         return "cashmanage/cash_out";
+    }
+    /**
+     *现金管理--现金转出
+     *
+     * @return
+     */
+    @RequestMapping("/cashmanage/cash_change")
+    public String cash_change() {
+        return "cashmanage/cash_change";
     }
     /**
      *后台管理员--管理员角色

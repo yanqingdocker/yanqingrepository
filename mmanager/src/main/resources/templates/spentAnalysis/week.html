@@ -103,28 +103,28 @@
                 for(var j=0;j<arrcny.length;j++){
                     var weekdate=arrcny[j].operaTime.substring(0,10);
                     var b = new Date(Date.parse(weekdate.replace(/\-/g,"/")));
-                    totalrmb=totalrmb+arrcny[j].num;
+                    totalrmb=totalrmb-arrcny[j].num;
                     switch (b.getDay()) {
                         case 0:
-                            mcny[0]=mcny[0]+arrcny[j].num;
+                            mcny[0]=mcny[0]-arrcny[j].num;
                             break;
                         case 1:
-                            mcny[1]=mcny[1]+arrcny[j].num;
+                            mcny[1]=mcny[1]-arrcny[j].num;
                             break;
                         case 2:
-                            mcny[2]=mcny[2]+arrcny[j].num;
+                            mcny[2]=mcny[2]-arrcny[j].num;
                             break;
                         case 3:
-                            mcny[3]=mcny[3]+arrcny[j].num;
+                            mcny[3]=mcny[3]-arrcny[j].num;
                             break;
                         case 4:
-                            mcny[4]=mcny[4]+arrcny[j].num;
+                            mcny[4]=mcny[4]-arrcny[j].num;
                             break;
                         case 5:
-                            mcny[5]=mcny[5]+arrcny[j].num;
+                            mcny[5]=mcny[5]-arrcny[j].num;
                             break;
                         case 6:
-                            mcny[6]=mcny[6]+arrcny[j].num;
+                            mcny[6]=mcny[6]-arrcny[j].num;
                             break;
                         default:
                             break;
@@ -137,28 +137,28 @@
                 for(var j=0;j<arrdollar.length;j++){
                     var weekdate=arrdollar[j].operaTime.substring(0,10);
                     var b = new Date(Date.parse(weekdate.replace(/\-/g,"/")));
-                    totaldollar=totaldollar+arrdollar[j].num;
+                    totaldollar=totaldollar-arrdollar[j].num;
                     switch (b.getDay()) {
                         case 0:
-                            musd[0]=musd[0]+arrdollar[j].num;
+                            musd[0]=musd[0]-arrdollar[j].num;
                             break;
                         case 1:
-                            musd[1]=musd[1]+arrdollar[j].num;
+                            musd[1]=musd[1]-arrdollar[j].num;
                             break;
                         case 2:
-                            musd[2]=musd[2]+arrdollar[j].num;
+                            musd[2]=musd[2]-arrdollar[j].num;
                             break;
                         case 3:
-                            musd[3]=musd[3]+arrdollar[j].num;
+                            musd[3]=musd[3]-arrdollar[j].num;
                             break;
                         case 4:
-                            musd[4]=musd[4]+arrdollar[j].num;
+                            musd[4]=musd[4]-arrdollar[j].num;
                             break;
                         case 5:
-                            musd[5]=musd[5]+arrdollar[j].num;
+                            musd[5]=musd[5]-arrdollar[j].num;
                             break;
                         case 6:
-                            musd[6]=musd[6]+arrdollar[j].num;
+                            musd[6]=musd[6]-arrdollar[j].num;
                             break;
                         default:
                             break;
@@ -333,7 +333,11 @@
                 {"data": "countid"},
                 {"data": "countType"},
                 {"data": "operaType"},
-                {"data": "num"},
+                {"data": "num" ,
+                    render:function(e,type,full,row){
+                        return "<span class='red'>"+full.num+"</span>";
+                    }
+                },
                 {"data": "operaUser"},
                 {"data": "operaIp"},
                 {"data": "operaTime"}

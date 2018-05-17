@@ -5,6 +5,7 @@ import cn.com.caogen.mapper.OperaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,11 +40,15 @@ public class OperaServiceImpl implements IOperaService {
 
     @Override
     public List<Map<String, Object>> queryoperatype(int date) {
-        return operaMapper.queryoperatype(date);
+        Map<String,Object> parmMap=new HashMap<String,Object>();
+        parmMap.put("date",date);
+        return operaMapper.queryoperatype(parmMap);
     }
 
     @Override
     public List<Map<String, Object>> queryoperacount(int date) {
-        return operaMapper.queryoperacount(date);
+        Map<String,Object> parmMap=new HashMap<String,Object>();
+        parmMap.put("date",date);
+        return operaMapper.queryoperacount(parmMap);
     }
 }

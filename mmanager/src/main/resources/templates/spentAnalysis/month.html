@@ -79,7 +79,7 @@
         var myChart = echarts.init(document.getElementById('chartmain'));
         $.ajax({
             url: '/opera/queryByMonth',
-            data:{oi:1},
+            data:{oi:0},
             type: 'get',
             success: function (data) {
                 var rmbnum=0;
@@ -103,18 +103,18 @@
                 for(var j=0;j<arrcny.length;j++){
                     var weekdate=arrcny[j].operaTime.substring(8,10);
                     // var b = new Date(Date.parse(weekdate.replace(/\-/g,"/")));
-                    totalrmb=totalrmb+arrcny[j].num;
+                    totalrmb=totalrmb-arrcny[j].num;
                     if(weekdate<8){
-                        mcny[0]=mcny[0]+arrcny[j].num;
+                        mcny[0]=mcny[0]-arrcny[j].num;
                     }
                     if(weekdate>7 && weekdate<16){
-                        mcny[1]=mcny[1]+arrcny[j].num;
+                        mcny[1]=mcny[1]-arrcny[j].num;
                     }
                     if(weekdate>15 && weekdate<24){
-                        mcny[2]=mcny[2]+arrcny[j].num;
+                        mcny[2]=mcny[2]-arrcny[j].num;
                     }
                     if(weekdate>23 && weekdate<32){
-                        mcny[3]=mcny[3]+arrcny[j].num;
+                        mcny[3]=mcny[3]-arrcny[j].num;
                     }
 
                 }
@@ -123,18 +123,18 @@
                 var totaldollar=0;
                 for(var j=0;j<arrdollar.length;j++){
                     var weekdate=arrdollar[j].operaTime.substring(8,10);
-                    totaldollar=totaldollar+arrdollar[j].num;
+                    totaldollar=totaldollar-arrdollar[j].num;
                     if(weekdate<8){
-                        musd[0]=musd[0]+arrdollar[j].num;
+                        musd[0]=musd[0]-arrdollar[j].num;
                     }
                     if(weekdate>7 && weekdate<16){
-                        musd[1]=musd[1]+arrdollar[j].num;
+                        musd[1]=musd[1]-arrdollar[j].num;
                     }
                     if(weekdate>15 && weekdate<24){
-                        musd[2]=musd[2]+arrdollar[j].num;
+                        musd[2]=musd[2]-arrdollar[j].num;
                     }
                     if(weekdate>23 && weekdate<32){
-                        musd[3]=musd[3]+arrdollar[j].num;
+                        musd[3]=musd[3]-arrdollar[j].num;
                     }
 
                 }
@@ -292,7 +292,7 @@
             },
             ajax: {
                 url: "/opera/queryByMonth",
-                data:{oi:1},
+                data:{oi:0},
                 dataSrc: '',
             },
             "fnDrawCallback"    : function(){
@@ -305,7 +305,11 @@
                 {"data": "countid"},
                 {"data": "countType"},
                 {"data": "operaType"},
-                {"data": "num"},
+                {"data": "num" ,
+                    render:function(e,type,full,row){
+                    return "<span class='red'>"+full.num+"</span>";
+                    }
+                },
                 {"data": "operaUser"},
                 {"data": "operaIp"},
                 {"data": "operaTime"}

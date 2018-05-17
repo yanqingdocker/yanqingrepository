@@ -219,11 +219,22 @@
                                 <span class="icon fa nav_rate"></span><span class="title">汇率查询</span>
                             </a>
                         </li>
-
-                        <li>
-                            <a href="/capitalbank/capital_bank"  target="iframename">
-                                <span class="icon fa nav_moneyku"></span><span class="title">平台资金库</span>
+                        <!-- Dropdown-->
+                        <li class="panel panel-default dropdown">
+                            <a data-toggle="collapse" href="#dropdown-bank" >
+                                <span class="icon fa nav_moneyku"></span><span class="title">资金库</span>
                             </a>
+                            <!-- Dropdown level 1 -->
+                            <div id="dropdown-bank" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <ul class="nav navbar-nav">
+                                        <li><a href="/capitalbank/capital_bank" target="iframename">平台资金库</a>
+                                        </li>
+                                        <li><a href="/capitalbank/cash_bank" target="iframename">现金资金库</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </li>
                         <!-- Dropdown-->
                         <li class="panel panel-default dropdown">
@@ -236,7 +247,9 @@
                                     <ul class="nav navbar-nav">
                                         <li><a href="/cashmanage/cash_in" target="iframename">现金存入</a>
                                         </li>
-                                        <li><a href="/cashmanage/cash_out" target="iframename">现金转出</a>
+                                        <li><a href="/cashmanage/cash_out" target="iframename">现金提现</a>
+                                        </li>
+                                        <li><a href="/cashmanage/cash_change" target="iframename">现金兑换</a>
                                         </li>
                                     </ul>
                                 </div>

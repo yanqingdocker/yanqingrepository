@@ -110,7 +110,7 @@
     function trademoney(myChart) {
         $.ajax({
             url: '/opera/queryByDay',
-            data:{oi:0},
+            data:{oi:1},
             type: 'get',
             success: function (data) {
                 var rmbnum=0;
@@ -288,7 +288,7 @@
     function tradeout(outChart) {
         $.ajax({
             url: '/opera/queryByDay',
-            data:{oi:1},
+            data:{oi:0},
             type: 'get',
             success: function (data) {
                 var rmbnum=0;
@@ -313,18 +313,18 @@
                     var weekdate=arrcny[j].operaTime.substring(11,13);
                     console.log(weekdate);
                     // var b = new Date(Date.parse(weekdate.replace(/\-/g,"/")));
-                    totalrmb=totalrmb+arrcny[j].num;
+                    totalrmb=totalrmb-arrcny[j].num;
                     if(weekdate<7){
-                        mcny[0]=mcny[0]+arrcny[j].num;
+                        mcny[0]=mcny[0]-arrcny[j].num;
                     }
                     if(weekdate>6 && weekdate<13){
-                        mcny[1]=mcny[1]+arrcny[j].num;
+                        mcny[1]=mcny[1]-arrcny[j].num;
                     }
                     if(weekdate>12 && weekdate<19){
-                        mcny[2]=mcny[2]+arrcny[j].num;
+                        mcny[2]=mcny[2]-arrcny[j].num;
                     }
                     if(weekdate>18 && weekdate<24){
-                        mcny[3]=mcny[3]+arrcny[j].num;
+                        mcny[3]=mcny[3]-arrcny[j].num;
                     }
 
                 }
@@ -333,18 +333,18 @@
                 var totaldollar=0;
                 for(var j=0;j<arrdollar.length;j++){
                     var weekdate=arrdollar[j].operaTime.substring(11,13);
-                    totaldollar=totaldollar+arrdollar[j].num;
+                    totaldollar=totaldollar-arrdollar[j].num;
                     if(weekdate<7){
-                        musd[0]=musd[0]+arrdollar[j].num;
+                        musd[0]=musd[0]-arrdollar[j].num;
                     }
                     if(weekdate>6 && weekdate<13){
-                        musd[1]=musd[1]+arrdollar[j].num;
+                        musd[1]=musd[1]-arrdollar[j].num;
                     }
                     if(weekdate>12 && weekdate<19){
-                        musd[2]=musd[2]+arrdollar[j].num;
+                        musd[2]=musd[2]-arrdollar[j].num;
                     }
                     if(weekdate>18 && weekdate<24){
-                        musd[3]=musd[3]+arrdollar[j].num;
+                        musd[3]=musd[3]-arrdollar[j].num;
                     }
 
                 }
@@ -465,11 +465,11 @@
     function tradepie(mypie) {
         $.ajax({
             url: '/opera/queryoperatype',
-            data: null,
+            data: {date:"1"},
             type: 'get',
             success: function (data) {
-                var cnypie=[{value:0,name:'充值'},{value:0,name:'兑换'},{value:0,name:'现金存入'},{value:0,name:'现金转出'},{value:0,name:'转账'}];
-                var usdpie=[{value:0,name:'充值'},{value:0,name:'兑换'},{value:0,name:'现金存入'},{value:0,name:'现金转出'},{value:0,name:'转账'}];
+                var cnypie=[{value:0,name:'充值'},{value:0,name:'兑换'},{value:0,name:'现金存入'},{value:0,name:'现金转出'},{value:0,name:'现金兑换'},{value:0,name:'转账'}];
+                var usdpie=[{value:0,name:'充值'},{value:0,name:'兑换'},{value:0,name:'现金存入'},{value:0,name:'现金转出'},{value:0,name:'现金兑换'},{value:0,name:'转账'}];
                 var obj=strToJson(data);
                 for(var i=0;i<obj.length;i++){
 
@@ -486,10 +486,13 @@
                                 cnypie[2].value=obj[i].sum;
                                 break;
                             case "现金转出":
-                                cnypie[3].value=obj[i].sum;
+                                cnypie[3].value=-obj[i].sum;
+                                break;
+                            case "现金兑换":
+                                cnypie[4].value=obj[i].sum;
                                 break;
                             case "转账":
-                                cnypie[4].value=obj[i].sum;
+                                cnypie[5].value=obj[i].sum;
                                 break;
                             default:
                                 break;
@@ -508,10 +511,13 @@
                                 usdpie[2].value=obj[i].sum;
                                 break;
                             case "现金转出":
-                                usdpie[3].value=obj[i].sum;
+                                usdpie[3].value=-obj[i].sum;
+                                break;
+                            case "现金兑换":
+                                usdpie[4].value=obj[i].sum;
                                 break;
                             case "转账":
-                                usdpie[4].value=obj[i].sum;
+                                usdpie[5].value=obj[i].sum;
                                 break;
                             default:
                                 break;
@@ -533,7 +539,7 @@
                     legend: {
                         orient : 'vertical',
                         x : 'left',
-                        data:['充值','兑换','现金存入','现金转出','转账']
+                        data:['充值','兑换','现金存入','现金提现','现金兑换','转账']
                     },
                     toolbox: {
                         show : true,
@@ -589,7 +595,7 @@
     function tradenum(){
         $.ajax({
             url: '/opera/queryoperacount',
-            data: null,
+            data: {date:"1"},
             type: 'get',
             success: function (data) {
                 var obj=strToJson(data);

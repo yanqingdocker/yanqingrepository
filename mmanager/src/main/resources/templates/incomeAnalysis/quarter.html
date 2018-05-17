@@ -79,7 +79,7 @@
         var myChart = echarts.init(document.getElementById('chartmain'));
         $.ajax({
             url: '/opera/queryByYear',
-            data:{oi:0},
+            data:{oi:1},
             type: 'get',
             success: function (data) {
                 var rmbnum=0;
@@ -397,7 +397,7 @@
             },
             ajax: {
                 url: "/opera/queryByYear",
-                data:{oi:0},
+                data:{oi:1},
                 dataSrc: '',
             },
             "fnDrawCallback"    : function(){
@@ -410,7 +410,11 @@
                 {"data": "countid"},
                 {"data": "countType"},
                 {"data": "operaType"},
-                {"data": "num"},
+                {"data": "num" ,
+                    render:function(e,type,full,row){
+                        return "<span class='green'>"+full.num+"</span>";
+                    }
+                },
                 {"data": "operaUser"},
                 {"data": "operaIp"},
                 {"data": "operaTime"}
