@@ -16,6 +16,6 @@ public interface OperaMapper {
     public List<Operation> queryAll();
     List<Operation> queryCondition(Map<String, Object> parmMap);
     List<Operation> queryByDate(Map<String, Object> parmMap);
-    List<Map<String,Object>>  queryoperatype();
-    List<Map<String ,Object>> queryoperacount();
+    List<Map<String,Object>>  queryoperatype(int date);
+    List<Map<String ,Object>> queryoperacount(int date);
 }

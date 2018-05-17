@@ -59,12 +59,54 @@
     </select>
 
     <select id="queryoperatype" resultMap="allInfo">
-        select sum(num) as sum, counttype,operatype from operalog where to_days(operatime) = to_days(now()) GROUP BY operatype,counttype
+        select sum(num) as sum, counttype,operatype from operalog
+        <choose>
+            <when test="date!=null and date == '1'.toString()">
+                where to_days(operatime) = to_days(now())
+            </when>
+            <when test="date!=null and date == '7'.toString()">
+                where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(operatime)
+            </when>
+            <when test="date!=null and date == '30'.toString()">
+                where DATE_FORMAT( operatime, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+            </when>
+            <when test="date!=null and date == '90'.toString()">
+                where  QUARTER(operatime)=QUARTER(now())
+            </when>
+            <when test="date!=null and date == '360'.toString()">
+                where YEAR(operatime)=YEAR(NOW())
+            </when>
+            <otherwise>
+                where false
+            </otherwise>
+        </choose>
+             and GROUP BY operatype,counttype
 
     </select>
 
-    <select id="queryoperacount" resultMap="allcount">
-        select count(operatype) as counttype, operatype from operalog  where to_days(operatime) = to_days(now()) GROUP BY operatype
+    <select id="queryoperacount" resultMap="allcount" parameterType="int">
+        select count(operatype) as counttype, operatype from operalog
+        <choose>
+            <when test="date!=null and date == '1'.toString()">
+                where to_days(operatime) = to_days(now())
+            </when>
+            <when test="date!=null and date == '7'.toString()">
+                where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(operatime)
+            </when>
+            <when test="date!=null and date == '30'.toString()">
+                where DATE_FORMAT( operatime, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+            </when>
+            <when test="date!=null and date == '90'.toString()">
+                where  QUARTER(operatime)=QUARTER(now())
+            </when>
+            <when test="date!=null and date == '360'.toString()">
+                where YEAR(operatime)=YEAR(NOW())
+            </when>
+            <otherwise>
+                where false
+            </otherwise>
+        </choose>
+         GROUP BY operatype
 
     </select>
 

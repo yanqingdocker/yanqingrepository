@@ -38,12 +38,12 @@ public class OperaServiceImpl implements IOperaService {
     }
 
     @Override
-    public List<Map<String, Object>> queryoperatype() {
-        return operaMapper.queryoperatype();
+    public List<Map<String, Object>> queryoperatype(int date) {
+        return operaMapper.queryoperatype(date);
     }
 
     @Override
-    public List<Map<String, Object>> queryoperacount() {
-        return operaMapper.queryoperacount();
+    public List<Map<String, Object>> queryoperacount(int date) {
+        return operaMapper.queryoperacount(date);
     }
 }

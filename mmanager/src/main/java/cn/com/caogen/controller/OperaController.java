@@ -164,15 +164,15 @@ public class OperaController {
 
 
     @RequestMapping(path="queryoperatype",method = RequestMethod.GET)
-    public String queryoperatype(){
-        List<Map<String,Object>> list=operaServiceimpl .queryoperatype();
+    public String queryoperatype(@RequestParam("date") int date){
+        List<Map<String,Object>> list=operaServiceimpl .queryoperatype(date);
 
         return JSONArray.fromObject(list).toString();
     }
 
     @RequestMapping(path="queryoperacount",method = RequestMethod.GET)
-    public String queryoperacount(){
-        List<Map<String,Object>> list=operaServiceimpl .queryoperacount();
+    public String queryoperacount(@RequestParam("date") int date){
+        List<Map<String,Object>> list=operaServiceimpl .queryoperacount(date);
         return JSONArray.fromObject(list).toString();
     }
 
