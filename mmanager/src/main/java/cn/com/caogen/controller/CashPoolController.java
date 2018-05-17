@@ -42,28 +42,28 @@ public class CashPoolController {
 
     /**
      * 现金兑换
-     * @param srccountid
-     * @param destcountid
+     * @param srccounttype
+     * @param destcounttype
      * @param srcnum
      * @param destnum
      * @param request
      * @return
      */
     @RequestMapping(path = "exchange",method = RequestMethod.POST)
-    public String exchange(@RequestParam("srccountid") String srccountid, @RequestParam("destcountid") String destcountid, @RequestParam("srcnum") Double srcnum, @RequestParam("destnum") Double destnum, HttpServletRequest request){
+    public String exchange(@RequestParam("srccounttype") String srccounttype, @RequestParam("destcounttype") String destcounttype, @RequestParam("srcnum") Double srcnum, @RequestParam("destnum") Double destnum, HttpServletRequest request){
         logger.info("exchange start:");
-        if(!StringUtil.checkStrs(srccountid,destcountid,String.valueOf(srcnum),String.valueOf(destnum))){
+        if(!StringUtil.checkStrs(srccounttype,destcounttype,String.valueOf(srcnum),String.valueOf(destnum))){
             logger.info(ConstantUtil.ERROR_ARGS);
            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
-        CashPool srcCashPool=cashPoolService.queryById(srccountid);
+        CashPool srcCashPool=cashPoolService.queryByType(srccounttype);
         if(srcCashPool.getBlance()<srcnum){
             logger.info(ConstantUtil.SYSTEMCOUNT_LESS);
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.SYSTEMCOUNT_LESS)).toString();
         }
 
         String operuser="操作员-"+(String)request.getSession().getAttribute("username");
-        CashPool destCashPool=cashPoolService.queryById(destcountid);
+        CashPool destCashPool=cashPoolService.queryByType(destcounttype);
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("srccount",srcCashPool);
         parmMap.put("destcount",destCashPool);

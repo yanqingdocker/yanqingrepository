@@ -86,7 +86,7 @@ public class CashPoolServiceImpl implements ICashPoolService {
     }
 
     @Override
-    public CashPool queryById(String id) {
-        return cashPoolMapper.queryById(id);
+    public CashPool queryByType(String type) {
+        return cashPoolMapper.queryByType(type);
     }
 }

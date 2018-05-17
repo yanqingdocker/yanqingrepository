@@ -22,8 +22,8 @@
     <update id="update" parameterType="cn.com.caogen.entity.CashPool">
         update cashpool set blance=#{blance},lasttime=#{lasttime} where id=#{id}
     </update>
-    <select id="queryById" resultMap="BaseResultMap" parameterType="String">
-        select <include refid="Base_Column_List"/> from cashpool where id=#{id}
+    <select id="queryByType" resultMap="BaseResultMap" parameterType="String">
+        select <include refid="Base_Column_List"/> from cashpool where counttype=#{counttype}
     </select>
 
 </mapper>
