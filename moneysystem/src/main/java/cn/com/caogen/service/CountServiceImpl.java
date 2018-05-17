@@ -199,7 +199,7 @@ public class CountServiceImpl implements ICountService {
             checkCode=DataMonitor.getValiateCode(destCount,"id","checkCode","exception","state");
             destCount.setCheckCode(checkCode);
             countMapper.update(destCount);
-            saveOperaLog(srcCount.getCardId(),srcCount.getCountType(),moneynum,ConstantUtil.SERVICETYPE_SWITCH,operauser,ConstantUtil.MONEY_OUT,operaip);
+            saveOperaLog(srcCount.getCardId(),srcCount.getCountType(),-moneynum,ConstantUtil.SERVICETYPE_SWITCH,operauser,ConstantUtil.MONEY_OUT,operaip);
             saveOperaLog(destCount.getCardId(),destCount.getCountType(),moneynum,ConstantUtil.SERVICETYPE_SWITCH,operauser,ConstantUtil.MONEY_IN,operaip);
 
         }catch (Exception e){
@@ -267,7 +267,7 @@ public class CountServiceImpl implements ICountService {
             checkCode=DataMonitor.getValiateCode(destCount,"id","checkCode","exception","state");
             destCount.setCheckCode(checkCode);
             countMapper.update(destCount);
-            saveOperaLog(srcCount.getCardId(),srcCount.getCountType(),srcmoney,ConstantUtil.SERVICETYPE_EXCHANGE,operauser,ConstantUtil.MONEY_OUT,operaip);
+            saveOperaLog(srcCount.getCardId(),srcCount.getCountType(),-srcmoney,ConstantUtil.SERVICETYPE_EXCHANGE,operauser,ConstantUtil.MONEY_OUT,operaip);
             saveOperaLog(destCount.getCardId(),destCount.getCountType(),destmoney,ConstantUtil.SERVICETYPE_EXCHANGE,operauser,ConstantUtil.MONEY_IN,operaip);
 
         }catch (Exception e){

@@ -318,7 +318,7 @@ public class CountController {
         count.setBlance(count.getBlance()-Double.parseDouble(num));
         countServiceImpl.updateCount(String.valueOf(count.getId()),count.getBlance(),null,null);
         String operuser="操作员-"+(String)request.getSession().getAttribute("username");
-        countServiceImpl.saveOperaLog(count.getCardId(),count.getCountType(),Double.parseDouble(num),ConstantUtil.SERVICETYPE_OUTMONEY,operuser,ConstantUtil.MONEY_OUT,IpUtil.getIpAddr(request));
+        countServiceImpl.saveOperaLog(count.getCardId(),count.getCountType(),-Double.parseDouble(num),ConstantUtil.SERVICETYPE_OUTMONEY,operuser,ConstantUtil.MONEY_OUT,IpUtil.getIpAddr(request));
 
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
