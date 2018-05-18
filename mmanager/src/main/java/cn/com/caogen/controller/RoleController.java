@@ -99,7 +99,9 @@ public class RoleController {
             List<RoleAuth> roleAuths=roleAuthService.queryByRoleId(role.getId());
             for(RoleAuth roleAuth:roleAuths){
                 Authoirty authoirty=authoirtyService.queryById(roleAuth.getAuthid());
-                role.getAuthMap().put(authoirty.getId(),authoirty.getAuthoirtyname());
+
+                role.getIdlist().add(authoirty.getId());
+                role.getNamelist().add(authoirty.getAuthoirtyname());
             }
         }
         return JSONArray.fromObject(roleList).toString();
