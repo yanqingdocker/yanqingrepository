@@ -22,7 +22,7 @@
     </select>
 
     <insert id="batchAdd" parameterType="java.util.List">
-        insert into userrole(roleid,authid) values
+        insert into roleauth (roleid,authid) values
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.roleid},#{item.authid})
         </foreach>
