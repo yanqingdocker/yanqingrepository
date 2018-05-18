@@ -29,7 +29,7 @@ public class CronTask {
     /**
      *  每天12点调用一次汇率接口，并刷新redis
      */
-    @Scheduled(cron = "0 0 12 * *?")
+    @Scheduled(cron = "1 0 0 * * ? ")
     public void setRate(){
             String result = RateService.getRequest2();
 
