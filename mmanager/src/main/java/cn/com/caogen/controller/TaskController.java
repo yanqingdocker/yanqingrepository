@@ -2,6 +2,7 @@ package cn.com.caogen.controller;
 
 import cn.com.caogen.entity.Task;
 import cn.com.caogen.service.ITaskService;
+import cn.com.caogen.service.TaskServiceImpl;
 import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.DateUtil;
 import net.sf.json.JSONArray;
@@ -24,7 +25,7 @@ import java.util.Map;
 public class TaskController {
     private static Logger logger = LoggerFactory.getLogger(TaskController.class);
     @Autowired
-    private ITaskService taskService;
+    private TaskServiceImpl taskService;
     @RequestMapping("add")
     public String add(){
         Task task=new Task();

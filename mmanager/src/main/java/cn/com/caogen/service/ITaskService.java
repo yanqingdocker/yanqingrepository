@@ -10,7 +10,7 @@ import java.util.Map;
  * author:huyanqing
  * Date:2018/5/18
  */
-@Service
+
 public interface ITaskService {
     void addTask(Task task);
     void updateTask(Map<String,Object> parmMap);

@@ -12,7 +12,7 @@ import java.util.Map;
  * author:huyanqing
  * Date:2018/5/18
  */
-
+@Service
 public class TaskServiceImpl implements  ITaskService {
     @Autowired
     private TaskMapper taskMapper;
