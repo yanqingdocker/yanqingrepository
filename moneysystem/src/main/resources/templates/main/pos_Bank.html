@@ -124,5 +124,41 @@
 
 <!--通用脚本-->
 <script  type="text/javascript" src="/js/footer.js"></script>
+<script  type="text/javascript" >
+    $(function(){
+        loadcount();//获取下拉账户
+    })
+    // 通过json同步获取下拉账户
+    function loadcount() {
+        $.ajax({
+            url: '/count/queryCountByUserid',
+            data: null,
+            type: 'get',
+            success: function (data) {
+                var jsonObj = $.parseJSON(data);//json字符串转数组
+                for (var i=0;i<jsonObj.length;i++)
+                {
+                    var html ='<option value="'+jsonObj[i].cardId+'">'+jsonObj[i].cardId+'('+currency_type(jsonObj[i].countType)+')'+'</option>';
+                    $("#recharcount").append(html);
+                }
+                if(jsonObj.length==0){
+                    sweetAlert({
+                            title: "请先申请账户，才能进行操作！",
+                            type: "warning",
+                            confirmButtonText: "去申请",
+                            closeOnConfirm: false
+                        },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                window.location.href = "/my/my_account";
+                            }
+                        });
+                }
+
+            }
+        })
+    }
+</script>
+
 </body>
 </html>

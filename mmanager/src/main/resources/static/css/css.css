@@ -166,11 +166,15 @@ table.dataTable.no-footer {
 .index_transfer .fa{ background: url("../images/index_transfer.png") no-repeat center; width: 55px; height: 55px; background-size: contain;vertical-align: middle;}
 .index_cash .fa{ background: url("../images/index_cash.png") no-repeat center; width: 55px; height: 55px; background-size: contain;vertical-align: middle;}
 .index_exchange .fa{ background: url("../images/index_exchange.png") no-repeat center; width: 55px; height: 55px; background-size: contain;vertical-align: middle;}
+.index_zc .fa{ background: url("../images/index_zc.png") no-repeat center; width: 55px; height: 55px; background-size: contain;vertical-align: middle;}
+.index_zr .fa{ background: url("../images/index_zr.png") no-repeat center; width: 55px; height: 55px; background-size: contain;vertical-align: middle;}
 .fa-inbox:before{ content: ""}
 .index_recharge .title{ color: #6fb5eb}
 .index_transfer .title{ color: #ff8bb3}
 .index_cash .title{ color: #f6be94}
 .index_exchange .title{ color: #dba4fb}
+.index_zc .title{ color: #ffd48a}
+.index_zr .title{ color: #ff928a}
 .card.summary-inline .card-body .content .sub-title{color: #a9a9a9; font-size: 16px; margin-top: 5px;}
 .card.summary-inline .card-body .content .title{ font-size: 36px;}
 .info_num .col-md-3 .card:hover{ box-shadow:2px 2px 8px #999;}
@@ -249,9 +253,10 @@ div.dataTables_wrapper div.dataTables_processing{background: #fff;}
 .tabbutton a{padding: 5px 12px; margin-right: 10px; color: #00b4ff}
 .tabbutton a.cur{ background: #00b4ff; color: #fff; border-radius: 4px;}
 
-
-
-
+.powerlist .checkcustom{ margin-right: 10px}
+.text_overflow{overflow: hidden;text-overflow:ellipsis;white-space: nowrap;display: inline-block}
+.width220{width: 220px;}
+.width120{width: 120px;}
 
 
 

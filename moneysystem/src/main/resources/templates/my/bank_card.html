@@ -314,7 +314,6 @@
             data: {bankcardid:cardnum},
             type: 'get',
             success: function (data) {
-                console.log(strToJson(data).code);
                 if(strToJson(data).code=="success")
                 {
                     var jsonObj = strToJson(data).message;

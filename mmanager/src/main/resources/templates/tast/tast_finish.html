@@ -66,7 +66,26 @@
 </div>
 
 
+<!--详细内容 模态框 （Modal） -->
+<div class="modal fade" id="myModal_dollar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times; </button>
+                <h4 class="modal-title" id="myModalLabel">任务详细内容</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-form-label" >内容：</label>
+                    <div class="w100 inblock" >
+                        <p id="taskcontent" style="line-height: 2"></p>
+                    </div>
+                </div>
 
+            </div>
+        </div><!-- /.modal-content -->
+    </div>
+</div><!-- /.modal -->
 <script type="text/javascript">
     $(function () {
         $('#table').DataTable( {
@@ -122,7 +141,11 @@
             "columns": [
                 {"data": "id"},
                 {"data": "taskname" },
-                {"data": "taskcontent" },
+                {"data": "taskcontent" ,
+                    render:function(e,type,full,row){
+                        return "<a href='javascript:;' data-toggle=\"modal\" data-target=\"#myModal_dollar\" class=\"blue text_overflow width120\" onclick=\"detail_task('"+full.taskcontent+"')\">"+full.taskcontent+"</a>"
+                    }
+                },
                 {"data": "operauser" },
                 {"data": "createtime" },
                 {"data": "state" ,
@@ -135,7 +158,10 @@
             ]
         } );
     })
-
+    // 读取详细信息
+    function detail_task(content) {
+        $("#taskcontent").html(content);
+    }
 </script>
 </body>
 </html>
