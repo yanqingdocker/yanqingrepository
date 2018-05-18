@@ -20,4 +20,12 @@
     </select>
 
 
+    <insert id="batchAdd" parameterType="java.util.List">
+        insert into userrole(userid,roleid) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.userid},#{item.roleid})
+        </foreach>
+    </insert>
+
+
 </mapper>

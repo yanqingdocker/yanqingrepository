@@ -21,6 +21,13 @@
         select <include refid="Base_Column_List"/> from roleauth where roleid=#{roleid}
     </select>
 
+    <insert id="batchAdd" parameterType="java.util.List">
+        insert into userrole(roleid,authid) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.roleid},#{item.authid})
+        </foreach>
+    </insert>
+
 
 
 
