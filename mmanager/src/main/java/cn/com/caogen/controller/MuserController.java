@@ -70,7 +70,7 @@ public class MuserController {
      */
     @RequestMapping(path = "/queryAll", method = RequestMethod.GET)
     public String batchdelete() {
-        logger.info("queryMuser starts: ");
+        logger.info("queryMuser startst: ");
         List<Muser> musers= userServiceImpl.queryMusers();
         for (Muser muser:musers){
             List<UserRole> userRoles=userRoleService.queryByUserId(muser.getId());
