@@ -52,5 +52,7 @@ public class ConstantUtil {
     public static final String[] MONEY_TYPES=new String[]{"CNY","USD"};
     public static final String SYSTEMCOUNT_LESS="现金资金库余额不足";
     public static final String MONEY_EXCHANGE="现金兑换";
+    public static final String TASK_UNDO="待处理";
+    public static final String TASK_DONE="已处理";
 
 }

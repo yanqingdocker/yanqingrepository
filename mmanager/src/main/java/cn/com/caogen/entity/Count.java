@@ -3,6 +3,8 @@ package cn.com.caogen.entity;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
  * author:huyanqing
  * Date:2018/4/12
@@ -28,4 +30,5 @@ public class Count {
     private String createTime;
     //校验位
     private String checkCode;
+
 }
