@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,11 +59,14 @@ public class TaskController {
         return JSONArray.fromObject(taskService.queryByState(ConstantUtil.TASK_DONE)).toString();
     }
     @RequestMapping("dotask")
-    public String doTask(@RequestParam("id") int id){
+    public String doTask(@RequestParam("id") int id, HttpServletRequest request){
         logger.info("dotask start:");
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("id",id);
         parmMap.put("state",ConstantUtil.TASK_DONE);
+        parmMap.put("endtime",DateUtil.getTime());
+        String douser="操作员-"+request.getSession().getAttribute("username");
+        parmMap.put("douser",douser);
         taskService.updateTask(parmMap);
         return "suceess";
     }

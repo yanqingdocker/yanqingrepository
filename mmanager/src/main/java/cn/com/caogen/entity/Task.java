@@ -16,5 +16,7 @@ public class Task {
     private String createtime;
     private String state;
     private String operauser;
+    private String douser;
+    private String endtime;
 
 }
