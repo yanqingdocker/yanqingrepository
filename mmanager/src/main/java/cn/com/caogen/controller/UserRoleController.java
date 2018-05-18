@@ -6,7 +6,11 @@ import cn.com.caogen.mapper.UserRoleMapper;
 import cn.com.caogen.service.IRoleAuthService;
 import cn.com.caogen.service.IUserRoleService;
 import cn.com.caogen.service.UserRoleServiceImpl;
+import cn.com.caogen.util.ConstantUtil;
+import cn.com.caogen.util.ResponseMessage;
+import cn.com.caogen.util.StringUtil;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +43,7 @@ public class UserRoleController {
        userRole.setRoleid(roleid);
        userRole.setUserid(userid);
        userRoleService.add(userRole);
-        return "successs";
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 
 
@@ -50,8 +54,11 @@ public class UserRoleController {
     }
     @RequestMapping(path="/batchupdate",method = RequestMethod.POST)
     public String batchupdate(@RequestParam("userid") int userid,@RequestParam("roleids") String roleids){
+        if(!StringUtil.checkStrs(String.valueOf(userid),roleids)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.ERROR_ARGS)).toString();
+        }
         userRoleService.batchAdd(userid,roleids);
-        return "suuceee";
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 
 

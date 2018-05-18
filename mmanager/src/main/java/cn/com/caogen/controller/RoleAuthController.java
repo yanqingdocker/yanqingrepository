@@ -38,7 +38,7 @@ public class RoleAuthController {
         roleAuth.setRoleid(roleid);
         roleAuth.setAuthid(authid);
         roleAuthService.add(roleAuth);
-        return "successs";
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 
     @RequestMapping(path = "queryByRoleid",method = RequestMethod.POST)
@@ -49,8 +49,11 @@ public class RoleAuthController {
 
     @RequestMapping(path="/batchupdate",method = RequestMethod.POST)
     public String batchupdate(@RequestParam("roleid") int roleid,@RequestParam("authids") String authids){
+        if(!StringUtil.checkStrs(String.valueOf(roleid),authids)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.ERROR_ARGS)).toString();
+        }
         roleAuthService.batchAdd(roleid,authids);
-        return "suuceee";
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 
 
