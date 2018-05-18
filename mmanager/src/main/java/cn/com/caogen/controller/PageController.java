@@ -222,6 +222,15 @@ public class PageController {
         return "manage/manage_power";
     }
     /**
+     *后台管理员--添加角色
+     *
+     * @return
+     */
+    @RequestMapping("/manage/add_role")
+    public String add_role() {
+        return "manage/add_role";
+    }
+    /**
      *日志管理
      *
      * @return
@@ -288,5 +297,23 @@ public class PageController {
     @RequestMapping("/spentAnalysis/quarter")
     public String spentquarter() {
         return "spentAnalysis/quarter";
+    }
+    /**
+     *任务处理--待处理
+     *
+     * @return
+     */
+    @RequestMapping("/tast/tast_nodeal")
+    public String tast_nodeal() {
+        return "tast/tast_nodeal";
+    }
+    /**
+     *任务处理--已完成
+     *
+     * @return
+     */
+    @RequestMapping("/tast/tast_finish")
+    public String tast_finish() {
+        return "tast/tast_finish";
     }
 }

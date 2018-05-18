@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSS Libs -->
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
     <link  rel="stylesheet" type="text/css"  href="/css/sweet-alert.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/checkbox3.min.css">
     <!-- CSS App -->
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/themes/flat-blue.css">
@@ -46,8 +48,9 @@
                     <div class="form-group">
                         <label  class="col-sm-2 control-label">角色</label>
                         <div class="col-sm-10">
-                            <select id="rolelist"></select>
+                            <div id="rolelist"></div>
                         </div>
+                        <input type="hidden" name="roleids" id="realrole">
                     </div>
                     <div class="form-group">
                         <label  class="col-sm-2 control-label">密码</label>
@@ -127,6 +130,16 @@
         if (!$('#myform').data('bootstrapValidator').isValid()) {//判断校检是否通过
             return;
         } else {
+            var idlist ="";
+            $('input:checkbox[name=checklist]:checked').each(function(k){
+                if(k == 0){
+                    idlist = $(this).val();
+                }else{
+                    idlist += ','+$(this).val();
+                }
+                console.log(idlist)
+            });
+            $("#realrole").val(idlist);
             $.ajax({
                 url: '/muser/add',
                 data: $('#myform').serialize(),
@@ -150,27 +163,24 @@
         }
     }
     // 获取角色列表
-    // function loadrole() {
-    //     $.ajax({
-    //         url: '/count/queryCountByUserid',
-    //         data: null,
-    //         type: 'get',
-    //         success: function (data) {
-    //             var jsonObj = $.parseJSON(data);//json字符串转数组
-    //
-    //             for (var i=0;i<jsonObj.length;i++)
-    //             {
-    //                 if(jsonObj[i].state==1){
-    //                     var html ='<option data-id="'+jsonObj[i].countType+'" value="'+jsonObj[i].id+'">'+jsonObj[i].cardId+'('+currency_type(jsonObj[i].countType)+')'+'</option>';
-    //                     $("#rolelist").append(html);
-    //                 }
-    //
-    //             }
-    //
-    //
-    //         }
-    //     })
-    // }
+    function loadrole() {
+        $.ajax({
+            url: '/role/queryAll',
+            data: null,
+            type: 'get',
+            success: function (data) {
+                var jsonObj = $.parseJSON(data);//json字符串转数组
+                for (var i=0;i<jsonObj.length;i++)
+                {
+                    var html ='<div class="checkcustom tc checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light"> <input type="checkbox" id="checkx'+jsonObj[i].id+'" name="checklist" value="'+jsonObj[i].id+'"> <label for="checkx'+jsonObj[i].id+'">'+jsonObj[i].rolename+'</label></div>';
+                    $("#rolelist").append(html);
+
+                }
+
+
+            }
+        })
+    }
 </script>
 </body>
 

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv=Content-Type content="text/html; charset=utf-8">
-    <title>管理员列表</title>
+    <title>成员列表</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSS Libs -->
@@ -33,12 +33,12 @@
 <div class="bs-component">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/mainframe">系统首页</a></li>
-        <li class="breadcrumb-item">后台管理员</li>
-        <li class="breadcrumb-item active">管理员列表</li>
+        <li class="breadcrumb-item">后台成员</li>
+        <li class="breadcrumb-item active">成员列表</li>
     </ol>
 </div>
 <div class="page-title">
-    <span class="title">管理员列表</span>
+    <span class="title">成员列表</span>
 </div>
 <div class="row">
     <div class="col-xs-12">
@@ -52,7 +52,7 @@
                         <th width="30"></th>
                         <th>序号</th>
                         <th>用户名</th>
-                        <th>密码</th>
+                        <th>角色</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -81,7 +81,7 @@
             <div class="modal-body">
                 <form id="myform" >
                     <div class="form-group">
-                    <label class="col-form-label" >用户名：</label> <span id="username"></span>
+                        <label class="col-form-label" >用户名：</label> <span id="username"></span>
                     </div>
                     <input type="hidden" id="userid" name="id">
                     <div class="form-group">
@@ -101,8 +101,33 @@
     </div>
 </div><!-- /.modal -->
 
+<!--角色控制 模态框 （Modal） -->
+<div class="modal fade" id="myrole" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times; </button>
+                <h4 class="modal-title" id="myroleLabel"> 角色控制</h4>
+            </div>
+            <div class="modal-body">
+                <form id="roleform" >
+                    <div class="form-group">
+                        <label class="col-form-label" >角色：</label>
+                        <div class="powerlist"></div>
+                    </div>
+                    <input type="hidden" id="adminid" name="id">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary w100" onclick="roleform()">确认修改 </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div>
+</div><!-- /.modal -->
+
 <script type="text/javascript">
     $(function () {
+        loadrole();//获取角色
         $('#table').DataTable( {
             "serverSide": true,
             searching: true,
@@ -163,10 +188,19 @@
                 },
                 {"data": "id" },
                 {"data": "username" },
-                {"data": "password" },
+                {"data": "namelist",
+                    render:function(e,type,full,row){
+                        var rolemap=full.namelist;
+                        var html="";
+                        for(var i=0;i<rolemap.length;i++){
+                            html=html+rolemap[i]+"; ";
+                        }
+                        return html;
+                    }
+                },
                 {"data": "id",
                     render:function(e,type,full,row){
-                        return "<a href='javascript:;'  onclick='deletbatch("+full.id+")'  class=\"icon_delete\" title=\"删除\">删除</a> | <a href='javascript:;'  data-toggle=\"modal\" data-target=\"#myModal_dollar\" onclick='changepsw("+full.id+")' data-id="+full.username+" class='blue' >修改</a>";
+                        return "<a href='javascript:;'  onclick='deletbatch("+full.id+")'  class=\"icon_delete\" title=\"删除\">删除</a> | <a href='javascript:;'  data-toggle=\"modal\" data-target=\"#myModal_dollar\" onclick='changepsw("+full.id+")' data-id="+full.username+" class='blue' >修改</a>  |  <a href='javascript:;'  data-toggle=\"modal\" data-target=\"#myrole\" onclick='rolecontrol("+full.id+")' data-id="+full.username+" class='blue' >角色控制</a>";
                     }
                 }
             ]
@@ -225,7 +259,7 @@
     // 批量删除
     function deletbatch(userid){
         var idlist =userid;
-        $('input:checkbox[name=checklist]:checked').each(function(k){
+        $('#table input:checkbox[name=checklist]:checked').each(function(k){
             if(k == 0){
                 idlist = $(this).val();
             }else{
@@ -305,8 +339,66 @@
     }
     function changepsw(id) {
         $("#userid").val(id);
-       var name= $(this).attr("data-id");
+        var name= $(this).attr("data-id");
         $("#username").val(name);
+    }
+    // 点击角色控制
+    function rolecontrol(userid) {
+        $("#adminid").val(userid);
+        $("input[name='checkrole']").prop("checked",false).siblings().removeClass("on")
+    }
+
+    //获取角色
+    function loadrole() {
+        $.ajax({
+            url: '/role/queryAll',
+            data: null,
+            type: 'get',
+            success: function (data) {
+                var jsonObj = $.parseJSON(data);//json字符串转数组
+                for (var i=0;i<jsonObj.length;i++)
+                {
+                    var html ='<div class="checkcustom tc checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light"> <input type="checkbox" id="role'+jsonObj[i].id+'" name="checkrole" value="'+jsonObj[i].id+'"> <label for="role'+jsonObj[i].id+'">'+jsonObj[i].rolename+'</label></div>';
+                    $(".powerlist").append(html);
+
+                }
+
+
+            }
+        })
+    }
+
+    //角色控制
+    function roleform() {
+        var userid=$("#adminid").val();
+        var idlist ="";
+        $('.powerlist input:checkbox[name=checkrole]:checked').each(function(k){
+            if(k == 0){
+                idlist = $(this).val();
+            }else{
+                idlist += ','+$(this).val();
+            }
+        });
+        $.ajax({
+            url: '/userrole/batchupdate',
+            data: {userid:userid,roleids:idlist},
+            type: 'post',
+            success: function (data) {
+                if (strToJson(data).code == "success") {
+                    sweetAlert("", "恭喜您！角色控制修改成功！", "success");
+                    setTimeout(function () {
+                        window.location.href = "/manage/manage_list";
+                    }, 1500);
+                }
+                else {
+                    sweetAlert("", "角色控制修改失败", "error");
+                }
+
+            },
+            error: function () {
+                sweetAlert("", "请求失败！", "error");
+            }
+        })
     }
 </script>
 

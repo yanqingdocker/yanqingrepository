@@ -274,10 +274,24 @@
                 type: 'post',
                 success: function (data) {
                     if (strToJson(data).code == "success") {
-                        sweetAlert("", "恭喜您！现金存入成功！", "success");
-                        setTimeout(function () {
-                            window.location.href = "/member/opera_log";
-                        }, 1500);
+                        sweetAlert({
+                                title: "",
+                                text:"恭喜您！现金存入成功！是否立即打印凭证？",
+                                type: "info",
+                                showCancelButton: true,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "确定",
+                                cancelButtonText: "取消",
+                                closeOnConfirm: false,
+                                closeOnCancel: true
+                            },
+                            function(isConfirm){
+                                if (isConfirm) {
+                                   //确认打印凭条
+                                } else {
+                                    window.location.href = "/member/opera_log";
+                                }
+                            });
                     }
                     else {
                         sweetAlert("", strToJson(data).message, "error");

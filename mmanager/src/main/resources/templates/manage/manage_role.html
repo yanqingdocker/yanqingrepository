@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv=Content-Type content="text/html; charset=utf-8">
-    <title>管理员角色</title>
+    <title>成员角色</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
@@ -30,12 +30,12 @@
 <div class="bs-component">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/mainframe">系统首页</a></li>
-        <li class="breadcrumb-item">后台管理员</li>
-        <li class="breadcrumb-item active">管理员角色</li>
+        <li class="breadcrumb-item">后台成员</li>
+        <li class="breadcrumb-item active">成员角色</li>
     </ol>
 </div>
 <div class="page-title">
-    <span class="title">管理员角色</span>
+    <span class="title">成员角色</span>
 </div>
 <div class="row">
     <div class="col-xs-12">
@@ -60,7 +60,7 @@
                     <!--</div>-->
                     <div class="inblock">
                         <!--<a href="javascript:;" onclick="deletbatch()" class="blue mr10">删除</a>|-->
-                        <a class="blue ml10" href="javascript:;"  data-toggle="modal" data-target="#myModal" >添加</a></div>
+                        <a class="blue ml10" href="/manage/add_role" >添加</a></div>
                 </div>
             </div>
 
@@ -94,30 +94,33 @@
         </div><!-- /.modal-content -->
     </div>
 </div><!-- /.modal -->
-<!--添加角色 模态框 （Modal） -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+<!--权限控制 模态框 （Modal） -->
+<div class="modal fade" id="mypower" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times; </button>
-                <h4 class="modal-title" >添加角色</h4>
+                <h4 class="modal-title" >权限控制</h4>
             </div>
             <div class="modal-body">
-                <form id="addform" >
+                <form id="powerform" >
+                    <input type="hidden" name="roleid" id="roleid">
                     <div class="form-group">
-                        <label class="col-form-label" >角色名：</label>
-                        <input class="form-control" type="text" name="rolename" placeholder="请输入角色名">
+                        <label class="col-form-label" >添加权限：</label>
+                        <div class="powerlist"></div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary w100" onclick="addsubmit()">确认添加 </button>
+                <button type="button" class="btn btn-primary w100" onclick="roleform()">修改权限 </button>
             </div>
         </div><!-- /.modal-content -->
     </div>
 </div><!-- /.modal -->
 <script type="text/javascript">
     $(function () {
+        loadpower();
         $('#table').DataTable( {
             "order": [ 2, "desc" ],
             "serverSide": true,
@@ -182,7 +185,7 @@
                 {"data": "createtime" },
                 {"data": "id",
                     render:function(e,type,full,row){
-                        return "<a href='javascript:;'  onclick='deletbatch("+full.id+")'  class=\"icon_delete\" title=\"删除\">删除</a> | <a href='javascript:;'  data-toggle=\"modal\" data-target=\"#myModal_dollar\" onclick='changepsw("+full.id+")' class='blue' >修改</a> |  <a href='javascript:;' >权限控制</a>";
+                        return "<a href='javascript:;'  onclick='deletbatch("+full.id+")'  class=\"icon_delete\" title=\"删除\">删除</a> | <a href='javascript:;'  data-toggle=\"modal\" data-target=\"#myModal_dollar\" onclick='changepsw("+full.id+")' class='blue' >修改</a> |  <a href='javascript:;' data-toggle=\"modal\" data-target=\"#mypower\" onclick='powercontol("+full.id+")' >权限控制</a>";
                     }
                 }
             ]
@@ -207,16 +210,6 @@
     // 点击check添加样式
     $(document).on('click','.checkcustom label',function(){
         $(this).toggleClass("on");
-    });
-
-    /*check全选*/
-    $("input[rel='box_check_all']").on("click",function(){
-        if($(this).prop("checked")===true){
-            $("input[name='checklist']").prop("checked",$(this).prop("checked")).siblings().addClass("on")
-
-        }else{
-            $("input[name='checklist']").prop("checked",false).siblings().removeClass("on")
-        }
     });
 
 
@@ -270,33 +263,9 @@
             });
 
     }
-    // 添加角色addsubmit
-    function addsubmit() {
-        $.ajax({
-            url: '/role/addRole',
-            data: $('#addform').serialize(),
-            type: 'post',
-            success: function (data) {
-                if (strToJson(data).code == "success") {
-                    sweetAlert("", "恭喜您！添加成功！", "success");
-                    setTimeout(function () {
-                        window.location.href = "/manage/manage_role";
-                    }, 1500);
-                }
-                else {
-                    sweetAlert("", strToJson(data).message, "error");
-                }
-
-            },
-            error: function () {
-                sweetAlert("", "请求失败！", "error");
-            }
-        });
-    }
     // 修改角色名
     function submitform() {
         $("#userid").val();
-
         $.ajax({
             url: '/role/updateRole',
             data: $('#myform').serialize(),
@@ -321,6 +290,88 @@
     function changepsw(id) {
         $("#userid").val(id);
     }
+
+    // 点击权限控制
+    function powercontol(roleid) {
+        console.log(roleid);
+        $("#roleid").val(roleid);
+
+        $("input[name='checkrole']").prop("checked",false).siblings().removeClass("on")
+    }
+
+    //获取权限
+    function loadpower() {
+        $.ajax({
+            url: '/authoirty/queryAll',
+            data: null,
+            type: 'get',
+            success: function (data) {
+                var jsonObj = $.parseJSON(data);//json字符串转数组
+                for (var i=0;i<jsonObj.length;i++)
+                {
+                    var html ='<div class="checkcustom tc checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light"> <input type="checkbox" id="role'+jsonObj[i].id+'" name="checkrole" value="'+jsonObj[i].id+'"> <label for="role'+jsonObj[i].id+'">'+jsonObj[i].authoirtyname+'</label></div>';
+                    $(".powerlist").append(html);
+
+                }
+
+
+            }
+        })
+    }
+
+    //权限控制
+    function roleform() {
+        var roleid=$("#roleid").val();
+        var idlist ="";
+        $('.powerlist input:checkbox[name=checkrole]:checked').each(function(k){
+            if(k == 0){
+                idlist = $(this).val();
+            }else{
+                idlist += ','+$(this).val();
+            }
+        });
+        $.ajax({
+            url: '/roleauth/batchupdate',
+            data: {roleid:roleid,authids:idlist},
+            type: 'post',
+            success: function (data) {
+                if (strToJson(data).code == "success") {
+                    sweetAlert("", "恭喜您！权限控制修改成功！", "success");
+                    setTimeout(function () {
+                        window.location.href = "/manage/manage_role";
+                    }, 1500);
+                }
+                else {
+                    sweetAlert("", "权限控制修改失败", "error");
+                }
+
+            },
+            error: function () {
+                sweetAlert("", "请求失败！", "error");
+            }
+        })
+    }
+    //
+    // //默认勾选已有的权限
+    // function powercontol(roleid) {
+    //     $.ajax({
+    //         url: '/role/queryAll',
+    //         data: {id:roleid},
+    //         type: 'get',
+    //         success: function (data) {
+    //             var obj=strToJson(data);
+    //             $("#rolename").val(obj.rolename);
+    //             // for (var i=0;i<obj.length;i++)
+    //             // {
+    //             //     var html ='<div class="checkcustom tc checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light"> <input type="checkbox" id="checkx'+jsonObj[i].id+'" name="checklist" value="'+jsonObj[i].id+'"> <label for="checkx'+jsonObj[i].id+'">'+jsonObj[i].authoirtyname+'</label></div>';
+    //             //     $(".powerlist").append(html);
+    //             //
+    //             // }
+    //
+    //
+    //         }
+    //     })
+    // }
 </script>
 
 </body>
