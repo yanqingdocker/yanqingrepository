@@ -1,7 +1,10 @@
 package cn.com.caogen.controller;
 
 import cn.com.caogen.entity.Muser;
+import cn.com.caogen.entity.Role;
+import cn.com.caogen.entity.UserRole;
 import cn.com.caogen.service.IUserService;
+import cn.com.caogen.service.RoleServiceImpl;
 import cn.com.caogen.service.UserRoleServiceImpl;
 import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.ResponseMessage;
@@ -36,6 +39,8 @@ public class MuserController {
     private IUserService userServiceImpl;
     @Autowired
     private UserRoleServiceImpl userRoleService;
+    @Autowired
+    private RoleServiceImpl roleService;
     private static Map<String,HttpSession> sessionMap =new HashMap<String,HttpSession>();
 
     private static Map<String,HttpServletResponse> respMap =new HashMap<String,HttpServletResponse>();
@@ -67,6 +72,13 @@ public class MuserController {
     public String batchdelete() {
         logger.info("queryMuser start: ");
         List<Muser> musers= userServiceImpl.queryMusers();
+        for (Muser muser:musers){
+            List<UserRole> userRoles=userRoleService.queryByUserId(muser.getId());
+            for (UserRole userRole:userRoles){
+                Role role=roleService.queryById(userRole.getRoleid());
+                muser.getRoleMap().put(role.getId(),role.getRolename());
+            }
+        }
         if(musers!=null){
             return JSONArray.fromObject(musers).toString();
         }

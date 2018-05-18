@@ -1,7 +1,9 @@
 package cn.com.caogen.controller;
 
+import cn.com.caogen.entity.Authoirty;
 import cn.com.caogen.entity.Role;
 import cn.com.caogen.entity.RoleAuth;
+import cn.com.caogen.service.AuthoirtyServiceImpl;
 import cn.com.caogen.service.IRoleService;
 import cn.com.caogen.service.RoleAuthServiceImpl;
 import cn.com.caogen.util.ConstantUtil;
@@ -33,6 +35,8 @@ public class RoleController {
     private IRoleService roleServiceimpl;
     @Autowired
     private RoleAuthServiceImpl roleAuthService;
+    @Autowired
+    private AuthoirtyServiceImpl authoirtyService;
 
     /**
      * 增加角色
@@ -91,6 +95,13 @@ public class RoleController {
     @RequestMapping(path = "queryAll",method = RequestMethod.GET)
     public String queryAll(){
         List<Role> roleList=roleServiceimpl.queryAll();
+        for(Role role:roleList){
+            List<RoleAuth> roleAuths=roleAuthService.queryByRoleId(role.getId());
+            for(RoleAuth roleAuth:roleAuths){
+                Authoirty authoirty=authoirtyService.queryById(roleAuth.getAuthid());
+                role.getAuthMap().put(authoirty.getId(),authoirty.getAuthoirtyname());
+            }
+        }
         return JSONArray.fromObject(roleList).toString();
     }
 
