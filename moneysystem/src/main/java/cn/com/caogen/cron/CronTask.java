@@ -33,7 +33,7 @@ public class CronTask {
      */
     @Scheduled(cron = "1 0 0 * * ? ")
     public void setRate(){
-            logger.info("rate update task start "+DateUtil.getTime());String result = RateService.getRequest2();
+           /* logger.info("rate update task start "+DateUtil.getTime());String result = RateService.getRequest2();
             result=DataMonitor.reSet(result);
             stringRedisTemplate.opsForValue().set(ConstantUtil.ONE,stringRedisTemplate.opsForValue().get(ConstantUtil.TWO));
             stringRedisTemplate.opsForValue().set(ConstantUtil.TWO,stringRedisTemplate.opsForValue().get(ConstantUtil.THREE));
@@ -41,7 +41,7 @@ public class CronTask {
             stringRedisTemplate.opsForValue().set(ConstantUtil.FOURE,stringRedisTemplate.opsForValue().get(ConstantUtil.FIVE));
             stringRedisTemplate.opsForValue().set(ConstantUtil.FIVE,stringRedisTemplate.opsForValue().get(ConstantUtil.SIX));
             stringRedisTemplate.opsForValue().set(ConstantUtil.SIX,stringRedisTemplate.opsForValue().get(ConstantUtil.SENVEN));
-            stringRedisTemplate.opsForValue().set(ConstantUtil.SENVEN,result);
+            stringRedisTemplate.opsForValue().set(ConstantUtil.SENVEN,result);*/
             logger.info("rate update task end "+DateUtil.getTime());
 
     }

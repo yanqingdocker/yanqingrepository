@@ -143,9 +143,9 @@ public class MuserController {
         if(!musers.isEmpty()){
             for(Muser muser:musers){
                 if(username.equals(muser.getUsername())&&password.equals(muser.getPassword())){
-                    checkSession(muser.getId(),request,response);
                     request.getSession().setAttribute("userid",muser.getId());
                     request.getSession().setAttribute("username",muser.getUsername());
+                    request.getSession().setMaxInactiveInterval(180);
                     return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
                 }
             }
@@ -171,49 +171,5 @@ public class MuserController {
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 
-    /**
-     * 校验同一个账号只能在一处登录
-     * @param userid
-     * @param request
-     */
-    public void checkSession(int userid, HttpServletRequest request, HttpServletResponse response){
-        HttpSession session=request.getSession();
-        Iterator<Map.Entry<Integer, String>> iterator = userMap.entrySet().iterator();
-        boolean flag=true;
-        while(iterator.hasNext()){
-            Map.Entry<Integer, String> entry=iterator.next();
-            int tempid=entry.getKey();
-            if(tempid==userid){
-
-                if(session.getId().equals(entry.getValue())){
-                    return;
-                }
-                try {
-                    respMap.get(entry.getValue()).sendRedirect("login");
-                }catch (Exception e){
-
-                }
-                if(session.isNew()){
-
-                }
-                //设置上一个相同账号的seesion失效
-                sessionMap.get(entry.getValue()).invalidate();
-                //移除上一个相同账号的session
-                sessionMap.remove(entry.getValue());
-
-                //放入新的session
-                userMap.put(userid,session.getId());
-                sessionMap.put(session.getId(),session);
-                respMap.put(session.getId(),response);
-                flag=false;
-                break;
-            }
-        }
-        if(flag){
-            userMap.put(userid,session.getId());
-            sessionMap.put(session.getId(),session);
-            respMap.put(session.getId(),response);
-        }
-    }
 
 }
