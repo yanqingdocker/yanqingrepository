@@ -76,7 +76,8 @@ public class MuserController {
             List<UserRole> userRoles=userRoleService.queryByUserId(muser.getId());
             for (UserRole userRole:userRoles){
                 Role role=roleService.queryById(userRole.getRoleid());
-                muser.getRoleMap().put(role.getId(),role.getRolename());
+                muser.getIdlist().add(role.getId());
+                muser.getNamelist().add(role.getRolename());
             }
         }
         if(musers!=null){

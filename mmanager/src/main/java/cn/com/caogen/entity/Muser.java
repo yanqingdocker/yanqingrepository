@@ -3,7 +3,9 @@ package cn.com.caogen.entity;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +18,6 @@ public class Muser {
     private int id;
     private String username;
     private String password;
-    private Map<Integer,Object> roleMap=new HashMap<Integer,Object>();
+    private List<Integer> idlist=new ArrayList<Integer>();
+    private List<String> namelist=new ArrayList<String>();
 }
