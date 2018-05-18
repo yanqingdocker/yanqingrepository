@@ -37,6 +37,9 @@
         <if test="id !=null">
             and id=#{id}
         </if>
+        <if test="bankcard !=null">
+            and bankcard=#{bankcard}
+        </if>
     </select>
 
 
