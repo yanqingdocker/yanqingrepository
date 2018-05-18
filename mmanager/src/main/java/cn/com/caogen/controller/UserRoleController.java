@@ -48,18 +48,9 @@ public class UserRoleController {
         List<UserRole> userRoles= userRoleService.queryByUserId(userid);
         return JSONArray.fromObject(userRoles).toString();
     }
-    @RequestMapping(path="/batchAdd",method = RequestMethod.POST)
-    public String batchAdd(){
-        List<UserRole> roles=new ArrayList<UserRole>();
-        UserRole userRole=new UserRole();
-        userRole.setUserid(10);
-        userRole.setRoleid(10);
-        UserRole userRole1=new UserRole();
-        userRole1.setUserid(11);
-        userRole1.setRoleid(11);
-        roles.add(userRole);
-        roles.add(userRole1);
-        userRoleMapper.batchAdd(roles);
+    @RequestMapping(path="/batchupdate",method = RequestMethod.POST)
+    public String batchupdate(@RequestParam("userid") int userid,@RequestParam("roleids") String roleids){
+        userRoleService.batchAdd(userid,roleids);
         return "suuceee";
     }
 

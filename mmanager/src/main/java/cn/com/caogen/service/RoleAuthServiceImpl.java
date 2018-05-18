@@ -39,6 +39,7 @@ public class RoleAuthServiceImpl implements IRoleAuthService {
             roleAuth.setAuthid(Integer.parseInt(strs[i]));
             roleAuths.add(roleAuth);
         }
+        roleAuthMapper.deleteByRoleid(roleid);
         roleAuthMapper.batchAdd(roleAuths);
     }
 }

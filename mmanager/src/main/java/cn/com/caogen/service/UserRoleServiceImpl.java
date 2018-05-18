@@ -37,6 +37,7 @@ public class UserRoleServiceImpl implements IUserRoleService {
             userRole.setRoleid(Integer.parseInt(strs[i]));
             roles.add(userRole);
         }
+        userRoleMapper.deleteByUserid(userid);
         userRoleMapper.batchAdd(roles);
     }
 }

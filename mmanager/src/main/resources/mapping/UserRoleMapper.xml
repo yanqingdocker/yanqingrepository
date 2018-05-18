@@ -26,6 +26,9 @@
             (#{item.userid},#{item.roleid})
         </foreach>
     </insert>
+    <delete id="deleteByUserid" parameterType="int">
+        delete from userrole where userid=#{userid}
+    </delete>
 
 
 </mapper>

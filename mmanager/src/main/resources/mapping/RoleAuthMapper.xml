@@ -28,6 +28,10 @@
         </foreach>
     </insert>
 
+    <delete id="deleteByRoleid" parameterType="int">
+        delete from roleauth where roleid=#{roleid}
+    </delete>
+
 
 
 

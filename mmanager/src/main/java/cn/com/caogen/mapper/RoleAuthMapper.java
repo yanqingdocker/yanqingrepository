@@ -16,4 +16,5 @@ public interface RoleAuthMapper {
     List<RoleAuth> queryByRoleId(int roleid);
 
     void batchAdd(List<RoleAuth> roleAuths);
+    void deleteByRoleid(int roleid);
 }

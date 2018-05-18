@@ -47,6 +47,12 @@ public class RoleAuthController {
         return JSONArray.fromObject(roleAuths).toString();
     }
 
+    @RequestMapping(path="/batchupdate",method = RequestMethod.POST)
+    public String batchupdate(@RequestParam("roleid") int roleid,@RequestParam("authids") String authids){
+        roleAuthService.batchAdd(roleid,authids);
+        return "suuceee";
+    }
+
 
 
 }
