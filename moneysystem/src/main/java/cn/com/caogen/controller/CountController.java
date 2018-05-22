@@ -55,7 +55,7 @@ public class CountController {
     public String createCount(@RequestParam("countType") String countType, @RequestParam("payPwd") String payPwd, HttpServletRequest request) {
 
         logger.info("createCount start :countType=" + countType);
-        User user=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
+        User user=JedisUtil.getUser(request);
         if (StringUtil.checkStrs(countType)) {
             if (checkUser(request.getSession().getAttribute("phone").toString())) {
                 payPwd = MD5Util.string2MD5(payPwd);
@@ -159,7 +159,7 @@ public class CountController {
     public String queryCountByUserid(HttpServletRequest request) {
 
         logger.info("queryCountByUserid start ");
-        User user=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
+        User user=JedisUtil.getUser(request);
         String userId = null;
         if(request.getSession().getAttribute("userid")!=null){
             userId=String.valueOf(user.getUserid());
@@ -196,7 +196,7 @@ public class CountController {
     @RequestMapping(path = "/switch", method = RequestMethod.POST)
     public String countSwitch(HttpServletRequest request,@RequestParam("countid") String id, @RequestParam("moneynum") Double moneynum, @RequestParam("receivecount") String receivecount, @RequestParam("payPwd") String payPwd) {
         logger.info("countSwitch start: countid="+id+",moneynum="+moneynum+",receivecount="+receivecount+",payPaw="+payPwd);
-        User currentuser=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
+        User currentuser=JedisUtil.getUser(request);
         if (!StringUtil.checkStrs(id, String.valueOf(moneynum), receivecount)) {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ERROR_ARGS)).toString();
         }
@@ -242,7 +242,7 @@ public class CountController {
     @RequestMapping(path = "/exchange", method = RequestMethod.POST)
     public String exchange(@RequestParam("datas") String datas,HttpServletRequest request) {
         logger.info("exchange start: datas="+datas);
-        User user=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
+        User user=JedisUtil.getUser(request);
         if (!StringUtil.checkStrs(datas)) {
             return net.sf.json.JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ERROR_ARGS)).toString();
         }

@@ -64,7 +64,7 @@ public class BankController {
      */
     @RequestMapping(path = "/bindBankCard", method = RequestMethod.POST)
     public String bindBankCard(@RequestParam("datas") String datas, HttpServletRequest request) {
-        User user=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
+        User user=JedisUtil.getUser(request);
         logger.info("bindBankCard start: datas="+datas);
         if (StringUtil.checkStrs(datas)) {
             JSONObject jsonObject = JSONObject.fromObject(datas);
@@ -128,20 +128,11 @@ public class BankController {
     @RequestMapping(path = "/query", method = RequestMethod.POST)
     public String query(HttpServletRequest request) {
         logger.info("query start");
-        User user=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
+        User user=JedisUtil.getUser(request);
         Map<String, Object> parmMap = new HashMap<String, Object>();
         parmMap.put("userid",user.getUserid());
         List<BankCard> bankCardList = bankCardService.queryCondition(parmMap);
         return JSONArray.fromObject(bankCardList).toString();
     }
-    /**
-     * 查询所有银行卡
-     */
-    @RequestMapping(path = "/queryAll", method = RequestMethod.GET)
-    public String queryAll(HttpServletRequest request) {
-        logger.info("query start");
-        Map<String, Object> parmMap = new HashMap<String, Object>();
-        List<BankCard> bankCardList = bankCardService.queryCondition(parmMap);
-        return JSONArray.fromObject(bankCardList).toString();
-    }
+
 }

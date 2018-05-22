@@ -48,7 +48,7 @@ public class MessageController {
     @RequestMapping(path = "/send", method = RequestMethod.POST)
     public String sendMessage(@RequestParam("receivecount") String receivecount,@RequestParam("title") String title, @RequestParam("content") String content, HttpServletRequest request) {
             logger.info("sendMessage start: receivecount="+receivecount+",titlt="+title+",content="+content);
-            User currentUser=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
+            User currentUser=JedisUtil.getUser(request);
             if (StringUtil.checkStrs(title, content)) {
                 User user=getUser(receivecount,null);
                 if(user==null||user.getIsauthentication()==0){
@@ -81,7 +81,7 @@ public class MessageController {
     @RequestMapping(path = "/querysend", method = RequestMethod.GET)
     public String querysend(HttpServletRequest request) {
         logger.info("querysend start: request="+request);
-        User currentUser=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
+        User currentUser=JedisUtil.getUser(request);
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("userid",currentUser.getUserid());
         parmMap.put("messagetype",1);
@@ -98,7 +98,7 @@ public class MessageController {
     @RequestMapping(path = "/queryreceive", method = RequestMethod.GET)
     public String reciveMessage(HttpServletRequest request) {
         logger.info("reciveMessage start");
-        User currentUser=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
+        User currentUser=JedisUtil.getUser(request);
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("userid",currentUser.getUserid());
         parmMap.put("messagetype",0);

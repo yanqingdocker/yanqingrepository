@@ -1,5 +1,6 @@
 package cn.com.caogen.controller;
 
+import cn.com.caogen.util.JedisUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -38,7 +39,7 @@ public class PageController {
      */
     @RequestMapping("/login")
     public String login(HttpServletRequest httpServletRequest) {
-        if(httpServletRequest.getSession().getAttribute("userid")!=null){
+        if(JedisUtil.getUser(httpServletRequest) !=null){
             return "index";
         }
         return "login";

@@ -50,5 +50,6 @@ public class ConstantUtil {
     public static final String ALERADY_BANK="此银行卡已经被绑定过";
     public static final String BANK_NOTAUTH="验证不通过,清核对信息";
     public static final String[] MONEY_TYPES=new String[]{"CNY","USD"};
+    public static final String SESSIONCOLLCTION="sessionMap";
 
 }

@@ -44,7 +44,7 @@ public class AppliyController {
      */
     @RequestMapping(path = "scanlogin",method = RequestMethod.GET)
     public String scanLogin(HttpServletRequest request){
-        User user=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
+        User user=JedisUtil.getUser(request);
         int userid=user.getUserid();
 
         extappliyService.init();
@@ -70,7 +70,7 @@ public class AppliyController {
         }catch (Exception e){
 
         }
-        User user=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
+        User user=JedisUtil.getUser(request);
         int userid=user.getUserid();
         String allowbase64= extappliyService.scanAllow(String.valueOf(userid));
         if(stringRedisTemplate.opsForValue().get(userid+"_allowbase64")!=null&&"".equals(allowbase64)){
@@ -84,7 +84,7 @@ public class AppliyController {
     //绑定支付宝账号
     @RequestMapping(path = "bind",method = RequestMethod.GET)
     public String bindAppliy(HttpServletRequest request){
-        User user=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
+        User user=JedisUtil.getUser(request);
         int userid=user.getUserid();
         try {
             try {
@@ -110,7 +110,7 @@ public class AppliyController {
             Appliy appliy=new Appliy();
             appliy.setRealname(real_name);
             appliy.setAppliycount(alipay_account);
-            appliy.setUserid((int)request.getSession().getAttribute("userid"));
+            appliy.setUserid(user.getUserid());
             appliy.setCreatetime(DateUtil.getDate());
             appliyService.bind(appliy);
             stringRedisTemplate.delete(userid+"_loginbase64");
@@ -152,7 +152,7 @@ public class AppliyController {
      */
     @RequestMapping(path = "querybyUserid",method = RequestMethod.GET)
     public String querybyUserid(HttpServletRequest request){
-        User user=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
+        User user=JedisUtil.getUser(request);
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("userid",user.getUserid());
         List<Appliy> appliyList=appliyService.query(new HashMap<String,Object>());

@@ -1,6 +1,7 @@
 package cn.com.caogen.filter;
 
 import cn.com.caogen.entity.User;
+import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.JedisUtil;
 import cn.com.caogen.util.SerializeUtil;
 import org.springframework.util.StringUtils;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,11 +62,15 @@ public class SystemFilter implements Filter {
                 chain.doFilter(request, response);
                 return;
             }else{
-                User user=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+httpServletRequest.getSession().getId()).getBytes()));
+                User user=JedisUtil.getUser(httpServletRequest);
                 if(user!=null){
                     chain.doFilter(request,response);
+                    return;
                 }else{
-                    httpServletResponse.sendRedirect("/index");
+                    Map<String,Object> sessionMap=JedisUtil.getSessionMap();
+                    sessionMap.remove(httpServletRequest.getSession().getId());
+                    JedisUtil.getJedis().set(ConstantUtil.SESSIONCOLLCTION.getBytes(),SerializeUtil.serialize(sessionMap));
+                    httpServletResponse.sendRedirect("/login");
                 }
             }
 

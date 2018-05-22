@@ -55,7 +55,7 @@ public class OperaController {
      */
     @RequestMapping(path = "/queryByUserid",method = RequestMethod.GET)
     public String queryByUserid(HttpServletRequest request){
-        User currentUser=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
+        User currentUser=JedisUtil.getUser(request);
        List<Count> countList=countServiceimpl.queryByUserId(currentUser.getUserid());
        List<Operation> operationList=new ArrayList<Operation>();
        for(Count count:countList){

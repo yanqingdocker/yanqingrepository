@@ -1,9 +1,13 @@
 package cn.com.caogen.filter;
 
+import cn.com.caogen.controller.AppliyController;
 import cn.com.caogen.entity.User;
+import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.DateUtil;
 import cn.com.caogen.util.JedisUtil;
 import cn.com.caogen.util.SerializeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.data.redis.connection.jedis.JedisConnection;
@@ -19,19 +23,19 @@ import redis.clients.jedis.Jedis;
  * Date:2018/5/22
  */
 public class SystemListener implements HttpSessionListener {
+    private static Logger logger = LoggerFactory.getLogger(SystemListener.class);
 
-    @Autowired
-    private StringRedisTemplate stringRedisTemplate;
     @Override
     public void sessionCreated(HttpSessionEvent se) {
 
-
-        System.out.println(se.getSession().getId()+"createsession=============================="+DateUtil.getTime());
+      logger.info(se.getSession().getId()+"createsession=============================="+DateUtil.getTime());
     }
 
     @Override
     public void sessionDestroyed(HttpSessionEvent se) {
-        JedisUtil.getJedis().del(se.getSession().getId().getBytes());
-        System.out.println(se.getSession().getMaxInactiveInterval()+"====="+se.getSession().getId()+"destorysession=============================="+DateUtil.getTime());
+        Map<String,Object> sessionMap=JedisUtil.getSessionMap();
+        sessionMap.remove(se.getSession().getId());
+        JedisUtil.getJedis().set(ConstantUtil.SESSIONCOLLCTION.getBytes(),SerializeUtil.serialize(sessionMap));
+        logger.info(se.getSession().getMaxInactiveInterval()+"====="+se.getSession().getId()+"destorysession=============================="+DateUtil.getTime());
     }
 }

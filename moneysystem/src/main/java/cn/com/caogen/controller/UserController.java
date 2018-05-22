@@ -1,17 +1,13 @@
 package cn.com.caogen.controller;
 
 import cn.com.caogen.entity.User;
-import cn.com.caogen.externIsystem.service.AppliyService;
+
 import cn.com.caogen.externIsystem.service.IDCardService;
 import cn.com.caogen.externIsystem.service.MessageService;
 import cn.com.caogen.service.IUserService;
 import cn.com.caogen.util.*;
 import net.sf.json.JSONObject;
-import org.apache.catalina.servlet4preview.ServletContext;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
 import java.util.*;
 
 /**
@@ -37,18 +31,13 @@ import java.util.*;
 public class UserController {
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    private static Map<String,HttpSession> sessionMap =new HashMap<String,HttpSession>();
-
-    private static Map<String,HttpServletResponse> respMap =new HashMap<String,HttpServletResponse>();
-    private static Map<String,HttpServletRequest> reqMap =new HashMap<String,HttpServletRequest>();
-
-    private static Map<Integer,String> userMap =new HashMap<Integer,String>();
 
     @Autowired
     private IUserService userServiceImpl;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
 
 
     private static String check_Num = "";
@@ -129,32 +118,39 @@ public class UserController {
      */
     @RequestMapping(path="/login",method = RequestMethod.POST)
     public String login( @RequestParam("telphone") String telphone, @RequestParam("password") String password,HttpServletRequest request,HttpServletResponse response) throws Exception{
-        logger.info("login: telphone="+telphone);
-            if (!StringUtils.isEmpty(telphone) && !StringUtils.isEmpty(password)){
-                password = MD5Util.string2MD5(password);
-                User user=getUser(telphone,null);
-                if(user==null){
-
-                   return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.EROOR_USER)).toString();
-                }
-                if(request.getSession().getAttribute("userid")!=null){
-                   return JSONObject.fromObject(user).toString();
-                }
-                if (password.equals(user.getPassword())) {
-                    request.getSession().setAttribute("phone",user.getPhone());
-                    request.getSession().setAttribute("userid",user.getUserid());
-                    request.getSession().setAttribute("id",user.getUserid());
-                    request.getSession().setAttribute("username",user.getUsername());
-                    request.getSession().setMaxInactiveInterval(180);
-                    checkSession(user.getUserid(),request,response);
-                    return JSONObject.fromObject(user).toString();
-
-                }else{
-                    return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.EROOR_USER)).toString();
-                }
+            logger.info("login: telphone="+telphone);
+            if (!StringUtil.checkStrs(telphone,password)){
+                return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
             }
-        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.EROOR_USER)).toString();
+
+            password = MD5Util.string2MD5(password);
+            User user=getUser(telphone,null);
+            if(user==null){
+
+               return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.EROOR_USER)).toString();
+            }
+
+            if (password.equals(user.getPassword())) {
+                request.getSession().setAttribute("phone",user.getPhone());
+                request.getSession().setAttribute("userid",user.getUserid());
+                request.getSession().setAttribute("id",user.getUserid());
+                request.getSession().setAttribute("username",user.getUsername());
+                checkSession(user.getUserid(),request);
+                Map<String,Object> sessionMap=JedisUtil.getSessionMap();
+                sessionMap.put(request.getSession().getId(),SerializeUtil.serialize(user));
+                JedisUtil.getJedis().set(ConstantUtil.SESSIONCOLLCTION.getBytes(),SerializeUtil.serialize(sessionMap));
+
+
+                return JSONObject.fromObject(user).toString();
+
+            }else{
+                return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.EROOR_USER)).toString();
+            }
+
+
     }
+
+
 
     /**
      * 找回密码
@@ -234,11 +230,9 @@ public class UserController {
      */
     @RequestMapping("/logout")
     public String logout(HttpServletRequest request) {
-        logger.info("logout start");
-        sessionMap.remove(request.getSession().getId());
-        userMap.remove(request.getSession().getAttribute("userid"));
-        request.getSession().invalidate();
 
+        logger.info("logout start");
+        request.getSession().invalidate();
 
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
@@ -250,9 +244,14 @@ public class UserController {
      */
     @RequestMapping("/getuser")
     public String getuser(HttpServletRequest request) {
+        User currentUser=JedisUtil.getUser(request);
+        if(currentUser==null){
+            request.getSession().invalidate();
+            return null;
+        }
         String telphone="";
-        if(request.getSession().getAttribute("phone")!=null){
-            telphone=request.getSession().getAttribute("phone").toString();
+        if(currentUser.getPhone()!=null){
+            telphone=currentUser.getPhone();
         }
         User user=getUser(telphone,null);
         if(user!=null){
@@ -273,13 +272,14 @@ public class UserController {
         if (!StringUtil.checkStrs(datas)) {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
+        User currentUser=JedisUtil.getUser(request);
         JSONObject jsonObject=JSONObject.fromObject(datas);
         String username=jsonObject.getString("username");
         String idcard=jsonObject.getString("idcard");
         String birthday=jsonObject.getString("birthday");
         String email=jsonObject.getString("email");
         String address=jsonObject.getString("address");
-        String phone=(String)request.getSession().getAttribute("phone");
+        String phone=currentUser.getPhone();
         User user=getUser(phone,null);
         if(IDCardService.authentication(username,idcard)){
             user.setUsername(username);
@@ -315,48 +315,22 @@ public class UserController {
      * @param userid
      * @param request
      */
-    public void checkSession(int userid,HttpServletRequest request,HttpServletResponse response){
-        HttpSession session=request.getSession();
-        Iterator<Map.Entry<Integer, String>> iterator = userMap.entrySet().iterator();
-            boolean flag=true;
-        while(iterator.hasNext()){
-            Map.Entry<Integer, String> entry=iterator.next();
-            int tempid=entry.getKey();
-            if(tempid==userid){
-
-               if(session.getId().equals(entry.getValue())){
-                   return;
-               }
-
-                //设置上一个相同账号的seesion失效
-                if(reqMap.get(entry.getValue())!=null){
-                    //如果上个未过期则另其过期
-                    if(reqMap.get(entry.getValue()).getSession(true)==null){
-
-                        try {
-                            sessionMap.get(entry.getValue()).invalidate();
-                            int i=5;
-                        }catch (IllegalStateException e){
-                            logger.warn("login invalidate error");
-                        }
-
-                    }
-                }
-                //移除上一个相同账号的session
-                sessionMap.remove(entry.getValue());
-                //放入新的session
-                userMap.put(userid,session.getId());
-                sessionMap.put(session.getId(),session);
-                reqMap.put(session.getId(),request);
-                flag=false;
-                break;
+    public void checkSession(int userid,HttpServletRequest request){
+            Map<String,Object> sessionMap=JedisUtil.getSessionMap();
+            if(sessionMap==null){
+                return;
             }
-        }
-        if(flag){
-            userMap.put(userid,session.getId());
-            sessionMap.put(session.getId(),session);
-            reqMap.put(session.getId(),request);
-        }
+            Set<String> keys=sessionMap.keySet();
+            for (String key:keys){
+                //4FE9907BEDF1462CDF3276585DFF20DC
+                User currentUser=(User)SerializeUtil.unserialize((byte[])sessionMap.get(key));
+                if(currentUser!=null&&userid==currentUser.getUserid()){
+                    System.out.println("remove user");
+                    sessionMap.remove(key);
+                    JedisUtil.getJedis().set(ConstantUtil.SESSIONCOLLCTION.getBytes(),SerializeUtil.serialize(sessionMap));
+                    return;
+                }
+            }
     }
 
 }

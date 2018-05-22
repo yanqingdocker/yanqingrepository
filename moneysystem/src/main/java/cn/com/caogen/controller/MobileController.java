@@ -46,7 +46,7 @@ public class MobileController {
     @RequestMapping(path = "/payMent", method = RequestMethod.POST)
     public String payMent(HttpServletRequest request, @RequestParam("countId") String countId, @RequestParam("cardNum") String cardNum, @RequestParam("phone") String phone) {
         logger.info("payMent start: countId="+countId+",cardNum="+cardNum+",phone="+phone);
-        User currentUser=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
+        User currentUser=JedisUtil.getUser(request);
         if (!StringUtil.checkStrs(countId,cardNum,phone)) {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
