@@ -4,6 +4,7 @@ package cn.com.caogen.cron;
 import cn.com.caogen.controller.UserController;
 import cn.com.caogen.externIsystem.service.RateService;
 import cn.com.caogen.util.ConstantUtil;
+import cn.com.caogen.util.DataMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +28,12 @@ public class CronTask {
     private StringRedisTemplate stringRedisTemplate;
 
     /**
-     *  每天12点调用一次汇率接口，并刷新redis
+     *  每天12点调用一次汇率接口，并刷新redis //1 0 0 * * ?
      */
     @Scheduled(cron = "1 0 0 * * ? ")
     public void setRate(){
             String result = RateService.getRequest2();
-
+             result=DataMonitor.reSet(result);
             stringRedisTemplate.opsForValue().set(ConstantUtil.ONE,stringRedisTemplate.opsForValue().get(ConstantUtil.TWO));
             stringRedisTemplate.opsForValue().set(ConstantUtil.TWO,stringRedisTemplate.opsForValue().get(ConstantUtil.THREE));
             stringRedisTemplate.opsForValue().set(ConstantUtil.THREE,stringRedisTemplate.opsForValue().get(ConstantUtil.FOURE));

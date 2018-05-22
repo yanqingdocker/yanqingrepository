@@ -125,7 +125,7 @@ public class BankController {
     /**
      * 查询当前用户下的银行卡
      */
-    @RequestMapping(path = "/query", method = RequestMethod.POST)
+    @RequestMapping(path = "/query", method = RequestMethod.GET)
     public String query(HttpServletRequest request) {
         logger.info("query start");
         Map<String, Object> parmMap = new HashMap<String, Object>();
