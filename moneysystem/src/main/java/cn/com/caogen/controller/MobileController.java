@@ -1,15 +1,13 @@
 package cn.com.caogen.controller;
 
 import cn.com.caogen.entity.Count;
+import cn.com.caogen.entity.User;
 import cn.com.caogen.externIsystem.service.MobileService;
 import cn.com.caogen.service.CountServiceImpl;
 import cn.com.caogen.service.ICountService;
 import cn.com.caogen.service.IOperaService;
 import cn.com.caogen.service.OperaServiceImpl;
-import cn.com.caogen.util.ConstantUtil;
-import cn.com.caogen.util.IpUtil;
-import cn.com.caogen.util.ResponseMessage;
-import cn.com.caogen.util.StringUtil;
+import cn.com.caogen.util.*;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.junit.jupiter.api.Test;
@@ -48,6 +46,7 @@ public class MobileController {
     @RequestMapping(path = "/payMent", method = RequestMethod.POST)
     public String payMent(HttpServletRequest request, @RequestParam("countId") String countId, @RequestParam("cardNum") String cardNum, @RequestParam("phone") String phone) {
         logger.info("payMent start: countId="+countId+",cardNum="+cardNum+",phone="+phone);
+        User currentUser=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
         if (!StringUtil.checkStrs(countId,cardNum,phone)) {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
@@ -69,7 +68,7 @@ public class MobileController {
                     //充值提交成功,更新账户余额
                     count.setBlance(count.getBlance()-num);
                     countServiceImpl.updateCount(String.valueOf(count.getId()),count.getBlance(),null,null);
-                    countServiceImpl.saveOperaLog(count.getCardId(),count.getCountType(),num,ConstantUtil.SERVICETYPE_PHONERECHARGE,(String)request.getSession().getAttribute("username"),ConstantUtil.MONEY_OUT,IpUtil.getIpAddr(request));
+                    countServiceImpl.saveOperaLog(count.getCardId(),count.getCountType(),num,ConstantUtil.SERVICETYPE_PHONERECHARGE,currentUser.getUsername(),ConstantUtil.MONEY_OUT,IpUtil.getIpAddr(request));
                 } else {
                     return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL)).toString();
                 }

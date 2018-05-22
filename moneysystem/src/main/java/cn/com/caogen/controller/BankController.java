@@ -1,11 +1,10 @@
 package cn.com.caogen.controller;
 
 import cn.com.caogen.entity.BankCard;
+import cn.com.caogen.entity.User;
 import cn.com.caogen.externIsystem.service.BackCardService;
 import cn.com.caogen.service.IBankCardService;
-import cn.com.caogen.util.ConstantUtil;
-import cn.com.caogen.util.ResponseMessage;
-import cn.com.caogen.util.StringUtil;
+import cn.com.caogen.util.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
@@ -65,6 +64,7 @@ public class BankController {
      */
     @RequestMapping(path = "/bindBankCard", method = RequestMethod.POST)
     public String bindBankCard(@RequestParam("datas") String datas, HttpServletRequest request) {
+        User user=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
         logger.info("bindBankCard start: datas="+datas);
         if (StringUtil.checkStrs(datas)) {
             JSONObject jsonObject = JSONObject.fromObject(datas);
@@ -73,7 +73,7 @@ public class BankController {
             String bankcard = jsonObject.getString("bankcard");
             String phone = jsonObject.getString("phone");
             String address = jsonObject.getString("address");
-            String userid =String.valueOf(request.getSession().getAttribute("userid"));
+            String userid =String.valueOf(user.getUserid());
             String bankType = jsonObject.getString("banktype");
 
             if (StringUtil.checkStrs(username, idcard, bankcard, phone)) {
@@ -125,16 +125,17 @@ public class BankController {
     /**
      * 查询当前用户下的银行卡
      */
-    @RequestMapping(path = "/query", method = RequestMethod.GET)
+    @RequestMapping(path = "/query", method = RequestMethod.POST)
     public String query(HttpServletRequest request) {
         logger.info("query start");
+        User user=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
         Map<String, Object> parmMap = new HashMap<String, Object>();
-        parmMap.put("userid", (int) request.getSession().getAttribute("userid"));
+        parmMap.put("userid",user.getUserid());
         List<BankCard> bankCardList = bankCardService.queryCondition(parmMap);
         return JSONArray.fromObject(bankCardList).toString();
     }
     /**
-     * 查询当前用户下的银行卡
+     * 查询所有银行卡
      */
     @RequestMapping(path = "/queryAll", method = RequestMethod.GET)
     public String queryAll(HttpServletRequest request) {

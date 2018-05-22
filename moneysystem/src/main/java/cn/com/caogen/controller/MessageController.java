@@ -4,9 +4,7 @@ import cn.com.caogen.entity.Message;
 import cn.com.caogen.entity.User;
 import cn.com.caogen.service.IMessageService;
 import cn.com.caogen.service.IUserService;
-import cn.com.caogen.util.ConstantUtil;
-import cn.com.caogen.util.ResponseMessage;
-import cn.com.caogen.util.StringUtil;
+import cn.com.caogen.util.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
@@ -50,21 +48,22 @@ public class MessageController {
     @RequestMapping(path = "/send", method = RequestMethod.POST)
     public String sendMessage(@RequestParam("receivecount") String receivecount,@RequestParam("title") String title, @RequestParam("content") String content, HttpServletRequest request) {
             logger.info("sendMessage start: receivecount="+receivecount+",titlt="+title+",content="+content);
+            User currentUser=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
             if (StringUtil.checkStrs(title, content)) {
                 User user=getUser(receivecount,null);
                 if(user==null||user.getIsauthentication()==0){
                     return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOTUSER_OR_NOTAUTENTENTION)).toString();
                 }
-                if(user.getUserid()==(int)request.getSession().getAttribute("userid")){
+                if(user.getUserid()==currentUser.getUserid()){
                     return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOTALLOWSELF)).toString();
                 }
                 Map<String, String> parmMap = new HashMap<String, String>();
                 parmMap.put("title", title);
                 parmMap.put("content", content);
-                parmMap.put("sendname",(String)request.getSession().getAttribute("username"));
+                parmMap.put("sendname",currentUser.getUsername());
                 parmMap.put("receivename",user.getUsername());
                 parmMap.put("receiveuserid",String.valueOf(user.getUserid()));
-                parmMap.put("senduserid",String.valueOf(request.getSession().getAttribute("userid")));
+                parmMap.put("senduserid",String.valueOf(currentUser.getUserid()));
                 messageService.add(parmMap);
                 return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
             }else {
@@ -82,8 +81,9 @@ public class MessageController {
     @RequestMapping(path = "/querysend", method = RequestMethod.GET)
     public String querysend(HttpServletRequest request) {
         logger.info("querysend start: request="+request);
+        User currentUser=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
         Map<String,Object> parmMap=new HashMap<String,Object>();
-        parmMap.put("userid",request.getSession().getAttribute("userid"));
+        parmMap.put("userid",currentUser.getUserid());
         parmMap.put("messagetype",1);
         List<Message> message=messageService.queryByCondition(parmMap);
         return JSONArray.fromObject(message).toString();
@@ -98,8 +98,9 @@ public class MessageController {
     @RequestMapping(path = "/queryreceive", method = RequestMethod.GET)
     public String reciveMessage(HttpServletRequest request) {
         logger.info("reciveMessage start");
+        User currentUser=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
         Map<String,Object> parmMap=new HashMap<String,Object>();
-        parmMap.put("userid",request.getSession().getAttribute("userid"));
+        parmMap.put("userid",currentUser.getUserid());
         parmMap.put("messagetype",0);
         List<Message> message=messageService.queryByCondition(parmMap);
         return JSONArray.fromObject(message).toString();

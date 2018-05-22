@@ -1,10 +1,9 @@
 package cn.com.caogen.controller;
 
 import cn.com.caogen.entity.Appliy;
+import cn.com.caogen.entity.User;
 import cn.com.caogen.service.AppliyServiceImpl;
-import cn.com.caogen.util.ConstantUtil;
-import cn.com.caogen.util.DateUtil;
-import cn.com.caogen.util.ResponseMessage;
+import cn.com.caogen.util.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
@@ -45,7 +44,8 @@ public class AppliyController {
      */
     @RequestMapping(path = "scanlogin",method = RequestMethod.GET)
     public String scanLogin(HttpServletRequest request){
-        int userid=(int)request.getSession().getAttribute("userid");
+        User user=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
+        int userid=user.getUserid();
 
         extappliyService.init();
         String loginbase64= extappliyService.scanLogin(String.valueOf(userid));
@@ -70,7 +70,8 @@ public class AppliyController {
         }catch (Exception e){
 
         }
-        int userid=(int)request.getSession().getAttribute("userid");
+        User user=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
+        int userid=user.getUserid();
         String allowbase64= extappliyService.scanAllow(String.valueOf(userid));
         if(stringRedisTemplate.opsForValue().get(userid+"_allowbase64")!=null&&"".equals(allowbase64)){
             return stringRedisTemplate.opsForValue().get(userid+"_allowbase64");
@@ -83,7 +84,8 @@ public class AppliyController {
     //绑定支付宝账号
     @RequestMapping(path = "bind",method = RequestMethod.GET)
     public String bindAppliy(HttpServletRequest request){
-        int userid=(int)request.getSession().getAttribute("userid");
+        User user=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
+        int userid=user.getUserid();
         try {
             try {
                 Thread.sleep(5000);
@@ -150,8 +152,9 @@ public class AppliyController {
      */
     @RequestMapping(path = "querybyUserid",method = RequestMethod.GET)
     public String querybyUserid(HttpServletRequest request){
+        User user=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
         Map<String,Object> parmMap=new HashMap<String,Object>();
-        parmMap.put("userid",request.getSession().getAttribute("userid"));
+        parmMap.put("userid",user.getUserid());
         List<Appliy> appliyList=appliyService.query(new HashMap<String,Object>());
         return JSONArray.fromObject(appliyList).toString();
     }

@@ -2,18 +2,21 @@ package cn.com.caogen;
 
 
 import cn.com.caogen.filter.SystemFilter;
+import cn.com.caogen.filter.SystemListener;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+
 import org.springframework.data.redis.core.StringRedisTemplate;
+
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import javax.servlet.FilterRegistration;
 
 /**
  * author:huyanqing
@@ -39,6 +42,16 @@ public class MoneyApplication {
         FilterRegistrationBean registration = new FilterRegistrationBean(new SystemFilter());
         return registration;
     }
+
+    @Bean
+    public ServletListenerRegistrationBean<SystemListener> indexListenerRegistration(){
+        ServletListenerRegistrationBean<SystemListener> registration = new ServletListenerRegistrationBean<SystemListener>(new SystemListener());
+        return registration;
+    }
+
+    
+
+
 
 
 }

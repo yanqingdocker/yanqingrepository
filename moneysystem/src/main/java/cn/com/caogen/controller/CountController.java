@@ -44,6 +44,7 @@ public class CountController {
 
     private static String phone = "";
 
+
     /**
      * 创建账户
      *
@@ -54,11 +55,11 @@ public class CountController {
     public String createCount(@RequestParam("countType") String countType, @RequestParam("payPwd") String payPwd, HttpServletRequest request) {
 
         logger.info("createCount start :countType=" + countType);
-
+        User user=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
         if (StringUtil.checkStrs(countType)) {
             if (checkUser(request.getSession().getAttribute("phone").toString())) {
                 payPwd = MD5Util.string2MD5(payPwd);
-                return countServiceImpl.createCount(countType, payPwd, request.getSession().getAttribute("userid").toString());
+                return countServiceImpl.createCount(countType, payPwd, String.valueOf(user.getUserid()));
 
             } else {
                 return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.NOT_AUTHENTION)).toString();
@@ -158,9 +159,10 @@ public class CountController {
     public String queryCountByUserid(HttpServletRequest request) {
 
         logger.info("queryCountByUserid start ");
+        User user=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
         String userId = null;
         if(request.getSession().getAttribute("userid")!=null){
-            userId=request.getSession().getAttribute("userid").toString();
+            userId=String.valueOf(user.getUserid());
         }
         return countServiceImpl.queryByUserId(userId);
     }
@@ -194,6 +196,7 @@ public class CountController {
     @RequestMapping(path = "/switch", method = RequestMethod.POST)
     public String countSwitch(HttpServletRequest request,@RequestParam("countid") String id, @RequestParam("moneynum") Double moneynum, @RequestParam("receivecount") String receivecount, @RequestParam("payPwd") String payPwd) {
         logger.info("countSwitch start: countid="+id+",moneynum="+moneynum+",receivecount="+receivecount+",payPaw="+payPwd);
+        User currentuser=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
         if (!StringUtil.checkStrs(id, String.valueOf(moneynum), receivecount)) {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ERROR_ARGS)).toString();
         }
@@ -224,7 +227,7 @@ public class CountController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.NOTTYPECOUNT)).toString();
 
         }
-        String operuser="会员-"+(String)request.getSession().getAttribute("username");
+        String operuser="会员-"+currentuser.getUsername();
         countServiceImpl.countswitch(srccount, destCount, moneynum,IpUtil.getIpAddr(request),operuser);
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
 
@@ -239,6 +242,7 @@ public class CountController {
     @RequestMapping(path = "/exchange", method = RequestMethod.POST)
     public String exchange(@RequestParam("datas") String datas,HttpServletRequest request) {
         logger.info("exchange start: datas="+datas);
+        User user=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
         if (!StringUtil.checkStrs(datas)) {
             return net.sf.json.JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ERROR_ARGS)).toString();
         }
@@ -253,7 +257,7 @@ public class CountController {
         if (!StringUtil.checkStrs(srccountid, destcountid, String.valueOf(srcmoney), String.valueOf(destmoney), payPwd)) {
             return net.sf.json.JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ERROR_ARGS)).toString();
         }
-        String operuser="会员-"+(String)request.getSession().getAttribute("username");
+        String operuser="会员-"+user.getUsername();
         return countServiceImpl.exchange(srccountid, destcountid, srcmoney, destmoney, payPwd,IpUtil.getIpAddr(request),operuser);
 
     }

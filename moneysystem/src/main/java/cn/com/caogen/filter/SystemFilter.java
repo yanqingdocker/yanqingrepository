@@ -1,5 +1,8 @@
 package cn.com.caogen.filter;
 
+import cn.com.caogen.entity.User;
+import cn.com.caogen.util.JedisUtil;
+import cn.com.caogen.util.SerializeUtil;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.*;
@@ -57,12 +60,11 @@ public class SystemFilter implements Filter {
                 chain.doFilter(request, response);
                 return;
             }else{
-                String phone=(String)httpServletRequest.getSession().getAttribute("phone");
-                if(!StringUtils.isEmpty(phone)){
+                User user=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+httpServletRequest.getSession().getId()).getBytes()));
+                if(user!=null){
                     chain.doFilter(request,response);
                 }else{
                     httpServletResponse.sendRedirect("/index");
-
                 }
             }
 

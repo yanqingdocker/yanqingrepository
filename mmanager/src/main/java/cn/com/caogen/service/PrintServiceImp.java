@@ -86,7 +86,7 @@ public class PrintServiceImp {
                               yIndex = drawString(graphics2D, "111111", 355, 135, 250, 30);
                               graphics2D.setFont(new Font("宋体",Font.CENTER_BASELINE, 12));
                               yIndex = drawString(graphics2D, "我取款", 161, 158, 250, 30);
-                              yIndex = drawString(graphics2D, "南方钱庄", 404, 158, 250, 30);
+                              yIndex = drawString(graphics2D, "南方国际钱庄", 404, 158, 250, 30);
                               yIndex = drawString(graphics2D, "网上交易", 161, 185, 250, 30);
                               yIndex = drawString(graphics2D, "壹仟壹佰壹元壹分壹角", 161, 253, 250, 30);
                               yIndex = drawString(graphics2D, "101010101010101", 161, 280, 250, 30);

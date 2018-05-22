@@ -1,16 +1,18 @@
 package cn.com.caogen.entity;
 
 
+import cn.com.caogen.util.SerializeUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Setter
 @Getter
 @ToString
-public class User {
+public class User implements Serializable {
     //用户id
     private int userid;
     //用户名

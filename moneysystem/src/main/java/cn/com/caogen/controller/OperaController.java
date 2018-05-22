@@ -7,9 +7,7 @@ import cn.com.caogen.service.CountServiceImpl;
 import cn.com.caogen.service.ICountService;
 import cn.com.caogen.service.IOperaService;
 import cn.com.caogen.service.UserServiceImpl;
-import cn.com.caogen.util.ConstantUtil;
-import cn.com.caogen.util.DateUtil;
-import cn.com.caogen.util.IpUtil;
+import cn.com.caogen.util.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
@@ -35,24 +33,10 @@ public class OperaController {
     private static Logger logger = LoggerFactory.getLogger(OperaController.class);
     @Autowired
     private IOperaService operaServiceimpl;
-    @Autowired
-    private UserServiceImpl userServiceimpl;
+
     @Autowired
     private CountServiceImpl countServiceimpl;
-    @RequestMapping(path = "/queryContition",method = RequestMethod.GET)
-    public String queryContition(HttpServletRequest request){
-        Operation operation=new Operation();
-        operation.setCountid("13246465");
-        operation.setNum(10.0);
-        operation.setOperaTime(DateUtil.getTime());
-        operation.setOperaType("充值");
-        operation.setOi(1);
-        operation.setOperaIp(IpUtil.getIpAddr(request));
-        operation.setOperaUser("yanqing");
-        operation.setCountType("CNY");
-        operaServiceimpl.add(operation);
-        return "opera";
-    }
+
 
     /**
      * 查询所有操作记录
@@ -71,7 +55,8 @@ public class OperaController {
      */
     @RequestMapping(path = "/queryByUserid",method = RequestMethod.GET)
     public String queryByUserid(HttpServletRequest request){
-       List<Count> countList=countServiceimpl.queryByUserId((int)request.getSession().getAttribute("userid"));
+        User currentUser=(User)SerializeUtil.unserialize(JedisUtil.getJedis().get(("session"+request.getSession().getId()).getBytes()));
+       List<Count> countList=countServiceimpl.queryByUserId(currentUser.getUserid());
        List<Operation> operationList=new ArrayList<Operation>();
        for(Count count:countList){
            Map<String,Object> parmMap=new HashMap<String,Object>();
@@ -142,6 +127,8 @@ public class OperaController {
         parmMap.put(ConstantUtil.QUERYDATE,ConstantUtil.DATE_YEAR);
         return JSONArray.fromObject(operaServiceimpl.queryByDate(parmMap)).toString();
     }
+
+
 
 
 }
