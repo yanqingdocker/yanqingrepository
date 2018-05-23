@@ -16,7 +16,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import java.util.Map;
-import redis.clients.jedis.Jedis;
+
 
 /**
  * author:huyanqing

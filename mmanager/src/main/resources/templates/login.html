@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv=Content-Type content="text/html; charset=utf-8">
-    <title>后台管理系统登录页</title>
+    <title>南方国际钱庄后台管理系统登录页</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/bootstrap-switch.min.css">
@@ -10,11 +10,15 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/css.css">
     <link  rel="stylesheet" type="text/css"  href="/css/sweet-alert.css"/>
-    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script  type="text/javascript" src="/js/jquery1.12.4.js"></script>
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
     <script  type="text/javascript" src="/js/bootstrapValidator.min.js"></script>
     <script  type="text/javascript" src="/js/sweet-alert.min.js"></script>
     <script type="text/javascript" src="/js/common.js"></script>
+    <!--[if lte IE 9]>
+    <script  type="text/javascript" src="/js/html5.min.js"></script>
+    <script  type="text/javascript" src="/js/respond.min.js"></script>
+    <![endif]-->
 </head>
 
 <body class="login_page">
@@ -24,11 +28,11 @@
         <form id="myform">
             <div class="form-group">
                 <label class="col-form-label" >用户名</label>
-                <input type="text" size="32" maxlength="30" name="username" onkeydown="javascript: if(event.keyCode == 13) submitform();">
+                <input type="text" size="32" maxlength="30" name="username" >
             </div>
             <div class="form-group">
                 <label class="col-form-label" >密&nbsp;&nbsp;&nbsp;码</label>
-                <input type="password" size="32" maxlength="20" name="password" onkeydown="javascript: if(event.keyCode == 13) submitform();">
+                <input type="password" size="32" maxlength="20" name="password" onkeydown="javascript: if(event.keyCode ==13) {submitform()};">
             </div>
             <div class="form-group mt10">
                 <button class="login_button" onclick="submitform()">登  录</button>
@@ -56,7 +60,6 @@
                 },
                 success: function (data) {
                     if (data.code=="success") {
-
                         sweetAlert({
                             title: "登陆成功！",
                             text: "1秒后自动跳转。",
@@ -74,6 +77,10 @@
         }
     }
     $(function () {
+        //判断页面是否被iframe引用
+        if(top.location != location){
+            top.location.href= location.href;//如果没有被iframe引用的话，则location与top.location是一样的！
+        }
         $('#myform').bootstrapValidator({
             feedbackIcons: {
                 //valid: 'glyphicon glyphicon-ok',

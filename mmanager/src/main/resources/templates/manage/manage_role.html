@@ -185,7 +185,7 @@
                 {"data": "createtime" },
                 {"data": "id",
                     render:function(e,type,full,row){
-                        return "<a href='javascript:;'  onclick='deletbatch("+full.id+")'  class=\"icon_delete\" title=\"删除\">删除</a> | <a href='javascript:;'  data-toggle=\"modal\" data-target=\"#myModal_dollar\" onclick='changepsw("+full.id+")' class='blue' >修改</a> |  <a href='javascript:;' data-toggle=\"modal\" data-target=\"#mypower\" onclick='powercontol("+full.id+")' >权限控制</a>";
+                        return "<a href='javascript:;'  onclick='deletbatch("+full.id+")'  class=\"icon_delete\" title=\"删除\">删除</a> | <a href='javascript:;'  data-toggle=\"modal\" data-target=\"#myModal_dollar\" onclick='changepsw("+full.id+")' class='blue' >修改</a> |  <a href='javascript:;' data-toggle=\"modal\" data-target=\"#mypower\" onclick=\"powercontol("+full.id+",'"+full.idlist+"')\">权限控制</a>";
                     }
                 }
             ]
@@ -292,11 +292,26 @@
     }
 
     // 点击权限控制
-    function powercontol(roleid) {
-        console.log(roleid);
+    function powercontol(roleid,idlist) {
         $("#roleid").val(roleid);
+        var obj=new Array();
+        for(var j=0;j<idlist.length;j++){
+            if(idlist[j]!=","){
+                obj.push(idlist[j]);
+            }
+        }
+        $("input[name='checkrole']").each(function(i){
+            var index = $.inArray($(this).val(), obj);
+            if(index>=0){
+                $('#role'+obj[index]+'').attr("checked","checked");
+                $('#lable'+obj[index]+'').addClass("on");
+            }
+            else{
+                $(this).removeAttr('checked');
+                $(this).next().removeClass("on");
+            }
 
-        $("input[name='checkrole']").prop("checked",false).siblings().removeClass("on")
+        })
     }
 
     //获取权限
@@ -309,7 +324,7 @@
                 var jsonObj = $.parseJSON(data);//json字符串转数组
                 for (var i=0;i<jsonObj.length;i++)
                 {
-                    var html ='<div class="checkcustom tc checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light"> <input type="checkbox" id="role'+jsonObj[i].id+'" name="checkrole" value="'+jsonObj[i].id+'"> <label for="role'+jsonObj[i].id+'">'+jsonObj[i].authoirtyname+'</label></div>';
+                    var html ='<div class="checkcustom tc checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light"> <input type="checkbox" id="role'+jsonObj[i].id+'" name="checkrole" value="'+jsonObj[i].id+'"> <label id="lable'+jsonObj[i].id+'" for="role'+jsonObj[i].id+'">'+jsonObj[i].authoirtyname+'</label></div>';
                     $(".powerlist").append(html);
 
                 }
@@ -351,27 +366,7 @@
             }
         })
     }
-    //
-    // //默认勾选已有的权限
-    // function powercontol(roleid) {
-    //     $.ajax({
-    //         url: '/role/queryAll',
-    //         data: {id:roleid},
-    //         type: 'get',
-    //         success: function (data) {
-    //             var obj=strToJson(data);
-    //             $("#rolename").val(obj.rolename);
-    //             // for (var i=0;i<obj.length;i++)
-    //             // {
-    //             //     var html ='<div class="checkcustom tc checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light"> <input type="checkbox" id="checkx'+jsonObj[i].id+'" name="checklist" value="'+jsonObj[i].id+'"> <label for="checkx'+jsonObj[i].id+'">'+jsonObj[i].authoirtyname+'</label></div>';
-    //             //     $(".powerlist").append(html);
-    //             //
-    //             // }
-    //
-    //
-    //         }
-    //     })
-    // }
+
 </script>
 
 </body>
