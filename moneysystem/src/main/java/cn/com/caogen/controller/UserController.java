@@ -135,6 +135,7 @@ public class UserController {
                 request.getSession().setAttribute("userid",user.getUserid());
                 request.getSession().setAttribute("id",user.getUserid());
                 request.getSession().setAttribute("username",user.getUsername());
+                request.getSession().setMaxInactiveInterval(1800);
                 checkSession(user.getUserid(),request);
                 Map<String,Object> sessionMap=JedisUtil.getSessionMap();
                 sessionMap.put(request.getSession().getId(),SerializeUtil.serialize(user));
@@ -232,7 +233,10 @@ public class UserController {
     public String logout(HttpServletRequest request) {
 
         logger.info("logout start");
-        request.getSession().invalidate();
+        Map<String,Object> sessionMap=JedisUtil.getSessionMap();
+        sessionMap.remove(request.getSession().getId());
+        logger.info("remove user");
+        JedisUtil.getJedis().set(ConstantUtil.SESSIONCOLLCTION.getBytes(),SerializeUtil.serialize(sessionMap));
 
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
@@ -246,7 +250,7 @@ public class UserController {
     public String getuser(HttpServletRequest request) {
         User currentUser=JedisUtil.getUser(request);
         if(currentUser==null){
-            request.getSession().invalidate();
+
             return null;
         }
         String telphone="";
@@ -325,7 +329,7 @@ public class UserController {
                 //4FE9907BEDF1462CDF3276585DFF20DC
                 User currentUser=(User)SerializeUtil.unserialize((byte[])sessionMap.get(key));
                 if(currentUser!=null&&userid==currentUser.getUserid()){
-                    System.out.println("remove user");
+                   logger.info("remove user");
                     sessionMap.remove(key);
                     JedisUtil.getJedis().set(ConstantUtil.SESSIONCOLLCTION.getBytes(),SerializeUtil.serialize(sessionMap));
                     return;

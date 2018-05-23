@@ -119,7 +119,7 @@
                 where to_days(operatime) = to_days(now())
             </when>
             <when test="date!=null and date == '7'.toString()">
-                where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(operatime)
+                where YEARWEEK(date_format(operatime,'%Y-%m-%d')) = YEARWEEK(now())
             </when>
             <when test="date!=null and date == '30'.toString()">
                 where DATE_FORMAT( operatime, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )

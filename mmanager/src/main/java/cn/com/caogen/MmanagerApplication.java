@@ -25,8 +25,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableCaching
 @EnableScheduling
 public class MmanagerApplication {
-    @Autowired
-    private StringRedisTemplate stringRedisTemplate;
+
 
     public static void main(String[] args) {
         SpringApplication.run(MmanagerApplication.class, args);

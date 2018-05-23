@@ -1,9 +1,12 @@
 package cn.com.caogen.filter;
 
+import cn.com.caogen.controller.AppliyController;
 import cn.com.caogen.entity.User;
 import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.JedisUtil;
 import cn.com.caogen.util.SerializeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.*;
@@ -23,7 +26,7 @@ import java.util.regex.Pattern;
  */
 @WebFilter(urlPatterns = "/*")
 public class SystemFilter implements Filter {
-
+    private static Logger logger = LoggerFactory.getLogger(SystemFilter.class);
     /**
      * 封装，不需要过滤的list列表
      */
@@ -54,6 +57,7 @@ public class SystemFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
             HttpServletRequest httpServletRequest=(HttpServletRequest) request;
             HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+
             String url = httpServletRequest.getRequestURI().substring(httpServletRequest.getContextPath().length());
             if (url.startsWith("/") && url.length() > 1) {
                 url = url.substring(1);
@@ -62,14 +66,16 @@ public class SystemFilter implements Filter {
                 chain.doFilter(request, response);
                 return;
             }else{
+                logger.info("sessionId=========="+httpServletRequest.getSession().getId());
                 User user=JedisUtil.getUser(httpServletRequest);
                 if(user!=null){
                     chain.doFilter(request,response);
                     return;
                 }else{
-                    Map<String,Object> sessionMap=JedisUtil.getSessionMap();
+                    /*Map<String,Object> sessionMap=JedisUtil.getSessionMap();
                     sessionMap.remove(httpServletRequest.getSession().getId());
-                    JedisUtil.getJedis().set(ConstantUtil.SESSIONCOLLCTION.getBytes(),SerializeUtil.serialize(sessionMap));
+                    logger.info("remove user");
+                    JedisUtil.getJedis().set(ConstantUtil.SESSIONCOLLCTION.getBytes(),SerializeUtil.serialize(sessionMap));*/
                     httpServletResponse.sendRedirect("/login");
                 }
             }

@@ -36,8 +36,11 @@ public class Starup implements CommandLineRunner {
      */
     @Override
     public void run(String... args) throws Exception {
-        Map<String,Object> sessionMap=new HashMap<String, Object>();
-        JedisUtil.getJedis().set(ConstantUtil.SESSIONCOLLCTION.getBytes(),SerializeUtil.serialize(sessionMap));
+        if(JedisUtil.getSessionMap()==null){
+            Map<String,Object> sessionMap=new HashMap<String, Object>();
+            JedisUtil.getJedis().set(ConstantUtil.SESSIONCOLLCTION.getBytes(),SerializeUtil.serialize(sessionMap));
+        }
+
 
     }
 }
