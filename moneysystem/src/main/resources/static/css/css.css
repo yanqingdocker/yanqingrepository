@@ -632,7 +632,7 @@ table.table thead .sorting:after,table.table thead .sorting_asc:after{ backgroun
     .money_block .dollar,.money_block .rmb{width: 100%; border-radius: 10px;background-size: cover; margin-bottom: 10px;}
     .dataTable{ width: 100% !important;}
     .col-sm-6{ width: 50%; float: left}
-    .swiper-container-fade .swiper-slide{ height: 185px !important; margin-top: 54px;}
+    .swiper-container-fade .swiper-slide{ height: 245px !important; margin-top: 54px;}
 }
 @media (min-width: 770px){
     .pc_header{display: block}
