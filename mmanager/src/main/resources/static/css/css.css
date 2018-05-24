@@ -90,11 +90,13 @@
 .checkbox3 label::before{ width: 15px; height: 15px;}
 .checkbox3 label::after, .radio3 label::after{top: 2px}
 .checkbox3.checkbox-check label::after{width: 13px}
-.checkbox3.checkbox-success.checkbox-light input:checked+label::before{    background-color: #0099ff;
+.checkbox3.checkbox-success.checkbox-light input:checked+label.on::before{    background-color: #0099ff;
     border-color: #0099ff;}
-.checkbox3.checkbox-success.checkbox-light input:checked+label::after {
+.checkbox3.checkbox-success.checkbox-light input:checked+label.on::after {
     color: #fff;
 }
+.checkbox3.checkbox-check label::after{content: ""}
+.checkbox3.checkbox-success.checkbox-light input:checked+label::before{border:1px solid #CCC}
 .checkbox3.checkbox-success.checkbox-light label.on::after {
     content: "\f00c";
     font-family: FontAwesome; color: #fff;

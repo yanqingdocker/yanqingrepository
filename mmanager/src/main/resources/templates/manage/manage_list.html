@@ -345,11 +345,10 @@
     // 点击角色控制
     function rolecontrol(userid,idlist) {
         $("#adminid").val(userid);
+        var jsonObj = idlist.split(',');//去掉逗号转成数组
         var obj=new Array();
-        for(var j=0;j<idlist.length;j++){
-            if(idlist[j]!=","){
-                obj.push(idlist[j]);
-            }
+        for(var j=0;j<jsonObj.length;j++){
+            obj.push(jsonObj[j]);
         }
         $("input[name='checkrole']").each(function(i){
             var index = $.inArray($(this).val(), obj);
