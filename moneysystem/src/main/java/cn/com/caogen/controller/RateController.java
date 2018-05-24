@@ -1,9 +1,11 @@
 package cn.com.caogen.controller;
 
+import cn.com.caogen.entity.User;
 import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.IpUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +33,10 @@ public class RateController {
     /**
      * 获取汇率
      *
-     * @param request
      * @return
      */
     @RequestMapping(path = "/queryAll", method = RequestMethod.GET)
-    public String getRates(HttpServletRequest request) {
+    public String getRates() {
         logger.info("getRates start");
         List<String> list = new ArrayList<String>(7);
         list.add(stringRedisTemplate.opsForValue().get(ConstantUtil.ONE));
@@ -70,6 +71,8 @@ public class RateController {
 
         return   JSONObject.fromObject(sb.toString()).toString();
     }
+
+
 
 
 }

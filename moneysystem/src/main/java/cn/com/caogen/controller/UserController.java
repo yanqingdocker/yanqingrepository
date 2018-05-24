@@ -253,15 +253,8 @@ public class UserController {
 
             return null;
         }
-        String telphone="";
-        if(currentUser.getPhone()!=null){
-            telphone=currentUser.getPhone();
-        }
-        User user=getUser(telphone,null);
-        if(user!=null){
-            return JSONObject.fromObject(user).toString();
-        }
-        return null;
+
+        return JSONObject.fromObject(currentUser).toString();
     }
 
 

@@ -22,13 +22,14 @@ import java.util.Date;
 @Component
 public class CronTask {
 
-    private static Logger logger = LoggerFactory.getLogger(UserController.class);
+    private static Logger logger = LoggerFactory.getLogger(CronTask.class);
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
     /**
-     *  每天12点调用一次汇率接口，并刷新redis //1 0 0 * * ?
+     * //0 0/2 * * * ?  每隔2分钟打印一次
+     *  每天0晨12点调用一次汇率接口，并刷新redis //1 0 0 * * ?
      */
     @Scheduled(cron = "1 0 0 * * ? ")
     public void setRate(){
@@ -42,6 +43,6 @@ public class CronTask {
             stringRedisTemplate.opsForValue().set(ConstantUtil.SIX,stringRedisTemplate.opsForValue().get(ConstantUtil.SENVEN));
             stringRedisTemplate.opsForValue().set(ConstantUtil.SENVEN,result);
 
-            System.out.println("now time:" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+        logger.info("now time:" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
     }
 }

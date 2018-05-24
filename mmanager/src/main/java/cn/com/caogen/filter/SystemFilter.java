@@ -50,7 +50,7 @@ public class SystemFilter implements Filter {
                 String phone=(String)httpServletRequest.getSession().getAttribute("username");
                 if(!StringUtils.isEmpty(phone)){
                     if(httpServletRequest.getSession(true)==null){
-                        System.out.println("ccccccc");
+
                         httpServletResponse.sendRedirect("/login");
                         return;
                     }
