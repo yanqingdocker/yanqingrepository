@@ -31,6 +31,9 @@
     <delete id="deleteByRoleid" parameterType="int">
         delete from roleauth where roleid=#{roleid}
     </delete>
+    <delete id="deleteByAuthid" parameterType="int">
+        delete from roleauth where authid=#{authid}
+    </delete>
 
 
 

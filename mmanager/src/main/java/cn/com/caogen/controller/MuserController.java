@@ -2,10 +2,9 @@ package cn.com.caogen.controller;
 
 import cn.com.caogen.entity.Muser;
 import cn.com.caogen.entity.Role;
+import cn.com.caogen.entity.RoleAuth;
 import cn.com.caogen.entity.UserRole;
-import cn.com.caogen.service.IUserService;
-import cn.com.caogen.service.RoleServiceImpl;
-import cn.com.caogen.service.UserRoleServiceImpl;
+import cn.com.caogen.service.*;
 import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.ResponseMessage;
 import cn.com.caogen.util.StringUtil;
@@ -22,10 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * author:huyanqing
@@ -39,6 +35,10 @@ public class MuserController {
     private IUserService userServiceImpl;
     @Autowired
     private UserRoleServiceImpl userRoleService;
+    @Autowired
+    private RoleAuthServiceImpl roleAuthService;
+    @Autowired
+    private AuthoirtyServiceImpl authoirtyService;
     @Autowired
     private RoleServiceImpl roleService;
     private static Map<String,HttpSession> sessionMap =new HashMap<String,HttpSession>();
@@ -69,7 +69,7 @@ public class MuserController {
      * @return
      */
     @RequestMapping(path = "/queryAll", method = RequestMethod.GET)
-    public String batchdelete() {
+    public String queryAll() {
         logger.info("queryMuser startst: ");
         List<Muser> musers= userServiceImpl.queryMusers();
         for (Muser muser:musers){
@@ -146,6 +146,8 @@ public class MuserController {
                     request.getSession().setAttribute("userid",muser.getId());
                     request.getSession().setAttribute("username",muser.getUsername());
                     request.getSession().setMaxInactiveInterval(180);
+                    getAuth(muser);
+                    request.getSession().setAttribute("currentUser",muser);
                     return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
                 }
             }
@@ -169,6 +171,17 @@ public class MuserController {
 
 
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
+    }
+
+    private void getAuth(Muser muser){
+       List<UserRole> userRoles=userRoleService.queryByUserId(muser.getId());
+       for(UserRole userRole:userRoles){
+           int roleId=userRole.getRoleid();
+           List<RoleAuth> roleAuths=roleAuthService.queryByRoleId(roleId);
+           for (RoleAuth roleAuth:roleAuths){
+               muser.getAuths().add(authoirtyService.queryById(roleAuth.getAuthid()).getUrl());
+           }
+       }
     }
 
 

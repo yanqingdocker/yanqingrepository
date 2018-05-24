@@ -20,4 +20,5 @@ public class Muser {
     private String password;
     private List<Integer> idlist=new ArrayList<Integer>();
     private List<String> namelist=new ArrayList<String>();
+    private List<String> auths=new ArrayList<String>();
 }

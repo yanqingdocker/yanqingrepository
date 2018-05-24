@@ -1,7 +1,9 @@
 package cn.com.caogen.service;
 
 import cn.com.caogen.entity.Role;
+import cn.com.caogen.mapper.RoleAuthMapper;
 import cn.com.caogen.mapper.RoleMapper;
+import cn.com.caogen.mapper.UserRoleMapper;
 import cn.com.caogen.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,10 @@ import java.util.Map;
 public class RoleServiceImpl implements IRoleService {
     @Autowired
     private RoleMapper roleMapper;
+    @Autowired
+    private RoleAuthMapper roleAuthMapper;
+    @Autowired
+    private UserRoleMapper userRoleMapper;
     @Override
     public void add(String rolename) {
         Role role=new Role();
@@ -28,7 +34,10 @@ public class RoleServiceImpl implements IRoleService {
 
     @Override
     public void delete(String id) {
+        userRoleMapper.deleteByRoleid(Integer.parseInt(id));
+        roleAuthMapper.deleteByRoleid(Integer.parseInt(id));
         roleMapper.delete(Integer.parseInt(id));
+
 
     }
 

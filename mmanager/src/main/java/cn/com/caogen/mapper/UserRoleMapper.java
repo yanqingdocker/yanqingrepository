@@ -17,4 +17,5 @@ public interface UserRoleMapper {
     void batchAdd(List<UserRole> roles);
 
     void deleteByUserid(int userid);
+    void deleteByRoleid(int roleid);
 }

@@ -5,6 +5,7 @@ import cn.com.caogen.entity.Muser;
 import cn.com.caogen.entity.User;
 import cn.com.caogen.mapper.MuserMapper;
 import cn.com.caogen.mapper.UserMapper;
+import cn.com.caogen.mapper.UserRoleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
@@ -19,10 +20,14 @@ public class UserServiceImpl implements IUserService{
     private UserMapper userMapper;
     @Autowired
     private MuserMapper muserMapper;
+    @Autowired
+    private UserRoleMapper userRoleMapper;
     @Override
     public void addUser(User user){
         userMapper.add(user);
     }
+
+
 
     @Override
     public List<User> queryAll(Map<String,Object> map){
@@ -59,6 +64,9 @@ public class UserServiceImpl implements IUserService{
             arr[i] = Integer.parseInt(strs[i]);
         }
         muserMapper.delete(arr);
+        for(int i=0;i<arr.length;i++){
+            userRoleMapper.deleteByUserid(arr[i]);
+        }
     }
 
     @Override

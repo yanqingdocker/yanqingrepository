@@ -1,5 +1,6 @@
 package cn.com.caogen.filter;
 
+import cn.com.caogen.entity.Muser;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.*;
@@ -47,8 +48,8 @@ public class SystemFilter implements Filter {
                 return;
 
             }else{
-                String phone=(String)httpServletRequest.getSession().getAttribute("username");
-                if(!StringUtils.isEmpty(phone)){
+                Muser currentUser=(Muser) httpServletRequest.getSession().getAttribute("currentUser");
+                if(!StringUtils.isEmpty(currentUser)){
                     if(httpServletRequest.getSession(true)==null){
 
                         httpServletResponse.sendRedirect("/login");

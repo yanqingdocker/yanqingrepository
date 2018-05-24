@@ -29,6 +29,9 @@
     <delete id="deleteByUserid" parameterType="int">
         delete from userrole where userid=#{userid}
     </delete>
+    <delete id="deleteByRoleid" parameterType="int">
+        delete from userrole where roleid=#{roleid}
+    </delete>
 
 
 </mapper>

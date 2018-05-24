@@ -2,6 +2,7 @@ package cn.com.caogen.service;
 
 import cn.com.caogen.entity.Authoirty;
 import cn.com.caogen.mapper.AuthoirtyMapper;
+import cn.com.caogen.mapper.RoleAuthMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,8 @@ import java.util.List;
 public class AuthoirtyServiceImpl implements IAuthoirtyService {
     @Autowired
     private AuthoirtyMapper authoirtyMapper;
+    @Autowired
+    private RoleAuthMapper roleAuthMapper;
     @Override
     public List<Authoirty> queryAll() {
         return authoirtyMapper.queryAll();
@@ -33,7 +36,9 @@ public class AuthoirtyServiceImpl implements IAuthoirtyService {
         for (int i = 0; i < strs.length; i++) {
 
             arr[i] = Integer.parseInt(strs[i]);
+            roleAuthMapper.deleteByAuthid(arr[i]);
         }
+
         authoirtyMapper.delete(arr);
     }
 
