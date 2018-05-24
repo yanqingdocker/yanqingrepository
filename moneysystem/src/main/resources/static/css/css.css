@@ -4,7 +4,7 @@
 .red{color: #d82828}
 .gray{ color: #8d8d8c !important;}
 .red_bg{  background-color: #d82828 !important;}
-.blue{ color: #007aff !important;}
+.blue{ color: #0591ee !important;}
 .yellow_btn{ background-color: #ffcc01 !important; font-size: 14px !important;}
 .fix-frist-top {  }
 .navbar{ border: 0;background: none }
@@ -626,6 +626,13 @@ table.table thead .sorting:after,table.table thead .sorting_asc:after{ backgroun
     .phone_footer .recharge{ background: url("../images/phone/icon_recharge.png") no-repeat left center;  width: 26px; height:26px; background-size: contain;}
     .phone_footer .cash{ background: url("../images/phone/icon_transfer.png") no-repeat left center;  width: 26px; height: 26px; background-size: contain;}
     .bid_menu{ width: 100%}
+    .phone_frist-top .turn { height: 185px !important;margin-top: 54px;}
+    .r_whitebg,.bank_logo { padding-bottom: 80px;}
+    .bid_menu{ min-height: auto !important;}
+    .money_block .dollar,.money_block .rmb{width: 100%; border-radius: 10px;background-size: cover; margin-bottom: 10px;}
+    .dataTable{ width: 100% !important;}
+    .col-sm-6{ width: 50%; float: left}
+    .swiper-container-fade .swiper-slide{ height: 185px !important; margin-top: 54px;}
 }
 @media (min-width: 770px){
     .pc_header{display: block}

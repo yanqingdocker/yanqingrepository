@@ -182,21 +182,21 @@
                 },
                 {"data": "oi" ,
                     render:function(e,type,full,row){
-                        if(full.oi==0){
-                            return "<span class='red'>支出</span>";
+                        if(full.oi=="0"){
+                            return "支出";
                         }
-                        if(full.oi==1){
-                            return "<span class='green'>收入</span>";
+                        if(full.oi=="1"){
+                            return "收入";
                         }
 
                     }
                 },
                 {"data": "num" ,
                     render:function(e,type,full,row){
-                        if(full.oi==0){
-                            return "<span class='red'>-"+full.num+"</span>";
+                        if(full.oi=="0"){
+                            return "<span class='red'>"+full.num+"</span>";
                         }
-                        if(full.oi==1){
+                        if(full.oi=="1"){
                             return "<span class='green'>"+full.num+"</span>";
                         }
 

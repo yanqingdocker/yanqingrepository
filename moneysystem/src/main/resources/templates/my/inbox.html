@@ -353,6 +353,21 @@
         });
     }
 
+    function chagestatus(msgid) {
+        $.ajax({
+            type: "post", // 用POST方式传输
+            dataType: 'json',
+            url: "/message/markreceive", // 目标地址
+            data: { id :msgid },
+            success: function (data) {
+                //标记已读
+
+            }
+        });
+    }
+    $(".close").click(function () {
+        window.location.href = "/my/inbox#main_con";
+    });
     // 读取详细信息
     function detail_msg(msgid) {
         $.ajax({
@@ -365,7 +380,7 @@
                 $("#sendtime").html(data.createTime);
                 $("#sendtitle").html(data.title);
                 $("#sendcontent").html(data.content);
-
+                chagestatus(msgid);
             }
         });
     }
