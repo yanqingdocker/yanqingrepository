@@ -424,8 +424,7 @@
             data: null,
             type: 'get',
             success: function (data) {
-
-
+                var jsonObj = $.parseJSON(data);//json字符串转数组
                 for (var i=0;i<jsonObj.length;i++)
                 {
                     if(jsonObj[i].state==1){
