@@ -5,7 +5,10 @@ import cn.com.caogen.service.ITaskService;
 import cn.com.caogen.service.TaskServiceImpl;
 import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.DateUtil;
+import cn.com.caogen.util.FilterAuthUtil;
+import cn.com.caogen.util.ResponseMessage;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.text.html.HTML;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,25 +31,16 @@ public class TaskController {
     private static Logger logger = LoggerFactory.getLogger(TaskController.class);
     @Autowired
     private TaskServiceImpl taskService;
-    @RequestMapping("add")
-    public String add(){
-        Task task=new Task();
-        task.setCreatetime(DateUtil.getTime());
-        task.setState("处理中");
-        task.setTaskname("转账申请");
-        task.setOperauser("admin");
-        task.setTaskcontent("转账100");
-        taskService.addTask(task);
-        return "success";
-    }
 
     /**
      * 查询未处理的任务
      * @return
      */
     @RequestMapping("queryUndo")
-    public String queryUndo(){
-
+    public String queryUndo(HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("queryUndo start:");
         return JSONArray.fromObject(taskService.queryByState(ConstantUtil.TASK_UNDO)).toString();
     }
@@ -55,12 +50,18 @@ public class TaskController {
      * @return
      */
     @RequestMapping("queryDone")
-    public String queryDone(){
+    public String queryDone(HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("queryDone start:");
         return JSONArray.fromObject(taskService.queryByState(ConstantUtil.TASK_DONE)).toString();
     }
     @RequestMapping("dotask")
     public String doTask(@RequestParam("id") int id, HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("dotask start:");
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("id",id);
@@ -73,7 +74,10 @@ public class TaskController {
     }
 
     @RequestMapping("queryAll")
-    public String queryAll(){
+    public String queryAll(HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("queryAll start:");
         return JSONArray.fromObject(taskService.queryAll()).toString();
     }

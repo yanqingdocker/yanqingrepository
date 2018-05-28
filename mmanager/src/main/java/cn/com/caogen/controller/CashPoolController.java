@@ -34,7 +34,10 @@ public class CashPoolController {
      * @return
      */
     @RequestMapping(path ="queryAll",method = RequestMethod.GET)
-    public String queryAll(){
+    public String queryAll(HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("queryAll start:");
         List<CashPool> cashPoolList=cashPoolService.queryAll();
         return JSONArray.fromObject(cashPoolList).toString();
@@ -51,6 +54,9 @@ public class CashPoolController {
      */
     @RequestMapping(path = "exchange",method = RequestMethod.POST)
     public String exchange(@RequestParam("srccounttype") String srccounttype, @RequestParam("destcounttype") String destcounttype, @RequestParam("srcnum") Double srcnum, @RequestParam("destnum") Double destnum, HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("exchange start:");
         if(!StringUtil.checkStrs(srccounttype,destcounttype,String.valueOf(srcnum),String.valueOf(destnum))){
             logger.info(ConstantUtil.ERROR_ARGS);

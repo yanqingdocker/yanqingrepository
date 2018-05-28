@@ -6,6 +6,7 @@ import cn.com.caogen.entity.RoleAuth;
 import cn.com.caogen.entity.UserRole;
 import cn.com.caogen.service.*;
 import cn.com.caogen.util.ConstantUtil;
+import cn.com.caogen.util.FilterAuthUtil;
 import cn.com.caogen.util.ResponseMessage;
 import cn.com.caogen.util.StringUtil;
 import net.sf.json.JSONArray;
@@ -54,7 +55,10 @@ public class MuserController {
      * @return
      */
     @RequestMapping(path = "/batchdelete", method = RequestMethod.GET)
-    public String batchdelete(@RequestParam("ids") String ids) {
+    public String batchdelete(@RequestParam("ids") String ids,HttpServletRequest request) {
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("batchdelete start: ids="+ids);
         if (StringUtil.checkStrs(ids)) {
             userServiceImpl.deleteUser(ids);
@@ -69,7 +73,10 @@ public class MuserController {
      * @return
      */
     @RequestMapping(path = "/queryAll", method = RequestMethod.GET)
-    public String queryAll() {
+    public String queryAll(HttpServletRequest request) {
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("queryMuser startst: ");
         List<Muser> musers= userServiceImpl.queryMusers();
         for (Muser muser:musers){
@@ -94,7 +101,10 @@ public class MuserController {
      * @return
      */
     @RequestMapping(path="/restPwd",method = RequestMethod.POST)
-    public String update(@RequestParam("id") String id,@RequestParam("password") String password){
+    public String update(@RequestParam("id") String id,@RequestParam("password") String password,HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         userServiceImpl.updateMuser(id,password);
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
@@ -106,7 +116,10 @@ public class MuserController {
      * @return
      */
     @RequestMapping(path ="/add", method = RequestMethod.POST)
-    public String add(@RequestParam("username") String username,@RequestParam("password") String password,@RequestParam("roleids") String roleids) {
+    public String add(@RequestParam("username") String username,@RequestParam("password") String password,@RequestParam("roleids") String roleids,HttpServletRequest request) {
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("add start: ");
         if(!StringUtil.checkStrs(username,password)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();

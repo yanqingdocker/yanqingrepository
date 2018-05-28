@@ -7,6 +7,7 @@ import cn.com.caogen.service.IRoleAuthService;
 import cn.com.caogen.service.IUserRoleService;
 import cn.com.caogen.service.UserRoleServiceImpl;
 import cn.com.caogen.util.ConstantUtil;
+import cn.com.caogen.util.FilterAuthUtil;
 import cn.com.caogen.util.ResponseMessage;
 import cn.com.caogen.util.StringUtil;
 import net.sf.json.JSONArray;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +40,10 @@ public class UserRoleController {
 
 
     @RequestMapping(path = "add",method = RequestMethod.POST)
-    public String add(@RequestParam("roleid") int roleid, @RequestParam("userid") int userid){
+    public String add(@RequestParam("roleid") int roleid, @RequestParam("userid") int userid, HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         UserRole userRole=new UserRole();
        userRole.setRoleid(roleid);
        userRole.setUserid(userid);
@@ -48,12 +53,18 @@ public class UserRoleController {
 
 
     @RequestMapping(path = "queryByUserid",method = RequestMethod.POST)
-    public String queryByRoleid(@RequestParam("userid") int userid){
+    public String queryByRoleid(@RequestParam("userid") int userid,HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         List<UserRole> userRoles= userRoleService.queryByUserId(userid);
         return JSONArray.fromObject(userRoles).toString();
     }
     @RequestMapping(path="/batchupdate",method = RequestMethod.POST)
-    public String batchupdate(@RequestParam("userid") int userid,@RequestParam("roleids") String roleids){
+    public String batchupdate(@RequestParam("userid") int userid,@RequestParam("roleids") String roleids,HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         if(!StringUtil.checkStrs(String.valueOf(userid),roleids)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.ERROR_ARGS)).toString();
         }

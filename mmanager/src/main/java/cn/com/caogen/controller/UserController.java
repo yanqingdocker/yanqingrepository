@@ -58,7 +58,10 @@ public class UserController {
      * @param telphone
      */
     @RequestMapping(path = "/checkPhone", method = RequestMethod.POST)
-    public String checkPhone(@RequestParam("telphone") String telphone) {
+    public String checkPhone(@RequestParam("telphone") String telphone,HttpServletRequest request) {
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("checkPhone start: telphone="+telphone);
         if (!StringUtil.checkStrs(telphone)) {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
@@ -79,7 +82,10 @@ public class UserController {
      * @return
      */
     @RequestMapping(path = "/queryAll", method = RequestMethod.GET)
-    public String batchdelete() {
+    public String batchdelete(HttpServletRequest request) {
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
            logger.info("queryMuser start: ");
            List<User> users= userServiceImpl.queryAll(new HashMap<String,Object>());
            return JSONArray.fromObject(users).toString();

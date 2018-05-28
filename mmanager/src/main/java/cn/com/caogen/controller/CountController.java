@@ -53,7 +53,9 @@ public class CountController {
      */
     @RequestMapping(path = "/createCount", method = RequestMethod.POST)
     public String createCount(@RequestParam("countType") String countType, @RequestParam("payPwd") String payPwd, HttpServletRequest request) {
-
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("createCount start :countType=" + countType);
 
         if (StringUtil.checkStrs(countType)) {
@@ -79,7 +81,10 @@ public class CountController {
      * @return
      */
     @RequestMapping(path = "/startOrstopCount", method = RequestMethod.POST)
-    public String startOrstopcount(@RequestParam("id") String id, @RequestParam("state") String state) {
+    public String startOrstopcount(@RequestParam("id") String id, @RequestParam("state") String state,HttpServletRequest request) {
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("startOrstopcount start: id="+id+" state="+state);
         if (StringUtil.checkStrs(id, state)) {
             return countServiceImpl.updateCount(id, 0, state,null);
@@ -90,78 +95,7 @@ public class CountController {
 
     }
 
-    /**
-     * 修改账户状态
-     *
-     * @param id
-     * @param payPwd
-     * @return
-     */
-    @RequestMapping(path = "/updateCountpwd", method = RequestMethod.POST)
-    public String updateCountpwd(@RequestParam("telphone") String telphone,@RequestParam("checknum") String num,@RequestParam("id") String id, @RequestParam("payPwd") String payPwd) {
-        logger.info("startOrstopcount start: id="+id+" payPwd="+payPwd);
 
-        payPwd = MD5Util.string2MD5(payPwd);
-
-        if (StringUtil.checkStrs(telphone,num,id, payPwd)) {
-            if(phone.equals(telphone)&&check_Num.equals(num)){
-                return countServiceImpl.updateCount(id, 0, null,payPwd);
-            }else{
-                return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.CHECKERROR_NUM)).toString();
-            }
-
-        } else {
-            logger.error("startOrstopcount id or state is null");
-            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ERROR_ARGS)).toString();
-        }
-    }
-
-    /**
-     * 更新账户金额
-     *
-     * @param id
-     * @param blance
-     * @return
-     */
-    @RequestMapping(path = "/updateBlance", method = RequestMethod.POST)
-    public String updateblance(@RequestParam("id") String id, @RequestParam("blance") String blance) {
-        logger.info("updateblance start: id="+id+" blance="+blance);
-        if (StringUtil.checkStrs(id, blance)) {
-            return countServiceImpl.updateCount(id, Double.parseDouble(blance), null,null);
-        } else {
-            logger.error("updateBlance id or blance is null");
-            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ERROR_ARGS)).toString();
-        }
-    }
-
-    /**
-     * 注销账户
-     *
-     * @return
-     */
-    @RequestMapping(path = "/logoutCount", method = RequestMethod.POST)
-    public String logoutCount(@RequestParam("id") String id) {
-        logger.info("logoutCount start: id="+id);
-        if (StringUtil.checkStrs(id)) {
-            return countServiceImpl.logoutCount(id);
-        } else {
-            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ERROR_ARGS)).toString();
-        }
-    }
-
-    /**
-     * 查询当前用户下的所有账户
-     *
-     * @param request
-     * @return
-     */
-    @RequestMapping(path = "/queryCountByUserid", method = RequestMethod.GET)
-    public String queryCountByUserid(HttpServletRequest request) {
-
-        logger.info("queryCountByUserid start ");
-        String userId = request.getSession().getAttribute("userid").toString();
-        return countServiceImpl.queryByUserId(userId);
-    }
 
     /**
      * 查询单个账户
@@ -188,7 +122,10 @@ public class CountController {
      * @return
      */
     @RequestMapping(path = "/switch", method = RequestMethod.POST)
-    public String countSwitch(@RequestParam("countid") String id, @RequestParam("moneynum") Double moneynum, @RequestParam("receivecount") String receivecount, @RequestParam("payPwd") String payPwd) {
+    public String countSwitch(HttpServletRequest request,@RequestParam("countid") String id, @RequestParam("moneynum") Double moneynum, @RequestParam("receivecount") String receivecount, @RequestParam("payPwd") String payPwd) {
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("countSwitch start: countid="+id+",moneynum="+moneynum+",receivecount="+receivecount+",payPaw="+payPwd);
         if (!StringUtil.checkStrs(id, String.valueOf(moneynum), receivecount)) {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ERROR_ARGS)).toString();
@@ -232,7 +169,10 @@ public class CountController {
      * @return
      */
     @RequestMapping(path = "/exchange", method = RequestMethod.POST)
-    public String exchange(@RequestParam("datas") String datas) {
+    public String exchange(@RequestParam("datas") String datas,HttpServletRequest request) {
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("exchange start: datas="+datas);
         if (!StringUtil.checkStrs(datas)) {
             return net.sf.json.JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ERROR_ARGS)).toString();
@@ -254,6 +194,9 @@ public class CountController {
 
     @RequestMapping(path = "/inMoney", method = RequestMethod.POST)
     public String inMoney(HttpServletRequest request,@RequestParam("telphone") String telphone,@RequestParam("type") String type,@RequestParam("num") String num){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         if(!StringUtil.checkStrs(telphone,type,num)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
@@ -286,6 +229,9 @@ public class CountController {
 
     @RequestMapping(path = "/outMoney", method = RequestMethod.POST)
     public String outMoney(HttpServletRequest request,@RequestParam("telphone") String telphone,@RequestParam("type") String type,@RequestParam("num") String num,@RequestParam("payPwd") String payPwd){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         if(!StringUtil.checkStrs(telphone,type,num,payPwd)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
@@ -337,14 +283,20 @@ public class CountController {
      * @return
      */
     @RequestMapping(path = "/queryAllCount", method = RequestMethod.GET)
-    public String queryAllCount() {
+    public String queryAllCount(HttpServletRequest request) {
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("queryAllCount start ");
         return countServiceImpl.queryAll();
     }
 
 
     @RequestMapping(path="queryMoneyType",method = RequestMethod.GET)
-    public String getMoneyType(){
+    public String getMoneyType(HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         return JSONArray.fromObject(ConstantUtil.MONEY_TYPES).toString();
     }
 
@@ -384,7 +336,10 @@ public class CountController {
      * @param telphone
      */
     @RequestMapping(path = "/checkPhone", method = RequestMethod.POST)
-    public String checkPhone(@RequestParam("telphone") String telphone) {
+    public String checkPhone(@RequestParam("telphone") String telphone,HttpServletRequest request) {
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("checkPhone start: telphone="+telphone);
         if (!StringUtil.checkStrs(telphone)) {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
