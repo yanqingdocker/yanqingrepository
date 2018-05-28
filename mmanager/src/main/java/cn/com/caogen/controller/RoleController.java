@@ -7,6 +7,7 @@ import cn.com.caogen.service.AuthoirtyServiceImpl;
 import cn.com.caogen.service.IRoleService;
 import cn.com.caogen.service.RoleAuthServiceImpl;
 import cn.com.caogen.util.ConstantUtil;
+import cn.com.caogen.util.FilterAuthUtil;
 import cn.com.caogen.util.ResponseMessage;
 import cn.com.caogen.util.StringUtil;
 import net.sf.json.JSONArray;
@@ -14,11 +15,13 @@ import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +47,10 @@ public class RoleController {
      * @return
      */
     @RequestMapping(path = "addRole",method = RequestMethod.POST)
-    public String addRole(@RequestParam("rolename") String rolename,@RequestParam("authdis") String authdis){
+    public String addRole(@RequestParam("rolename") String rolename, @RequestParam("authdis") String authdis, HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         if(!StringUtil.checkStrs(rolename)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
@@ -66,7 +72,10 @@ public class RoleController {
      * @return
      */
     @RequestMapping(path = "deleteRole",method = RequestMethod.POST)
-    public String deleteRole(@RequestParam("id") int id){
+    public String deleteRole(@RequestParam("id") int id,HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         if(!StringUtil.checkStrs(String.valueOf(id))){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
@@ -80,7 +89,7 @@ public class RoleController {
      * @return
      */
     @RequestMapping(path = "queryRole",method = RequestMethod.GET)
-    public String queryRole(@RequestParam("id") String id){
+    public String queryRole(@RequestParam("id") String id,HttpServletRequest request){
         if(!StringUtil.checkStrs(id)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
@@ -93,7 +102,10 @@ public class RoleController {
      * @return
      */
     @RequestMapping(path = "queryAll",method = RequestMethod.GET)
-    public String queryAll(){
+    public String queryAll(HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         List<Role> roleList=roleServiceimpl.queryAll();
         for(Role role:roleList){
             List<RoleAuth> roleAuths=roleAuthService.queryByRoleId(role.getId());
@@ -114,7 +126,10 @@ public class RoleController {
      * @return
      */
     @RequestMapping(path = "updateRole",method = RequestMethod.POST)
-    public String updateRole(@RequestParam("id") String id,@RequestParam("rolename") String rolename){
+    public String updateRole(@RequestParam("id") String id,@RequestParam("rolename") String rolename,HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         if(!StringUtil.checkStrs(id,rolename)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }

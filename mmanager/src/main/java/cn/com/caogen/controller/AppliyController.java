@@ -44,8 +44,8 @@ public class AppliyController {
      */
     @RequestMapping(path = "queryAll",method = RequestMethod.GET)
     public String queryAll(HttpServletRequest request){
-       if(FilterAuthUtil.checkAuth(request)){
-           return JSONObject.fromObject(new ResponseMessage("403",ConstantUtil.FAIL)).toString();
+       if(!FilterAuthUtil.checkAuth(request)){
+           return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
        }
         logger.info("queryAll start:");
         Map<String,Object> parmMap=new HashMap<String,Object>();
@@ -53,17 +53,4 @@ public class AppliyController {
         return JSONArray.fromObject(appliyList).toString();
     }
 
-    /**
-     * 查询当前用户下的账号
-     * @param request
-     * @return
-     */
-    @RequestMapping(path = "querybyUserid",method = RequestMethod.GET)
-    public String querybyUserid(HttpServletRequest request){
-        logger.info("querybyUserid start:");
-        Map<String,Object> parmMap=new HashMap<String,Object>();
-        parmMap.put("userid",request.getSession().getAttribute("userid"));
-        List<Appliy> appliyList=appliyService.query(new HashMap<String,Object>());
-        return JSONArray.fromObject(appliyList).toString();
-    }
 }

@@ -33,30 +33,18 @@ public class OperaController {
     @Autowired
     private IOperaService operaServiceimpl;
     @Autowired
-    private OperaMapper operaMapper;
-    @Autowired
     private UserServiceImpl userServiceimpl;
-    @RequestMapping(path = "/queryContition",method = RequestMethod.GET)
-    public String queryContition(HttpServletRequest request){
-        Operation operation=new Operation();
-        operation.setCountid("13246465");
-        operation.setNum(10.0);
-        operation.setOperaTime(DateUtil.getTime());
-        operation.setOperaType("充值");
-        operation.setOi(1);
-        operation.setOperaIp(IpUtil.getIpAddr(request));
-        operation.setOperaUser("yanqing");
-        operation.setCountType("CNY");
-        operaServiceimpl.add(operation);
-        return "opera";
-    }
+
 
     /**
      * 查询所有操作记录
      * @return
      */
     @RequestMapping(path = "/queryAll",method = RequestMethod.GET)
-    public String queryAll(){
+    public String queryAll(HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("queryAll start:");
         return JSONArray.fromObject(operaServiceimpl.queryAll()).toString();
     }
@@ -68,6 +56,9 @@ public class OperaController {
      */
     @RequestMapping(path = "/queryByUserid",method = RequestMethod.GET)
     public String queryByUserid(HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("queryAll start:");
         User user=userServiceimpl.querybyId((int)request.getSession().getAttribute("userid"));
         Map<String,Object> parmMap=new HashMap<String,Object>();
@@ -80,7 +71,10 @@ public class OperaController {
      * @return
      */
     @RequestMapping(path = "/queryByDay",method = RequestMethod.GET)
-    public String queryByDay(@RequestParam("oi") String oi){
+    public String queryByDay(@RequestParam("oi") String oi,HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("queryByDay start: oi="+oi);
         if(!StringUtil.checkStrs(oi)){
             logger.error("queryByDay:"+ConstantUtil.ERROR_ARGS);
@@ -99,7 +93,10 @@ public class OperaController {
      * @return
      */
     @RequestMapping(path = "/queryByWeek",method = RequestMethod.GET)
-    public String queryByWeek(@RequestParam("oi") String oi){
+    public String queryByWeek(@RequestParam("oi") String oi,HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("queryByWeek start: oi="+oi);
         if(!StringUtil.checkStrs(oi)){
             logger.error("queryByWeek:"+ConstantUtil.ERROR_ARGS);
@@ -116,7 +113,10 @@ public class OperaController {
      * @return
      */
     @RequestMapping(path = "/queryByMonth",method = RequestMethod.GET)
-    public String queryByMonth(@RequestParam("oi") String oi){
+    public String queryByMonth(@RequestParam("oi") String oi,HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("queryByMonth start: oi="+oi);
         if(!StringUtil.checkStrs(oi)){
             logger.error("queryByMonth:"+ConstantUtil.ERROR_ARGS);
@@ -133,7 +133,7 @@ public class OperaController {
      * @return
      */
     @RequestMapping(path = "/queryByquarter",method = RequestMethod.GET)
-    public String queryByquarter(@RequestParam("oi") String oi){
+    public String queryByquarter(@RequestParam("oi") String oi,HttpServletRequest request){
         logger.info("queryByquarter start: oi="+oi);
         if(!StringUtil.checkStrs(oi)){
             logger.error("queryByYear:"+ConstantUtil.ERROR_ARGS);
@@ -150,7 +150,7 @@ public class OperaController {
      * @return
      */
     @RequestMapping(path = "/queryByYear",method = RequestMethod.GET)
-    public String queryByYear(@RequestParam("oi") String oi){
+    public String queryByYear(@RequestParam("oi") String oi,HttpServletRequest request){
         logger.info("queryByYear start: oi="+oi);
         if(!StringUtil.checkStrs(oi)){
             logger.error(" queryByYear:"+ConstantUtil.ERROR_ARGS);
@@ -164,14 +164,20 @@ public class OperaController {
 
 
     @RequestMapping(path="queryoperatype",method = RequestMethod.GET)
-    public String queryoperatype(@RequestParam("date") int date){
+    public String queryoperatype(@RequestParam("date") int date,HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         List<Map<String,Object>> list=operaServiceimpl .queryoperatype(date);
 
         return JSONArray.fromObject(list).toString();
     }
 
     @RequestMapping(path="queryoperacount",method = RequestMethod.GET)
-    public String queryoperacount(@RequestParam("date") int date){
+    public String queryoperacount(@RequestParam("date") int date,HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         List<Map<String,Object>> list=operaServiceimpl .queryoperacount(date);
         return JSONArray.fromObject(list).toString();
     }

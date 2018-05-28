@@ -3,6 +3,7 @@ package cn.com.caogen.controller;
 import cn.com.caogen.entity.Authoirty;
 import cn.com.caogen.service.IAuthoirtyService;
 import cn.com.caogen.util.ConstantUtil;
+import cn.com.caogen.util.FilterAuthUtil;
 import cn.com.caogen.util.ResponseMessage;
 import cn.com.caogen.util.StringUtil;
 import net.sf.json.JSONArray;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * author:huyanqing
@@ -33,7 +36,10 @@ public class AuthoirtyController {
      * @return
      */
     @RequestMapping(path = "add",method =RequestMethod.POST )
-    public String add(@RequestParam("authoirtyname") String authoirtyname,@RequestParam("url") String url){
+    public String add(@RequestParam("authoirtyname") String authoirtyname,@RequestParam("url") String url,HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("add start");
         if(!StringUtil.checkStrs(authoirtyname,url)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
@@ -53,7 +59,10 @@ public class AuthoirtyController {
      * @return
      */
     @RequestMapping(path = "update",method =RequestMethod.POST )
-    public String update(@RequestParam("id") String id,@RequestParam("authoirtyname") String authoirtyname,@RequestParam("url") String url){
+    public String update(@RequestParam("id") String id,@RequestParam("authoirtyname") String authoirtyname,@RequestParam("url") String url,HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("add update");
         if(!StringUtil.checkStrs(id,authoirtyname,url)){
             logger.error("update"+ConstantUtil.ERROR_ARGS);
@@ -77,7 +86,10 @@ public class AuthoirtyController {
      * @return
      */
     @RequestMapping(path = "/delete",method =RequestMethod.GET )
-    public String delete(@RequestParam("ids") String ids){
+    public String delete(@RequestParam("ids") String ids,HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("delete start: ids="+ids);
         if (!StringUtil.checkStrs(ids)) {
             logger.error("delete"+ConstantUtil.ERROR_ARGS);
@@ -94,7 +106,10 @@ public class AuthoirtyController {
      * @return
      */
     @RequestMapping(path = "queryAll",method =RequestMethod.GET )
-    public String queryAll(){
+    public String queryAll(HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("queryAll");
         return JSONArray.fromObject(authoirtyService.queryAll()).toString();
     }

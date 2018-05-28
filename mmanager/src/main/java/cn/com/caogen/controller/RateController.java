@@ -1,7 +1,9 @@
 package cn.com.caogen.controller;
 
 import cn.com.caogen.util.ConstantUtil;
+import cn.com.caogen.util.FilterAuthUtil;
 import cn.com.caogen.util.IpUtil;
+import cn.com.caogen.util.ResponseMessage;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
@@ -36,6 +38,9 @@ public class RateController {
      */
     @RequestMapping(path = "/queryAll", method = RequestMethod.GET)
     public String getRates(HttpServletRequest request) {
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
         logger.info("getRates start");
         List<String> list = new ArrayList<String>(7);
         list.add(stringRedisTemplate.opsForValue().get(ConstantUtil.ONE));
