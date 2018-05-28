@@ -319,7 +319,6 @@ public class UserController {
             }
             Set<String> keys=sessionMap.keySet();
             for (String key:keys){
-                //4FE9907BEDF1462CDF3276585DFF20DC
                 User currentUser=(User)SerializeUtil.unserialize((byte[])sessionMap.get(key));
                 if(currentUser!=null&&userid==currentUser.getUserid()){
                    logger.info("remove user");

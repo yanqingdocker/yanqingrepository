@@ -134,16 +134,6 @@ public class AppliyController {
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 
-    /**
-     * 查询所有支付宝账号
-     * @return
-     */
-    @RequestMapping(path = "queryAll",method = RequestMethod.GET)
-    public String queryAll(){
-        Map<String,Object> parmMap=new HashMap<String,Object>();
-        List<Appliy> appliyList=appliyService.query(new HashMap<String,Object>());
-        return JSONArray.fromObject(appliyList).toString();
-    }
 
     /**
      * 查询当前用户下的账号

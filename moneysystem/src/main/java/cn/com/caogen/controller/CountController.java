@@ -262,16 +262,6 @@ public class CountController {
 
     }
 
-    /**
-     * 查询系统中所有账户
-     *
-     * @return
-     */
-    @RequestMapping(path = "/queryAllCount", method = RequestMethod.GET)
-    public String queryAllCount() {
-        logger.info("queryAllCount start ");
-        return countServiceImpl.queryAll();
-    }
 
     @RequestMapping(path="queryMoneyType",method = RequestMethod.GET)
     public String getMoneyType(){
