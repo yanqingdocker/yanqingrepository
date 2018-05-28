@@ -35,7 +35,7 @@ document.writeln(" <a class=\"nav-link dropdown-toggle\" id=\"nav_my\">My<i clas
 document.writeln(" <div class=\"dropdown-menu \" style=\"display: none\" >\n");
 document.writeln(" <a class=\"dropdown-item\" href=\"/EN/my/my_account\">Aaccount</a>\n");
 document.writeln("<a class=\"dropdown-item\" href=\"/EN/my/my_money\">Balance</a>\n ");
-document.writeln("<a class=\"dropdown-item\" href=\"/EN/my/authentication\">Data</a>\n ");
+document.writeln("<a class=\"dropdown-item\" href=\"/EN/my/authentication\">Information</a>\n ");
 document.writeln("<a class=\"dropdown-item\" href=\"/EN/my/inbox\">Message</a>\n ");
 document.writeln(" </div>\n ");
 document.writeln("   </li>\n");
@@ -79,7 +79,7 @@ document.writeln("<a class=\"nav-link dropdown-toggle\" id=\"nav_my\">My<i class
 document.writeln(" <div class=\"dropdown-menu \" style=\"display: none\"> ");
 document.writeln(" <a class=\"dropdown-item\" href=\"/EN/my/my_account\">Aaccount</a>");
 document.writeln(" <a class=\"dropdown-item\" href=\"/EN/my/my_money\">Balance</a>");
-document.writeln("   <a class=\"dropdown-item\" href=\"/EN/my/authentication\">Data</a>");
+document.writeln("   <a class=\"dropdown-item\" href=\"/EN/my/authentication\">Information</a>");
 document.writeln("  <a class=\"dropdown-item\" href=\"/EN/my/inbox\">Message</a>");
 document.writeln("  </div> ");
 document.writeln("  </li>");
