@@ -67,16 +67,11 @@ public class SystemFilter implements Filter {
                 chain.doFilter(request, response);
                 return;
             }else{
-                logger.info("sessionId=========="+httpServletRequest.getSession().getId());
                 User user=JedisUtil.getUser(httpServletRequest);
                 if(user!=null){
                     chain.doFilter(request,response);
                     return;
                 }else{
-                    /*Map<String,Object> sessionMap=JedisUtil.getSessionMap();
-                    sessionMap.remove(httpServletRequest.getSession().getId());
-                    logger.info("remove user");
-                    JedisUtil.getJedis().set(ConstantUtil.SESSIONCOLLCTION.getBytes(),SerializeUtil.serialize(sessionMap));*/
                     httpServletResponse.sendRedirect("/CN/login");
                 }
             }

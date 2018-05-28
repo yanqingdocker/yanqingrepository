@@ -71,27 +71,9 @@ public class CountController {
 
     }
 
-    /**
-     * 修改账户状态
-     *
-     * @param id
-     * @param state
-     * @return
-     */
-    @RequestMapping(path = "/startOrstopCount", method = RequestMethod.POST)
-    public String startOrstopcount(@RequestParam("id") String id, @RequestParam("state") String state) {
-        logger.info("startOrstopcount start: id="+id+" state="+state);
-        if (StringUtil.checkStrs(id, state)) {
-            return countServiceImpl.updateCount(id, 0, state,null);
-        } else {
-            logger.error("startOrstopcount id or state is null");
-            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ERROR_ARGS)).toString();
-        }
-
-    }
 
     /**
-     * 修改账户状态
+     * 修改账户支付密码
      *
      * @param id
      * @param payPwd
@@ -117,7 +99,7 @@ public class CountController {
     }
 
     /**
-     * 更新账户金额
+     *
      *
      * @param id
      * @param blance

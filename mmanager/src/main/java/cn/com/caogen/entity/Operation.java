@@ -12,6 +12,8 @@ import lombok.Setter;
 public class Operation {
     //id
     private int id;
+    //交易流水号
+    private String snumber;
     //账户id
     private String countid;
     //账户类型

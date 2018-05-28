@@ -28,7 +28,7 @@ public class SystemListener implements HttpSessionListener {
     @Override
     public void sessionCreated(HttpSessionEvent se) {
 
-      logger.info(se.getSession().getId()+"createsession=============================="+DateUtil.getTime());
+
     }
 
     @Override

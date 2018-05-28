@@ -4,6 +4,7 @@
 
     <resultMap id="BaseResultMap" type="cn.com.caogen.entity.Operation" >
         <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="snumber" property="snumber" jdbcType="VARCHAR" />
         <result column="countid" property="countid" jdbcType="VARCHAR" />
         <result column="counttype" property="countType" jdbcType="VARCHAR" />
         <result column="num" property="num" jdbcType="DOUBLE" />
@@ -27,11 +28,11 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-    id,countid,counttype,num,operatype,operatime,operauser,oi,operaip
+    id,snumber,countid,counttype,num,operatype,operatime,operauser,oi,operaip
      </sql>
     <insert id="add" parameterType="cn.com.caogen.entity.Appliy">
-        insert into operalog (countid,counttype,num,operatype,operatime,operauser,oi,operaip) values
-        (#{countid,jdbcType=VARCHAR},#{countType,jdbcType=VARCHAR},#{num,jdbcType=DOUBLE},#{operaType,jdbcType=VARCHAR},#{operaTime,jdbcType=VARCHAR},#{operaUser,jdbcType=VARCHAR},#{oi,jdbcType=INTEGER},#{operaIp,jdbcType=VARCHAR});
+        insert into operalog (snumber,countid,counttype,num,operatype,operatime,operauser,oi,operaip) values
+        (#{snumber,jdbcType=VARCHAR},#{countid,jdbcType=VARCHAR},#{countType,jdbcType=VARCHAR},#{num,jdbcType=DOUBLE},#{operaType,jdbcType=VARCHAR},#{operaTime,jdbcType=VARCHAR},#{operaUser,jdbcType=VARCHAR},#{oi,jdbcType=INTEGER},#{operaIp,jdbcType=VARCHAR});
     </insert>
     <select id="queryAll"  resultMap="BaseResultMap" >
         select <include refid="Base_Column_List"/> from operalog  Order By operatime Desc

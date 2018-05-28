@@ -280,6 +280,7 @@ public class CountServiceImpl implements ICountService {
 
     public void saveOperaLog(String countid,String counttype,Double num,String operatype,String operauser,int oi,String operaip){
             Operation operation=new Operation();
+            operation.setSnumber(SerialnumberUtil.Getnum());
             operation.setCountid(countid);
             operation.setCountType(counttype);
             operation.setNum(num);
