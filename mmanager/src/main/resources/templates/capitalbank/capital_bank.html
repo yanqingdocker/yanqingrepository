@@ -79,121 +79,141 @@
             data: null,
             type: 'get',
             success: function (data) {
-                var  arr=new Array();
-                var  dollar=new Array();
-                var obj=strToJson(data);
-                for(var i=0;i<obj.length;i++){
-                    if(obj[i].counttype=="CNY"){
-                        var rmbfix=obj[i].sum;
-                        $("#rmb_bank").html((rmbfix*10000/10000).toFixed(4));
-                        arr.push(obj[i].sum);
-                    }
-                    if(obj[i].counttype=="USD"){
-                        var dollarfix=obj[i].sum;
-                        $("#dollar_bank").html((dollarfix*10000/10000).toFixed(4));
-                        dollar.push(obj[i].sum);
-                    }
-                }
-                var  option = {
-                    title : {
-                        text: '平台资金库',
-//                    subtext: '汇率变化'
-                        textStyle: {
-                            color: '#333' //标题颜色
-                        }
-                    },
-
-                    tooltip : {
-                        trigger: 'axis'
-                    },
-                    legend: {
-                        data:['美元','人民币']
-                    },
-                    toolbox: {
-                        show: true,
-                        orient: 'vertical',
-                        left: 'right',
-                        top: 'center',
-                        feature: {
-                            // mark: {show: true},
-                            dataView: {show: true, readOnly: false},
-                            magicType: {show: true, type: ['line', 'bar']},
-                            restore: {show: true},
-                            saveAsImage: {show: true}
-                        }
-                    },
-                    calculable : true,
-                    xAxis : [
-                        {
-                            type : 'category',
-                            boundaryGap : true,//不从零刻度开始
-                            data : ["美元   人民币"],
-                        }
-                    ],
-                    yAxis : [
-                        {
-                            type: 'value',
-                            splitArea: {
-                                show: true
-                            }
-                        }
-                    ],
-                    series : [
-                        {
-                            name:'美元',
-                            type:'bar',
-                            data: dollar,
-                            markPoint : {
-                                data : [
-                                    {type : 'max', name: '最大值'},
-                                    {type : 'min', name: '最小值'}
-                                ]
-                            },
-                            barWidth : 100,//柱图宽度
-                            label:{
-                                normal:{
-                                    show:false,            //显示数字
-                                    position: 'top'        //这里可以自己选择位置
-                                }
-                            },
-
-                            itemStyle:{
-                                normal:{
-                                    color: "#0390ee" //图标颜色
-                                }
-                            },
-                            lineStyle:{
-                                normal:{
-                                    width:2,  //连线粗细
-                                    color: "#0390ee"  //连线颜色
-                                }
-                            }
-
+                if (data.code=="403") {
+                    sweetAlert({
+                            title: "",
+                            text: "您的账号权限不足，无法操作此页面！",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonText: "确定",
+                            cancelButtonText: "取消",
+                            closeOnConfirm: false,
+                            closeOnCancel: true
                         },
-                        {
-                            name:'人民币',
-                            type:'bar',
-                            data: arr,
-                            markPoint : {
-                                data : [
-                                    {type : 'max', name: '最大值'},
-                                    {type : 'min', name: '最小值'}
-                                ]
-                            },
-                            barWidth : 100,//柱图宽度
-                            label:{
-                                normal:{
-                                    show:false,            //显示数字
-                                    position: 'top'        //这里可以自己选择位置
+                        function(isConfirm){
+                            if (isConfirm) {
+                                window.location.href = "/mainframe";
+                            }
+                        });
+                }
+                else{
+                    var  arr=new Array();
+                    var  dollar=new Array();
+                    var obj=strToJson(data);
+                    for(var i=0;i<obj.length;i++){
+                        if(obj[i].counttype=="CNY"){
+                            var rmbfix=obj[i].sum;
+                            $("#rmb_bank").html((rmbfix*10000/10000).toFixed(4));
+                            arr.push(obj[i].sum);
+                        }
+                        if(obj[i].counttype=="USD"){
+                            var dollarfix=obj[i].sum;
+                            $("#dollar_bank").html((dollarfix*10000/10000).toFixed(4));
+                            dollar.push(obj[i].sum);
+                        }
+                    }
+                    var  option = {
+                        title : {
+                            text: '平台资金库',
+//                    subtext: '汇率变化'
+                            textStyle: {
+                                color: '#333' //标题颜色
+                            }
+                        },
+
+                        tooltip : {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            data:['美元','人民币']
+                        },
+                        toolbox: {
+                            show: true,
+                            orient: 'vertical',
+                            left: 'right',
+                            top: 'center',
+                            feature: {
+                                // mark: {show: true},
+                                dataView: {show: true, readOnly: false},
+                                magicType: {show: true, type: ['line', 'bar']},
+                                restore: {show: true},
+                                saveAsImage: {show: true}
+                            }
+                        },
+                        calculable : true,
+                        xAxis : [
+                            {
+                                type : 'category',
+                                boundaryGap : true,//不从零刻度开始
+                                data : ["美元   人民币"],
+                            }
+                        ],
+                        yAxis : [
+                            {
+                                type: 'value',
+                                splitArea: {
+                                    show: true
                                 }
                             }
+                        ],
+                        series : [
+                            {
+                                name:'美元',
+                                type:'bar',
+                                data: dollar,
+                                markPoint : {
+                                    data : [
+                                        {type : 'max', name: '最大值'},
+                                        {type : 'min', name: '最小值'}
+                                    ]
+                                },
+                                barWidth : 100,//柱图宽度
+                                label:{
+                                    normal:{
+                                        show:false,            //显示数字
+                                        position: 'top'        //这里可以自己选择位置
+                                    }
+                                },
 
-                        }
-                    ]
-                };
-                // console.log(option.xAxis[0].data);
-                // console.log(option.series[0].data);
-                myChart.setOption(option);
+                                itemStyle:{
+                                    normal:{
+                                        color: "#0390ee" //图标颜色
+                                    }
+                                },
+                                lineStyle:{
+                                    normal:{
+                                        width:2,  //连线粗细
+                                        color: "#0390ee"  //连线颜色
+                                    }
+                                }
+
+                            },
+                            {
+                                name:'人民币',
+                                type:'bar',
+                                data: arr,
+                                markPoint : {
+                                    data : [
+                                        {type : 'max', name: '最大值'},
+                                        {type : 'min', name: '最小值'}
+                                    ]
+                                },
+                                barWidth : 100,//柱图宽度
+                                label:{
+                                    normal:{
+                                        show:false,            //显示数字
+                                        position: 'top'        //这里可以自己选择位置
+                                    }
+                                }
+
+                            }
+                        ]
+                    };
+                    // console.log(option.xAxis[0].data);
+                    // console.log(option.series[0].data);
+                    myChart.setOption(option);
+
+                }
 
             },
             error: function () {

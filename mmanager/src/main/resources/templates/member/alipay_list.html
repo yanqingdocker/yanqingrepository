@@ -108,7 +108,26 @@
             },
             ajax: {
                 url: "/appliy/queryAll",
-                dataSrc: '',
+                dataSrc: function (data) {
+                    if (data.code=="403") {
+                        sweetAlert({
+                                title: "",
+                                text: "您的账号权限不足，无法操作此页面！",
+                                type: "warning",
+                                showCancelButton: false,
+                                confirmButtonText: "确定",
+                                cancelButtonText: "取消",
+                                closeOnConfirm: false,
+                                closeOnCancel: true
+                            },
+                            function(isConfirm){
+                                if (isConfirm) {
+                                    window.location.href = "/mainframe";
+                                }
+                            });
+                    }
+                    else{ return data;}
+                }
             },
             "fnDrawCallback"    : function(){
                 this.api().column(0).nodes().each(function(cell, i) {
@@ -123,20 +142,7 @@
             ]
         } );
     })
-    // 点击check添加样式
-    $(document).on('click','.checkcustom label',function(){
-        $(this).toggleClass("on");
-    });
 
-    /*check全选*/
-    $("input[rel='box_check_all']").on("click",function(){
-        if($(this).prop("checked")===true){
-            $("input[name='checklist']").prop("checked",$(this).prop("checked")).siblings().addClass("on")
-
-        }else{
-            $("input[name='checklist']").prop("checked",false).siblings().removeClass("on")
-        }
-    });
 
 
 </script>

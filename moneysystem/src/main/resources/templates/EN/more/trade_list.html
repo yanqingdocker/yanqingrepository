@@ -29,7 +29,7 @@
 <script  type="text/javascript" src="/js/ENheader.js"></script>
 
 <div class=" p0 m0 fix-frist-top phone_frist-top">
-    <div class="turn swiper-container " style="background:url(/images/bwrs.jpg) no-repeat center ; height: 500px; width:100%;background-size: cover" ></div>
+    <div class="turn swiper-container " style="background:url(/images/ENbwrs.jpg) no-repeat center ; height: 500px; width:100%;background-size: cover" ></div>
 </div>
 <!--banner end-->
 
@@ -96,12 +96,13 @@
                     <table width="100%"  cellspacing="0" cellpadding="0" border="1" id="table"  class="table">
                         <thead>
                         <tr>
-                            <th>No.</th>
+                            <th width="55">No.</th>
                             <th>Account number</th>
                             <th>Currency type</th>
-                            <th>income/expenses</th>
+                            <!--<th>income/expenses</th>-->
                             <th>Amount</th>
-                            <th>type</th>
+                            <th>Type</th>
+                            <th> Flow number</th>
                             <th class="tc">Time</th>
                         </tr>
                         </thead>
@@ -152,17 +153,17 @@
                 {"data": "id" },
                 {"data": "countid" },
                 {"data": "countType"},
-                {"data": "oi" ,
-                    render:function(e,type,full,row){
-                        if(full.oi=="0"){
-                            return "expenditure";
-                        }
-                        if(full.oi=="1"){
-                            return "income";
-                        }
-
-                    }
-                },
+                // {"data": "oi" ,
+                //     render:function(e,type,full,row){
+                //         if(full.oi=="0"){
+                //             return "expenditure";
+                //         }
+                //         if(full.oi=="1"){
+                //             return "income";
+                //         }
+                //
+                //     }
+                // },
                 {"data": "num" ,
                     render:function(e,type,full,row){
                         if(full.oi=="0"){
@@ -179,6 +180,7 @@
                         return trade_type(full.operaType);
                     }
                 },
+                {"data": "snumber" },
                 {"data": "operaTime" }
             ]
         } );

@@ -24,7 +24,7 @@
 
 </head>
 
-<body class="flat-blue">
+<body class="flat-blue relative">
 <div class="app-container expanded">
     <div class="row content-container">
         <nav class="navbar navbar-default navbar-fixed-top navbar-top">
@@ -326,10 +326,19 @@
             © 2018 Copyright <a href="JavaScript:;" >南方国际钱庄后台管理系统</a>
         </div>
     </footer>
+    <div id="indexAlert" class="tc">
+        <i class="icon_alarm"></i>
+        <h3>您有<b class="red" id="tast_num"></b>待处理任务！</h3>
+        <a href="/tast/tast_nodeal" target="iframename">去处理</a>
+        <a href="JavaScript:;" id="closeAlert"  target="iframename">我知道了</a>
+    </div>
 </div>
 <script type="text/javascript">
     $(function(){
         autodivheight();
+        $("#closeAlert").click(function () {
+            $(this).parent().hide();
+        })
     });
 
     function autodivheight(){ //函数：获取尺寸
@@ -400,8 +409,13 @@
                 if(data.length>0){
                     $("#nodeal_num").html(data.length);
                     $("#msg_status").addClass("danger");
+                    $("#tast_num").html(data.length);
+                    $("#indexAlert").show();
                 }
-                else { $("#msg_status").removeClass("danger");}
+                else {
+                    $("#msg_status").removeClass("danger");
+                    $("#indexAlert").hide();
+                }
 
             },
             error: function () {

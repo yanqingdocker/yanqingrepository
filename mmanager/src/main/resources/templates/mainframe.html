@@ -87,7 +87,7 @@
         </a>
     </div>
 </div>
-<div class="row">
+<div class="row info_num">
     <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12">
         <a href="#">
             <div class="card  summary-inline index_zr">
@@ -189,7 +189,7 @@
                 var totalrmb=0;
                 for(var j=0;j<arrcny.length;j++){
                     var weekdate=arrcny[j].operaTime.substring(11,13);
-                    console.log(weekdate);
+                    // console.log(weekdate);
                     // var b = new Date(Date.parse(weekdate.replace(/\-/g,"/")));
                     totalrmb=totalrmb+arrcny[j].num;
                     if(weekdate<7){
@@ -367,7 +367,7 @@
                 var totalrmb=0;
                 for(var j=0;j<arrcny.length;j++){
                     var weekdate=arrcny[j].operaTime.substring(11,13);
-                    console.log(weekdate);
+                    // console.log(weekdate);
                     // var b = new Date(Date.parse(weekdate.replace(/\-/g,"/")));
                     totalrmb=totalrmb-arrcny[j].num;
                     if(weekdate<7){

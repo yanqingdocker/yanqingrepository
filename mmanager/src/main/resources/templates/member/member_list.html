@@ -120,7 +120,26 @@
 
             ajax: {
                 url: "/user/queryAll",
-                dataSrc: '',
+                dataSrc: function (data) {
+                    if (data.code=="403") {
+                        sweetAlert({
+                                title: "",
+                                text: "您的账号权限不足，无法操作此页面！",
+                                type: "warning",
+                                showCancelButton: false,
+                                confirmButtonText: "确定",
+                                cancelButtonText: "取消",
+                                closeOnConfirm: false,
+                                closeOnCancel: true
+                            },
+                            function(isConfirm){
+                                if (isConfirm) {
+                                    window.location.href = "/mainframe";
+                                }
+                            });
+                    }
+                    else{ return data;}
+                }
             },
             "fnDrawCallback"    : function(){
                 this.api().column(1).nodes().each(function(cell, i) {

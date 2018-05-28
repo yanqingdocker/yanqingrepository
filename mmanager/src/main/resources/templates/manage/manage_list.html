@@ -170,7 +170,26 @@
             },
             ajax: {
                 url: "/muser/queryAll",
-                dataSrc: '',
+                dataSrc: function (data) {
+                    if (data.code=="403") {
+                        sweetAlert({
+                                title: "",
+                                text: "您的账号权限不足，无法操作此页面！",
+                                type: "warning",
+                                showCancelButton: false,
+                                confirmButtonText: "确定",
+                                cancelButtonText: "取消",
+                                closeOnConfirm: false,
+                                closeOnCancel: true
+                            },
+                            function(isConfirm){
+                                if (isConfirm) {
+                                    window.location.href = "/mainframe";
+                                }
+                            });
+                    }
+                    else{ return data;}
+                }
             },
             "fnDrawCallback"    : function(){
                 this.api().column(1).nodes().each(function(cell, i) {
@@ -288,7 +307,18 @@
                             if (data.code=="success") {
                                 sweetAlert("", "恭喜您！删除成功！", "success");
                                 setTimeout(function(){ window.location.href = "/manage/manage_list";},1500);
-                            } else {
+                            }
+                            else if (data.code=="403") {
+                                sweetAlert({
+                                    title: "",
+                                    text: "您的账号权限不足，无法操作此页面！",
+                                    type: "warning",
+                                    showCancelButton: false,
+                                    confirmButtonText: "确定",
+                                    closeOnConfirm: true
+                                });
+                            }
+                            else {
                                 sweetAlert({
                                     title:"删除失败！!",
                                     text: "请选择要删除的数据！",
@@ -325,6 +355,16 @@
                         setTimeout(function () {
                             window.location.href = "/manage/manage_list";
                         }, 1500);
+                    }
+                    else if (strToJson(data).code=="403") {
+                        sweetAlert({
+                            title: "",
+                            text: "您的账号权限不足，无法操作此页面！",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonText: "确定",
+                            closeOnConfirm: true
+                        });
                     }
                     else {
                         sweetAlert("", "密码修改失败", "error");
@@ -374,11 +414,22 @@
             type: 'get',
             success: function (data) {
                 var jsonObj = $.parseJSON(data);//json字符串转数组
-                for (var i=0;i<jsonObj.length;i++)
-                {
-                    html ='<div class="checkcustom tc checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light"> <input type="checkbox" id="role'+jsonObj[i].id+'" name="checkrole" value="'+jsonObj[i].id+'"> <label id="lable'+jsonObj[i].id+'" for="role'+jsonObj[i].id+'">'+jsonObj[i].rolename+'</label></div>';
-                    $(".powerlist").append(html);
+                if (jsonObj.code == "403") {
+                    sweetAlert({
+                        title: "",
+                        text: "您的账号权限不足，无法操作此页面！",
+                        type: "warning",
+                        showCancelButton: false,
+                        confirmButtonText: "确定",
+                        closeOnConfirm: true
+                    });
+                }
+                else {
+                    for (var i = 0; i < jsonObj.length; i++) {
+                        html = '<div class="checkcustom tc checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light"> <input type="checkbox" id="role' + jsonObj[i].id + '" name="checkrole" value="' + jsonObj[i].id + '"> <label id="lable' + jsonObj[i].id + '" for="role' + jsonObj[i].id + '">' + jsonObj[i].rolename + '</label></div>';
+                        $(".powerlist").append(html);
 
+                    }
                 }
             }
         })
@@ -406,6 +457,16 @@
                         window.location.href = "/manage/manage_list";
                     }, 1500);
                 }
+                else if (strToJson(data).code=="403") {
+                    sweetAlert({
+                        title: "",
+                        text: "您的账号权限不足，无法操作此页面！",
+                        type: "warning",
+                        showCancelButton: false,
+                        confirmButtonText: "确定",
+                        closeOnConfirm: true
+                    });
+                    }
                 else {
                     sweetAlert("", "成员角色控制修改失败", "error");
                 }

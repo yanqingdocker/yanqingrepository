@@ -55,6 +55,7 @@
                         <th>交易金额</th>
                         <th>交易类型</th>
                         <th>操作IP</th>
+                        <th>流水号</th>
                         <th>创建时间</th>
                     </tr>
                     </thead>
@@ -117,7 +118,26 @@
             },
             ajax: {
                 url: "/opera/queryAll",
-                dataSrc: '',
+                dataSrc: function (data) {
+                    if (data.code=="403") {
+                        sweetAlert({
+                                title: "",
+                                text: "您的账号权限不足，无法操作此页面！",
+                                type: "warning",
+                                showCancelButton: false,
+                                confirmButtonText: "确定",
+                                cancelButtonText: "取消",
+                                closeOnConfirm: false,
+                                closeOnCancel: true
+                            },
+                            function(isConfirm){
+                                if (isConfirm) {
+                                    window.location.href = "/mainframe";
+                                }
+                            });
+                    }
+                    else{ return data;}
+                }
             },
 
             "columns": [
@@ -149,7 +169,8 @@
                 },
                 {"data": "operaType"},
                 {"data": "operaIp"},
-                {"data": "operaTime"},
+                {"data": "snumber"},
+                {"data": "operaTime"}
             ]
         });
     })

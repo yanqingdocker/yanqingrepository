@@ -96,12 +96,12 @@
                     <table width="100%"  cellspacing="0" cellpadding="0" border="1" id="table"  class="table">
                         <thead>
                         <tr>
-                            <th>序号</th>
+                            <th width="55">序号</th>
                             <th>账户卡号</th>
                             <th>货币类型</th>
-                            <th>收入/支出</th>
                             <th>金额</th>
                             <th>业务类型</th>
+                            <th>流水号</th>
                             <th class="tc">时间</th>
                         </tr>
                         </thead>
@@ -180,17 +180,17 @@
                         return currency_type(full.countType);
                     }
                 },
-                {"data": "oi" ,
-                    render:function(e,type,full,row){
-                        if(full.oi=="0"){
-                            return "支出";
-                        }
-                        if(full.oi=="1"){
-                            return "收入";
-                        }
-
-                    }
-                },
+                // {"data": "oi" ,
+                //     render:function(e,type,full,row){
+                //         if(full.oi=="0"){
+                //             return "支出";
+                //         }
+                //         if(full.oi=="1"){
+                //             return "收入";
+                //         }
+                //
+                //     }
+                // },
                 {"data": "num" ,
                     render:function(e,type,full,row){
                         if(full.oi=="0"){
@@ -203,6 +203,7 @@
                     }
                 },
                 {"data": "operaType" },
+                {"data": "snumber" },
                 {"data": "operaTime" }
             ]
         } );

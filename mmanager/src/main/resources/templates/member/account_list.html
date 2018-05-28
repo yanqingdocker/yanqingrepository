@@ -115,7 +115,26 @@
             },
             ajax: {
                 url: "/count/queryAllCount",
-                dataSrc: '',
+                dataSrc: function (data) {
+                    if (data.code=="403") {
+                        sweetAlert({
+                                title: "",
+                                text: "您的账号权限不足，无法操作此页面！",
+                                type: "warning",
+                                showCancelButton: false,
+                                confirmButtonText: "确定",
+                                cancelButtonText: "取消",
+                                closeOnConfirm: false,
+                                closeOnCancel: true
+                            },
+                            function(isConfirm){
+                                if (isConfirm) {
+                                    window.location.href = "/mainframe";
+                                }
+                            });
+                    }
+                    else{ return data;}
+                }
             },
             "columns": [
                 {"data": "id"},
@@ -158,6 +177,23 @@
                         window.location.href = "/member/account_list";
                     }, 1500);
                 }
+                else if (data.code=="403") {
+                        sweetAlert({
+                                title: "",
+                                text: "您的账号权限不足，无法操作此页面！",
+                                type: "warning",
+                                showCancelButton: false,
+                                confirmButtonText: "确定",
+                                cancelButtonText: "取消",
+                                closeOnConfirm: false,
+                                closeOnCancel: true
+                            },
+                            function(isConfirm){
+                                if (isConfirm) {
+                                    window.location.href = "/mainframe";
+                                }
+                            });
+                    }
                 else {
                     sweetAlert("", strToJson(data).message, "error");
                 }

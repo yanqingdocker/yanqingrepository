@@ -69,141 +69,157 @@
                 $.Popup.error("表单数据不合法!");
             },
             success: function (data) {
-                var arr = new Array();
-                var obj = new Array();//美元人民币
-                var rmb = new Array();//人民币美元
-                var datetime = new Array();
-                for (var i=0;i<data.length;i++)
-                {
-                    arr.push(data[i]);
-                    // console.log(arr);
-                }
-                for (var j=0;j<data.length;j++)
-                {
-                    var jsondata =arr[j];
-                    // console.log(jsondata);
-                    obj.push(jsondata.USDCNY.openPri);
-                    var rmbfix=1/jsondata.USDCNY.openPri;
-                    rmb.push(rmbfix.toFixed(4));
-                    datetime.push(jsondata.USDCNY.date.substring(5,10));
-
-                }
-                var lastsrate=arr[5].USDCNY.openPri;
-                $("#dollatrate").html(lastsrate);
-                var fixrmb=1/lastsrate;
-                $("#rmbtrate").html(fixrmb.toFixed(4));
-
-                // console.log(datetime);
-                var  option = {
-                    title : {
-                        text: '最近一周汇率变化',
-//                    subtext: '汇率变化'
-                        textStyle: {
-                            color: '#333' //标题颜色
-                        }
-                    },
-
-                    tooltip : {
-                        trigger: 'axis'
-                    },
-                    legend: {
-                        data:['美元人民币','人民币美元']
-                    },
-                    toolbox: {
-                        show: true,
-                        orient: 'vertical',
-                        left: 'right',
-                        top: 'center',
-                        feature: {
-                            // mark: {show: true},
-                            dataView: {show: true, readOnly: false},
-                            magicType: {show: true, type: ['line', 'bar']},
-                            restore: {show: true},
-                            saveAsImage: {show: true}
-                        }
-                    },
-                    calculable : true,
-                    xAxis : [
-                        {
-                            type : 'category',
-                            boundaryGap : true,//不从零刻度开始
-                            data : datetime,
-                        }
-                    ],
-                    yAxis : [
-                        {
-                            type: 'value',
-                            min: 0,
-                            max: 6.4,
-                            interval:0.5,
-                            splitArea: {
-                                show: true
-                            }
-                        }
-                    ],
-                    series : [
-                        {
-                            name:'美元人民币',
-                            type:'line',
-                            data:obj,
-                            markPoint : {
-                                data : [
-                                    {type : 'max', name: '最大值'},
-                                    {type : 'min', name: '最小值'}
-                                ]
-                            },
-                            label:{
-                                normal:{
-                                    show:true,            //显示数字
-                                    position: 'top'        //这里可以自己选择位置
-                                }
-                            },
-                            markLine : {
-                                data : [
-                                    {type : 'average', name: '平均值'}
-                                ]
-                            },
-                            itemStyle:{
-                                normal:{
-                                    color: "#0390ee" //图标颜色
-                                }
-                            },
-                            lineStyle:{
-                                normal:{
-                                    width:2,  //连线粗细
-                                    color: "#0390ee"  //连线颜色
-                                }
-                            }
-
+                if(data.code=="403") {
+                    sweetAlert({
+                            title: "",
+                            text: "您的账号权限不足，无法操作此页面！",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonText: "确定",
+                            cancelButtonText: "取消",
+                            closeOnConfirm: false,
+                            closeOnCancel: true
                         },
-                        {
-                            name:'人民币美元',
-                            type:'line',
-                            data:rmb,
-                            markPoint : {
-                                data : [
-                                    {type : 'max', name: '最大值'},
-                                    {type : 'min', name: '最小值'}
-                                ]
-                            },
-                            label:{
-                                normal:{
-                                    show:true,            //显示数字
-                                    position: 'top'        //这里可以自己选择位置
-                                }
-                            },
-                            markLine : {
-                                data : [
-                                    {type : 'average', name : '平均值'}
-                                ]
+                        function(isConfirm){
+                            if (isConfirm) {
+                                window.location.href = "/mainframe";
                             }
-                        }
-                    ]
-                };
-                // console.log(option.xAxis[0].data);
-                // console.log(option.series[0].data);
-                myChart.setOption(option);
+                        });
+                }
+                else {
+                    var arr = new Array();
+                    var obj = new Array();//美元人民币
+                    var rmb = new Array();//人民币美元
+                    var datetime = new Array();
+                    for (var i = 0; i < data.length; i++) {
+                        arr.push(data[i]);
+                        // console.log(arr);
+                    }
+                    for (var j = 0; j < data.length; j++) {
+                        var jsondata = arr[j];
+                        // console.log(jsondata);
+                        obj.push(jsondata.USDCNY.openPri);
+                        var rmbfix = 1 / jsondata.USDCNY.openPri;
+                        rmb.push(rmbfix.toFixed(4));
+                        datetime.push(jsondata.USDCNY.date.substring(5, 10));
 
+                    }
+                    var lastsrate = arr[5].USDCNY.openPri;
+                    $("#dollatrate").html(lastsrate);
+                    var fixrmb = 1 / lastsrate;
+                    $("#rmbtrate").html(fixrmb.toFixed(4));
+
+                    // console.log(datetime);
+                    var option = {
+                        title: {
+                            text: '最近一周汇率变化',
+//                    subtext: '汇率变化'
+                            textStyle: {
+                                color: '#333' //标题颜色
+                            }
+                        },
+
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            data: ['美元人民币', '人民币美元']
+                        },
+                        toolbox: {
+                            show: true,
+                            orient: 'vertical',
+                            left: 'right',
+                            top: 'center',
+                            feature: {
+                                // mark: {show: true},
+                                dataView: {show: true, readOnly: false},
+                                magicType: {show: true, type: ['line', 'bar']},
+                                restore: {show: true},
+                                saveAsImage: {show: true}
+                            }
+                        },
+                        calculable: true,
+                        xAxis: [
+                            {
+                                type: 'category',
+                                boundaryGap: true,//不从零刻度开始
+                                data: datetime,
+                            }
+                        ],
+                        yAxis: [
+                            {
+                                type: 'value',
+                                min: 0,
+                                max: 6.4,
+                                interval: 0.5,
+                                splitArea: {
+                                    show: true
+                                }
+                            }
+                        ],
+                        series: [
+                            {
+                                name: '美元人民币',
+                                type: 'line',
+                                data: obj,
+                                markPoint: {
+                                    data: [
+                                        {type: 'max', name: '最大值'},
+                                        {type: 'min', name: '最小值'}
+                                    ]
+                                },
+                                label: {
+                                    normal: {
+                                        show: true,            //显示数字
+                                        position: 'top'        //这里可以自己选择位置
+                                    }
+                                },
+                                markLine: {
+                                    data: [
+                                        {type: 'average', name: '平均值'}
+                                    ]
+                                },
+                                itemStyle: {
+                                    normal: {
+                                        color: "#0390ee" //图标颜色
+                                    }
+                                },
+                                lineStyle: {
+                                    normal: {
+                                        width: 2,  //连线粗细
+                                        color: "#0390ee"  //连线颜色
+                                    }
+                                }
+
+                            },
+                            {
+                                name: '人民币美元',
+                                type: 'line',
+                                data: rmb,
+                                markPoint: {
+                                    data: [
+                                        {type: 'max', name: '最大值'},
+                                        {type: 'min', name: '最小值'}
+                                    ]
+                                },
+                                label: {
+                                    normal: {
+                                        show: true,            //显示数字
+                                        position: 'top'        //这里可以自己选择位置
+                                    }
+                                },
+                                markLine: {
+                                    data: [
+                                        {type: 'average', name: '平均值'}
+                                    ]
+                                }
+                            }
+                        ]
+                    };
+                    // console.log(option.xAxis[0].data);
+                    // console.log(option.series[0].data);
+                    myChart.setOption(option);
+                }
             }
         });
 

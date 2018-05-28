@@ -153,16 +153,33 @@
             data: null,
             type: 'get',
             success: function (data) {
-                var jsonObj = $.parseJSON(data);//json字符串转数组
-                console.log(jsonObj.length);
-                for (var i=0;i<jsonObj.length;i++)
-                {
-                    var html ='<option data-id="'+jsonObj[i]+'" value="'+jsonObj[i]+'">'+jsonObj[i]+'('+currency_type(jsonObj[i])+')'+'</option>';
-                    $(".account").append(html);
-
+             if(data.code=="403") {
+                    sweetAlert({
+                            title: "",
+                            text: "您的账号权限不足，无法操作此页面！",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonText: "确定",
+                            cancelButtonText: "取消",
+                            closeOnConfirm: false,
+                            closeOnCancel: true
+                        },
+                        function(isConfirm){
+                            if (isConfirm) {
+                                window.location.href = "/mainframe";
+                            }
+                        });
                 }
+                else{
+                 var jsonObj = $.parseJSON(data);//json字符串转数组
+                 console.log(jsonObj.length);
+                 for (var i=0;i<jsonObj.length;i++)
+                 {
+                     var html ='<option data-id="'+jsonObj[i]+'" value="'+jsonObj[i]+'">'+jsonObj[i]+'('+currency_type(jsonObj[i])+')'+'</option>';
+                     $(".account").append(html);
 
-
+                 }
+             }
             }
         });
     }
@@ -286,6 +303,23 @@
                                     //确认打印凭条
                                 } else {
                                     window.location.href = "/member/opera_log";
+                                }
+                            });
+                    }
+                    else if(data.code=="403") {
+                        sweetAlert({
+                                title: "",
+                                text: "您的账号权限不足，无法操作此页面！",
+                                type: "warning",
+                                showCancelButton: false,
+                                confirmButtonText: "确定",
+                                cancelButtonText: "取消",
+                                closeOnConfirm: false,
+                                closeOnCancel: true
+                            },
+                            function(isConfirm){
+                                if (isConfirm) {
+                                    window.location.href = "/mainframe";
                                 }
                             });
                     }

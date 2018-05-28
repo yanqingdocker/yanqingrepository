@@ -165,7 +165,26 @@
             },
             ajax: {
                 url: "/authoirty/queryAll",
-                dataSrc: '',
+                dataSrc: function (data) {
+                    if (data.code=="403") {
+                        sweetAlert({
+                                title: "",
+                                text: "您的账号权限不足，无法操作此页面！",
+                                type: "warning",
+                                showCancelButton: false,
+                                confirmButtonText: "确定",
+                                cancelButtonText: "取消",
+                                closeOnConfirm: false,
+                                closeOnCancel: true
+                            },
+                            function(isConfirm){
+                                if (isConfirm) {
+                                    window.location.href = "/mainframe";
+                                }
+                            });
+                    }
+                    else{ return data;}
+                }
             },
             "fnDrawCallback"    : function(){
                 this.api().column(1).nodes().each(function(cell, i) {
@@ -263,7 +282,18 @@
                             if (data.code=="success") {
                                 sweetAlert("", "恭喜您！删除成功！", "success");
                                 setTimeout(function(){ window.location.href = "/manage/manage_power";},1500);
-                            } else {
+                            }
+                            else if (strToJson(data).code=="403") {
+                                sweetAlert({
+                                    title: "",
+                                    text: "您的账号权限不足，无法操作此页面！",
+                                    type: "warning",
+                                    showCancelButton: false,
+                                    confirmButtonText: "确定",
+                                    closeOnConfirm: true
+                                });
+                            }
+                            else {
                                 sweetAlert({
                                     title:"删除失败！!",
                                     text: "请选择要删除的数据！",
@@ -294,6 +324,16 @@
                         window.location.href = "/manage/manage_power";
                     }, 1500);
                 }
+                else if (strToJson(data).code=="403") {
+                    sweetAlert({
+                        title: "",
+                        text: "您的账号权限不足，无法操作此页面！",
+                        type: "warning",
+                        showCancelButton: false,
+                        confirmButtonText: "确定",
+                        closeOnConfirm: true
+                    });
+                }
                 else {
                     sweetAlert("", strToJson(data).message, "error");
                 }
@@ -318,6 +358,16 @@
                     setTimeout(function () {
                         window.location.href = "/manage/manage_power";
                     }, 1500);
+                }
+                else if (strToJson(data).code=="403") {
+                    sweetAlert({
+                        title: "",
+                        text: "您的账号权限不足，无法操作此页面！",
+                        type: "warning",
+                        showCancelButton: false,
+                        confirmButtonText: "确定",
+                        closeOnConfirm: true
+                    });
                 }
                 else {
                     sweetAlert("", "修改失败", "error");

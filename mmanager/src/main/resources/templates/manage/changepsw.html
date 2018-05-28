@@ -57,7 +57,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button type="button" class="btn btn-default">确认</button>
+                            <button type="button" class="btn btn-default" onclick="submitform()">确认</button>
                         </div>
                     </div>
                 </form>
@@ -132,6 +132,23 @@
                         setTimeout(function () {
                             window.location.href = "/manage/manage_list";
                         }, 1500);
+                    }
+                    else if (data.code=="403") {
+                        sweetAlert({
+                                title: "",
+                                text: "您的账号权限不足，无法操作此页面！",
+                                type: "warning",
+                                showCancelButton: false,
+                                confirmButtonText: "确定",
+                                cancelButtonText: "取消",
+                                closeOnConfirm: false,
+                                closeOnCancel: true
+                            },
+                            function(isConfirm){
+                                if (isConfirm) {
+                                    window.location.href = "/mainframe";
+                                }
+                            });
                     }
                     else {
                         sweetAlert("", "添加失败", "error");

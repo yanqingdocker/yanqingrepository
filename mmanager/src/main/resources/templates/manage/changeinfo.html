@@ -151,6 +151,23 @@
                             window.location.href = "/manage/manage_list";
                         }, 1500);
                     }
+                    else if (data.code=="403") {
+                        sweetAlert({
+                                title: "",
+                                text: "您的账号权限不足，无法操作此页面！",
+                                type: "warning",
+                                showCancelButton: false,
+                                confirmButtonText: "确定",
+                                cancelButtonText: "取消",
+                                closeOnConfirm: false,
+                                closeOnCancel: true
+                            },
+                            function(isConfirm){
+                                if (isConfirm) {
+                                    window.location.href = "/mainframe";
+                                }
+                            });
+                    }
                     else {
                         sweetAlert("", "添加失败", "error");
                     }
@@ -169,14 +186,31 @@
             data: null,
             type: 'get',
             success: function (data) {
-                var jsonObj = $.parseJSON(data);//json字符串转数组
-                for (var i=0;i<jsonObj.length;i++)
-                {
-                    var html ='<div class="checkcustom tc checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light"> <input type="checkbox" id="checkx'+jsonObj[i].id+'" name="checklist" value="'+jsonObj[i].id+'"> <label for="checkx'+jsonObj[i].id+'">'+jsonObj[i].rolename+'</label></div>';
-                    $("#rolelist").append(html);
-
+                if (data.code=="403") {
+                    sweetAlert({
+                            title: "",
+                            text: "您的账号权限不足，无法操作此页面！",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonText: "确定",
+                            cancelButtonText: "取消",
+                            closeOnConfirm: false,
+                            closeOnCancel: true
+                        },
+                        function(isConfirm){
+                            if (isConfirm) {
+                                window.location.href = "/mainframe";
+                            }
+                        });
                 }
+                else {
+                    var jsonObj = $.parseJSON(data);//json字符串转数组
+                    for (var i = 0; i < jsonObj.length; i++) {
+                        var html = '<div class="checkcustom tc checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round  checkbox-light"> <input type="checkbox" id="checkx' + jsonObj[i].id + '" name="checklist" value="' + jsonObj[i].id + '"> <label for="checkx' + jsonObj[i].id + '">' + jsonObj[i].rolename + '</label></div>';
+                        $("#rolelist").append(html);
 
+                    }
+                }
 
             }
         })
