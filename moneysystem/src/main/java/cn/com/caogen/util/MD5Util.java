@@ -60,25 +60,4 @@ public class MD5Util {
         return s;
 
     }
-
-
-    @Test
-    public void test() {
-        try {
-            FileChannel fileChannel = new FileInputStream(new File("f://234.txt")).getChannel();
-            ByteBuffer buf = ByteBuffer.allocate(1024);
-            buf.put("i am is chinal".getBytes());
-            buf.flip();
-            //while(buf.hasRemaining()){
-            fileChannel.read(buf);
-            //}
-
-
-            fileChannel.close();
-
-        } catch (Exception e) {
-
-        }
-
-    }
 }
