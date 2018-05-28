@@ -145,6 +145,7 @@ public class MuserController {
                 if(username.equals(muser.getUsername())&&password.equals(muser.getPassword())){
                     request.getSession().setAttribute("userid",muser.getId());
                     request.getSession().setAttribute("username",muser.getUsername());
+                    request.getSession().setAttribute("currentUser",muser);
                     request.getSession().setMaxInactiveInterval(180);
                     getAuth(muser);
                     request.getSession().setAttribute("currentUser",muser);

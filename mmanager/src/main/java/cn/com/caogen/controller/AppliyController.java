@@ -4,6 +4,7 @@ import cn.com.caogen.entity.Appliy;
 import cn.com.caogen.service.AppliyServiceImpl;
 import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.DateUtil;
+import cn.com.caogen.util.FilterAuthUtil;
 import cn.com.caogen.util.ResponseMessage;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -42,7 +43,10 @@ public class AppliyController {
      * @return
      */
     @RequestMapping(path = "queryAll",method = RequestMethod.GET)
-    public String queryAll(){
+    public String queryAll(HttpServletRequest request){
+       if(FilterAuthUtil.checkAuth(request)){
+           return JSONObject.fromObject(new ResponseMessage("403",ConstantUtil.FAIL)).toString();
+       }
         logger.info("queryAll start:");
         Map<String,Object> parmMap=new HashMap<String,Object>();
         List<Appliy> appliyList=appliyService.query(new HashMap<String,Object>());
