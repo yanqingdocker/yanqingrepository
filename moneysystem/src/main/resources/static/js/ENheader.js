@@ -4,18 +4,18 @@ document.writeln(" <div class=\"container row m p0\">");
 document.writeln("  <div class=\"col-lg-6\"></div>");
 document.writeln("  <div class=\"col-lg-6 tr\">");
 document.writeln("  <div  class=\"log_bar_link r gray\" id=\"unlogin\"  >");
-document.writeln("     <a class=\" pr10\" href=\"/CN/login\">登录</a><span class=\"white\">|</span>");
-document.writeln("      <a class=\" pl10\" href=\"/CN/register\" >注册</a>");
+document.writeln("     <a class=\" pr10\" href=\"/EN/login\">Sign in</a><span class=\"white\">|</span>");
+document.writeln("      <a class=\" pl10\" href=\"/EN/register\" >Register</a>");
 document.writeln("      </div>");
-document.writeln(" <div class='language'><a title='CHINESE' href='/CN/index' class='chinese'>中文<i></i></a><a href='/EN/index'class='english' title='ENGLISH'>EN<i></i></a> </div>");
+document.writeln(" <div class='language'><a title='CHINESE' href='/CN/index' class='chinese'>CN<i></i></a><a href='/EN/index'class='english' title='ENGLISH'>EN<i></i></a> </div>");
 document.writeln("      <div class=\"nav r user_info\" id=\"login\"  style=\"display:none;\">");
 document.writeln(" <div class=\" dropdown \">");
 document.writeln("   <a class=\"nav-link dropdown-toggle\" id=\"username\"><i class=\"icon_down\"></i></a>");
 document.writeln("<div class=\"dropdown-menu \" style=\"display: none\" >");
-document.writeln(" <a class=\"dropdown-item\" href=\"/CN/my/my_account\">我的账户</a>");
-document.writeln(" <a class=\"dropdown-item\" href=\"/CN/my/my_money\">我的余额</a>");
-document.writeln("<a class=\"dropdown-item\" href=\"/CN/my/authentication\">我的资料</a>");
-document.writeln("<a class=\"dropdown-item\" href=\"javascript:;\" onclick=\"logout()\">退出</a>");
+document.writeln(" <a class=\"dropdown-item\" href=\"/EN/my/my_account\">Account</a>");
+document.writeln(" <a class=\"dropdown-item\" href=\"/EN/my/my_money\">Balance</a>");
+document.writeln("<a class=\"dropdown-item\" href=\"/EN/my/authentication\">Data</a>");
+document.writeln("<a class=\"dropdown-item\" href=\"javascript:;\" onclick=\"logout()\">Exit</a>");
 document.writeln(" </div>");
 document.writeln(" </div>");
 document.writeln(" </div>");
@@ -24,33 +24,33 @@ document.writeln("</div>");
 document.writeln(" </div>");
 document.writeln(" <div class=\"navbar_block\">");
 document.writeln("  <div class=\"container row p0 m \">");
-document.writeln(" <div class=\"col-lg-2 \"><a href=\"/CN/index\"><img class=\"logo\" src=\"/images/logo.png\" alt=\"\" ></a></div>");
+document.writeln(" <div class=\"col-lg-2 \"><a href=\"/EN/index\"><img class=\"logo\" src=\"/images/logo.png\" alt=\"\" ></a></div>");
 document.writeln(" <div class=\"col-lg-10 mt20\">\n ");
 document.writeln(" <!--nav--><div class=\"row\">");
 document.writeln(" <div class=\"col-lg-12 nav \" >\n ");
 document.writeln("   <ul class=\"nav-con navbar-nav\">\n");
-document.writeln("  <li ><a href=\"/CN/index\" id=\"nav_index\" >首页</a></li>\n");
+document.writeln("  <li ><a href=\"/EN/index\" id=\"nav_index\" >Home</a></li>\n");
 document.writeln("  <li class=\" dropdown \">\n");
-document.writeln(" <a class=\"nav-link dropdown-toggle\" id=\"nav_my\">我的<i class=\"icon_down\"></i></a>\n ");
+document.writeln(" <a class=\"nav-link dropdown-toggle\" id=\"nav_my\">My<i class=\"icon_down\"></i></a>\n ");
 document.writeln(" <div class=\"dropdown-menu \" style=\"display: none\" >\n");
-document.writeln(" <a class=\"dropdown-item\" href=\"/CN/my/my_account\">我的账户</a>\n");
-document.writeln("<a class=\"dropdown-item\" href=\"/CN/my/my_money\">我的余额</a>\n ");
-document.writeln("<a class=\"dropdown-item\" href=\"/CN/my/authentication\">我的资料</a>\n ");
-document.writeln("<a class=\"dropdown-item\" href=\"/CN/my/inbox\">我的消息</a>\n ");
+document.writeln(" <a class=\"dropdown-item\" href=\"/EN/my/my_account\">Aaccount</a>\n");
+document.writeln("<a class=\"dropdown-item\" href=\"/EN/my/my_money\">Balance</a>\n ");
+document.writeln("<a class=\"dropdown-item\" href=\"/EN/my/authentication\">Data</a>\n ");
+document.writeln("<a class=\"dropdown-item\" href=\"/EN/my/inbox\">Message</a>\n ");
 document.writeln(" </div>\n ");
 document.writeln("   </li>\n");
-document.writeln("   <li ><a href=\"/CN/main/recharge\" id=\"nav_recharge\">充值</a></li>\n");
-document.writeln(" <li ><a href=\"/CN/main/trans_cash\" id=\"nav_trans\">提现</a></li>\n ");
-document.writeln(" <li ><a href=\"/CN/main/transfer_accounts\"  id=\"nav_transfer\">转账</a></li>\n");
-document.writeln("<li><a href=\"/CN/currency_exchange/exchange\" id=\"nav_exchange\">货币兑换</a></li>\n ");
-document.writeln("     <li ><a href=\"/CN/nonCardCash/cash_in\" id=\"nav_nocard\">无卡取现</a></li>\n ");
+document.writeln("   <li ><a href=\"/EN/main/recharge\" id=\"nav_recharge\">Recharge</a></li>\n");
+document.writeln(" <li ><a href=\"/EN/main/trans_cash\" id=\"nav_trans\">Withdrawal</a></li>\n ");
+document.writeln(" <li ><a href=\"/EN/main/transfer_accounts\"  id=\"nav_transfer\">Transfer</a></li>\n");
+document.writeln("<li><a href=\"/EN/currency_exchange/exchange\" id=\"nav_exchange\">Currency Exchange</a></li>\n ");
+document.writeln("     <li ><a href=\"/EN/nonCardCash/cash_in\" id=\"nav_nocard\">No Card Cash</a></li>\n ");
 document.writeln("    <li class=\" dropdown \">\n ");
-document.writeln("  <a class=\"nav-link dropdown-toggle\" id=\"nav_more\">更多<i class=\"icon_down\"></i></a>\n");
+document.writeln("  <a class=\"nav-link dropdown-toggle\" id=\"nav_more\">More<i class=\"icon_down\"></i></a>\n");
 document.writeln("  <div class=\"dropdown-menu \" style=\"display: none\" >\n ");
-document.writeln(" <a class=\"dropdown-item\" href=\"/CN/more/financial\">智慧理财</a>\n ");
-document.writeln("  <a class=\"dropdown-item\" href=\"/CN/more/life_payment\">生活缴费</a>\n");
-document.writeln(" <a class=\"dropdown-item\" href=\"/CN/more/trade_list\">交易记录</a>\n");
-document.writeln("<a class=\"dropdown-item\" href=\"/CN/more/active_list\">活动记录</a>\n ");
+document.writeln(" <a class=\"dropdown-item\" href=\"/EN/more/financial\">Wisdom Finance</a>\n ");
+document.writeln("  <a class=\"dropdown-item\" href=\"/EN/more/life_payment\">Life Payment</a>\n");
+document.writeln(" <a class=\"dropdown-item\" href=\"/EN/more/trade_list\">Transaction Record</a>\n");
+document.writeln("<a class=\"dropdown-item\" href=\"/EN/more/active_list\">Activity Record</a>\n ");
 document.writeln(" </div>\n ");
 document.writeln(" </li>\n ");
 document.writeln(" </ul>\n");
@@ -73,28 +73,28 @@ document.writeln("  <button class=\"navbar-toggler \" type=\"button\"  style=\"\
 document.writeln("  </div> ");
 document.writeln("  <div class=\"w100 nav phonenav\" id=\"navbarblock\" style=\"display: none\">");
 document.writeln(" <ul class=\"nav-con navbar-nav mr-auto\" >");
-document.writeln(" <li class=\"nav-item\"><a href=\"/CN/index\" id=\"nav_index\">首页</a></li>");
+document.writeln(" <li class=\"nav-item\"><a href=\"/EN/index\" id=\"nav_index\">Home</a></li>");
 document.writeln("  <li class=\" dropdown nav-item\">");
-document.writeln("<a class=\"nav-link dropdown-toggle\" id=\"nav_my\">我的<i class=\"icon_down\"></i></a>");
+document.writeln("<a class=\"nav-link dropdown-toggle\" id=\"nav_my\">My<i class=\"icon_down\"></i></a>");
 document.writeln(" <div class=\"dropdown-menu \" style=\"display: none\"> ");
-document.writeln(" <a class=\"dropdown-item\" href=\"/CN/my/my_account\">我的账户</a>");
-document.writeln(" <a class=\"dropdown-item\" href=\"/CN/my/my_money\">我的余额</a>");
-document.writeln("   <a class=\"dropdown-item\" href=\"/CN/my/authentication\">我的资料</a>");
-document.writeln("  <a class=\"dropdown-item\" href=\"/CN/my/inbox\">我的消息</a>");
+document.writeln(" <a class=\"dropdown-item\" href=\"/EN/my/my_account\">Aaccount</a>");
+document.writeln(" <a class=\"dropdown-item\" href=\"/EN/my/my_money\">Balance</a>");
+document.writeln("   <a class=\"dropdown-item\" href=\"/EN/my/authentication\">Data</a>");
+document.writeln("  <a class=\"dropdown-item\" href=\"/EN/my/inbox\">Message</a>");
 document.writeln("  </div> ");
 document.writeln("  </li>");
-document.writeln("<li class=\"nav-item\"><a href=\"/CN/main/recharge\" id=\"nav_recharge\">充值</a></li>");
-document.writeln(" <li class=\"nav-item\"><a href=\"/CN/main/trans_cash\" id=\"nav_trans\">提现</a></li>");
-document.writeln("  <li class=\"nav-item\"><a href=\"/CN/main/transfer_accounts\" id=\"nav_transfer\">转账</a></li>");
-document.writeln("<li class=\"nav-item\"><a href=\"/CN/currency_exchange/exchange\" id=\"nav_exchange\">货币兑换</a></li>");
-document.writeln(" <li class=\"nav-item\"><a href=\"/CN/nonCardCash/cash_in\" id=\"nav_nocard\">无卡取现</a></li>");
+document.writeln("<li class=\"nav-item\"><a href=\"/EN/main/recharge\" id=\"nav_recharge\">Recharge</a></li>");
+document.writeln(" <li class=\"nav-item\"><a href=\"/EN/main/trans_cash\" id=\"nav_trans\">Withdrawal</a></li>");
+document.writeln("  <li class=\"nav-item\"><a href=\"/EN/main/transfer_accounts\" id=\"nav_transfer\">Transfer</a></li>");
+document.writeln("<li class=\"nav-item\"><a href=\"/EN/currency_exchange/exchange\" id=\"nav_exchange\">Currency Exchange</a></li>");
+document.writeln(" <li class=\"nav-item\"><a href=\"/EN/nonCardCash/cash_in\" id=\"nav_nocard\">No Card Cash</a></li>");
 document.writeln(" <li class=\" dropdown nav-item\">");
-document.writeln(" <a class=\"nav-link dropdown-toggle\" id=\"nav_more\">更多<i class=\"icon_down\"></i></a>");
+document.writeln(" <a class=\"nav-link dropdown-toggle\" id=\"nav_more\">More<i class=\"icon_down\"></i></a>");
 document.writeln(" <div class=\"dropdown-menu \" style=\"display: none\">");
-document.writeln(" <a class=\"dropdown-item\" href=\"/CN/more/financial\">智慧理财</a>");
-document.writeln(" <a class=\"dropdown-item\" href=\"/CN/more/life_payment\">生活缴费</a> ");
-document.writeln(" <a class=\"dropdown-item\" href=\"/CN/more/trade_list\">交易记录</a> ");
-document.writeln(" <a class=\"dropdown-item\" href=\"/CN/more/active_list\">活动记录</a> ");
+document.writeln(" <a class=\"dropdown-item\" href=\"/EN/more/financial\">Wisdom Finance</a>");
+document.writeln(" <a class=\"dropdown-item\" href=\"/EN/more/life_payment\">Life Payment</a> ");
+document.writeln(" <a class=\"dropdown-item\" href=\"/EN/more/trade_list\">Transaction Record</a> ");
+document.writeln(" <a class=\"dropdown-item\" href=\"/EN/more/active_list\">Activity Record</a> ");
 document.writeln(" </div> ");
 document.writeln(" </li> ");
 document.writeln(" </ul> ");
@@ -130,16 +130,16 @@ $(function(){
                 $("#isauth").val(data.isauthentication);
             }
             if(data.isauthentication==1){
-                $("#changetext").text("基本信息");
+                $("#changetext").text("Basic Information");
             }
             else{
-                $("#changetext").text("会员认证");
+                $("#changetext").text("Membership Certification");
             }
         },
         error: function (data) {
             $("#unlogin").show();
             $("#login").hide();
-            window.location.href = "/CN/login";
+            window.location.href = "/EN/login";
         },
     });
 });
@@ -167,14 +167,14 @@ function logout() {
         contentType: 'application/json',
         success: function (data) {
             if (data.code=="success") {
-                sweetAlert("", "退出成功！", "success");
-                setTimeout(function(){ window.location.href = "/CN/login";},1500);
+                sweetAlert("", "Exit Successfully！", "success");
+                setTimeout(function(){ window.location.href = "/EN/login";},1500);
             }
             else {
             }
         },
         error: function () {
-            window.location.href = "/CN/login";
+            window.location.href = "/EN/login";
         },
     });
 

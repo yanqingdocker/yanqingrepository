@@ -12,6 +12,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
+import redis.clients.jedis.Jedis;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,12 +36,14 @@ public class Starup implements CommandLineRunner {
      * @throws Exception
      */
     @Override
-    public void run(String... args) throws Exception {
-        if(JedisUtil.getSessionMap()==null){
-            Map<String,Object> sessionMap=new HashMap<String, Object>();
-            JedisUtil.getJedis().set(ConstantUtil.SESSIONCOLLCTION.getBytes(),SerializeUtil.serialize(sessionMap));
-        }
-
-
+    public void run(String... args) {
+             Jedis jedis=JedisUtil.getJedis();
+             if(jedis==null){
+                 return;
+             }
+            if(JedisUtil.getSessionMap()==null){
+                Map<String,Object> sessionMap=new HashMap<String, Object>();
+                jedis.set(ConstantUtil.SESSIONCOLLCTION.getBytes(),SerializeUtil.serialize(sessionMap));
+            }
     }
 }

@@ -17,11 +17,25 @@ public class JedisUtil {
         if(jedis!=null){
             return jedis;
         }
-        jedis = new Jedis("127.0.0.1",6379);
-        return jedis;
+        //r-j6ce364c2198fca4.redis.rds.aliyuncs.com
+        try {
+            jedis = new Jedis("127.0.0.1",6379);
+            //jedis.auth("Admin123");
+            return jedis;
+        }catch (Exception e){
+
+        }finally {
+            return null;
+        }
+
+
     }
     public static User getUser(HttpServletRequest request){
-        Map<String,Object> map=(Map)SerializeUtil.unserialize(JedisUtil.getJedis().get(ConstantUtil.SESSIONCOLLCTION.getBytes()));
+        Jedis jedis=getJedis();
+        if(jedis==null){
+            return null;
+        }
+        Map<String,Object> map=(Map)SerializeUtil.unserialize(jedis.get(ConstantUtil.SESSIONCOLLCTION.getBytes()));
         if(map==null||map.get(request.getSession().getId())==null){
             return null;
         }
@@ -29,7 +43,11 @@ public class JedisUtil {
         return currentUser;
     }
     public static Map<String,Object> getSessionMap(){
-        Map<String,Object> sessionMap=(Map)SerializeUtil.unserialize(JedisUtil.getJedis().get(ConstantUtil.SESSIONCOLLCTION.getBytes()));
+        Jedis jedis=getJedis();
+        if(jedis==null){
+            return null;
+        }
+        Map<String,Object> sessionMap=(Map)SerializeUtil.unserialize(jedis.get(ConstantUtil.SESSIONCOLLCTION.getBytes()));
         if(sessionMap==null){
             return null;
         }

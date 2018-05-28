@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"  content="width=device-width, user-scalable=no, initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <title>Register page</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/css.css"/>
+    <link  rel="stylesheet" type="text/css"  href="/css/sweet-alert.css"/>
+    <script  type="text/javascript" src="/js/jquery1.12.4.js"></script>
+    <script  type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script  type="text/javascript" src="/js/bootstrapValidator.min.js"></script>
+    <script  type="text/javascript" src="/js/sweet-alert.min.js"></script>
+    <script  type="text/javascript" src="/js/common.js"></script>
+    <!--[if lte IE 9]>
+    <script  type="text/javascript" src="/js/html5.min.js"></script>
+    <script  type="text/javascript" src="/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="login_bg">
+<div class="m " style="width: 455px;margin-top: 150px">
+    <div class="login_logo tc"><img src="/images/logo.png" ></div>
+    <div class="w100 inblock">
+        <form id="registerForm">
+            <div class="login_form">
+                <div class="form-group  login_input mb15">
+                    <i class="icon user"></i>
+                    <input type="text" class="form-control" name="telphone" id="Telephone" placeholder="Phone Number" onkeydown="javascript: if(event.keyCode == 13) save();"/>
+                </div>
+                <div class="form-group login_input mb15">
+                    <i class="icon password"></i>
+                    <input type="password" class="form-control" name="password" onkeydown="javascript: if(event.keyCode == 13) save();"  placeholder="Password"/>
+                </div>
+                <div class="form-group login_input ">
+                    <div class="w100 inblock"><input type="text" class="form-control l" name="checkNum" placeholder="SMS Code" size="22" maxlength="10"><button type="button" class="btn btn-primary code_btn r mr5" id="getcode">Send Code</button>
+                    </div>
+                </div>
+                <div id="telephonenameTip"></div>
+                <div class="bs-component mt30"><button type="button"  class="btn btn-primary btn-lg btn-block red_bg register_btn" id="saveID" onclick="save()">REGISTER</button></div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    function save() {
+        $('#registerForm').data('bootstrapValidator').enableFieldValidators('telphone', true);
+        $('#registerForm').data('bootstrapValidator').enableFieldValidators('checkNum', true);
+        $('#registerForm').data('bootstrapValidator').enableFieldValidators('password', true);
+        $('#registerForm').data('bootstrapValidator').validate();//手动对表单进行校检
+        if (!$('#registerForm').data('bootstrapValidator').isValid()) {//判断校检是否通过
+            return;
+        } else {
+            $('#saveID').prop('disabled', true);
+            $.post("/user/register", $("#registerForm").serialize(), function (data) {
+                if (strToJson(data).code=="success") {
+                    sweetAlert("", "congratulations, registration success.", "success");
+                    setTimeout(function () {
+                        window.location.href = "/EN/login";
+                    }, 1500);
+                }
+                else {
+                    sweetAlert("", strToJson(data).message, "error");
+                    $('#saveID').prop('disabled', false);
+                }
+            });
+        }
+    }
+    $(function () {
+        $('#registerForm').bootstrapValidator({
+            feedbackIcons: {
+                //valid: 'glyphicon glyphicon-ok',
+                //invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                'telphone': {
+                    message: 'please enter a valid phone number',
+                    validators: {
+                        notEmpty: {
+                            message: 'Phone number cannot be empty'
+                        },
+                        regexp: {
+                            regexp: /^1[356789][0-9]{9}$/,
+                            message: 'please enter a valid phone number'
+                        },
+                        // remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}
+                        //     url: '/user/register',//验证
+                        //     message: '用户已存在',
+                        //     delay: 1000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置1秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+                        //     type: 'POST'//请求方式
+                        //     /**自定义提交数据，默认值提交当前input value
+                        //      *  data: function(validator) {
+                        //           return {
+                        //               password: $('[name="passwordNameAttributeInYourForm"]').val(),
+                        //               whatever: $('[name="whateverNameAttributeInYourForm"]').val()
+                        //           };
+                        //        }
+                        //
+                        //      */
+                        // },
+                    }
+                },
+                'checkNum': {
+                    validators: {
+                        notEmpty: {
+                            message: 'SMS verification code cannot be empty'
+                        }
+                    }
+                },
+                'password': {
+                    validators: {
+                        notEmpty: {
+                            message: 'The password can not be empty'
+                        },
+                        stringLength: {
+                            /*长度提示*/
+                            min: 6,
+                            max: 30,
+                            message: 'The password length must be between 6 and 30'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_\.]+$/,
+                            message: 'A password is made up of numeric letters and points'
+                        }
+                    }
+                }
+            }
+        })
+        $("#getcode").click(function () {
+            //获取输入的手机号码
+            var phoNum = $("#Telephone").val();
+            $('#registerForm').data('bootstrapValidator').enableFieldValidators('checkNum', false);
+            $('#registerForm').data('bootstrapValidator').enableFieldValidators('password', false);
+            $("#registerForm").data("bootstrapValidator").validateField('telphone');
+            if (!$("#registerForm").data("bootstrapValidator").validateField('telphone').isValid()) {
+                return;
+            }
+            curCount = count;
+
+            // 向后台发送处理数据
+            $.ajax({
+                type: "post", // 用POST方式传输
+                dataType: 'json',
+                url: "/user/checkPhone", // 目标地址
+                data: { "telphone":phoNum },
+                error: function (data) {
+                    sweetAlert("", strToJson(data).message, "error");
+                },
+                success: function (data) {
+                    // debugger;
+                    if (data.code=="fail") {
+                        $("#getcode").attr("disabled", false);
+                        $("#getcode").text("Resend code");
+                        $("#telephonenameTip").html("<font color='red'>× SMS authentication code failed, please resend</font>");
+                        return false;
+
+                    } else {
+                        // 设置按钮显示效果，倒计时
+                        $("#getcode").attr("disabled", "true");
+                        $("#getcode").text("Please try again in" + curCount + "second");
+                        InterValObj = window.setInterval(SetRemainTime, 1000); // 启动计时器，1秒执行一次
+                        $("#telephonenameTip").html("<font color='#339933'>√ SMS verification code has been sent to your mobile phone. Please check it (within 20 minutes)</font>");
+                    }
+                }
+            });
+
+        });
+    });
+
+    //timer处理函数
+    function SetRemainTime() {
+        if (curCount == 0) {
+            window.clearInterval(InterValObj);// 停止计时器
+            $("#getcode").attr("disabled", false);
+            $("#getcode").text("Resend verification code");
+            $("#telephonenameTip").text("");
+
+            code = ""; // 清除验证码。如果不清除，过时间后，输入收到的验证码依然有效
+        } else {
+            curCount--;
+            $("#getcode").text("Please try again in" + curCount + "second");
+        }
+    }
+    var InterValObj; //timer变量，控制时间
+    var count = 60; //间隔函数，1秒执行
+    var curCount;//当前剩余秒数
+    var code = ""; //验证码
+    var codeLength = 6;//验证码长度
+</script>
+
+
+</body>
+</html>

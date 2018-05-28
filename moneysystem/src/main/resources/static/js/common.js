@@ -28,30 +28,44 @@ function GetQueryString(name)
     var r = window.location.search.substr(1).match(reg);
     if(r!=null)return  unescape(r[2]); return null;
 }
-function Fobj(id) { return $(id).length };
-function returnObj(obj, isJquery) {
-    if (isJquery == undefined) { isJquery = true; }
-    var _obj; if (obj == null || obj == undefined) return; if (typeof (obj) == 'object') { _obj = obj; } else if (obj.substring(0, 1) != '#' && obj.substring(0, 1) != '.') { _obj = (isJquery) ? '#' + obj : obj; } else { _obj = (isJquery) ? obj : obj.substring(1, len(obj)); }
-    return _obj;
-}; var Class = { create: function () { return function () { this.initialize.apply(this, arguments); } } };
-function getBoxVal (objname, areaTag)
-{ var str = "";
-    var _areaTag = returnObj(areaTag);
-    var _areaObj = (Fobj(_areaTag)) ? _areaTag + ' ' : '';
-    $(_areaObj + "input:checkbox[name='" + objname + "'][checked]").each(function () { str += $(this).val() + ","; });
-    if (str != "") {
-        return str.substr(0, str.length - 1);
-    } else { return "" }
-};
 
+//中文版货币类型
 function currency_type(types) {
     switch(types)
     {
         case "CNY":
-            return "人民币"
+            return "人民币";
             break;
         case "USD":
-            return "美元"
+            return "美元";
+            break;
+        default:
+            break;
+    }
+}
+
+
+//英文版交易类型转换
+function trade_type(types) {
+    switch(types)
+    {
+        case "现金存入":
+            return "Cash deposit";
+            break;
+        case "现金转出":
+            return "Cash out";
+            break;
+        case "兑换":
+            return "Exchange";
+            break;
+        case "转账":
+            return "Transfer";
+            break;
+        case "现金兑换":
+            return "Cash exchange";
+            break;
+        case "充值":
+            return "Recharge";
             break;
         default:
             break;
