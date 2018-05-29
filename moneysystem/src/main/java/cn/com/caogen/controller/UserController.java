@@ -51,7 +51,7 @@ public class UserController {
      * @param request
      * @return
      */
-    @RequestMapping("/readyupdatephone")
+    @RequestMapping(path = "/updatephone",method = RequestMethod.POST)
     public String updatephone(@RequestParam("checknum") String checknum,@RequestParam("newphone") String newphone, HttpServletRequest request) {
         logger.info("updatephone start:");
         if (!StringUtil.checkStrs(checknum,newphone)) {
