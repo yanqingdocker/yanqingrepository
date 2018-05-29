@@ -159,7 +159,7 @@ public class MuserController {
                     request.getSession().setAttribute("userid",muser.getId());
                     request.getSession().setAttribute("username",muser.getUsername());
                     request.getSession().setAttribute("currentUser",muser);
-                    request.getSession().setMaxInactiveInterval(180);
+                    request.getSession().setMaxInactiveInterval(3600);
                     getAuth(muser);
                     request.getSession().setAttribute("currentUser",muser);
                     return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
