@@ -558,7 +558,7 @@ a:hover {
   margin-bottom: 5px; }
 
 .checkbox3 label, .radio3 label {
-  padding: 8px 0 8px 30px; }
+  padding: 8px 0 8px 20px; }
 
 .checkbox3 label::before, .radio3 label::before {
   top: 5px; }

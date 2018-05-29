@@ -1,8 +1,8 @@
 document.writeln("<div class=\"footer pc_footer\">");
 document.writeln("  <div class=\"container row p0 m mt20 border-t tc pt20 pb20 \">");
 document.writeln("  <a href=\"/EN/index\" target=\"_blank\">Home</a><span>|</span>");
-document.writeln("  <a href=\"/EN/my/authentication\" target=\"_blank\">Data</a><span>|</span>");
-document.writeln("  <a href=\"/EN/nonCardCash/cash_in\" target=\"_blank\">No Card Cash</a><span>|</span>");
+document.writeln("  <a href=\"/EN/my/authentication\" target=\"_blank\">Information</a><span>|</span>");
+document.writeln("  <a href=\"/EN/nonCardCash/cash_in\" target=\"_blank\">No-card Withdrawal</a><span>|</span>");
 document.writeln("  <a href=\"/EN/currency_exchange/exchange\" target=\"_blank\">Currency Exchange</a><span>|</span>");
 document.writeln("   <a href=\"/EN/more/financial\" target=\"_blank\">More</a>");
 document.writeln("   </div>");

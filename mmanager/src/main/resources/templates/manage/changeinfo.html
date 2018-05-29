@@ -122,6 +122,21 @@
             }
         })
     })
+    // 点击check添加样式
+    $(document).on('click','.checkcustom label',function(){
+        $(this).toggleClass("on");
+    });
+
+    /*check全选*/
+    $("input[rel='box_check_all']").on("click",function(){
+        if($(this).prop("checked")===true){
+            $("input[name='checklist']").prop("checked",$(this).prop("checked")).siblings().addClass("on")
+
+        }else{
+            $("input[name='checklist']").prop("checked",false).siblings().removeClass("on")
+        }
+    });
+
     function submitform() {
         $('#myform').data('bootstrapValidator').enableFieldValidators('username', true);
         $('#myform').data('bootstrapValidator').enableFieldValidators('password', true);

@@ -73,6 +73,8 @@ document.writeln("  <button class=\"navbar-toggler \" type=\"button\"  style=\"\
 document.writeln("  </div> ");
 document.writeln("  <div class=\"w100 nav phonenav\" id=\"navbarblock\" style=\"display: none\">");
 document.writeln(" <ul class=\"nav-con navbar-nav mr-auto\" >");
+document.writeln(" <li class=\"nav-item\"><a href=\"/CN/index\" class='l_language'><i class='l_chinese'></i>中文</a></li>");
+document.writeln(" <li class=\"nav-item\"><a href=\"/EN/index\" class='l_language'><i class='l_english '></i>ENGLISH</a></li><hr>");
 document.writeln(" <li class=\"nav-item\"><a href=\"/CN/index\" id=\"nav_index\">首页</a></li>");
 document.writeln("  <li class=\" dropdown nav-item\">");
 document.writeln("<a class=\"nav-link dropdown-toggle\" id=\"nav_my\">我的<i class=\"icon_down\"></i></a>");
