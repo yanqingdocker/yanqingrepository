@@ -59,14 +59,7 @@ public class MobileService {
         return result;
     }
 
-    @Test
-    public void test(){
-        try {
-            String i=onlineOrder("13559956135",1,"12346781");
-            System.out.print(i);
-        }catch (Exception e){}
 
-    }
     /**
      * 3.依据用户提供的请求为指定手机直接充值
      * @param phone 手机号码

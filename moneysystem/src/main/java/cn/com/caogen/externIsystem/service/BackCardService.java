@@ -158,13 +158,5 @@ public class BackCardService {
         return sb.toString();
     }
 
-    @Test
-    public void test(){
-        int i=0,j=5;
-        String rs="{'logUrl':'"+i+"','bankType':'"+j+"'}";
-        JSONObject jsonObect=JSONObject.fromObject(rs);
-        System.out.print(jsonObect);
-
-    }
 
 }

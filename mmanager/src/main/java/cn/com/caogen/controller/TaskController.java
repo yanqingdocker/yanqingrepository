@@ -70,7 +70,7 @@ public class TaskController {
         String douser="操作员-"+request.getSession().getAttribute("username");
         parmMap.put("douser",douser);
         taskService.updateTask(parmMap);
-        return "suceess";
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 
     @RequestMapping("queryAll")

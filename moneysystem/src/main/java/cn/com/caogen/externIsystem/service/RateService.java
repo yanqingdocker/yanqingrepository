@@ -69,11 +69,6 @@ public class RateService {
     }
 
 
-
-    public void test(){
-        System.out.print(getRequest2());
-    }
-
     /**
      *
      * @param strUrl 请求地址

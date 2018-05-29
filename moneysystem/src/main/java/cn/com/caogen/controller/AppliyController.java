@@ -6,6 +6,7 @@ import cn.com.caogen.service.AppliyServiceImpl;
 import cn.com.caogen.util.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -148,4 +149,6 @@ public class AppliyController {
         List<Appliy> appliyList=appliyService.query(new HashMap<String,Object>());
         return JSONArray.fromObject(appliyList).toString();
     }
+
+
 }
