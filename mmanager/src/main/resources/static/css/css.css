@@ -300,7 +300,7 @@ div.dataTables_scrollBody table tbody tr td:first-child{ text-align: center}
 form .checkbox3.checkbox-inline{ margin-right: 15px;}
 form .checkbox3 label::before {   top: 8px; }
 .card .card-body{ padding-top: 40px;}
-
+form .checkbox3 label::after, .radio3 label::after{top: 4px;}
 
 
 

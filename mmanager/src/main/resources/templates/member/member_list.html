@@ -60,12 +60,12 @@
                     </thead>
 
                 </table>
-                <div class="batch_play inblock">
-                    <div class="checkcustom ml10 mr10 inblock checkbox3 checkbox-success checkbox-check checkbox-round  checkbox-light">
-                        <input rel='box_check_all' id="box_check_all" type="checkbox" name="" /><label class="box_check_all blue" for="box_check_all">全选</label>
-                    </div>
-                    <div class="inblock"> <a href="javascript:;" onclick="deletbatch()" class="blue mr10">删除</a>|<a class="blue ml10" href="/manage/changeinfo">添加</a></div>
-                </div>
+                <!--<div class="batch_play inblock">-->
+                    <!--<div class="checkcustom ml10 mr10 inblock checkbox3 checkbox-success checkbox-check checkbox-round  checkbox-light">-->
+                        <!--<input rel='box_check_all' id="box_check_all" type="checkbox" name="" /><label class="box_check_all blue" for="box_check_all">全选</label>-->
+                    <!--</div>-->
+                    <!--<div class="inblock"><a class="blue ml10" href="/manage/changeinfo">添加</a></div>-->
+                <!--</div>-->
             </div>
 
         </div>
@@ -73,7 +73,35 @@
 </div>
 
 
-
+<!--修改密码 模态框 （Modal） -->
+<div class="modal fade" id="myrole" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times; </button>
+                <h4 class="modal-title" id="myroleLabel"> 会员密码修改</h4>
+            </div>
+            <div class="modal-body">
+                <form id="changeform"  class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >手机号：</label>
+                        <div class="col-sm-10 mt5"><b class="red" id="phone"></b></div>
+                        <input type="hidden" name="telphone" id="hidephone">
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">新密码：</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" placeholder="请输入新密码" name="password">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary w100" onclick="changeform()">确认修改 </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div>
+</div><!-- /.modal -->
 <script type="text/javascript">
     $(function () {
         $('#table').DataTable( {
@@ -173,7 +201,7 @@
                 {"data": "createtime" },
                 {"data": "id",
                     render:function(e,type,full,row){
-                        return "<a href='javascript:;'  onclick='deletemsg("+full.id+")'  class=\"icon_delete\" title=\"删除\">删除</a>";
+                        return "<a href='javascript:;'data-toggle=\"modal\" data-target=\"#myrole\"  onclick=\"changepsw("+full.phone+")\">修改密码</a>";
                     }
                 }
             ]
@@ -194,7 +222,43 @@
         }
     });
 
+    //修改密码
+     function changepsw(phone) {
+         $("#phone").html(phone);
+         $("#hidephone").val(phone);
+     }
 
+    function changeform() {
+        $.ajax({
+            url: '/user/resetpwd',
+            data: $('#changeform').serialize(),
+            type: 'post',
+            success: function (data) {
+                if (strToJson(data).code == "success") {
+                    sweetAlert("", "恭喜您！修改成功！", "success");
+                    setTimeout(function () {
+                        window.location.href = "/member/member_list";
+                    }, 1500);
+                }
+                else if (strToJson(data).code=="403") {
+                    sweetAlert({
+                            title: "",
+                            text: "您的账号权限不足，无法操作此页面！",
+                            type: "warning",
+                            confirmButtonText: "确定",
+                            closeOnConfirm: true,
+                        });
+                }
+                else {
+                    sweetAlert("", strToJson(data).message, "error");
+                }
+
+            },
+            error: function () {
+                sweetAlert("", "请求失败！", "error");
+            }
+        });
+    }
 </script>
 </body>
 

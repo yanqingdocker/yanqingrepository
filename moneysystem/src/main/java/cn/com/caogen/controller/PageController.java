@@ -314,6 +314,14 @@ public class PageController {
     @RequestMapping("/CN/more/active_list")
     public String CNactive_list() {
         return "CN/more/active_list"; }
+    /**
+     * 修改手机号
+     * @return
+     */
+    @RequestMapping("/CN/my/change_phone")
+    public String CNchange_phone() {
+        return "CN/my/change_phone"; }
+
     //    以下为英文版
     /**
      * 访问index界面
@@ -616,5 +624,12 @@ public class PageController {
     @RequestMapping("/EN/more/active_list")
     public String ENactive_list() {
         return "EN/more/active_list"; }
+    /**
+     * 修改手机号
+     * @return
+     */
+    @RequestMapping("/EN/my/change_phone")
+    public String ENchange_phone() {
+        return "EN/my/change_phone"; }
 
 }
