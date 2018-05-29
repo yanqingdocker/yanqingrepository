@@ -60,6 +60,7 @@ public class UserController {
         if(!checknum.equals(check_Num)||!newphone.equals(phone)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOT_EQUAL_PHONE)).toString();
         }
+       
         User user=JedisUtil.getUser(request);
         user.setPhone(newphone);
         userServiceImpl.update(user);

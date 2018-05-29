@@ -8,7 +8,7 @@ public class ConstantUtil {
     public static final String NOTFOUND_USER="该手机号未被注册过";
     public static final String CHECKERROR_NUM="手机验证不通过，请重新验证";
     public static final String ALREADY_USER="该手机号已经被注册过";
-    public static final String NOT_EQUAL_PHONE="提交的账号和发送验证码的账号不一致";
+    public static final String NOT_EQUAL_PHONE="提交的账号不一致或验证码错误";
     public static final String ALERADY_CUNT="该类型的账户已创建过";
     public static final String NOT_AUTHENTION="未认证用户不能创建账户";
     public static final String NOTUSER_OR_NOTAUTENTENTION="你所填写的用户不存在或者还未实名认证";
