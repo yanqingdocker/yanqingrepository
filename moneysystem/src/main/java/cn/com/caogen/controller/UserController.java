@@ -57,7 +57,7 @@ public class UserController {
         if (!StringUtil.checkStrs(checknum,newphone)) {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
-        if(!checknum.equals(check_Num)&&newphone.equals(phone)){
+        if(!checknum.equals(check_Num)&&!newphone.equals(phone)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOT_EQUAL_PHONE)).toString();
         }
         User user=JedisUtil.getUser(request);
