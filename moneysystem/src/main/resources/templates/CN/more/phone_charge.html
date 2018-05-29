@@ -216,13 +216,13 @@
         } else {
             var real = $("#recharcount").val();
             $("#realid").val(parseInt(real));
-            console.log(parseInt(real));
+            // console.log(parseInt(real));
             $.ajax({
                 url: '/mobile/payMent',
                 data: $('#subform').serialize(),
                 type: 'post',
                 success: function (data) {
-                    if (data.code == "success") {
+                    if (strToJson(data).code == "success") {
                         sweetAlert("", "恭喜您！充值成功！", "success");
                         setTimeout(function () {
                             window.location.href = "/CN/more/trade_history";

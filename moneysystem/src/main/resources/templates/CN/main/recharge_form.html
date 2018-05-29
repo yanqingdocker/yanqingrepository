@@ -99,13 +99,6 @@
                         </select>
                         <input type="hidden" id="realcount" name="countId">
                     </div>
-                    <!--<div class="form-group" id="bank_account">-->
-                        <!--<label class="col-form-label w100">选择绑定的银行卡<span class="warning">*</span></label>-->
-                        <!--<select class="custom-select  w100" id="rbankcount" field="count">-->
-
-                        <!--</select>-->
-                        <!--<input type="hidden" id="bankcard" name="bankcard">-->
-                    <!--</div>-->
                     <div class="form-group">
                         <label class="col-form-label" for="inputje">金额<span class="warning">*</span></label>
                         <input class="form-control" placeholder="请输入金额" id="inputje" name="tradeMoney" type="text">
@@ -129,7 +122,6 @@
     $(function(){
         $("#nav_transfer").addClass("cur");//导航栏添加焦点
         loadcount();//获取下拉账户
-        loadbankcard();//获取银行卡
         var typeval=GetQueryString("payType");
         switch(typeval)
         {
@@ -163,10 +155,10 @@
                 'tradeMoney': {
                     validators: {
                         notEmpty: {
-                            message: '转账金额不可以为空'
+                            message: '充值金额不可以为空'
                         },
                         digits: {
-                            message: '转账金额只能包含数字。'
+                            message: '充值金额只能包含数字。'
                         }
                     }
                 },
@@ -224,39 +216,7 @@
             }
         })
     }
-    // 通过json同步获取下拉绑定的银行卡
-    // function loadbankcard() {
-    //     $.ajax({
-    //         url: '/bank/query',
-    //         data: null,
-    //         type: 'get',
-    //         success: function (data) {
-    //             var jsonObj = $.parseJSON(data);//json字符串转数组
-    //             for (var i=0;i<jsonObj.length;i++)
-    //             {
-    //                 var html ='<option value="'+jsonObj[i].bankCard+'">'+jsonObj[i].bankCard+'('+currency_type(jsonObj[i].bankType)+')'+'</option>';
-    //                 $("#recharcount").append(html);
-    //             }
-    //             if(jsonObj.length==0){
-    //                 sweetAlert({
-    //                         title: "请先绑定银行卡，才能进行操作！",
-    //                         type: "warning",
-    //                         showCancelButton: true,
-    //                         confirmButtonText: "去绑定",
-    //                         cancelButtonText: "取消",
-    //                         closeOnConfirm: false,
-    //                         closeOnCancel: true
-    //                     },
-    //                     function (isConfirm) {
-    //                         if (isConfirm) {
-    //                             window.location.href = "/CN/my/bank_card";
-    //                         }
-    //                     });
-    //             }
-    //
-    //         }
-    //     })
-    // }
+
     function submitform() {
         $('#rechargeform').data('bootstrapValidator').enableFieldValidators('tradeMoney', true);
         $('#rechargeform').data('bootstrapValidator').enableFieldValidators('payType', true);
@@ -266,7 +226,7 @@
         } else {
             var real = $("#recharcount").val();
             $("#realcount").val(real);
-            console.log($("#realcount").val());
+            // console.log($("#realcount").val());
             //ajax的形式提交表单
             var str = $("#rechargeform").serializeObject(); //此处调用的就是我们写好的引入的方法，会将带有name的input，全部转为JSON。
             var datas = JSON.stringify(str);//返回一个新字符串
@@ -277,7 +237,8 @@
                 data: {datas: datas},
                 type: 'post',
                 success: function (data) {
-                    if (data.code == "success") {
+                    // console.log(strToJson(data).code);
+                    if (strToJson(data).code == "success") {
                         sweetAlert("", "恭喜您！充值成功！", "success");
                         setTimeout(function () {
                             window.location.href = "/CN/more/trade_history";
