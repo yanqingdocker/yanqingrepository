@@ -92,6 +92,31 @@ public class UserController {
 
     }
 
+    /**
+     * 重置密码
+     * @param telphone
+     * @param password
+     * @return
+     */
+    @RequestMapping(path="/resetpwd",method = RequestMethod.POST)
+        public String resetpwd(@RequestParam("telphone") String telphone,@RequestParam("password") String password,HttpServletRequest request) {
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
+        logger.info("resetpwd start: telphone="+telphone+",password="+password);
+        if (!StringUtil.checkStrs(telphone,password)) {
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
+        }
+        password = MD5Util.string2MD5(password);
+        User user=getUser(telphone,null);
+        if(user==null){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL)).toString();
+        }
+        user.setPassword(password);
+        user.setLasttime(DateUtil.getTime());
+        userServiceImpl.update(user);
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
+    }
 
     public User getUser(String telphone,String userid){
         logger.info("getUser start: telphone="+telphone+",userid="+userid);
@@ -100,7 +125,7 @@ public class UserController {
         User temp = null;
         List<User> userList=userServiceImpl.queryAll(map);
         if(userList.isEmpty()){
-           return null;
+            return null;
         }else {
             return userList.get(0);
         }
