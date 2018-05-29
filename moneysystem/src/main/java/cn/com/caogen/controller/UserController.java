@@ -53,6 +53,7 @@ public class UserController {
      */
     @RequestMapping("/readyupdatephone")
     public String updatephone(@RequestParam("checknum") String checknum,@RequestParam("newphone") String newphone, HttpServletRequest request) {
+        logger.info("updatephone start:");
         if (!StringUtil.checkStrs(checknum,newphone)) {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
