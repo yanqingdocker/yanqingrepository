@@ -6,7 +6,7 @@ document.writeln("  <a href=\"/CN/nonCardCash/cash_in\" target=\"_blank\">无卡
 document.writeln("  <a href=\"/CN/currency_exchange/exchange\" target=\"_blank\">货币兑换</a><span>|</span>");
 document.writeln("   <a href=\"/CN/more/financial\" target=\"_blank\">更多</a>");
 document.writeln("   </div>");
-document.writeln("<p class=\"tc g9\"><span class='pr20'>© 2018 Copyright 南方国际钱庄</span> <span>客服热线：</span></p>");
+document.writeln("<p class=\"tc g9\"><span class='pr20'>© 2018 Copyright 南方国际钱庄</span> <span>客服热线：0968888088</span></p>");
 document.writeln("  </div>");
 
 document.writeln("<div class=\"phone_footer navbar navbar-default navbar-fixed-bottom \">");
