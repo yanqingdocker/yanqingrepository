@@ -75,6 +75,7 @@
                             <div class="">
                                 <ul>
                                     <li><a href="/EN/my/authentication" id="changetext">Basic Information</a></li>
+                                    <li><a href="/EN/my/change_phone">Modify Phone Number</a></li>
                                     <li><a href="/EN/my/login_psw">login Password</a></li>
                                     <li ><a href="/EN/my/pay_psw">Money Password</a></li>
                                     <li ><a href="/EN/my/bank_card">Bank Card Binding</a></li>
@@ -135,7 +136,7 @@
                             <label class="col-form-label">E-mail<span class="warning">*</span></label>
                             <input class="form-control" placeholder="Please enter email" name="email"  type="text">
                         </div>
-                        <!-- 暂无 港澳台 如需要可在city.json文件中添加-->
+
                         <div class="form-group">
                             <label class="col-form-label">Region<span class="warning">*</span></label>
                             <div class="inblock w100">
@@ -163,6 +164,10 @@
             <div  id="info_block" style="display: none;">
                 <h3 class="page_title">Basic information</h3>
                 <div class="inblock w100">
+                    <div class="form-group">
+                        <label class="col-form-label">Phone number<span class="warning">*</span></label>
+                        <input class="form-control"  id="phone"  maxlength="50"  type="text" disabled="">
+                    </div>
                     <div class="form-group">
                         <label class="col-form-label">Real name<span class="warning">*</span></label>
                         <input class="form-control"  id="realname"  maxlength="50"  type="text" disabled="">
@@ -218,6 +223,7 @@
                 if(data.isauthentication==1){
                     $("#auth_block").hide();
                     $("#info_block").show();
+                    $("#phone").val(data.phone);
                     $("#realname").val(data.username);
                     $("#email").val(data.email);
                     $("#birthday").val(data.birthday);

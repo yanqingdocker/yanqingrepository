@@ -75,6 +75,7 @@
                             <div class="">
                                 <ul>
                                     <li><a href="/CN/my/authentication" id="changetext">基本信息</a></li>
+                                    <li><a href="/CN/my/change_phone">修改手机号</a></li>
                                     <li><a href="/CN/my/login_psw">登录密码</a></li>
                                     <li ><a href="/CN/my/pay_psw">资金密码</a></li>
                                     <li ><a href="/CN/my/bank_card">银行卡绑定</a></li>
@@ -164,6 +165,10 @@
                 <h3 class="page_title">基本资料</h3>
                 <div class="inblock w100">
                     <div class="form-group">
+                        <label class="col-form-label">手机号<span class="warning">*</span></label>
+                        <input class="form-control"  id="phone"  maxlength="50"  type="text" disabled="">
+                    </div>
+                    <div class="form-group">
                         <label class="col-form-label">真实姓名<span class="warning">*</span></label>
                         <input class="form-control"  id="realname"  maxlength="50"  type="text" disabled="">
                     </div>
@@ -218,6 +223,7 @@
                 if(data.isauthentication==1){
                     $("#auth_block").hide();
                     $("#info_block").show();
+                    $("#phone").val(data.phone);
                     $("#realname").val(data.username);
                     $("#email").val(data.email);
                     $("#birthday").val(data.birthday);
