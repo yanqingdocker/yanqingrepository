@@ -44,10 +44,25 @@ public class UserController {
 
     private static String phone = "";
 
-    @RequestMapping("/hello")
-    public void hello() throws Exception {
-
-
+    /**
+     * 修改手机号
+     * @param checknum
+     * @param newphone
+     * @param request
+     * @return
+     */
+    @RequestMapping("/readyupdatephone")
+    public String updatephone(@RequestParam("checknum") String checknum,@RequestParam("newphone") String newphone, HttpServletRequest request) {
+        if (!StringUtil.checkStrs(checknum,newphone)) {
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
+        }
+        if(!checknum.equals(check_Num)&&newphone.equals(phone)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOT_EQUAL_PHONE)).toString();
+        }
+        User user=JedisUtil.getUser(request);
+        user.setPhone(newphone);
+        userServiceImpl.update(user);
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 
     /**
