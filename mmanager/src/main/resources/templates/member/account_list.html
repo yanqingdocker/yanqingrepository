@@ -144,10 +144,10 @@
                 {"data": "state",
                     render:function(e,type,full,row){
                         if(full.state==1){
-                            return "冻结";
+                            return "正常";
                         }
                         else{
-                            return "正常";
+                            return "冻结";
                         }
                     }
                 },
@@ -155,10 +155,10 @@
                 {"data": "state",
                     render:function(e,type,full,row){
                         if(full.state==1){
-                            return "<a href='javascript:;'  onclick='changestatus("+full.id+",0)'  class=\"blue\" title=\"解冻\">解冻</a>";
+                            return "<a href='javascript:;'  onclick='changestatus("+full.id+",0)'  class=\"blue\" title=\"冻结\">冻结</a>";
                         }
                         else{
-                            return "<a href='javascript:;'  onclick='changestatus("+full.id+",1)'  class=\"blue\" title=\"冻结\">冻结</a>";
+                            return "<a href='javascript:;'  onclick='changestatus("+full.id+",1)'  class=\"blue\" title=\"解冻\">解冻</a>";
                         }
                     }
                 }
