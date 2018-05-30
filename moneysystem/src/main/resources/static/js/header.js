@@ -68,7 +68,7 @@ document.writeln(" <input type='hidden' id='isauth'>\n");
 document.writeln(" <div class=\"navbar navbar-default navbar-fixed-top top-main phone_header\">");
 document.writeln("   <div class=\"navbar_block navbar navbar-expand-lg navbar-dark\">");
 document.writeln("  <div class=\"inblock w100 fix_header\">");
-document.writeln("<a class=\"navbar-brand\" href=\"#\"></a>");
+document.writeln("<a class=\"navbar-brand\" href=\"/CN/index\"></a>");
 document.writeln("  <button class=\"navbar-toggler \" type=\"button\"  style=\"\"> </button>");
 document.writeln("  </div> ");
 document.writeln("  <div class=\"w100 nav phonenav\" id=\"navbarblock\" style=\"display: none\">");

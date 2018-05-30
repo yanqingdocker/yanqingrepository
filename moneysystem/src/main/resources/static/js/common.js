@@ -68,6 +68,7 @@ function trade_type(types) {
             return "Recharge";
             break;
         default:
+            return "Others";
             break;
     }
 }

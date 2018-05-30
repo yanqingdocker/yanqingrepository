@@ -620,14 +620,15 @@ table.table thead .sorting:after,table.table thead .sorting_asc:after{ backgroun
     .phonenav{ position: relative;top: -5px;}
     .phone_header .fix_header .navbar-toggler:focus{border: none}
     .phone_footer{ height:60px; width: 100%;background: #fafafa;border-top: 1px solid #dadada;}
-    .phone_footer a{ display: inline-block; width: 32%;height: 40px;text-align: center; line-height: 40px;padding-top: 5px; padding-bottom: 5px;}
-    .phone_footer i{display: block; margin: 0 auto}
+    .phone_footer a{ display: inline-block; width: 32%;text-align: center;padding-top: 5px; }
+    .phone_footer i{display: block; margin: 0 auto;margin-bottom: 5px;}
     .phone_footer .home{ background: url("../images/phone/icon_home.png") no-repeat left center; width: 26px; height: 26px; background-size: contain;}
     .phone_footer .recharge{ background: url("../images/phone/icon_recharge.png") no-repeat left center;  width: 26px; height:26px; background-size: contain;}
     .phone_footer .cash{ background: url("../images/phone/icon_transfer.png") no-repeat left center;  width: 26px; height: 26px; background-size: contain;}
     .bid_menu{ width: 100%}
     .phone_frist-top .turn { height: 185px !important;margin-top: 54px;}
     .r_whitebg,.bank_logo { padding-bottom: 80px;}
+    .r_whitebg{padding: 0 15px;padding-top: 20px;}
     .bid_menu{ min-height: auto !important;}
     .money_block .dollar,.money_block .rmb{width: 100%; border-radius: 10px;background-size: cover; margin-bottom: 10px;}
     .dataTable{ width: 100% !important;overflow-x: scroll;}
@@ -638,6 +639,14 @@ table.table thead .sorting:after,table.table thead .sorting_asc:after{ backgroun
     .l_english{    background: url(../images/ENlogo.png) no-repeat;width: 20px;height: 20px;background-size: contain;display: inline-block;vertical-align: middle;margin-right: 5px;}
     hr{ margin: 5px 0}
     .nav .navbar-nav>li>a.l_language{ padding-left: 36%;}
+    .col-xs-12{ padding: 0;}
+    .col-xs-12.r_whitebg{ padding: 15px; padding-bottom: 0}
+    .dataTables_scrollHead{ overflow-x: scroll}
+    .table td,.table th{white-space: nowrap;}
+    iframe{ overflow-x: scroll;margin-bottom: 50px;}
+    .dataTables_wrapper .col-sm-4{ padding: 0}
+    .container{ padding-bottom: 65px;}
+    .phone_mb20{ margin-bottom: 20px;}
 }
 @media (min-width: 770px){
     .pc_header{display: block}
