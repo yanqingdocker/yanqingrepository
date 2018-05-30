@@ -634,7 +634,6 @@ table.table thead .sorting:after,table.table thead .sorting_asc:after{ backgroun
     .dataTable{ width: 100% !important;overflow-x: scroll;}
     .col-sm-6{ width: 50%; float: left}
     .swiper-container-fade .swiper-slide{ height: 245px !important; margin-top: 54px;}
-    .ENheader .nav li{ margin-left: 20px;}
     .l_chinese{    background: url(../images/CNlogo.png) no-repeat;width: 20px;height: 20px;background-size: contain;display: inline-block;vertical-align: middle;margin-right: 5px;}
     .l_english{    background: url(../images/ENlogo.png) no-repeat;width: 20px;height: 20px;background-size: contain;display: inline-block;vertical-align: middle;margin-right: 5px;}
     hr{ margin: 5px 0}
@@ -666,6 +665,7 @@ table.table thead .sorting:after,table.table thead .sorting_asc:after{ backgroun
 .language .chinese i{ background: url("../images/CNlogo.png") no-repeat; width: 20px; height: 20px; background-size: contain; display: inline-block;vertical-align: middle;margin-left: 3px}
 .language .english i{ background: url("../images/ENlogo.png") no-repeat; width:20px; height: 20px; background-size: contain;  display: inline-block;vertical-align: middle; margin-left: 3px}
 
+.ENheader .nav li{ margin-left: 20px;}
 
 
 
