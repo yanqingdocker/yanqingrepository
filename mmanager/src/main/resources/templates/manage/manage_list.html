@@ -81,7 +81,8 @@
             <div class="modal-body">
                 <form id="myform" >
                     <div class="form-group">
-                        <label class="col-form-label" >用户名：</label> <span id="username"></span>
+                        <label class="col-form-label" >用户名：</label>
+                        <input class="form-control" type="text" disabled  id="username">
                     </div>
                     <input type="hidden" id="userid" name="id">
                     <div class="form-group">
@@ -112,7 +113,11 @@
             <div class="modal-body">
                 <form id="roleform" >
                     <div class="form-group">
-                        <label class="col-form-label" >角色：</label>
+                        <label class="col-form-label" >用户：</label>
+                        <input class="form-control" type="text" disabled  id="adminname">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" >角色控制：</label>
                         <div class="powerlist"></div>
                     </div>
                     <input type="hidden" id="adminid" name="id">
@@ -219,7 +224,7 @@
                 },
                 {"data": "id",
                     render:function(e,type,full,row){
-                        return "<a href='javascript:;'  onclick='deletbatch("+full.id+")'  class=\"icon_delete\" title=\"删除\">删除</a> | <a href='javascript:;'  data-toggle=\"modal\" data-target=\"#myModal_dollar\" onclick='changepsw("+full.id+")' data-id="+full.username+" class='blue' >修改</a>  |  <a href='javascript:;'  data-toggle=\"modal\" data-target=\"#myrole\" onclick=\"rolecontrol("+full.id+",'"+full.idlist+"')\" data-id="+full.idlist+" class='blue' >角色控制</a>";
+                        return "<a href='javascript:;'  onclick='deletbatch("+full.id+")'  class=\"icon_delete\" title=\"删除\">删除</a> | <a href='javascript:;'  data-toggle=\"modal\" data-target=\"#myModal_dollar\" onclick=\"changepsw("+full.id+",'"+full.username+"')\" data-id="+full.username+" class='blue' >修改密码</a>  |  <a href='javascript:;'  data-toggle=\"modal\" data-target=\"#myrole\" onclick=\"rolecontrol("+full.id+",'"+full.idlist+"','"+full.username+"')\" data-id="+full.idlist+" class='blue' >角色控制</a>";
                     }
                 }
             ]
@@ -377,14 +382,14 @@
             });
         }
     }
-    function changepsw(id) {
+    function changepsw(id,name) {
         $("#userid").val(id);
-        var name= $(this).attr("data-id");
         $("#username").val(name);
     }
     // 点击角色控制
-    function rolecontrol(userid,idlist) {
+    function rolecontrol(userid,idlist,name) {
         $("#adminid").val(userid);
+        $("#adminname").val(name);
         var jsonObj = idlist.split(',');//去掉逗号转成数组
         var obj=new Array();
         for(var j=0;j<jsonObj.length;j++){
@@ -466,7 +471,7 @@
                         confirmButtonText: "确定",
                         closeOnConfirm: true
                     });
-                    }
+                }
                 else {
                     sweetAlert("", "成员角色控制修改失败", "error");
                 }
