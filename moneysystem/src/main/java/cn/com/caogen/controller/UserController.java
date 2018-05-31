@@ -60,10 +60,13 @@ public class UserController {
         if(!checknum.equals(check_Num)||!newphone.equals(phone)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOT_EQUAL_PHONE)).toString();
         }
-       
+
         User user=JedisUtil.getUser(request);
         user.setPhone(newphone);
         userServiceImpl.update(user);
+        Map<String,Object> sessionMap=JedisUtil.getSessionMap();
+        sessionMap.put(request.getSession().getId(),SerializeUtil.serialize(user));
+        JedisUtil.getJedis().set(ConstantUtil.SESSIONCOLLCTION.getBytes(),SerializeUtil.serialize(sessionMap));
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 

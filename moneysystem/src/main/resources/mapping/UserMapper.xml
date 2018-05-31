@@ -44,6 +44,9 @@
 
     <update id="update" parameterType="cn.com.caogen.entity.User">
         update user set
+        <if test="phone != null">
+            phone=#{phone},
+        </if>
         <if test="username != null">
             username=#{username},
         </if>
@@ -71,7 +74,7 @@
         <if test="isauthentication !=null">
             isauthentication=#{isauthentication}
         </if>
-        where phone=#{phone}
+        where id=#{userid}
     </update>
 
 </mapper>

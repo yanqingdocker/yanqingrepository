@@ -187,6 +187,18 @@ public class MuserController {
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 
+    /**
+     * 退出登录
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/getUser",method = RequestMethod.GET)
+    public String getUser(HttpServletRequest request) {
+        logger.info("getUser start");
+        Muser muser=(Muser)request.getSession().getAttribute("currentUser");
+        return JSONObject.fromObject(muser).toString();
+    }
+
     private void getAuth(Muser muser){
        List<UserRole> userRoles=userRoleService.queryByUserId(muser.getId());
        for(UserRole userRole:userRoles){
