@@ -85,14 +85,13 @@
                         </ul>
                     </li>
                     <li class="dropdown profile">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">amin <span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-expanded="false" > <span class="manage_name"></span><span class="caret"></span></a>
                         <ul class="dropdown-menu animated fadeInDown">
                             <li>
                                 <div class="profile-info">
-                                    <h4 class="username">admin</h4>
-                                    <p>emily_hart@email.com</p>
+                                    <h4 class="username manage_name" ></h4>
                                     <div class="btn-group margin-bottom-2x" role="group">
-                                        <button type="button" class="btn btn-default"><i class="fa fa-user"></i> Profile</button>
+                                        <!--<button type="button" class="btn btn-default"><i class="fa fa-user"></i> Profile</button>-->
                                         <button type="button" class="btn btn-default" onclick="logout()"><i class="fa fa-sign-out"></i> 退出</button>
                                     </div>
                                 </div>
@@ -375,6 +374,7 @@
 <script type="text/javascript">
     $(function(){
         task_nodeal();
+        information();
     })
     function logout() {
         $.ajax({
@@ -397,6 +397,8 @@
         });
 
     }
+
+    // 显示未处理任务条数
     function task_nodeal() {
         $.ajax({
             url: "/task/queryUndo",
@@ -425,6 +427,21 @@
 
     }
 
+    // 获取登录成员信息
+    function information() {
+        $.ajax({
+            url: "/muser/getUser",
+            type: "get",
+            data: null,
+            dataType: 'json',
+            async: false,
+            contentType: 'application/json',
+            success: function (data) {
+                $(".manage_name").html(data.username);
+            }
+        });
+
+    }
 </script>
 </body>
 
