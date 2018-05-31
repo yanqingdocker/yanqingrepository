@@ -303,9 +303,11 @@ form .checkbox3 label::before {   top: 8px; }
 form .checkbox3 label::after, .radio3 label::after{top: 4px;}
 
 
-
-
-
+.flat-blue .btn.btn-default{ background-color: #00b4ff; color: #fff; padding-left: 20px; padding-right: 20px;border-radius: 4px;}
+.flat-blue .btn.btn-default:hover {
+    background-color: #00b4ff;
+}
+.btn:focus{    outline: none;}
 
 
 

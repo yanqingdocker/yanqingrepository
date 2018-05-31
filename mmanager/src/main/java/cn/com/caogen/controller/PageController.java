@@ -141,6 +141,15 @@ public class PageController {
         return "capitalbank/capital_bank";
     }
     /**
+     *资金库--资金库初始化
+     *
+     * @return
+     */
+    @RequestMapping("/capitalbank/cash_initialization")
+    public String cash_initialization() {
+        return "capitalbank/cash_initialization";
+    }
+    /**
      *资金库--现金资金库
      *
      * @return
