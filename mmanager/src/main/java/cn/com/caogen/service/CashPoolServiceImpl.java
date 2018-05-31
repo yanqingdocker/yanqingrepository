@@ -94,4 +94,9 @@ public class CashPoolServiceImpl implements ICashPoolService {
     public CashPool queryByType(String type) {
         return cashPoolMapper.queryByType(type);
     }
+
+    @Override
+    public void update(CashPool cashPool) {
+        cashPoolMapper.update(cashPool);
+    }
 }

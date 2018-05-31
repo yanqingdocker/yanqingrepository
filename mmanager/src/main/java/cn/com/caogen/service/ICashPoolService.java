@@ -15,4 +15,5 @@ public interface ICashPoolService {
     List<CashPool> queryAll();
     void exchange(Map<String,Object> parmMap);
     CashPool queryByType(String type);
+    void update(CashPool cashPool);
 }

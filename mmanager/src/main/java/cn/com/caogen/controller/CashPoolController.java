@@ -44,6 +44,22 @@ public class CashPoolController {
     }
 
     /**
+     * 现金库初始化
+     * @param type
+     * @param num
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "initCashPool",method = RequestMethod.POST)
+    public String initCashPool(@RequestParam("type") String type,@RequestParam("num") double num, HttpServletRequest request){
+       CashPool cashPool=cashPoolService.queryByType(type);
+       cashPool.setBlance(cashPool.getBlance()+num);
+       cashPool.setLasttime(DateUtil.getTime());
+       cashPoolService.update(cashPool);
+       return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
+    }
+
+    /**
      * 现金兑换
      * @param srccounttype
      * @param destcounttype
