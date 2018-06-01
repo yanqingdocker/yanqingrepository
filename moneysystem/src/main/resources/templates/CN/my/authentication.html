@@ -18,9 +18,8 @@
     <script  type="text/javascript" src="/js/bootstrapValidator.min.js"></script>
     <script  type="text/javascript" src="/js/sweet-alert.min.js"></script>
     <script  type="text/javascript" src="/js/common.js"></script>
-    <script type="text/javascript" src="/js/moment.js"></script>
-    <script type="text/javascript" src="/js/daterangepicker.js"></script>
     <script  type="text/javascript" src="/js/areajson.js"></script>
+    <script  type="text/javascript" src="/js/date.js"></script>
     <!--[if lte IE 9]>
     <script  type="text/javascript" src="/js/html5.min.js"></script>
     <script  type="text/javascript" src="/js/respond.min.js"></script>
@@ -128,8 +127,8 @@
                         </div>
                         <div class="form-group">
                             <label class="col-form-label">出生日期<span class="warning">*</span></label>
-                            <div class="input-prepend input-group ">
-                                <input type="text" readonly  name="birthday" id="startime" class="form-control" value="" /><span class="add-on input-group-addon"><i class="icon_date"></i></span>
+                            <div class="input-prepend input-group " id="dateselect">
+                                <input type="text" readonly  name="birthday" id="txtEndDate"  class="form-control" value="" /><span class="add-on input-group-addon"><i class="icon_date"></i></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -210,10 +209,7 @@
 
     $(document).ready(function() {
         $("#nav_my").addClass("cur");//导航栏添加焦点
-        $("#startime").attr("value",show());
-        $('#startime').daterangepicker({  startDate:show(),singleDatePicker: true }, function(start, end, label) {
-            console.log(start.toISOString(), end.toISOString(), label);
-        });
+        $("#txtEndDate").calendar();
         $.ajax({
             url: '/user/getuser',
             type: 'GET',
@@ -320,17 +316,8 @@
         })
     })
 
-    // 当前日期
-    function show(){
-        var mydate = new Date();
-        var str = "" + mydate.getFullYear() + "-";
-        str += (mydate.getMonth()+1) + "-";
-        str += mydate.getDate();
-        return str;
-    };
 
     // 表单提交
-
     $.fn.serializeObject = function () {
         var o = {};
         var a = this.serializeArray();
