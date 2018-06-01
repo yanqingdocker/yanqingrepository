@@ -52,6 +52,9 @@ public class CashPoolController {
      */
     @RequestMapping(path = "initCashPool",method = RequestMethod.POST)
     public String initCashPool(@RequestParam("type") String type,@RequestParam("num") double num, HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
        CashPool cashPool=cashPoolService.queryByType(type);
        cashPool.setBlance(cashPool.getBlance()+num);
        cashPool.setLasttime(DateUtil.getTime());
