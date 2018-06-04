@@ -66,6 +66,7 @@ public class CashPoolServiceImpl implements ICashPoolService {
             srcoperation.setCountType(srccount.getCounttype());
             srcoperation.setCountid(srccount.getCountid());
             srcoperation.setOperaTime(DateUtil.getTime());
+            srcoperation.setServicebranch((String)parmMap.get("servicebranch"));
             operaMapper.add(srcoperation);
             //增加兑换转入的记录
             Operation destoperation=new Operation();
@@ -78,6 +79,7 @@ public class CashPoolServiceImpl implements ICashPoolService {
             destoperation.setCountType(destcount.getCounttype());
             destoperation.setCountid(destcount.getCountid());
             destoperation.setOperaTime(DateUtil.getTime());
+            destoperation.setServicebranch((String)parmMap.get("servicebranch"));
 
             operaMapper.add(destoperation);
 

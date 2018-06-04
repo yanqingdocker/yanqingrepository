@@ -287,7 +287,7 @@ public class CountServiceImpl implements ICountService {
      * @param oi
      * @param operaip
      */
-    public void saveOperaLog(String countid,String counttype,Double num,String operatype,String operauser,int oi,String operaip){
+    public void saveOperaLog(String servicebranch,String countid,String counttype,Double num,String operatype,String operauser,int oi,String operaip){
         Operation operation=new Operation();
         operation.setSnumber(SerialnumberUtil.Getnum());
         operation.setCountid(countid);
@@ -298,6 +298,7 @@ public class CountServiceImpl implements ICountService {
         operation.setOperaUser(operauser);
         operation.setOi(oi);
         operation.setOperaIp(operaip);
+        operation.setServicebranch(servicebranch);
         operaMapper.add(operation);
     }
 

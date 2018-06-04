@@ -1,6 +1,7 @@
 package cn.com.caogen.controller;
 
 import cn.com.caogen.entity.Count;
+import cn.com.caogen.entity.Muser;
 import cn.com.caogen.entity.User;
 import cn.com.caogen.externIsystem.service.MessageService;
 import cn.com.caogen.service.CountServiceImpl;
@@ -222,8 +223,9 @@ public class CountController {
         }
         count.setBlance(count.getBlance()+Double.parseDouble(num));
         countServiceImpl.updateCount(String.valueOf(count.getId()),count.getBlance(),null,null);
-        String operuser="操作员-"+(String)request.getSession().getAttribute("username");
-        countServiceImpl.saveOperaLog(count.getCardId(),count.getCountType(),Double.parseDouble(num),ConstantUtil.SERVICETYPE_INMONEY,operuser,ConstantUtil.MONEY_IN,IpUtil.getIpAddr(request));
+        Muser currentUser=(Muser) request.getSession().getAttribute("currentUser");
+        String operuser="操作员-"+currentUser.getUsername();
+        countServiceImpl.saveOperaLog(currentUser.getServicebranch(),count.getCardId(),count.getCountType(),Double.parseDouble(num),ConstantUtil.SERVICETYPE_INMONEY,operuser,ConstantUtil.MONEY_IN,IpUtil.getIpAddr(request));
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 
@@ -263,8 +265,9 @@ public class CountController {
         }
         count.setBlance(count.getBlance()-Double.parseDouble(num));
         countServiceImpl.updateCount(String.valueOf(count.getId()),count.getBlance(),null,null);
-        String operuser="操作员-"+(String)request.getSession().getAttribute("username");
-        countServiceImpl.saveOperaLog(count.getCardId(),count.getCountType(),-Double.parseDouble(num),ConstantUtil.SERVICETYPE_OUTMONEY,operuser,ConstantUtil.MONEY_OUT,IpUtil.getIpAddr(request));
+        Muser currentUser=(Muser) request.getSession().getAttribute("currentUser");
+        String operuser="操作员-"+currentUser.getUsername();
+        countServiceImpl.saveOperaLog(currentUser.getServicebranch(),count.getCardId(),count.getCountType(),-Double.parseDouble(num),ConstantUtil.SERVICETYPE_OUTMONEY,operuser,ConstantUtil.MONEY_OUT,IpUtil.getIpAddr(request));
 
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }

@@ -116,7 +116,7 @@ public class MuserController {
      * @return
      */
     @RequestMapping(path ="/add", method = RequestMethod.POST)
-    public String add(@RequestParam("username") String username,@RequestParam("password") String password,@RequestParam("roleids") String roleids,HttpServletRequest request) {
+    public String add(@RequestParam("servicebranch") String servicebranch,@RequestParam("username") String username,@RequestParam("password") String password,@RequestParam("roleids") String roleids,HttpServletRequest request) {
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
@@ -127,6 +127,7 @@ public class MuserController {
         Muser muser=new Muser();
         muser.setUsername(username);
         muser.setPassword(password);
+        muser.setServicebranch(servicebranch);
         userServiceImpl.addMuser(muser);
         List<Muser> musers=userServiceImpl.queryMusers();
         int userid=0;

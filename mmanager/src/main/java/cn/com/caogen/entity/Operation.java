@@ -32,5 +32,7 @@ public class Operation {
     //操作IP
     private String operaIp;
 
+    private String servicebranch;
+
 
 }

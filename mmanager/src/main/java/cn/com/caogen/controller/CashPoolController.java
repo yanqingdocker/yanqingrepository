@@ -1,6 +1,7 @@
 package cn.com.caogen.controller;
 
 import cn.com.caogen.entity.CashPool;
+import cn.com.caogen.entity.Muser;
 import cn.com.caogen.service.CashPoolServiceImpl;
 import cn.com.caogen.util.*;
 import net.sf.json.JSONArray;
@@ -86,8 +87,8 @@ public class CashPoolController {
             logger.info(ConstantUtil.SYSTEMCOUNT_LESS);
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.SYSTEMCOUNT_LESS)).toString();
         }
-
-        String operuser="操作员-"+(String)request.getSession().getAttribute("username");
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        String operuser="操作员-"+currentUser.getUsername();
         CashPool destCashPool=cashPoolService.queryByType(destcounttype);
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("srccount",srcCashPool);
@@ -96,6 +97,7 @@ public class CashPoolController {
         parmMap.put("destnum",srcnum);
         parmMap.put("ip",IpUtil.getIpAddr(request));
         parmMap.put("operauser",operuser);
+        parmMap.put("servicebranch",currentUser.getServicebranch());
         cashPoolService.exchange(parmMap);
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
 

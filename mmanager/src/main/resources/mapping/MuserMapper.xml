@@ -6,14 +6,15 @@
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="username" property="username" jdbcType="VARCHAR" />
         <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="servicebranch" property="servicebranch" jdbcType="VARCHAR" />
 
     </resultMap>
 
     <sql id="Base_Column_List" >
-     id, username, password
+     id, username, password,servicebranch
     </sql>
     <insert id="add" parameterType="cn.com.caogen.entity.Muser">
-        insert into muser (username,password) values (#{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR});
+        insert into muser (username,password,servicebranch) values (#{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{servicebranch,jdbcType=VARCHAR});
     </insert>
 
     <delete id="delete" parameterType="int[]">
@@ -26,8 +27,8 @@
 
     <select id="queryMusers"  resultMap="BaseResultMap" >
         select <include refid="Base_Column_List"/> from muser
-
     </select>
+
     <update id="updateMuser" parameterType="Map">
         update muser set password=#{password} where id=#{id}
     </update>
