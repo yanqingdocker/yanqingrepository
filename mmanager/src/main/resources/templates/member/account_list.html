@@ -140,7 +140,12 @@
                 {"data": "id"},
                 {"data": "cardId"},
                 {"data": "countType"},
-                {"data": "blance"},
+                {"data": "blance",
+                    render:function(e,type,full,row){
+                        var balance=full.blance;
+                        return balance.toFixed(4);
+                    }
+                },
                 {"data": "state",
                     render:function(e,type,full,row){
                         if(full.state==1){
@@ -178,22 +183,22 @@
                     }, 1500);
                 }
                 else if (data.code=="403") {
-                        sweetAlert({
-                                title: "",
-                                text: "您的账号权限不足，无法操作此页面！",
-                                type: "warning",
-                                showCancelButton: false,
-                                confirmButtonText: "确定",
-                                cancelButtonText: "取消",
-                                closeOnConfirm: false,
-                                closeOnCancel: true
-                            },
-                            function(isConfirm){
-                                if (isConfirm) {
-                                    window.location.href = "/mainframe";
-                                }
-                            });
-                    }
+                    sweetAlert({
+                            title: "",
+                            text: "您的账号权限不足，无法操作此页面！",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonText: "确定",
+                            cancelButtonText: "取消",
+                            closeOnConfirm: false,
+                            closeOnCancel: true
+                        },
+                        function(isConfirm){
+                            if (isConfirm) {
+                                window.location.href = "/mainframe";
+                            }
+                        });
+                }
                 else {
                     sweetAlert("", strToJson(data).message, "error");
                 }
