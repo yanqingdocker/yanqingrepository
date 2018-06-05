@@ -50,23 +50,6 @@ public class OperaController {
     }
 
     /**
-     * 查询当前用户下的账户的所有操作纪记录
-     * @param request
-     * @return
-     */
-    @RequestMapping(path = "/queryByUserid",method = RequestMethod.GET)
-    public String queryByUserid(HttpServletRequest request){
-        if(!FilterAuthUtil.checkAuth(request)){
-            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
-        }
-        logger.info("queryAll start:");
-        User user=userServiceimpl.querybyId((int)request.getSession().getAttribute("userid"));
-        Map<String,Object> parmMap=new HashMap<String,Object>();
-        parmMap.put("operauser",user.getUserid());
-        return JSONArray.fromObject(operaServiceimpl.queryAll(parmMap)).toString();
-    }
-
-    /**
      * 查询当天账户的所有记录
      * @return
      */

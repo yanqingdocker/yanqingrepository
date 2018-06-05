@@ -121,7 +121,7 @@ public class MuserController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
         logger.info("add start: ");
-        if(!StringUtil.checkStrs(username,password)){
+        if(!StringUtil.checkStrs(servicebranch,username,password,roleids)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
         Muser muser=new Muser();
