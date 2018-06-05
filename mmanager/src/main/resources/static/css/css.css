@@ -287,7 +287,7 @@ div.dataTables_wrapper div.dataTables_processing{background: #fff;}
 }
 .datatable>thead>tr>th{ border-style: solid;border-right-width:1px ;border-left-width:0 ;border-color: #e7e7e7 !important; color: #333;background: url(../images/table_thbg.png) repeat-x !important; padding: 9px 18px; border-bottom: 0}
 .datatable>thead>tr>th:last-child{ border-right: 0;}
-.datatable>thead>tr>th:first-child{ text-align: center}
+.datatable>thead>tr>th:first-child{ text-align: center;padding-right: 10px;}
 .datatable.table{border: 1px solid #e7e7e7; border-bottom: 0;}
 div.dataTables_scrollBody table tbody tr td:first-child{ text-align: center}
 

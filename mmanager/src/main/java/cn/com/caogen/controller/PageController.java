@@ -325,4 +325,22 @@ public class PageController {
     public String tast_finish() {
         return "tast/tast_finish";
     }
+    /**
+     *网点管理--网点列表
+     *
+     * @return
+     */
+    @RequestMapping("/network/network_list")
+    public String network_list() {
+        return "network/network_list";
+    }
+    /**
+     *网点管理--网点添加
+     *
+     * @return
+     */
+    @RequestMapping("/network/add_network")
+    public String add_network() {
+        return "network/add_network";
+    }
 }

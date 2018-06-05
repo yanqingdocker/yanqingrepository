@@ -34,7 +34,7 @@
                         <i class="fa fa-bars icon"></i>
                     </button>
                     <ol class="breadcrumb navbar-breadcrumb">
-                        <!--<li class="active">南方国际钱庄后台管理系统</li>-->
+                        <li class="active" id="servicebranch"></li>
                     </ol>
                     <button type="button" class="navbar-right-expand-toggle pull-right visible-xs">
                         <i class="fa fa-th icon"></i>
@@ -208,22 +208,22 @@
                             </div>
                         </li>
                         <!-- Dropdown-->
-                        <li class="panel panel-default dropdown">
-                            <a data-toggle="collapse" href="#component-example">
-                                <span class="icon fa nav_money"></span><span class="title">财务管理</span>
-                            </a>
-                            <!-- Dropdown level 1 -->
-                            <div id="component-example" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <ul class="nav navbar-nav">
-                                        <li><a href="" target="iframename">交易明细</a>
-                                        </li>
-                                        <li><a href="" target="iframename">利润统计</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
+                        <!--<li class="panel panel-default dropdown">-->
+                        <!--<a data-toggle="collapse" href="#component-example">-->
+                        <!--<span class="icon fa nav_money"></span><span class="title">财务管理</span>-->
+                        <!--</a>-->
+                        <!--&lt;!&ndash; Dropdown level 1 &ndash;&gt;-->
+                        <!--<div id="component-example" class="panel-collapse collapse">-->
+                        <!--<div class="panel-body">-->
+                        <!--<ul class="nav navbar-nav">-->
+                        <!--<li><a href="" target="iframename">交易明细</a>-->
+                        <!--</li>-->
+                        <!--<li><a href="" target="iframename">利润统计</a>-->
+                        <!--</li>-->
+                        <!--</ul>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!--</li>-->
 
                         <li>
                             <a href="/exchangeRate/rate"  target="iframename">
@@ -288,6 +288,21 @@
                                         <!--</li>-->
                                         <!--<li><a href="/manage/changeinfo" target="iframename">修改信息</a>-->
                                         <!--</li>-->
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- Dropdown-->
+                        <li class="panel panel-default dropdown" id="network_drop" style="display: none">
+                            <a data-toggle="collapse" href="#dropdown-net">
+                                <span class="icon fa nav_network"></span><span class="title">网点管理</span>
+                            </a>
+                            <!-- Dropdown level 1 -->
+                            <div id="dropdown-net" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <ul class="nav navbar-nav">
+                                        <li><a href="/network/network_list" target="iframename">网点列表</a></li>
+                                        <li><a href="/network/add_network" target="iframename">网点添加</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -440,6 +455,10 @@
             contentType: 'application/json',
             success: function (data) {
                 $(".manage_name").html(data.username);
+                $("#servicebranch").html(data.servicebranch);
+                if(data.servicebranch=="总部"){
+                    $("#network_drop").show();
+                }
             }
         });
 

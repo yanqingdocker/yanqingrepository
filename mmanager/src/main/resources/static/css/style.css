@@ -1249,7 +1249,7 @@ body.login-page .login-footer {
 .app-container .content-container .side-menu .navbar-nav li a .nav_cash{background: url("../images/nav_money.png") no-repeat center; height:16px;background-size: contain;width: 40px;}
 .app-container .content-container .side-menu .navbar-nav li a .nav_manage{background: url("../images/nav_manage.png") no-repeat center; height:16px;background-size: contain;width: 40px;}
 .app-container .content-container .side-menu .navbar-nav li a .nav_log{background: url("../images/nav_log.png") no-repeat center; height:16px;background-size: contain;width: 40px;}
-
+.app-container .content-container .side-menu .navbar-nav li a .nav_network{background: url("../images/nav_network.png") no-repeat center; height:16px;background-size: contain;width: 40px;}
 /*.app-container.expanded .content-container .side-menu .navbar-nav li.dropdown > a.collapsed:after{*/
 /*content: "";background: url("../images/icon_down.png") no-repeat center; height:16px;background-size: contain;width: 16px;top: 14px;*/
 /*}*/

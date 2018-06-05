@@ -53,6 +53,7 @@
                         <th>序号</th>
                         <th>用户名</th>
                         <th>角色</th>
+                        <th>所属网点</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -222,6 +223,7 @@
                         return html;
                     }
                 },
+                {"data": "servicebranch" },
                 {"data": "id",
                     render:function(e,type,full,row){
                         return "<a href='javascript:;'  onclick='deletbatch("+full.id+")'  class=\"icon_delete\" title=\"删除\">删除</a> | <a href='javascript:;'  data-toggle=\"modal\" data-target=\"#myModal_dollar\" onclick=\"changepsw("+full.id+",'"+full.username+"')\" data-id="+full.username+" class='blue' >修改密码</a>  |  <a href='javascript:;'  data-toggle=\"modal\" data-target=\"#myrole\" onclick=\"rolecontrol("+full.id+",'"+full.idlist+"','"+full.username+"')\" data-id="+full.idlist+" class='blue' >角色控制</a>";
