@@ -203,7 +203,7 @@
                         url: "/task/dotask", // 目标地址
                         data: { id :id },
                         success: function (data) {
-                            if (strToJson(data).code == "success") {
+                            if (data.code == "success") {
                                 sweetAlert("", "恭喜您！任务处理成功！", "success");
                                 setTimeout(function(){ window.location.href = "/tast/tast_finish";},1500);
                             } else {

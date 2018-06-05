@@ -460,7 +460,7 @@
             data: {id:countid},
             type: 'get',
             success: function (data) {
-                $(".thisbalance").html(strToJson(data).blance);
+                $(".thisbalance").html(strToJson(data).blance.toFixed(4));
             }
         })
     });
@@ -472,7 +472,7 @@
             data: {id:countid},
             type: 'get',
             success: function (data) {
-                $(".thisbalance").html(strToJson(data).blance);
+                $(".thisbalance").html(strToJson(data).blance.toFixed(4));
             }
         })
     };

@@ -59,15 +59,17 @@
         </div>
     </div>
 </div>
-
+<input type="hidden" id="servicebranch">
 <script type="text/javascript">
 
     $(function () {
+        information()//获取登录成员的信息
         //初始化echarts实例
         var myChart = echarts.init(document.getElementById('chartmain'));
         getChartData(myChart);
         //使用制定的配置项和数据显示图表
         // myChart.setOption(option);
+
     })
 
     //美元汇率信息
@@ -76,7 +78,7 @@
         //echart的data数据格式是{对象,对象},{对象,对象}..,而不是字符串拼接,因此生成对象，放进数组
         $.ajax({
             url: '/cashpool/queryAll',
-            data: null,
+            data: {servicebranch:$("#servicebranch").val()},
             type: 'get',
             success: function (data) {
                 if (data.code=="403") {
@@ -222,16 +224,23 @@
 
 
     }
+    // 获取登录成员信息
+    function information() {
+        $.ajax({
+            url: "/muser/getUser",
+            type: "get",
+            data: null,
+            dataType: 'json',
+            async: false,
+            contentType: 'application/json',
+            success: function (data) {
+                $("#servicebranch").val(data.servicebranch);
 
+            }
+        });
 
-    // 当前日期
-    function show(){
-        var mydate = new Date();
-        var str = "" + mydate.getFullYear() + "-";
-        str += (mydate.getMonth()+1) + "-";
-        str += mydate.getDate();
-        return str;
-    };
+    }
+
 </script>
 </body>
 
