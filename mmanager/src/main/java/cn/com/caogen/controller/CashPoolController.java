@@ -64,6 +64,9 @@ public class CashPoolController {
         Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
        CashPool cashPool=cashPoolService.queryByType(type,currentUser.getServicebranch()).get(0);
         if (oi==ConstantUtil.MONEY_OUT){
+            if(cashPool.getBlance()<num){
+                return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.SYSTEMCOUNT_LESS)).toString();
+            }
             cashPool.setBlance(cashPool.getBlance()-num);
         }
         if (oi==ConstantUtil.MONEY_IN){
