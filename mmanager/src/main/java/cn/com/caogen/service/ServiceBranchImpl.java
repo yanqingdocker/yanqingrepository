@@ -34,4 +34,9 @@ public class ServiceBranchImpl implements IServiceBranch {
     public List<ServiceBranch> queryAll() {
         return serviceBranchMapper.queryAll();
     }
+
+    @Override
+    public ServiceBranch queryById(int id) {
+        return serviceBranchMapper.queryById(id);
+    }
 }

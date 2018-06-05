@@ -42,5 +42,9 @@
         delete from servicebranch where id=#{id}
     </delete>
 
+    <select id="queryById" resultMap="BaseResultMap" parameterType="int">
+        select <include refid="Base_Column_List"/> from servicebranch where id=#{id}
+    </select>
+
 
 </mapper>

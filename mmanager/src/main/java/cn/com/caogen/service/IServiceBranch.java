@@ -15,4 +15,5 @@ public interface IServiceBranch {
     void delete(int id);
     void update(ServiceBranch serviceBranch);
     List<ServiceBranch> queryAll();
+    ServiceBranch queryById(int id);
 }

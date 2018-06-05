@@ -62,9 +62,9 @@ public class ServiceBranchController {
     @RequestMapping("queryAll")
     public String queryAll(HttpServletRequest request){
         logger.info("queryAll start:");
-        if(!FilterAuthUtil.checkAuth(request)){
+     /*   if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
-        }
+        }*/
         List<ServiceBranch> serviceBranchList=ServiceBranchImpl.queryAll();
         return JSONArray.fromObject(serviceBranchList).toString();
     }
@@ -113,5 +113,24 @@ public class ServiceBranchController {
         serviceBranch.setAdministrator(jsonObject.getString("administrator"));
         ServiceBranchImpl.update(serviceBranch);
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
+    }
+
+
+    /**
+     * 查询单个网点
+     * @param id
+     * @param request
+     * @return
+     */
+    @RequestMapping("queryById")
+    public String queryById(@RequestParam("id") int id,HttpServletRequest request){
+        logger.info("queryById start:");
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
+        if (!StringUtil.checkStrs(String.valueOf(id))) {
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
+        }
+        return JSONObject.fromObject( ServiceBranchImpl.queryById(id)).toString();
     }
 }
