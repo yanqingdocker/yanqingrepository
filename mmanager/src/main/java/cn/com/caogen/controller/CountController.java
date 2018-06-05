@@ -1,9 +1,11 @@
 package cn.com.caogen.controller;
 
+import cn.com.caogen.entity.CashPool;
 import cn.com.caogen.entity.Count;
 import cn.com.caogen.entity.Muser;
 import cn.com.caogen.entity.User;
 import cn.com.caogen.externIsystem.service.MessageService;
+import cn.com.caogen.service.CashPoolServiceImpl;
 import cn.com.caogen.service.CountServiceImpl;
 import cn.com.caogen.service.ICountService;
 import cn.com.caogen.service.IUserService;
@@ -41,6 +43,8 @@ public class CountController {
 
     @Autowired
     private IUserService userServiceImpl;
+    @Autowired
+    private CashPoolServiceImpl cashPoolService;
 
     private static String check_Num = "";
 
@@ -221,9 +225,12 @@ public class CountController {
         if(flag){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOTTYPECOUNT)).toString();
         }
+        Muser currentUser=(Muser) request.getSession().getAttribute("currentUser");
+        CashPool cashPool=cashPoolService.queryByType(type,currentUser.getServicebranch()).get(0);
+        cashPool.setBlance(cashPool.getBlance()+Double.parseDouble(num));
         count.setBlance(count.getBlance()+Double.parseDouble(num));
         countServiceImpl.updateCount(String.valueOf(count.getId()),count.getBlance(),null,null);
-        Muser currentUser=(Muser) request.getSession().getAttribute("currentUser");
+
         String operuser="操作员-"+currentUser.getUsername();
         countServiceImpl.saveOperaLog(currentUser.getServicebranch(),count.getCardId(),count.getCountType(),Double.parseDouble(num),ConstantUtil.SERVICETYPE_INMONEY,operuser,ConstantUtil.MONEY_IN,IpUtil.getIpAddr(request));
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
@@ -263,10 +270,17 @@ public class CountController {
         if(count.getBlance()<Double.parseDouble(num)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOTBLANCE)).toString();
         }
-        count.setBlance(count.getBlance()-Double.parseDouble(num));
-        countServiceImpl.updateCount(String.valueOf(count.getId()),count.getBlance(),null,null);
         Muser currentUser=(Muser) request.getSession().getAttribute("currentUser");
         String operuser="操作员-"+currentUser.getUsername();
+        CashPool cashPool=cashPoolService.queryByType(type,currentUser.getServicebranch()).get(0);
+        if(cashPool.getBlance()<Double.parseDouble(num)){
+            logger.info(ConstantUtil.SYSTEMCOUNT_LESS);
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.SYSTEMCOUNT_LESS)).toString();
+        }
+        cashPool.setBlance(cashPool.getBlance()-Double.parseDouble(num));
+        cashPoolService.update(cashPool);
+        count.setBlance(count.getBlance()-Double.parseDouble(num));
+        countServiceImpl.updateCount(String.valueOf(count.getId()),count.getBlance(),null,null);
         countServiceImpl.saveOperaLog(currentUser.getServicebranch(),count.getCardId(),count.getCountType(),-Double.parseDouble(num),ConstantUtil.SERVICETYPE_OUTMONEY,operuser,ConstantUtil.MONEY_OUT,IpUtil.getIpAddr(request));
 
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
