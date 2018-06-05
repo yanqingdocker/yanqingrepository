@@ -15,4 +15,5 @@ public class CashPool {
     private String counttype;
     private Double blance;
     private String lasttime;
+    private String servicebranch;
 }

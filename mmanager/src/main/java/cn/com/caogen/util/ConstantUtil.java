@@ -55,5 +55,7 @@ public class ConstantUtil {
     public static final String TASK_UNDO="待处理";
     public static final String TASK_DONE="已处理";
     public static final String NO_AUTH="403";
+    public static final String CNY_LIB="人民币资金库";
+    public static final String USD_LIB="美元资金库";
 
 }

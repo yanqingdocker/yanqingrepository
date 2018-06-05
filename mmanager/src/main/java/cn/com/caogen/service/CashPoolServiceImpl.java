@@ -16,6 +16,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -93,12 +94,23 @@ public class CashPoolServiceImpl implements ICashPoolService {
     }
 
     @Override
-    public CashPool queryByType(String type) {
-        return cashPoolMapper.queryByType(type);
+    public List<CashPool> queryByType(String type,String servicebranch) {
+        Map<String,String> parmMap=new HashMap<String,String>();
+        if (type!=null){
+            parmMap.put("counttype",type);
+        }
+
+        parmMap.put("servicebranch",servicebranch);
+        return cashPoolMapper.queryByType(parmMap);
     }
 
     @Override
     public void update(CashPool cashPool) {
         cashPoolMapper.update(cashPool);
+    }
+
+    @Override
+    public void add(CashPool cashPool) {
+
     }
 }

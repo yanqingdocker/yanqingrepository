@@ -35,12 +35,13 @@ public class CashPoolController {
      * @return
      */
     @RequestMapping(path ="queryAll",method = RequestMethod.GET)
-    public String queryAll(HttpServletRequest request){
+    public String queryAll(@RequestParam("servicebranch") String servicebranch, HttpServletRequest request){
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
         logger.info("queryAll start:");
-        List<CashPool> cashPoolList=cashPoolService.queryAll();
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        List<CashPool> cashPoolList=cashPoolService.queryByType(null,servicebranch);
         return JSONArray.fromObject(cashPoolList).toString();
     }
 
@@ -52,12 +53,22 @@ public class CashPoolController {
      * @return
      */
     @RequestMapping(path = "initCashPool",method = RequestMethod.POST)
-    public String initCashPool(@RequestParam("type") String type,@RequestParam("num") double num, HttpServletRequest request){
+    public String initCashPool(@RequestParam("type") String type,@RequestParam("num") double num,@RequestParam("oi") int oi, HttpServletRequest request){
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
-       CashPool cashPool=cashPoolService.queryByType(type);
-       cashPool.setBlance(cashPool.getBlance()+num);
+        if(!StringUtil.checkStrs(type,String.valueOf(num),String.valueOf(oi))){
+            logger.info(ConstantUtil.ERROR_ARGS);
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
+        }
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+       CashPool cashPool=cashPoolService.queryByType(type,currentUser.getServicebranch()).get(0);
+        if (oi==ConstantUtil.MONEY_OUT){
+            cashPool.setBlance(cashPool.getBlance()-num);
+        }
+        if (oi==ConstantUtil.MONEY_IN){
+            cashPool.setBlance(cashPool.getBlance()+num);
+        }
        cashPool.setLasttime(DateUtil.getTime());
        cashPoolService.update(cashPool);
        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
@@ -82,14 +93,15 @@ public class CashPoolController {
             logger.info(ConstantUtil.ERROR_ARGS);
            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
-        CashPool srcCashPool=cashPoolService.queryByType(srccounttype);
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        CashPool srcCashPool=cashPoolService.queryByType(srccounttype,currentUser.getServicebranch()).get(0);
         if(srcCashPool.getBlance()<srcnum){
             logger.info(ConstantUtil.SYSTEMCOUNT_LESS);
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.SYSTEMCOUNT_LESS)).toString();
         }
-        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+
         String operuser="操作员-"+currentUser.getUsername();
-        CashPool destCashPool=cashPoolService.queryByType(destcounttype);
+        CashPool destCashPool=cashPoolService.queryByType(destcounttype,currentUser.getServicebranch()).get(0);
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("srccount",srcCashPool);
         parmMap.put("destcount",destCashPool);

@@ -14,6 +14,7 @@ import java.util.Map;
 public interface ICashPoolService {
     List<CashPool> queryAll();
     void exchange(Map<String,Object> parmMap);
-    CashPool queryByType(String type);
+    List<CashPool> queryByType(String type,String servicebranch);
     void update(CashPool cashPool);
+    void add(CashPool cashPool);
 }

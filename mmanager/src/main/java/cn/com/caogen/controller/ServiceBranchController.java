@@ -2,6 +2,7 @@ package cn.com.caogen.controller;
 
 import cn.com.caogen.entity.ServiceBranch;
 import cn.com.caogen.mapper.ServiceBranchMapper;
+import cn.com.caogen.service.CashPoolServiceImpl;
 import cn.com.caogen.service.ServiceBranchImpl;
 import cn.com.caogen.util.*;
 import net.sf.json.JSONArray;
@@ -28,6 +29,7 @@ public class ServiceBranchController {
     @Autowired
     private ServiceBranchImpl ServiceBranchImpl;
 
+
     /**
      * 添加网点
      * @param datas
@@ -51,6 +53,7 @@ public class ServiceBranchController {
         serviceBranch.setAdministrator(jsonObject.getString("administrator"));
         serviceBranch.setCreatetime(DateUtil.getDate());
         ServiceBranchImpl.add(serviceBranch);
+
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 

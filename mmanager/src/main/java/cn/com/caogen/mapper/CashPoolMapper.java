@@ -14,6 +14,7 @@ import java.util.Map;
 public interface CashPoolMapper {
     List<CashPool> queryAll();
     void update(CashPool cashPool);
-    CashPool queryByType(String type);
+    List<CashPool> queryByType(Map<String,String> parmMap);
+    void add(CashPool cashPool);
 
 }
