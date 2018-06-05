@@ -28,21 +28,7 @@ function GetQueryString(name)
     var r = window.location.search.substr(1).match(reg);
     if(r!=null)return  unescape(r[2]); return null;
 }
-function Fobj(id) { return $(id).length };
-function returnObj(obj, isJquery) {
-    if (isJquery == undefined) { isJquery = true; }
-    var _obj; if (obj == null || obj == undefined) return; if (typeof (obj) == 'object') { _obj = obj; } else if (obj.substring(0, 1) != '#' && obj.substring(0, 1) != '.') { _obj = (isJquery) ? '#' + obj : obj; } else { _obj = (isJquery) ? obj : obj.substring(1, len(obj)); }
-    return _obj;
-}; var Class = { create: function () { return function () { this.initialize.apply(this, arguments); } } };
-function getBoxVal (objname, areaTag)
-{ var str = "";
-    var _areaTag = returnObj(areaTag);
-    var _areaObj = (Fobj(_areaTag)) ? _areaTag + ' ' : '';
-    $(_areaObj + "input:checkbox[name='" + objname + "'][checked]").each(function () { str += $(this).val() + ","; });
-    if (str != "") {
-        return str.substr(0, str.length - 1);
-    } else { return "" }
-};
+
 
 function currency_type(types) {
     switch(types)

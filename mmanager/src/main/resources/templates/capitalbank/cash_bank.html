@@ -60,9 +60,19 @@
     </div>
 </div>
 <input type="hidden" id="servicebranch">
+<input type="hidden" id="branchname">
+
 <script type="text/javascript">
 
     $(function () {
+        //获取地址栏参数，name:参数名称
+        var LocString=String(window.document.location.href);
+        function geturl(str){
+            var rs=new RegExp("(^|)"+str+"=([^&]*)(&|$)","gi").exec(LocString),tmp;
+            if(tmp=rs)return tmp[2];
+            return null;
+        }
+        $("#branchname").val(decodeURI(geturl("netaddress")));
         information()//获取登录成员的信息
         //初始化echarts实例
         var myChart = echarts.init(document.getElementById('chartmain'));
@@ -234,7 +244,13 @@
             async: false,
             contentType: 'application/json',
             success: function (data) {
-                $("#servicebranch").val(data.servicebranch);
+                if ($("#branchname").val()==""){
+                    $("#servicebranch").val(data.servicebranch);
+                }
+                else{
+                    $("#servicebranch").val($("#branchname").val());
+                }
+
 
             }
         });

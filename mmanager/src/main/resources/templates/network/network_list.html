@@ -176,7 +176,12 @@
             },
             "columns": [
                 {"data": "id" },
-                {"data": "branchname" },
+                {
+                    "data": "branchname",
+                    render: function (e, type, full, row) {
+                        return '<a href="/capitalbank/cash_bank?netaddress='+encodeURI(full.branchname)+'" >'+full.branchname+'</a>';
+                    }
+                },
                 {"data": "servicephone" },
                 {"data": "address" },
                 {"data": "administrator" },
