@@ -22,7 +22,7 @@
      </sql>
     <insert id="add" parameterType="cn.com.caogen.entity.Appliy">
         insert into operalog (snumber,countid,counttype,num,operatype,operatime,operauser,oi,operaip) values
-        (#{snumber,jdbcType=VARCHAR},#{countid,jdbcType=VARCHAR},#{countType,jdbcType=VARCHAR},#{num,jdbcType=DOUBLE},#{operaType,jdbcType=VARCHAR},#{operaTime,jdbcType=VARCHAR},#{operaUser,jdbcType=VARCHAR},#{oi,jdbcType=INTEGER},#{operaIp,jdbcType=VARCHAR},#{servicebranch,jdbcType=VARCHAR});
+        (#{snumber,jdbcType=VARCHAR},#{countid,jdbcType=VARCHAR},#{countType,jdbcType=VARCHAR},#{num,jdbcType=DOUBLE},#{operaType,jdbcType=VARCHAR},#{operaTime,jdbcType=VARCHAR},#{operaUser,jdbcType=VARCHAR},#{oi,jdbcType=INTEGER},#{operaIp,jdbcType=VARCHAR});
     </insert>
 
     <select id="queryAll"  resultMap="BaseResultMap" >
