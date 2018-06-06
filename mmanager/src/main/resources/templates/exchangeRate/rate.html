@@ -220,6 +220,9 @@
                     // console.log(option.series[0].data);
                     myChart.setOption(option);
                 }
+            },
+            error: function (data) {
+                handleAjaxError();//超时登录或接口异常
             }
         });
 

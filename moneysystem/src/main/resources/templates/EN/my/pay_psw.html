@@ -251,7 +251,7 @@
                             message: 'Invalid password cannot be empty'
                         },
                         identical: {//相同
-                            field: 'paypwd',
+                            field: 'payPwd',
                             message: 'Two passwords are inconsistent'
                         }
                     }
@@ -264,6 +264,7 @@
         $("#getcode").click(function () {
             //获取输入的手机号码
             var phoNum = $("#usertel").val();
+            $("#myform").data("bootstrapValidator").validateField('telphone');
             curCount = count;
             // 向后台发送处理数据
             $.ajax({
@@ -272,7 +273,7 @@
                 url: "/count/checkPhone", // 目标地址
                 data: { "telphone":phoNum },
                 error: function (data) {
-                    sweetAlert("", strToJson(data).message, "error");
+                    sweetAlert("", data.message, "error");
                 },
                 success: function (data) {
                     // debugger;

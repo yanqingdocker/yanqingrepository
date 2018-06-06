@@ -46,6 +46,7 @@ public class SystemFilter implements Filter {
     private Pattern pattern11=Pattern.compile("user/findpsw");
     private Pattern pattern12=Pattern.compile("user/login");
     private Pattern pattern13=Pattern.compile("user/register");
+    private Pattern pattern14=Pattern.compile("user/resetpwd");
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         patterns.add(pattern1);
@@ -61,7 +62,7 @@ public class SystemFilter implements Filter {
         patterns.add(pattern11);
         patterns.add(pattern12);
         patterns.add(pattern13);
-
+        patterns.add(pattern14);
 
     }
 

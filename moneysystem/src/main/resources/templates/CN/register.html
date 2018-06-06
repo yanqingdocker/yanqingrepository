@@ -61,7 +61,7 @@
         if (!$('#registerForm').data('bootstrapValidator').isValid()) {//判断校检是否通过
             return;
         } else {
-            $('#saveID').prop('disabled', true);
+            // $('#saveID').prop('disabled', true);
             $.post("/user/register", $("#registerForm").serialize(), function (data) {
                 if (strToJson(data).code=="success") {
                     sweetAlert("", "恭喜您！注册成功！", "success");
@@ -71,7 +71,7 @@
                 }
                 else {
                     sweetAlert("", strToJson(data).message, "error");
-                    $('#saveID').prop('disabled', false);
+                    // $('#saveID').prop('disabled', false);
                 }
             });
         }
@@ -137,15 +137,11 @@
                 }
             }
         })
+        // 获取验证码
         $("#getcode").click(function () {
             //获取输入的手机号码
             var phoNum = $("#Telephone").val();
-            $('#registerForm').data('bootstrapValidator').enableFieldValidators('checkNum', false);
-            $('#registerForm').data('bootstrapValidator').enableFieldValidators('password', false);
             $("#registerForm").data("bootstrapValidator").validateField('telphone');
-            if (!$("#registerForm").data("bootstrapValidator").validateField('telphone').isValid()) {
-                return;
-            }
             curCount = count;
 
             // 向后台发送处理数据
@@ -153,13 +149,13 @@
                 type: "post", // 用POST方式传输
                 dataType: 'json',
                 url: "/user/checkPhone", // 目标地址
-                data: { "telphone":phoNum },
+                data: {"telphone": phoNum},
                 error: function (data) {
-                    sweetAlert("", strToJson(data).message, "error");
+                    sweetAlert("", data.message, "error");
                 },
                 success: function (data) {
                     // debugger;
-                    if (data.code=="fail") {
+                    if (data.code == "fail") {
                         $("#getcode").attr("disabled", false);
                         $("#getcode").text("重发验证码");
                         $("#telephonenameTip").html("<font color='red'>× 短信验证码发送失败，请重新发送</font>");
@@ -174,9 +170,8 @@
                     }
                 }
             });
-
         });
-    });
+    })
 
     //timer处理函数
     function SetRemainTime() {

@@ -115,11 +115,11 @@
                             <div class=" w100 l mt5 mb5" id="telephonenameTip"></div>
                         </div>
                         <div class="form-group">
-                            <label class="col-form-label w100 " >New Fund Password<span class="warning">*</span></label>
+                            <label class="col-form-label w100 " >New password<span class="warning">*</span></label>
                             <input class="form-control" placeholder="Please enter a new password" name="password" type="password">
                         </div>
                         <div class="form-group">
-                            <label class="col-form-label" >New Fund Password Confirmation<span class="warning">*</span></label>
+                            <label class="col-form-label" >New Password Confirmation<span class="warning">*</span></label>
                             <input class="form-control" placeholder="Please enter new password again" name="conformpaypwd" type="password">
                         </div>
                         <button type="button" class="btn btn-primary btn-lg btn-block " onclick="submitform()"> Submit</button>
@@ -222,6 +222,7 @@
         $("#getcode").click(function () {
             //获取输入的手机号码
             var phoNum = $("#usertel").val();
+            $("#myform").data("bootstrapValidator").validateField('telphone');
             curCount = count;
             // 向后台发送处理数据
             $.ajax({
@@ -230,7 +231,7 @@
                 url: " /user/checkPhone", // 目标地址
                 data: { "telphone":phoNum },
                 error: function (data) {
-                    sweetAlert("", strToJson(data).message, "error");
+                    sweetAlert("", data.message, "error");
                 },
                 success: function (data) {
                     // debugger;

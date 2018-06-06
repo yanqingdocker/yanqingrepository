@@ -251,7 +251,7 @@
                             message: '密码不能为空'
                         },
                         identical: {//相同
-                            field: 'paypwd',
+                            field: 'payPwd',
                             message: '两次密码不一致'
                         }
                     }
@@ -262,6 +262,7 @@
 
         // 获取验证码
         $("#getcode").click(function () {
+            $("#myform").data("bootstrapValidator").validateField('telphone');
             //获取输入的手机号码
             var phoNum = $("#usertel").val();
             curCount = count;
@@ -272,7 +273,7 @@
                 url: "/count/checkPhone", // 目标地址
                 data: { "telphone":phoNum },
                 error: function (data) {
-                    sweetAlert("", strToJson(data).message, "error");
+                    sweetAlert("", data.message, "error");
                 },
                 success: function (data) {
                     // debugger;
@@ -282,7 +283,7 @@
                         $("#telephonenameTip").html("<font color='red'>× 短信验证码发送失败，请重新发送</font>");
                         return false;
 
-                    } else {
+                    } else  if (data.code=="success") {
                         // 设置按钮显示效果，倒计时
                         $("#getcode").attr("disabled", "true");
                         $("#getcode").text("请在" + curCount + "秒后重试");

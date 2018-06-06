@@ -44,6 +44,26 @@ function currency_type(types) {
     }
 }
 
+//接口返回异常，超时登录
+function handleAjaxError() {
+    sweetAlert({
+            title: "",
+            text: "登录超时，点击确定返回登录页面！",
+            type: "warning",
+            showCancelButton: false,
+            cancelButtonText: "取消",
+            confirmButtonText: "确定",
+            closeOnConfirm: false,
+            closeOnCancel: true
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                window.location.href = "/login";
+            }
+        });
+
+}
+
 
 
 

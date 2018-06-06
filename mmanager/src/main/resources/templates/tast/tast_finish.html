@@ -127,7 +127,8 @@
                 "oAria": {
                     "sSortAscending": ": 以升序排列此列",
                     "sSortDescending": ": 以降序排列此列"
-                }
+                },
+                error: handleAjaxError //接口返回异常，超时登录
             },
             ajax: {
                 url: "/task/queryDone",
@@ -150,7 +151,8 @@
                             });
                     }
                     else{ return data;}
-                }
+                },
+                error: handleAjaxError //接口返回异常，超时登录
             },
             "fnDrawCallback"    : function(){
                 this.api().column(0).nodes().each(function(cell, i) {
@@ -181,6 +183,7 @@
     function detail_task(content) {
         $("#taskcontent").html(content);
     }
+
 </script>
 </body>
 </html>

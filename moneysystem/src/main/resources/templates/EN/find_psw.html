@@ -69,11 +69,11 @@
                 <form  id="formtwo">
                     <div class="form-group">
                         <label class="col-form-label" >Please enter your new password：</label>
-                        <input type="text" class="form-control" placeholder="Please enter a new password" maxlength="11" name="password">
+                        <input type="password" class="form-control" placeholder="Please enter a new password" maxlength="11" name="password">
                     </div>
                     <div class="form-group">
                         <label class="col-form-label" >Please confirm your new password：</label>
-                        <input class="form-control " maxlength="11"  placeholder="Please confirm your new password"  type="text" name="ConfirmPassword">
+                        <input class="form-control " maxlength="11"  placeholder="Please confirm your new password"  type="password" name="ConfirmPassword">
                     </div>
                     <div class="bs-component mt20 inblock w100 tc">
                         <button type="button" id="savebtn" onclick="save()" class="btn btn-primary f14">CONFIRM</button>
@@ -126,7 +126,7 @@
         if (!$('#formtwo').data('bootstrapValidator').isValid()) {//判断校检是否通过
             return;
         } else {
-            $('#savebtn').prop('disabled', true);
+            // $('#savebtn').prop('disabled', true);
             $.post("/user/resetpwd", $("#formtwo").serialize(), function (data) {
                 if (strToJson(data).code=="success") {
                     // sweetAlert("", "重置成功！", "success");
@@ -140,10 +140,11 @@
                                 window.location.href = "/EN/login";
                             }
                         });
+                    setTimeout(function(){ window.location.href = "/EN/login";},1000);
                 }
                 else {
                     sweetAlert("", "Reset failure.", "error");
-                    $('#savebtn').prop('disabled', false);
+                    // $('#savebtn').prop('disabled', false);
                 }
             });
         }
@@ -238,10 +239,7 @@
         $("#getcode").click(function () {
             //获取输入的手机号码
             var phoNum = $("#Telephone").val();
-            // $("#registerForm").data("bootstrapValidator").validateField('telphone');
-            // if (!$("#registerForm").data("bootstrapValidator").validateField('telphone').isValid()) {
-            //     return;
-            // }
+            $("#formone").data("bootstrapValidator").validateField('telphone');
             curCount = count;
 
             // 向后台发送处理数据
@@ -251,7 +249,7 @@
                 url: "/user/checkPhone", // 目标地址
                 data: { "telphone":phoNum },
                 error: function (data) {
-                    sweetAlert("", strToJson(data).message, "error");
+                    sweetAlert("", data.message, "error");
                 },
                 success: function (data) {
                     // debugger;

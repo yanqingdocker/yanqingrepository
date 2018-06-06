@@ -706,3 +706,15 @@ table.table thead .sorting:after,table.table thead .sorting_asc:after{ backgroun
 .calendar .calMain .calContent .tabY td .current { WIDTH: 40px; LINE-HEIGHT: 40px; BORDER: 1px solid #0591ee; FLOAT: left; MARGIN: 0px 0 0 2px; }
 .calendar .calMain .calContent .tabY td .select { WIDTH: 40px; LINE-HEIGHT: 40px; BACKGROUND: #0591ee; BORDER: 1px solid #0591ee; COLOR: #fff; FLOAT: left; MARGIN: 0px 0 0 2px; }
 .calendar .calMain a:hover { TEXT-DECORATION: none; }
+
+.table th { white-space: nowrap;}
+
+
+
+
+
+
+
+
+
+

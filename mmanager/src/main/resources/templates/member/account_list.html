@@ -66,6 +66,7 @@
 
 
 <script type="text/javascript">
+
     $(function () {
         $('#table').DataTable({
             "order": [5, "desc" ],
@@ -134,7 +135,9 @@
                             });
                     }
                     else{ return data;}
-                }
+                },
+                error: handleAjaxError //接口返回异常，超时登录
+
             },
             "columns": [
                 {"data": "id"},

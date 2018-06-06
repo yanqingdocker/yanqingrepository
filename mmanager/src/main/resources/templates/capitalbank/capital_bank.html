@@ -216,8 +216,8 @@
                 }
 
             },
-            error: function () {
-                sweetAlert("", "请求失败！", "error");
+            error: function (data) {
+                handleAjaxError();//超时登录或接口异常
             }
         });
 
@@ -226,14 +226,7 @@
     }
 
 
-    // 当前日期
-    function show(){
-        var mydate = new Date();
-        var str = "" + mydate.getFullYear() + "-";
-        str += (mydate.getMonth()+1) + "-";
-        str += mydate.getDate();
-        return str;
-    };
+
 </script>
 </body>
 

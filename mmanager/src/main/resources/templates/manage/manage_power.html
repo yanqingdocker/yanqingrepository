@@ -184,7 +184,8 @@
                             });
                     }
                     else{ return data;}
-                }
+                } ,
+                error: handleAjaxError //接口返回异常，超时登录
             },
             "fnDrawCallback"    : function(){
                 this.api().column(1).nodes().each(function(cell, i) {

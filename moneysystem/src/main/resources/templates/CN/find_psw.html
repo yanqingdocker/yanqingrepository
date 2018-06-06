@@ -69,11 +69,11 @@
                 <form  id="formtwo">
                     <div class="form-group">
                         <label class="col-form-label" >请输入您的新密码：</label>
-                        <input type="text" class="form-control" placeholder="请输入新密码" maxlength="11" name="password">
+                        <input type="password" class="form-control" placeholder="请输入新密码" maxlength="11" name="password">
                     </div>
                     <div class="form-group">
                         <label class="col-form-label" >请确认您的新密码：</label>
-                        <input class="form-control " maxlength="11"  placeholder="请输入新密码"  type="text" name="ConfirmPassword">
+                        <input class="form-control " maxlength="11"  placeholder="请输入新密码"  type="password" name="ConfirmPassword">
                     </div>
                     <div class="bs-component mt20 inblock w100 tc">
                         <button type="button" id="savebtn" onclick="save()" class="btn btn-primary f14">保  存</button>
@@ -140,6 +140,7 @@
                                 window.location.href = "/CN/login";
                             }
                         });
+                    setTimeout(function(){ window.location.href = "/CN/login";},1000);
                 }
                 else {
                     sweetAlert("", "重置失败！", "error");
@@ -236,12 +237,9 @@
 
         // 获取验证码
         $("#getcode").click(function () {
+            $("#formone").data("bootstrapValidator").validateField('telphone');
             //获取输入的手机号码
             var phoNum = $("#Telephone").val();
-            // $("#registerForm").data("bootstrapValidator").validateField('telphone');
-            // if (!$("#registerForm").data("bootstrapValidator").validateField('telphone').isValid()) {
-            //     return;
-            // }
             curCount = count;
 
             // 向后台发送处理数据
@@ -251,7 +249,7 @@
                 url: "/user/checkPhone", // 目标地址
                 data: { "telphone":phoNum },
                 error: function (data) {
-                    sweetAlert("", strToJson(data).message, "error");
+                    sweetAlert("", data.message, "error");
                 },
                 success: function (data) {
                     // debugger;

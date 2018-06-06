@@ -159,6 +159,9 @@
 
 
                 }
+            },
+            error: function (data) {
+                handleAjaxError();//超时登录或接口异常
             }
         });
     }

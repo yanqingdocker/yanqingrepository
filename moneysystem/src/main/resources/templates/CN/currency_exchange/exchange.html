@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="/css/css.css"/>
     <script  type="text/javascript" src="/js/jquery1.12.4.js"></script>
     <script  type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script  type="text/javascript" src="/js/bootstrapValidator.min.js"></script>
     <script  type="text/javascript" src="/js/swiper.min.js"></script>
     <script  type="text/javascript" src="/js/jquery.fadethis.min.js"></script>
     <script  type="text/javascript" src="/js/sweet-alert.min.js"></script>
@@ -54,7 +55,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 phone_mb20 cursor" data-toggle="modal" data-target="#myModal_dh">
+                <div class="col-lg-3 phone_mb20 cursor" data-toggle="modal" data-target="#myModal_dh" onclick="modal_self()">
                     <div class="wp80 m">
                         <div class="card-body tc">
                             <img style="width: 100px" src="/images/icon_dh.png" >
@@ -258,19 +259,83 @@
 <script  type="text/javascript" src="/js/footer.js"></script>
 <input type="hidden" id="modoltype"><!--弹出窗口类型-->
 <script type="text/javascript">
-    $("#nav_exchange").addClass("cur");//导航栏添加焦点
-    var before = $(".acountbefore option:selected").attr("data-id");
-    var behind = $(".acountbehind option:selected").attr("data-id");
-    if (before == behind) {
-        $(".tips").html("请选择不同的货币类型进行兑换");
-        $(".thisrate").html("1");
-    }
-    loadcount();
-    //初始化echarts实例
-    var myChart = echarts.init(document.getElementById('chartmain'));
-    getChartData(myChart);
-    //使用制定的配置项和数据显示图表
-    // myChart.setOption(option);
+    $(function () {
+        loadcount();//加载账户列表
+        $("#nav_exchange").addClass("cur");//导航栏添加焦点
+        var before = $(".acountbefore option:selected").attr("data-id");
+        var behind = $(".acountbehind option:selected").attr("data-id");
+        if (before == behind) {
+            $(".tips").html("请选择不同的货币类型进行兑换");
+            $(".thisrate").html("1");
+        }
+        //初始化echarts实例
+        var myChart = echarts.init(document.getElementById('chartmain'));
+        getChartData(myChart);
+        //使用制定的配置项和数据显示图表
+        // myChart.setOption(option);
+        $('#buyform').bootstrapValidator({
+            feedbackIcons: {
+                //valid: 'glyphicon glyphicon-ok',
+                //invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                'srcmoney': {
+                    validators: {
+                        notEmpty: {
+                            message: '兑换金额不可以为空'
+                        },
+                        digits: {
+                            message: '该值只能包含数字。'
+                        },
+                        greaterThan: {
+                            value: 1,
+                            message: '兑换金额必须大于0'
+                        }
+                    }
+                },
+                'paypwd': {
+                    validators: {
+                        notEmpty: {
+                            message: '密码不能为空'
+                        }
+                    }
+                }
+            }
+        })
+        $('#onuform').bootstrapValidator({
+            feedbackIcons: {
+                //valid: 'glyphicon glyphicon-ok',
+                //invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                'srcmoney': {
+                    validators: {
+                        notEmpty: {
+                            message: '兑换金额不可以为空'
+                        },
+                        digits: {
+                            message: '该值只能包含数字。'
+                        },
+                        greaterThan: {
+                            value: 1,
+                            message: '兑换金额必须大于0'
+                        }
+                    }
+                },
+                'paypwd': {
+                    validators: {
+                        notEmpty: {
+                            message: '密码不能为空'
+                        }
+                    }
+                }
+            }
+        })
+
+    })
+
 
     //美元汇率信息
     function getChartData(myChart) {
@@ -535,30 +600,39 @@
     });
     // 自选兑换表单提交
     function onuform() {
-        var beforereal=$(".acountbefore").val();
-        $("#beforeid").val(beforereal);
-        var beforereal=$(".acountbehind").val();
-        $("#behindid").val(beforereal);
-        //ajax的形式提交表单
-        var str=$("#onuform").serializeObject(); //此处调用的就是我们写好的引入的方法，会将带有name的input，全部转为JSON。
-        var datas=JSON.stringify(str) ;//返回一个新字符串
-        $.ajax({
-            url:'/count/exchange',
-            data:{datas:datas},
-            type:'post',
-            success:function(data){
-                if(strToJson(data).code=="success"){
-                    sweetAlert("", "恭喜您！兑换成功！", "success");
-                    setTimeout(function(){ window.location.href = "/CN/more/trade_list";},1500);
+        $('#onuform').data('bootstrapValidator').validateField('srcmoney', true);
+        $('#onuform').data('bootstrapValidator').validateField('paypwd', true);
+        $('#onuform').data('bootstrapValidator').validate();//手动对表单进行校检
+        if (!$('#onuform').data('bootstrapValidator').isValid()) {//判断校检是否通过
+            return;
+        } else {
+            var beforereal = $(".acountbefore").val();
+            $("#beforeid").val(beforereal);
+            var beforereal = $(".acountbehind").val();
+            $("#behindid").val(beforereal);
+            //ajax的形式提交表单
+            var str = $("#onuform").serializeObject(); //此处调用的就是我们写好的引入的方法，会将带有name的input，全部转为JSON。
+            var datas = JSON.stringify(str);//返回一个新字符串
+            $.ajax({
+                url: '/count/exchange',
+                data: {datas: datas},
+                type: 'post',
+                success: function (data) {
+                    if (strToJson(data).code == "success") {
+                        sweetAlert("", "恭喜您！兑换成功！", "success");
+                        setTimeout(function () {
+                            window.location.href = "/CN/more/trade_list";
+                        }, 1500);
+                    }
+                    else {
+                        sweetAlert("", strToJson(data).message, "error");
+                    }
+                },
+                error: function () {
+                    sweetAlert("", "请求失败！", "error");
                 }
-                else{
-                    sweetAlert("",strToJson(data).message, "error");
-                }
-            },
-            error: function () {
-                sweetAlert("","请求失败！", "error");
-            }
-        });
+            });
+        }
     }
 
     // 自选兑换查询是否在汇率表中
@@ -595,6 +669,7 @@
     }
     // 单个弹框账户改变，汇率同时改变
     $("#beforecount ").change(function () {
+        balance();//改变账户时自动查询余额；
         $("#srcmoney").val("");
         $("#exchangemoney").val("");
         $(".tips").html("");
@@ -603,7 +678,6 @@
         var types = before + behind;
         var turntype = behind + before;
         if (before == behind) {
-            console.log("11232");
             $(".tips").html("请选择不同的货币单位");
             $("#nowrate").html("1");
         }
@@ -643,9 +717,45 @@
             });
         }
     }) ;
-
+    // 点击自选弹出框
+    function modal_self() {
+        //判断未申请操作
+        if($("#beforecount option").length==0){
+            sweetAlert({
+                    title: "请先申请账户，才能进行操作！",
+                    type: "warning",
+                    showCancelButton: true,
+                    cancelButtonText: "取消",
+                    confirmButtonText: "去申请",
+                    closeOnConfirm: false,
+                    closeOnCancel: true
+                },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        window.location.href = "/CN/my/my_account";
+                    }
+                });
+        }
+    }
     // 点击弹出框
     function modal_buy(title){
+        //判断未申请操作
+        if($("#beforecount option").length==0){
+            sweetAlert({
+                    title: "请先申请账户，才能进行操作！",
+                    type: "warning",
+                    showCancelButton: true,
+                    cancelButtonText: "取消",
+                    confirmButtonText: "去申请",
+                    closeOnConfirm: false,
+                    closeOnCancel: true
+                },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        window.location.href = "/CN/my/my_account";
+                    }
+                });
+        }
         $("#modoltype").val(title);
         $("#beforecount").change();
         // 表单置空
@@ -678,28 +788,37 @@
     }
     // 买入**表单提交
     function submitform() {
-        var beforereal=$("#beforecount").val();
-        $("#srcountid").val(beforereal);
-        //ajax的形式提交表单
-        var str=$("#buyform").serializeObject(); //此处调用的就是我们写好的引入的方法，会将带有name的input，全部转为JSON。
-        var datas=JSON.stringify(str) ;//返回一个新字符串
-        $.ajax({
-            url:'/count/exchange',
-            data:{datas:datas},
-            type:'post',
-            success:function(data){
-                if(strToJson(data).code=="success"){
-                    sweetAlert("", "恭喜您！兑换成功！", "success");
-                    setTimeout(function(){ window.location.href = "/CN/more/trade_list";},1500);
+        $('#buyform').data('bootstrapValidator').validateField('srcmoney', true);
+        $('#buyform').data('bootstrapValidator').validateField('paypwd', true);
+        $('#buyform').data('bootstrapValidator').validate();//手动对表单进行校检
+        if (!$('#buyform').data('bootstrapValidator').isValid()) {//判断校检是否通过
+            return;
+        } else {
+            var beforereal = $("#beforecount").val();
+            $("#srcountid").val(beforereal);
+            //ajax的形式提交表单
+            var str = $("#buyform").serializeObject(); //此处调用的就是我们写好的引入的方法，会将带有name的input，全部转为JSON。
+            var datas = JSON.stringify(str);//返回一个新字符串
+            $.ajax({
+                url: '/count/exchange',
+                data: {datas: datas},
+                type: 'post',
+                success: function (data) {
+                    if (strToJson(data).code == "success") {
+                        sweetAlert("", "恭喜您！兑换成功！", "success");
+                        setTimeout(function () {
+                            window.location.href = "/CN/more/trade_list";
+                        }, 1500);
+                    }
+                    else {
+                        sweetAlert("", strToJson(data).message, "error");
+                    }
+                },
+                error: function () {
+                    sweetAlert("", "请求失败！", "error");
                 }
-                else{
-                    sweetAlert("",strToJson(data).message, "error");
-                }
-            },
-            error: function () {
-                sweetAlert("","请求失败！", "error");
-            }
-        });
+            });
+        }
     }
 
     // 兑换金额换算
