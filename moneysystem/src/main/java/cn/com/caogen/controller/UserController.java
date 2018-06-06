@@ -308,6 +308,9 @@ public class UserController {
             user.setIsauthentication(1);
 
             userServiceImpl.update(user);
+            Map<String,Object> sessionMap=JedisUtil.getSessionMap();
+            sessionMap.put(request.getSession().getId(),SerializeUtil.serialize(user));
+            JedisUtil.getJedis().set(ConstantUtil.SESSIONCOLLCTION.getBytes(),SerializeUtil.serialize(sessionMap));
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
         }
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL)).toString();
