@@ -85,7 +85,7 @@
                 where false
             </otherwise>
         </choose>
-              GROUP BY operatype,counttype
+        and servicebranch=#{servicebranch} GROUP BY operatype,counttype
 
     </select>
 
@@ -111,7 +111,7 @@
                 where false
             </otherwise>
         </choose>
-         GROUP BY operatype
+         and servicebranch=#{servicebranch} GROUP BY operatype
 
     </select>
 

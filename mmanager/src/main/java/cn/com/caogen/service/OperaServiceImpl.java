@@ -23,8 +23,10 @@ public class OperaServiceImpl implements IOperaService {
     }
 
     @Override
-    public List<Operation> queryAll() {
-        return operaMapper.queryAll();
+    public List<Operation> queryAll(String servicebranch) {
+        Map<String,Object> parmMap=new HashMap<String,Object>();
+        parmMap.put("servicebranch",servicebranch);
+        return operaMapper.queryCondition(parmMap);
     }
 
     @Override
@@ -39,16 +41,18 @@ public class OperaServiceImpl implements IOperaService {
     }
 
     @Override
-    public List<Map<String, Object>> queryoperatype(int date) {
+    public List<Map<String, Object>> queryoperatype(int date,String servicebranch) {
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("date",date);
+        parmMap.put("servicebranch",servicebranch);
         return operaMapper.queryoperatype(parmMap);
     }
 
     @Override
-    public List<Map<String, Object>> queryoperacount(int date) {
+    public List<Map<String, Object>> queryoperacount(int date,String servicebranch) {
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("date",date);
+        parmMap.put("servicebranch",servicebranch);
         return operaMapper.queryoperacount(parmMap);
     }
 }

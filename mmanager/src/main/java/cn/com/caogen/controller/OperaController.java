@@ -47,7 +47,8 @@ public class OperaController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
         logger.info("queryAll start:");
-        return JSONArray.fromObject(operaServiceimpl.queryAll()).toString();
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        return JSONArray.fromObject(operaServiceimpl.queryAll(currentUser.getServicebranch())).toString();
     }
 
     /**
@@ -68,6 +69,8 @@ public class OperaController {
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put(ConstantUtil.QUERYDATE,ConstantUtil.DATE_TODAY);
         parmMap.put(ConstantUtil.MONEY_OI,Integer.parseInt(oi));
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        parmMap.put("servicebranch",currentUser.getServicebranch());
         return JSONArray.fromObject(operaServiceimpl.queryByDate(parmMap)).toString();
     }
 
@@ -111,6 +114,8 @@ public class OperaController {
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put(ConstantUtil.QUERYDATE,ConstantUtil.DATE_MONTH);
         parmMap.put(ConstantUtil.MONEY_OI,Integer.parseInt(oi));
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        parmMap.put("servicebranch",currentUser.getServicebranch());
         return JSONArray.fromObject(operaServiceimpl.queryByDate(parmMap)).toString();
     }
 
@@ -128,6 +133,8 @@ public class OperaController {
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put(ConstantUtil.QUERYDATE,ConstantUtil.DATE_QUARTER);
         parmMap.put(ConstantUtil.MONEY_OI,Integer.parseInt(oi));
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        parmMap.put("servicebranch",currentUser.getServicebranch());
         return JSONArray.fromObject(operaServiceimpl.queryByDate(parmMap)).toString();
     }
 
@@ -145,6 +152,8 @@ public class OperaController {
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put(ConstantUtil.QUERYDATE,ConstantUtil.DATE_YEAR);
         parmMap.put(ConstantUtil.MONEY_OI,Integer.parseInt(oi));
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        parmMap.put("servicebranch",currentUser.getServicebranch());
         return JSONArray.fromObject(operaServiceimpl.queryByDate(parmMap)).toString();
     }
 
@@ -154,7 +163,8 @@ public class OperaController {
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
-        List<Map<String,Object>> list=operaServiceimpl .queryoperatype(date);
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        List<Map<String,Object>> list=operaServiceimpl .queryoperatype(date,currentUser.getServicebranch());
 
         return JSONArray.fromObject(list).toString();
     }
@@ -164,7 +174,8 @@ public class OperaController {
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
-        List<Map<String,Object>> list=operaServiceimpl .queryoperacount(date);
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        List<Map<String,Object>> list=operaServiceimpl .queryoperacount(date,currentUser.getServicebranch());
         return JSONArray.fromObject(list).toString();
     }
 
