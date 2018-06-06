@@ -39,7 +39,13 @@ public class SystemFilter implements Filter {
     private  Pattern pattern6=Pattern.compile("CN/login");
     private  Pattern pattern7=Pattern.compile("CN/register");
     private  Pattern pattern8=Pattern.compile("CN/find_psw");
+
     private  Pattern pattern9=Pattern.compile(".*[(\\.js)||(\\.css)||(\\.png)||(\\.jpg)]");
+
+    private Pattern pattern10=Pattern.compile("user/checkPhone");
+    private Pattern pattern11=Pattern.compile("user/findpsw");
+    private Pattern pattern12=Pattern.compile("user/login");
+    private Pattern pattern13=Pattern.compile("user/register");
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         patterns.add(pattern1);
@@ -51,6 +57,11 @@ public class SystemFilter implements Filter {
         patterns.add(pattern7);
         patterns.add(pattern8);
         patterns.add(pattern9);
+        patterns.add(pattern10);
+        patterns.add(pattern11);
+        patterns.add(pattern12);
+        patterns.add(pattern13);
+
 
     }
 
