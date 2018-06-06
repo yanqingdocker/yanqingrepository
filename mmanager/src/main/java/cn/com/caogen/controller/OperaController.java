@@ -1,5 +1,6 @@
 package cn.com.caogen.controller;
 
+import cn.com.caogen.entity.Muser;
 import cn.com.caogen.entity.Operation;
 import cn.com.caogen.entity.User;
 import cn.com.caogen.mapper.OperaMapper;
@@ -88,6 +89,8 @@ public class OperaController {
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put(ConstantUtil.QUERYDATE,ConstantUtil.DATE_WEEK);
         parmMap.put(ConstantUtil.MONEY_OI,Integer.parseInt(oi));
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        parmMap.put("servicebranch",currentUser.getServicebranch());
         return JSONArray.fromObject(operaServiceimpl.queryByDate(parmMap)).toString();
     }
 

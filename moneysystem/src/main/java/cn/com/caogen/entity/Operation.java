@@ -31,6 +31,8 @@ public class Operation {
     private int oi;
     //操作IP
     private String operaIp;
+    //交易网点
+    private String servicebranch;
 
 
 }
