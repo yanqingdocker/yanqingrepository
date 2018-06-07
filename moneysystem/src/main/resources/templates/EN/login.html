@@ -61,12 +61,12 @@
 <script type="text/javascript">
 
     function save() {
-        $('#registerForm').data('bootstrapValidator').enableFieldValidators('telphone', true);
-        $('#registerForm').data('bootstrapValidator').enableFieldValidators('password', true);
-        $('#registerForm').data('bootstrapValidator').validate();//手动对表单进行校检
-        if (!$('#registerForm').data('bootstrapValidator').isValid()) {//判断校检是否通过
-            return;
-        } else {
+        // $('#registerForm').data('bootstrapValidator').enableFieldValidators('telphone', true);
+        // $('#registerForm').data('bootstrapValidator').enableFieldValidators('password', true);
+        // $('#registerForm').data('bootstrapValidator').validate();//手动对表单进行校检
+        // if (!$('#registerForm').data('bootstrapValidator').isValid()) {//判断校检是否通过
+        //     return;
+        // } else {
             $.ajax({
                 type: "post", // 用POST方式传输
                 dataType: 'json',
@@ -96,49 +96,49 @@
                     }
                 }
             })
-        }
+        // }
     }
-    $(function () {
-        $('#registerForm').bootstrapValidator({
-            feedbackIcons: {
-                //valid: 'glyphicon glyphicon-ok',
-                //invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
-            },
-            fields: {
-                'telphone': {
-                    message: 'please enter a valid phone number',
-                    validators: {
-                        notEmpty: {
-                            message: 'Phone number cannot be empty'
-                        },
-                        regexp: {
-                            regexp: /^1[356789][0-9]{9}$/,
-                            message: 'please enter a valid phone number'
-                        }
-                    }
-                },
-                'password': {
-                    validators: {
-                        notEmpty: {
-                            message: 'The password can not be empty'
-                        },
-                        stringLength: {
-                            /*长度提示*/
-                            min: 6,
-                            max: 30,
-                            message: 'The password length must be between 6 and 30'
-                        },
-                        regexp: {
-                            regexp: /^[a-zA-Z0-9_\.]+$/,
-                            message: 'A password is made up of numeric letters and points'
-                        }
-                    }
-                }
-            }
-        })
-
-    })
+    // $(function () {
+    //     $('#registerForm').bootstrapValidator({
+    //         feedbackIcons: {
+    //             //valid: 'glyphicon glyphicon-ok',
+    //             //invalid: 'glyphicon glyphicon-remove',
+    //             validating: 'glyphicon glyphicon-refresh'
+    //         },
+    //         fields: {
+    //             'telphone': {
+    //                 message: 'please enter a valid phone number',
+    //                 validators: {
+    //                     notEmpty: {
+    //                         message: 'Phone number cannot be empty'
+    //                     },
+    //                     regexp: {
+    //                         regexp: /^1[356789][0-9]{9}$/,
+    //                         message: 'please enter a valid phone number'
+    //                     }
+    //                 }
+    //             },
+    //             'password': {
+    //                 validators: {
+    //                     notEmpty: {
+    //                         message: 'The password can not be empty'
+    //                     },
+    //                     stringLength: {
+    //                         /*长度提示*/
+    //                         min: 6,
+    //                         max: 30,
+    //                         message: 'The password length must be between 6 and 30'
+    //                     },
+    //                     regexp: {
+    //                         regexp: /^[a-zA-Z0-9_\.]+$/,
+    //                         message: 'A password is made up of numeric letters and points'
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     })
+    //
+    // })
 
 
 </script>

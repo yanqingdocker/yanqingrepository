@@ -61,85 +61,85 @@
 <script type="text/javascript">
 
     function save() {
-        $('#registerForm').data('bootstrapValidator').enableFieldValidators('telphone', true);
-        $('#registerForm').data('bootstrapValidator').enableFieldValidators('password', true);
-        $('#registerForm').data('bootstrapValidator').validate();//手动对表单进行校检
-        if (!$('#registerForm').data('bootstrapValidator').isValid()) {//判断校检是否通过
-            return;
-        } else {
-            $.ajax({
-                type: "post", // 用POST方式传输
-                dataType: 'json',
-                url: "/user/login", // 目标地址
-                data:  $("#registerForm").serialize(),
-                error: function (data) {
-                    sweetAlert("", "请求失败！", "error");
-                },
-                success: function (data) {
-                    if (data.code=="fail") {
-                        sweetAlert("", data.message, "error");
-                        // $('#loginbtn').prop('disabled', false);
-                    }
-                    else {
-                        sweetAlert({
-                                title: "登陆成功！",
-                                text: "1秒后自动跳转。",
-                                type: "success",
-                                showConfirmButton: false
-                            },
-                            function(isConfirm){
-                                if (isConfirm) {
-                                    window.location.href = "/CN/index";
-                                }
-                            });
-                        setTimeout(function(){ window.location.href = "/CN/index";},1000);
-                    }
-                }
-            })
-        }
-    }
-    $(function () {
-        $('#registerForm').bootstrapValidator({
-            feedbackIcons: {
-                //valid: 'glyphicon glyphicon-ok',
-                //invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
+        // $('#registerForm').data('bootstrapValidator').enableFieldValidators('telphone', true);
+        // $('#registerForm').data('bootstrapValidator').enableFieldValidators('password', true);
+        // $('#registerForm').data('bootstrapValidator').validate();//手动对表单进行校检
+        // if (!$('#registerForm').data('bootstrapValidator').isValid()) {//判断校检是否通过
+        //     return;
+        // } else {
+        $.ajax({
+            type: "post", // 用POST方式传输
+            dataType: 'json',
+            url: "/user/login", // 目标地址
+            data:  $("#registerForm").serialize(),
+            error: function (data) {
+                sweetAlert("", "请求失败！", "error");
             },
-            fields: {
-                'telphone': {
-                    message: '请输入正确的手机号',
-                    validators: {
-                        notEmpty: {
-                            message: '手机号不可以为空'
+            success: function (data) {
+                if (data.code=="fail") {
+                    sweetAlert("", data.message, "error");
+                    // $('#loginbtn').prop('disabled', false);
+                }
+                else {
+                    sweetAlert({
+                            title: "登陆成功！",
+                            text: "1秒后自动跳转。",
+                            type: "success",
+                            showConfirmButton: false
                         },
-                        regexp: {
-                            regexp: /^1[356789][0-9]{9}$/,
-                            message: '请输入正确的手机号'
-                        }
-
-                    }
-                },
-                'password': {
-                    validators: {
-                        notEmpty: {
-                            message: '密码不能为空'
-                        },
-                        stringLength: {
-                            /*长度提示*/
-                            min: 6,
-                            max: 30,
-                            message: '密码长度必须在6到30之间'
-                        },
-                        regexp: {
-                            regexp: /^[a-zA-Z0-9_\.]+$/,
-                            message: '密码由数字字母下划线和.组成'
-                        }
-                    }
+                        function(isConfirm){
+                            if (isConfirm) {
+                                window.location.href = "/CN/index";
+                            }
+                        });
+                    setTimeout(function(){ window.location.href = "/CN/index";},1000);
                 }
             }
         })
-
-    })
+        // }
+    }
+    // $(function () {
+    //     $('#registerForm').bootstrapValidator({
+    //         feedbackIcons: {
+    //             //valid: 'glyphicon glyphicon-ok',
+    //             //invalid: 'glyphicon glyphicon-remove',
+    //             validating: 'glyphicon glyphicon-refresh'
+    //         },
+    //         fields: {
+    //             'telphone': {
+    //                 message: '请输入正确的手机号',
+    //                 validators: {
+    //                     notEmpty: {
+    //                         message: '手机号不可以为空'
+    //                     },
+    //                     regexp: {
+    //                         regexp: /^1[356789][0-9]{9}$/,
+    //                         message: '请输入正确的手机号'
+    //                     }
+    //
+    //                 }
+    //             },
+    //             'password': {
+    //                 validators: {
+    //                     notEmpty: {
+    //                         message: '密码不能为空'
+    //                     },
+    //                     stringLength: {
+    //                         /*长度提示*/
+    //                         min: 6,
+    //                         max: 30,
+    //                         message: '密码长度必须在6到30之间'
+    //                     },
+    //                     regexp: {
+    //                         regexp: /^[a-zA-Z0-9_\.]+$/,
+    //                         message: '密码由数字字母下划线和.组成'
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     })
+    //
+    // })
 
 
 </script>
