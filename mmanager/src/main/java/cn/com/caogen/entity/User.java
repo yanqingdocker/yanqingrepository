@@ -33,4 +33,6 @@ public class User {
     private String lasttime;
     //是否实名认证
     private int isauthentication;
+    //会员级别
+    private int leavel;
 }

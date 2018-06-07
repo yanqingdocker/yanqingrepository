@@ -2,8 +2,13 @@
 
 package cn.com.caogen.util;
 
+import cn.com.caogen.entity.User;
+import net.sf.json.JSONObject;
+import org.junit.jupiter.api.Test;
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.security.MessageDigest;
 
 public class StringUtil {
@@ -15,8 +20,10 @@ public class StringUtil {
 
 	private static String byteToHexString(byte b) {
 		int n = b;
-		if (n < 0)
+		if (n < 0){
 			n = 256 + n;
+		}
+
 		int d1 = n / 16;
 		int d2 = n % 16;
 		return hexDigits[d1] + hexDigits[d2];
@@ -54,6 +61,27 @@ public class StringUtil {
 			}
 		}
 		return true;
+	}
+
+	public static Object toBean(Class objClass, JSONObject jsonObject) throws Exception {
+		Object obj = objClass.newInstance();
+		Field[] fields = objClass.getDeclaredFields();
+		for (Field field : fields) {
+			StringBuffer fieldName = new StringBuffer(field.getName());
+			if (jsonObject.has(fieldName.toString())) {
+				String temp = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+				Method method = objClass.getDeclaredMethod("set" + temp,field.getType());
+				String type=field.getType().getName();
+				if(type.equals("java.lang.String")){
+					method.invoke(obj, jsonObject.getString(fieldName.toString()));
+				}else if(type.equals("java.lang.Double")){
+					method.invoke(obj, jsonObject.getDouble(fieldName.toString()));
+				}else{
+					method.invoke(obj, jsonObject.getInt(fieldName.toString()));
+				}
+			}
+		}
+		return obj;
 	}
 
 }
