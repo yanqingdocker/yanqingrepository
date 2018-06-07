@@ -42,9 +42,6 @@ public class WarrantorController {
         JSONObject jsonObject=JSONObject.fromObject(datas);
         try {
             Warrantor warrantor=(Warrantor) StringUtil.toBean(Warrantor.class,jsonObject);
-            warrantor.setUsername(jsonObject.getString("username"));
-            warrantor.setJob(jsonObject.getString("job"));
-            warrantor.setPhone(jsonObject.getString("phone"));
             warrantor.setCreatetime(DateUtil.getDate());
             warrantorService.add(warrantor);
             return "success";
@@ -86,12 +83,13 @@ public class WarrantorController {
     public String update(@RequestParam("datas") String datas,HttpServletRequest request){
         logger.info("update start:");
         JSONObject jsonObject=JSONObject.fromObject(datas);
-        Warrantor warrantor=new Warrantor();
-        warrantor.setId(jsonObject.getInt("id"));
-        warrantor.setUsername(jsonObject.getString("username"));
-        warrantor.setJob(jsonObject.getString("job"));
-        warrantor.setPhone(jsonObject.getString("phone"));
-        warrantorService.update(warrantor);
+        try{
+            Warrantor warrantor=(Warrantor) StringUtil.toBean(Warrantor.class,jsonObject);
+            warrantorService.update(warrantor);
+
+        }catch (Exception e){
+
+        }
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 
