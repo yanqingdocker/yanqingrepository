@@ -166,7 +166,7 @@
                     if (strToJson(data).code == "success") {
                         sweetAlert("", "恭喜您！添加成功！", "success");
                         setTimeout(function () {
-                            window.location.href = "/loanManage/loan_list";
+                            window.location.href = "/loanManage/loan_list?status=0";
                         }, 1500);
                     }
                     else if (data.code == "403") {
