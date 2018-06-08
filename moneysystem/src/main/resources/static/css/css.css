@@ -575,11 +575,12 @@ table.table thead .sorting:after,table.table thead .sorting_asc:after{ backgroun
 
 /*媒体查询*/
 @media (max-width: 770px){
+    body{    overflow-x: hidden;}
     .pc_header{display: none}
     .phone_header{display: block;    position: fixed;}
     .pc_footer{display: none}
     .phone_footer{display: block; }
-    .navbar-nav{ background:rgba(62,161,220,0.8) ; filter: progid:DXImageTransform.Microsoft.gradient(startcolorstr=#333ea1dc,endcolorstr=#333ea1dc); padding: 20px 0}
+    .navbar-nav{ background:rgba(62,161,220,0.8) ; filter: progid:DXImageTransform.Microsoft.gradient(startcolorstr=#333ea1dc,endcolorstr=#333ea1dc); padding: 0 0 20px 0}
     .navbar-nav li{ width: 100%;  margin-left: 0; height: auto;    display: inline-block;}
     .navbar-toggler {
         padding: 0.25rem 0.75rem;
@@ -605,7 +606,7 @@ table.table thead .sorting:after,table.table thead .sorting_asc:after{ backgroun
     .container>.navbar-collapse{ margin: 0; padding: 0;}
     .navbar-nav{ margin: 0}
     .mr-auto, .mx-auto {
-        margin-right: auto !important;width: 100%;
+        margin-right: auto !important;width: 100%; height: 475px; overflow-y: scroll;
     }
     .navbar-fixed-top .navbar-collapse, .navbar-fixed-bottom .navbar-collapse{ max-height: none;    top: -5px; position: relative;}
     .navbar-collapse{ padding: 0;}
@@ -646,6 +647,8 @@ table.table thead .sorting:after,table.table thead .sorting_asc:after{ backgroun
     .dataTables_wrapper .col-sm-4{ padding: 0}
     .container{ padding-bottom: 65px;}
     .phone_mb20{ margin-bottom: 20px;}
+    .step_block {width: 100%;padding: 0 15px;}
+    .find_step1 img{width: 100% }
 }
 @media (min-width: 770px){
     .pc_header{display: block}

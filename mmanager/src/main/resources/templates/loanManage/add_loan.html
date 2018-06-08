@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv=Content-Type content="text/html; charset=utf-8">
-    <title>添加借贷</title>
+    <title>借贷申请</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSS Libs -->
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
@@ -26,11 +26,11 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/mainframe">系统首页</a></li>
         <li class="breadcrumb-item">借贷管理</li>
-        <li class="breadcrumb-item active">添加借贷</li>
+        <li class="breadcrumb-item active">借贷申请</li>
     </ol>
 </div>
 <div class="page-title">
-    <span class="title">添加借贷</span>
+    <span class="title">借贷申请</span>
 </div>
 <div class="row">
     <div class="col-xs-12">
@@ -41,7 +41,7 @@
                 <div class="bs-component">
                     <div class="alert alert-dismissible alert-primary">
                         <button type="button" class="close" data-dismiss="alert">×</button>
-                        <p >温馨提示：借贷授权仅限本平台VIP会员，普通会员请先升级VIP会员</p>
+                        <p >温馨提示：借贷申请仅限本平台VIP会员，普通会员请先升级VIP会员！</p>
                     </div>
                     <div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;</div>
                 </div>
@@ -164,7 +164,7 @@
                 type: 'post',
                 success: function (data) {
                     if (strToJson(data).code == "success") {
-                        sweetAlert("", "恭喜您！添加成功！", "success");
+                        sweetAlert("", "恭喜您！借贷申请成功！", "success");
                         setTimeout(function () {
                             window.location.href = "/loanManage/loan_list?status=0";
                         }, 1500);

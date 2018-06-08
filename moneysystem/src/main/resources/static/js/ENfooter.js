@@ -6,7 +6,7 @@ document.writeln("  <a href=\"/EN/nonCardCash/cash_in\" target=\"_blank\">No-car
 document.writeln("  <a href=\"/EN/currency_exchange/exchange\" target=\"_blank\">Currency Exchange</a><span>|</span>");
 document.writeln("   <a href=\"/EN/more/financial\" target=\"_blank\">More</a>");
 document.writeln("   </div>");
-document.writeln("<p class=\"tc g9\"><span class='pr20'>© 2018 Copyright South International Bank</span>  <span>Customer service hotline:+855-0968888088</span></p>");
+document.writeln("<p class=\"tc g9 pb20\"><span class='pr20'>© 2018 Copyright South International Bank</span>  <span>Customer service hotline:+855-0968888088</span></p>");
 document.writeln("  </div>");
 
 document.writeln("<div class=\"phone_footer navbar navbar-default navbar-fixed-bottom \">");
