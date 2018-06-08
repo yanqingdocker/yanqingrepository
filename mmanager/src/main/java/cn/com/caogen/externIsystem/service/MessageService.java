@@ -54,5 +54,43 @@ public class MessageService {
 		}
 		return 0;
 	}
+	public  static int sendMessage(String phone,String msg) {
+
+		HttpClient client = new HttpClient();
+		PostMethod method = new PostMethod(Url);
+		client.getParams().setContentCharset("GBK");
+		method.setRequestHeader("ContentType","application/x-www-form-urlencoded;charset=GBK");
+		int mobile_code = (int)((Math.random()*9+1)*100000);
+
+		String content = new String(msg);
+		NameValuePair[] data = {
+				new NameValuePair("account", "C01409210"),
+				new NameValuePair("password", "b3add47d33a7368bfc546f51961a5173"),
+				new NameValuePair("mobile", phone),
+				new NameValuePair("content", content),
+		};
+		method.setRequestBody(data);
+		try {
+			client.executeMethod(method);
+			String SubmitResult =method.getResponseBodyAsString();
+			Document doc = DocumentHelper.parseText(SubmitResult);
+			Element root = doc.getRootElement();
+			String code = root.elementText("code");
+			System.out.println(code);
+			if("2".equals(code)){
+				return mobile_code;
+			}
+		} catch (HttpException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
 	
 }

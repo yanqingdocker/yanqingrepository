@@ -18,13 +18,20 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-    id,snumber,num,moneytype,warrantor,borrowerphone,borrower,createtime,term,status
+    id,snumber,num,moneytype,warrantor,borrowerphone,borrower,createtime,term,status，servicebranch,operauser
      </sql>
     <insert id="add" parameterType="cn.com.caogen.entity.Borrow">
         insert into borrow (snumber,num,moneytype,warrantor,borrowerphone,borrower,createtime,term,servicebranch,operauser) values (#{snumber,jdbcType=VARCHAR},#{num,jdbcType=DOUBLE},#{moneytype,jdbcType=VARCHAR},#{warrantor,jdbcType=VARCHAR},#{borrowerphone,jdbcType=VARCHAR},#{borrower,jdbcType=VARCHAR},#{createtime,jdbcType=VARCHAR},#{term,jdbcType=INTEGER},#{servicebranch,jdbcType=VARCHAR},#{operauser,jdbcType=VARCHAR});
     </insert>
-    <select id="queryAll" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/> from borrow
+    <select id="queryAll" resultMap="BaseResultMap" parameterType="map">
+        select <include refid="Base_Column_List"/> from borrow where true
+        <if test="status != null">
+           and status=#{status}
+        </if>
+        <if test="id != null">
+            and id=#{id}
+        </if>
+
     </select>
     <update id="update" parameterType="int">
         update borrow set status=1 where id=#{id}

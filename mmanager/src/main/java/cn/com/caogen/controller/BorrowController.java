@@ -55,28 +55,32 @@ public class BorrowController {
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("phone",borrow.getBorrowerphone());
         User borrower=userService.queryAll(parmMap).get(0);
-       /*if(borrower.getLeavel()==0){
+       if(borrower.getLeavel()==0){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.LEAVEL_NOTALLOW)).toString();
-        }*/
+        }
         borrow.setCreatetime(DateUtil.getTime());
         borrow.setBorrower(borrower.getUsername());
         borrow.setSnumber(SerialnumberUtil.Getnum());
         Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
         borrow.setServicebranch(currentUser.getServicebranch());
         borrow.setOperauser(currentUser.getUsername());
-        borrowService.add(borrow);
-        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
+        String message=borrowService.add(borrow);
+        return JSONObject.fromObject(new ResponseMessage(message)).toString();
     }
 
     /**
      * 查询所有借贷记录
+     * @param status
      * @param request
      * @return
      */
     @RequestMapping(path = "queryAll",method = RequestMethod.GET)
-    public String queryAll(HttpServletRequest request){
+    public String queryAll(@RequestParam("status") int status, HttpServletRequest request){
         logger.info("queryAllborrower start:");
-        return JSONArray.fromObject(borrowService.queryAll()).toString();
+        Map<String,Object> par=new HashMap<String,Object>();
+        par.put("status",status);
+
+        return JSONArray.fromObject(borrowService.queryAll(par)).toString();
     }
 
     /**

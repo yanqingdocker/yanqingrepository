@@ -4,6 +4,7 @@ import cn.com.caogen.entity.Borrow;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * author:huyanqing
@@ -12,7 +13,7 @@ import java.util.List;
 @Repository
 public interface BorrowMapper {
     void add(Borrow borrow);
-    List<Borrow> queryAll();
+    List<Borrow> queryAll(Map<String,Object> parmMap);
 
     void update(int id);
 }

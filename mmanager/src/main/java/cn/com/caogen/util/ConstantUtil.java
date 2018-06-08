@@ -58,5 +58,6 @@ public class ConstantUtil {
     public static final String CNY_LIB="人民币资金库";
     public static final String USD_LIB="美元资金库";
     public static final String LEAVEL_NOTALLOW="当前会员的级别不够，请先授予普通会员以上的资格才能借款";
+    public static final String GIVEVIP_NOTCONDTION="该会员至少完成3笔以上汇兑才可授权VIP";
 
 }

@@ -1,10 +1,14 @@
 package cn.com.caogen.controller;
 
+import cn.com.caogen.entity.Count;
 import cn.com.caogen.entity.Muser;
+import cn.com.caogen.entity.Operation;
 import cn.com.caogen.entity.User;
 import cn.com.caogen.externIsystem.service.IDCardService;
 import cn.com.caogen.externIsystem.service.MessageService;
+import cn.com.caogen.service.CountServiceImpl;
 import cn.com.caogen.service.IUserService;
+import cn.com.caogen.service.OperaServiceImpl;
 import cn.com.caogen.util.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -36,17 +40,15 @@ import java.util.*;
 public class UserController {
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    private static Map<String,HttpSession> sessionMap =new HashMap<String,HttpSession>();
-
-    private static Map<String,HttpServletResponse> respMap =new HashMap<String,HttpServletResponse>();
-
-    private static Map<Integer,String> userMap =new HashMap<Integer,String>();
 
     @Autowired
     private IUserService userServiceImpl;
 
     @Autowired
-    private StringRedisTemplate stringRedisTemplate;
+    private CountServiceImpl countService;
+
+    @Autowired
+    private OperaServiceImpl operaService;
 
     private static String check_Num = "";
 
@@ -129,6 +131,7 @@ public class UserController {
        /* if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }*/
+
         logger.info("giveVip start: telphone="+telphone);
         if (!StringUtil.checkStrs(telphone)) {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
@@ -137,9 +140,20 @@ public class UserController {
         if(user==null){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL)).toString();
         }
-        user.setLeavel(1);
-        user.setLasttime(DateUtil.getTime());
-        userServiceImpl.update(user);
+        List<Count> countList=countService.queryByUserId(user.getUserid());
+        Map<String,Object> parmMap=new HashMap<String, Object>();
+        parmMap.put("operatype",ConstantUtil.MONEY_EXCHANGE);
+        parmMap.put("countid",countList.get(0));
+        List<Operation> operationList=operaService.queryAll(parmMap);
+
+        if(!operationList.isEmpty()&&operationList.size()>3){
+            user.setLeavel(1);
+            user.setLasttime(DateUtil.getTime());
+            userServiceImpl.update(user);
+        }else{
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.GIVEVIP_NOTCONDTION)).toString();
+        }
+
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 
