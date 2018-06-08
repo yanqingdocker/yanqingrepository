@@ -10,7 +10,7 @@ import java.util.Map;
  * Date:2018/6/7
  */
 public interface IBorrowService {
-    String add(Borrow borrow);
+    String add(Borrow borrow,String ip);
     List<Borrow> queryAll(Map<String,Object> parmMap);
-    void update(int id);
+    void update(int id,String ip);
 }

@@ -52,6 +52,7 @@ public class ConstantUtil {
     public static final String[] MONEY_TYPES=new String[]{"CNY","USD"};
     public static final String SYSTEMCOUNT_LESS="现金资金库余额不足";
     public static final String MONEY_EXCHANGE="现金兑换";
+    public static final String MONEY_BORROW="现金预支";
     public static final String TASK_UNDO="待处理";
     public static final String TASK_DONE="已处理";
     public static final String NO_AUTH="403";
@@ -60,4 +61,5 @@ public class ConstantUtil {
     public static final String LEAVEL_NOTALLOW="当前会员的级别不够，请先授予普通会员以上的资格才能借款";
     public static final String GIVEVIP_NOTCONDTION="该会员至少完成3笔以上汇兑才可授权VIP";
 
+    public static final String MONEY_RETURN ="现金还款" ;
 }

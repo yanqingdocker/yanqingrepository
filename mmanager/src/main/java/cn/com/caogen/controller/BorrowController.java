@@ -64,7 +64,7 @@ public class BorrowController {
         Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
         borrow.setServicebranch(currentUser.getServicebranch());
         borrow.setOperauser(currentUser.getUsername());
-        String message=borrowService.add(borrow);
+        String message=borrowService.add(borrow,IpUtil.getIpAddr(request));
         return JSONObject.fromObject(new ResponseMessage(message)).toString();
     }
 
@@ -95,7 +95,7 @@ public class BorrowController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
         logger.info("confirmdo start:");
-        borrowService.update(id);
+        borrowService.update(id,IpUtil.getIpAddr(request));
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 }
