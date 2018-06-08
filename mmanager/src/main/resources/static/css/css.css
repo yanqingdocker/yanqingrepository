@@ -4,6 +4,7 @@
 .inblock{ display: inline-block}
 .white_bg{ background: #fff}
 .blue{ color: #0099ff}
+.gray{ color: #999 !important;}
 .l{ float: left}
 .r{ float: right}
 .tl{ text-align: left}
@@ -283,7 +284,7 @@ div.dataTables_wrapper div.dataTables_processing{background: #fff;}
 .width220{width: 220px;}
 .width120{width: 120px;}
 .warning{ color: #ff5050; margin-left: 5px;font-size: 14px;}
-#mainFrame{ padding-top: 20px;}
+#mainFrame{ }
 
 /*表格*/
 .flat-blue .table.table-striped > tbody > tr:nth-of-type(odd) {
@@ -313,11 +314,27 @@ form .checkbox3 label::after, .radio3 label::after{top: 4px;}
 }
 .btn:focus{    outline: none;}
 
+.alert-primary {
+    color: #185578;
+    background-color: #d5edfa;
+    border-color: #c5e6f8;
+    border-bottom-width: 1px;
+}
+.alert-dismissable .close, .alert-dismissible .close {
+    position: relative;
+    top: -2px;
+    right: -21px;
+    color: inherit;
+}
+button.close {
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    -webkit-appearance: none;
+}
 
-
-
-
-
+.flat-blue .table > thead > tr > th{ white-space: nowrap;}
 
 
 

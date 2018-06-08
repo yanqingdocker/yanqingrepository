@@ -343,4 +343,40 @@ public class PageController {
     public String add_network() {
         return "network/add_network";
     }
+    /**
+     *借贷管理--担保人列表
+     *
+     * @return
+     */
+    @RequestMapping("/loanManage/guarantee_list")
+    public String guarantee_list() {
+        return "loanManage/guarantee_list";
+    }
+    /**
+     *借贷管理--添加担保人
+     *
+     * @return
+     */
+    @RequestMapping("/loanManage/add_guarantee")
+    public String add_guarantee() {
+        return "loanManage/add_guarantee";
+    }
+    /**
+     *借贷管理--借贷记录
+     *
+     * @return
+     */
+    @RequestMapping("/loanManage/loan_list")
+    public String loan_list() {
+        return "loanManage/loan_list";
+    }
+    /**
+     *借贷管理--添加借贷
+     *
+     * @return
+     */
+    @RequestMapping("/loanManage/add_loan")
+    public String add_loan() {
+        return "loanManage/add_loan";
+    }
 }
