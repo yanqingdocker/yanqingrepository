@@ -44,7 +44,6 @@ public class WarrantorController {
             Warrantor warrantor=(Warrantor) StringUtil.toBean(Warrantor.class,jsonObject);
             warrantor.setCreatetime(DateUtil.getDate());
             warrantorService.add(warrantor);
-            return "success";
         }catch (Exception e){
 
         }
