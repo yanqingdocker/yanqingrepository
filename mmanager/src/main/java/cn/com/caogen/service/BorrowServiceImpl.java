@@ -2,6 +2,7 @@ package cn.com.caogen.service;
 
 import cn.com.caogen.entity.Borrow;
 import cn.com.caogen.entity.CashPool;
+import cn.com.caogen.entity.Operation;
 import cn.com.caogen.mapper.BorrowMapper;
 import cn.com.caogen.mapper.CashPoolMapper;
 import cn.com.caogen.util.ConstantUtil;
@@ -28,9 +29,11 @@ public class BorrowServiceImpl implements IBorrowService {
     @Autowired
     private CashPoolMapper cashPoolMapper;
     @Autowired
+    private OperaServiceImpl operaService;
+    @Autowired
     private DataSourceTransactionManager transactionManager;
     @Override
-    public String add(Borrow borrow) {
+    public String add(Borrow borrow,String ip) {
         DefaultTransactionDefinition def=new DefaultTransactionDefinition();
         def.setName("add");
         def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -49,6 +52,7 @@ public class BorrowServiceImpl implements IBorrowService {
                 cashPoolMapper.update(cashPool);
 
             }
+            operaService.add(getOperaTion(borrow,ip));
         }catch (Exception e){
             //有一个不成功能则回滚事务
             transactionManager.rollback(status);
@@ -63,7 +67,7 @@ public class BorrowServiceImpl implements IBorrowService {
 
     @Override
     @Transactional
-    public void update(int id) {
+    public void update(int id,String ip) {
 
         DefaultTransactionDefinition def=new DefaultTransactionDefinition();
         def.setName("update");
@@ -84,10 +88,32 @@ public class BorrowServiceImpl implements IBorrowService {
                 cashPool.setBlance(cashPool.getBlance()+borrow.getNum());
                 cashPoolMapper.update(cashPool);
             }
+            operaService.add(getOperaTion(borrow,ip));
         }catch (Exception e){
             //有一个不成功能则回滚事务
             transactionManager.rollback(status);
         }
+    }
 
+    public Operation getOperaTion(Borrow borrow,String ip){
+        Operation operation=new Operation();
+        operation.setSnumber(borrow.getSnumber());
+        operation.setServicebranch(borrow.getServicebranch());
+        operation.setNum(borrow.getNum());
+        operation.setOperaTime(borrow.getCreatetime());
+        operation.setOperaIp(ip);
+        operation.setOperaUser("操作员-"+borrow.getOperauser());
+        operation.setCountType(borrow.getMoneytype());
+        if(borrow.getStatus()==1){
+            operation.setOperaType(ConstantUtil.MONEY_RETURN);
+        }else if(borrow.getStatus()==0){
+            operation.setOperaType(ConstantUtil.MONEY_BORROW);
+        }
+        if(borrow.getMoneytype().equals(ConstantUtil.MONEY_TYPES[0])){
+            operation.setCountid(ConstantUtil.CNY_LIB);
+        }else if(borrow.getMoneytype().equals(ConstantUtil.MONEY_TYPES[1])){
+            operation.setCountid(ConstantUtil.USD_LIB);
+        }
+        return operation;
     }
 }
