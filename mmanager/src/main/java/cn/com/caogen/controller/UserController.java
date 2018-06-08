@@ -118,6 +118,31 @@ public class UserController {
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 
+    /**
+     * 授权VIP
+     * @param telphone
+     * @param
+     * @return
+     */
+    @RequestMapping(path="/giveVip",method = RequestMethod.POST)
+    public String giveVip(@RequestParam("telphone") String telphone,HttpServletRequest request) {
+       /* if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }*/
+        logger.info("giveVip start: telphone="+telphone);
+        if (!StringUtil.checkStrs(telphone)) {
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
+        }
+        User user=getUser(telphone,null);
+        if(user==null){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL)).toString();
+        }
+        user.setLeavel(1);
+        user.setLasttime(DateUtil.getTime());
+        userServiceImpl.update(user);
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
+    }
+
     public User getUser(String telphone,String userid){
         logger.info("getUser start: telphone="+telphone+",userid="+userid);
         Map<String, Object> map = new HashMap<String, Object>();

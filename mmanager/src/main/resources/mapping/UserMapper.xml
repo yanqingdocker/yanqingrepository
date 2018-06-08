@@ -70,7 +70,7 @@
             lasttime=#{lasttime},
         </if>
         <if test="isauthentication !=null">
-            isauthentication=#{isauthentication}
+            isauthentication=#{isauthentication},
         </if>
         <if test="leavel !=null">
             leavel=#{leavel}
