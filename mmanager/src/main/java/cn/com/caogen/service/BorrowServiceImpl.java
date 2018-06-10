@@ -33,6 +33,7 @@ public class BorrowServiceImpl implements IBorrowService {
     @Autowired
     private DataSourceTransactionManager transactionManager;
     @Override
+    @Transactional
     public String add(Borrow borrow,String ip) {
         DefaultTransactionDefinition def=new DefaultTransactionDefinition();
         def.setName("add");
@@ -99,15 +100,16 @@ public class BorrowServiceImpl implements IBorrowService {
         Operation operation=new Operation();
         operation.setSnumber(borrow.getSnumber());
         operation.setServicebranch(borrow.getServicebranch());
-        operation.setNum(borrow.getNum());
         operation.setOperaTime(borrow.getCreatetime());
         operation.setOperaIp(ip);
         operation.setOperaUser("操作员-"+borrow.getOperauser());
         operation.setCountType(borrow.getMoneytype());
         if(borrow.getStatus()==1){
             operation.setOperaType(ConstantUtil.MONEY_RETURN);
+            operation.setNum(borrow.getNum());
         }else if(borrow.getStatus()==0){
             operation.setOperaType(ConstantUtil.MONEY_BORROW);
+            operation.setNum(-borrow.getNum());
         }
         if(borrow.getMoneytype().equals(ConstantUtil.MONEY_TYPES[0])){
             operation.setCountid(ConstantUtil.CNY_LIB);

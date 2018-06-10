@@ -142,8 +142,8 @@ public class UserController {
         }
         List<Count> countList=countService.queryByUserId(user.getUserid());
         Map<String,Object> parmMap=new HashMap<String, Object>();
-        parmMap.put("operatype",ConstantUtil.MONEY_EXCHANGE);
-        parmMap.put("countid",countList.get(0));
+        parmMap.put("operatype",ConstantUtil.EXCHANGE);
+        parmMap.put("countid",countList.get(0).getCardId());
         List<Operation> operationList=operaService.queryAll(parmMap);
 
         if(!operationList.isEmpty()&&operationList.size()>3){
