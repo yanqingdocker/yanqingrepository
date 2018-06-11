@@ -55,6 +55,9 @@ public class BorrowController {
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("phone",borrow.getBorrowerphone());
         User borrower=userService.queryAll(parmMap).get(0);
+        if(borrower.getIsauthentication()==0){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOTUSER_OR_NOTAUTENTENTION)).toString();
+        }
        if(borrower.getLeavel()==0){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.LEAVEL_NOTALLOW)).toString();
         }
