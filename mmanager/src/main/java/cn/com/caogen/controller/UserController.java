@@ -10,6 +10,7 @@ import cn.com.caogen.service.CountServiceImpl;
 import cn.com.caogen.service.IUserService;
 import cn.com.caogen.service.OperaServiceImpl;
 import cn.com.caogen.util.*;
+import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.http.HttpResponse;
@@ -168,6 +169,14 @@ public class UserController {
         }else {
             return userList.get(0);
         }
+    }
+    @RequestMapping("queryByphone")
+    public String queryByphone(@RequestParam("telphone") String telphone){
+        User user=getUser(telphone,null);
+        if(user==null){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOT_USER)).toString();
+        }
+        return JSONObject.fromObject(user).toString();
     }
 
 }
