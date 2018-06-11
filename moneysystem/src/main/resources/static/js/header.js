@@ -124,12 +124,15 @@ $(function(){
                 var html = "";
                 if (data.username != "") {
                     html += "" + data.username + "";
+                    if(data.leavel==1){
+                        $("#username").addClass("icon_vip");
+                    }
                 }
                 else{    html += "" + data.phone + "";}
                 $("#username").html(html+"<i class=\"icon_down\"></i>");
-                $("#usertel").val(data.phone);
-                $("#userid").val(data.userid);
-                $("#isauth").val(data.isauthentication);
+                $("#usertel").val(data.phone);//隐藏域使用
+                $("#userid").val(data.userid);//隐藏域使用
+                $("#isauth").val(data.isauthentication);//隐藏域使用
             }
             if(data.isauthentication==1){
                 $("#changetext").text("基本信息");

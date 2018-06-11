@@ -64,7 +64,7 @@
                             <input class="form-control" type="text" name="borrower" readonly id="borrower">
                         </div>
                         <div class="col-sm-5">
-                            <button type="button" class="btn btn-default" style="margin: 0" onclick="search_real()">查询</button>
+                            <button type="button" class="btn btn-default" style="margin: 0" onclick="search_real()">验证查询</button>
                         </div>
                     </div>
                     <div class="form-group">
@@ -108,18 +108,11 @@
                 validating: 'glyphicon glyphicon-refresh'
             },
             fields: {
-                'borrower': {
-                    validators: {
-                        notEmpty: {
-                            message: '借款人名字不能为空'
-                        }
-                    }
-                },
                 'borrowerphone': {
-                    message: '借款人电话不能为空',
+                    message: '会员账号不能为空',
                     validators: {
                         notEmpty: {
-                            message: '借款人电话不能为空'
+                            message: '会员账号不能为空'
                         }
                     }
                 },
@@ -282,14 +275,15 @@
 
     //查询真实姓名
     function search_real() {
-        var phone=$("#borrowerphone").val();
+        $('#myform').data('bootstrapValidator').validateField('borrowerphone');
+        var phone = $("#borrowerphone").val();
         $.ajax({
             url: '/user/queryByphone',
-            data: {telphone:phone},
+            data: {telphone: phone},
             type: 'post',
             success: function (data) {
-                var obj=strToJson(data);
-                if(obj.code == "fail"){
+                var obj = strToJson(data);
+                if (obj.code == "fail") {
                     sweetAlert("", obj.message, "error");
                 }
                 else if (obj.code == "403") {
@@ -309,11 +303,11 @@
                             }
                         });
                 }
-                else{
-                    if(obj.isauthentication==0){
+                else {
+                    if (obj.isauthentication == 0) {
                         sweetAlert("", "您未实名认证，请先前往网站进行自助实名认证！", "error");
                     }
-                    else if(obj.leavel==0){
+                    else if (obj.leavel == 0) {
                         sweetAlert({
                                 title: "",
                                 text: "您当前是普通会员，请先升级VIP会员才能进行借款！",

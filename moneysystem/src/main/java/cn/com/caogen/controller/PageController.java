@@ -321,6 +321,13 @@ public class PageController {
     @RequestMapping("/CN/my/change_phone")
     public String CNchange_phone() {
         return "CN/my/change_phone"; }
+    /**
+     * 我的借贷
+     * @return
+     */
+    @RequestMapping("/CN/my/my_loan")
+    public String CNmy_loan() {
+        return "CN/my/my_loan"; }
 
     //    以下为英文版
     /**
@@ -631,5 +638,16 @@ public class PageController {
     @RequestMapping("/EN/my/change_phone")
     public String ENchange_phone() {
         return "EN/my/change_phone"; }
+    /**
+     * 我的借贷
+     * @return
+     */
+    @RequestMapping("/EN/my/my_loan")
+    public String ENmy_loan() {
+        return "EN/my/my_loan"; }
+
+
+
+
 
 }

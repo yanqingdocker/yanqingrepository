@@ -5,13 +5,13 @@
     <meta name="viewport"  content="width=device-width, user-scalable=no, initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
     <meta http-equiv="X-UA-Compatible" content="IE=9" />
-    <title>Alipay Binding Page</title>
+    <title>My Loan Page</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
-    <link  rel="stylesheet" type="text/css"  href="/css/sweet-alert.css"/>
     <link rel="stylesheet" type="text/css" href="/css/base.css"/>
     <link rel="stylesheet" type="text/css" href="/css/css.css"/>
+    <link  rel="stylesheet" type="text/css"  href="/css/sweet-alert.css"/>
     <script  type="text/javascript" src="/js/jquery1.12.4.js"></script>
     <script  type="text/javascript" src="/js/bootstrap.min.js"></script>
     <script  type="text/javascript" src="/js/bootstrapValidator.min.js"></script>
@@ -19,6 +19,7 @@
     <script  type="text/javascript" src="/js/dataTables.bootstrap.min.js"></script>
     <script  type="text/javascript" src="/js/sweet-alert.min.js"></script>
     <script  type="text/javascript" src="/js/common.js"></script>
+    <script  type="text/javascript" src="/js/areajson.js"></script>
     <!--[if lte IE 9]>
     <script  type="text/javascript" src="/js/html5.min.js"></script>
     <script  type="text/javascript" src="/js/respond.min.js"></script>
@@ -29,9 +30,8 @@
 <script  type="text/javascript" src="/js/ENheader.js"></script>
 <!--header end-->
 
-
 <div class=" p0 m0 fix-frist-top phone_frist-top">
-    <div class="turn swiper-container " style="background:url(/images/ENpt.jpg) no-repeat center ; height: 500px; width:100%;background-size: cover" ></div>
+    <div class="turn swiper-container " style="background:url(/images/pt.jpg) no-repeat center ; height: 500px; width:100%;background-size: cover" ></div>
 </div>
 <!--banner end-->
 
@@ -112,24 +112,24 @@
         </div>
         <!--左侧菜单end-->
         <div class="col-lg-9 col-xs-12 r_whitebg" style="min-height: 558px">
-            <h4 class=" page_title">Bind Alipay</h4>
-            <div class="row mt20">
-                <div class="inblock w100">
-                    <div class="bs-component mb20">
-                        <a class="btn btn-primary yellow_btn white" data-toggle="modal" data-target="#myModal_bind" >Bind alipay</a>
-                    </div>
-                    <table width="100%" id="table"  cellspacing="0" cellpadding="0" border="1"   class="table">
-                        <thead>
-                        <tr>
-                            <th>Account</th>
-                            <th>Real Name</th>
-                            <!--<th>类型</th>-->
-                            <th>Binding Time</th>
-                            <th width="120" class="tc">Operation</th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
+            <h4 class=" page_title">My Loan</h4>
+            <div class="inblock w100 mt20">
+                <table width="100%"  cellspacing="0" cellpadding="0" border="1"   class="table" id="table">
+                    <thead>
+                    <tr>
+                        <th>Serial Number</th>
+                        <th>Loan Amount</th>
+                        <th >Term Of Loan</th>
+                        <th width="60">State</th>
+                        <th >Guarantee</th>
+                        <th >Loan Point</th>
+                        <th >Operator</th>
+                        <th >Flow Number</th>
+                        <th width="100">Creation Time</th>
+                        <th >Operation</th>
+                    </tr>
+                    </thead>
+                </table>
             </div>
         </div>
     </div>
@@ -138,56 +138,23 @@
 <!--通用脚本-->
 <script  type="text/javascript" src="/js/ENfooter.js"></script>
 
-<!--绑定 模态框 （Modal） -->
-<div class="modal fade" id="myModal_bind" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times; </button>
-                <h4 class="modal-title" id="myModalLabel"> Bind Alipay</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group" id="hideselect">
-                    <div class="form-group">
-                        <label class="col-form-label">Alipay<span class="warning">*</span></label>
-                        <select class="custom-select  w100">
-                            <option value="1">Bind Alipay</option>
-                            <!--<option value="2">微信</option>-->
-                        </select>
-                    </div>
-                </div>
-                <div class="tc" id="cede_step1" style="display: none">
-                    <h4 class="mb10">First step: Scan code landing Alipay</h4>
-                    <img  id="codeimg1"  />
-                    <p class="red mt10">Please open Alipay scanning QR code and request to login Alipay</p>
-                </div>
-                <div class="tc" id="cede_step2" style="display: none">
-                    <h4 class="mb10">Step 2: Scan code to get account information</h4>
-                        <img id="codeimg2" src="">
-                        <p class="red mt10">Please use Alipay to scan the QR code to allow access to account information</p>
-                </div>
-            </div>
-            <div class="modal-footer" id="buttonchg">
-                <button type="button" onclick="submitform()"  class="btn btn-primary w100">Apply for binding</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal -->
 </div>
-
 <script type="text/javascript">
     $(function () {
         $(".nav-tabs .nav-item").on({click:function(){
                 $(this).addClass("cur").siblings().removeClass("cur");
             }
         });
+        $("#nav_my").addClass("cur");//导航栏添加焦点
         $('#table').DataTable( {
+            "order": [ 9, "desc" ],
             "serverSide": true,
             searching: false,
             lengthChange: false,
             paging: true,
             scrollCollapse: true,
             serverSide: false,
-            search: true,
+            search: false,
             processing: true,
             /* scrollY: 500,   表格的高度限制*/
             scrollX: "100%",
@@ -197,126 +164,88 @@
             autoWidth: true,
             autoSearch: false,
             ajax: {
-                url: "/appliy/querybyUserid",
+                url: "/borrow/queryAll",
                 dataSrc: '',
                 error : function() {
-                    window.location.href = "/login";
+                    window.location.href = "/EN/login";
                 }
             },
+            "fnDrawCallback"    : function(){
+                this.api().column(0).nodes().each(function(cell, i) {
+                    cell.innerHTML =  i + 1;
+                });
+            },
             "columns": [
-                {"data": "appliycount" },
-                {"data": "realname" ,},
-                {"data": "createtime" },
-                {"data": "id",
+                {"data": "id" },
+                {"data": "num",
                     render:function(e,type,full,row){
-                        return "<a href='javascript:;'  onclick='deletecount("+full.id+")'  class=\"icon_delete\" title=\"unsubscribe\"></a>";
+                        return '<span>'+full.num+'('+full.moneytype+')</span>';
+                    }
+                },
+                {"data": "term" },
+                {"data": "status",
+                    render:function(e,type,full,row){
+                        if(full.status==1){
+                            return "<span class='gray'>已还款</span>";
+                        }
+                        else{  return "<span class='red'>未还款</span>";}
+
+                    }
+                },
+                {"data": "warrantor" },
+                {"data": "servicebranch" },
+                {"data": "operauser" },
+                {"data": "snumber" },
+                {"data": "createtime" },
+                {"data": "id" ,
+                    render:function(e,type,full,row){
+                        return "<a href='javascript:;' class='blue'  onclick='repayment("+full.id+")'>还款</a>";
                     }
                 }
             ]
         } );
+
     })
-    // 登录二维码第一步
-    function submitform() {
-        $.ajax({
-            url: '/appliy/scanlogin',
-            data: null,
-            type: 'get',
-            success: function (data) {
-                $("#hideselect").hide();
-                $('#codeimg1').attr( 'src', 'data:image/jpg;base64,'+data+'' );
-                $("#cede_step1").show();
-                $("#buttonchg").html(" <button type=\"button\" onclick=\"scanallow()\"  class=\"btn btn-primary w100\">Confirm scanned, next</button>");
 
-            },
-            error: function () {
-                sweetAlert("", "Request failed", "error");
-            }
-        });
-
-    }
-    // 获取支付宝账户信息
-    function scanallow() {
+    // 注销账户
+    function repayment(id){
         sweetAlert({
-            title: "Landing, please wait.",
-            timer: 4500,
-            showConfirmButton: false
-        });
-        $.ajax({
-            url: '/appliy/scanAllow',
-            data: null,
-            type: 'get',
-            success: function (data) {
-                if(data==""){
-                    sweetAlert("", "Please confirm that you have scanned the QR code", "warning");
-                    $("#cede_step1").show();
-                    $("#cede_step2").hide();
-                }
-                else{
-                    $("#cede_step2").show();
-                    $("#cede_step1").hide();
-                    $("#codeimg2").attr('src','data:image/jpg;base64,'+data+'');
-                    $("#buttonchg").html(" <button type=\"button\" onclick=\"bind()\"  class=\"btn btn-primary w100\">Confirm binding</button>");
-                }
-
-            },
-            error: function () {
-                sweetAlert("", "Request failed", "error");
-            }
-        });
-
-    }
-    // 获取支付宝账户信息
-    function bind() {
-        sweetAlert({
-            title: "Retrieving account information, please wait.",
-            timer: 4500,
-            showConfirmButton: false
-        });
-        $.ajax({
-            url: '/appliy/bind',
-            data: null,
-            type: 'get',
-            success: function (data) {
-                // console.log(strToJson(data).code);
-                if(strToJson(data).code=="success"){
-                    sweetAlert("", "Congratulations on your successful AliPay binding.", "success");
-                    setTimeout(function(){ window.location.href = "/EN/my/bind_account";},1000);
-                }
-                else{
-                    sweetAlert("", "Alipay binding failed, please confirm scanning allowed account information QR code", "error");
-                }
-            },
-            error: function () {
-                sweetAlert("", "Request failed", "error");
-            }
-        });
-
-    }
-    // 解绑支付宝
-    function deletecount(userid) {
-        sweetAlert({
-                title: "Are you sure to unbind alipay?",
+                title: "",
+                text: "您将使用账户余额进行还款!",
                 type: "warning",
                 showCancelButton: true,
-                confirmButtonText: "Confirm",
-                cancelButtonText: "Cancel",
-                closeOnConfirm: false
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                closeOnConfirm: false,
+                closeOnCancel: true
             },
-            function(){
-                $.ajax({
-                    url: '/appliy/unbindAppliy',
-                    data: {id:userid},
-                    type: 'post',
-                    success: function () {
-                        sweetAlert("", "Congratulations on your success in untying alipay.", "success");
-                        setTimeout(function(){ window.location.href = "/EN/my/bind_account";},1000);
-                    },
-                    error: function () {
-                        sweetAlert("", "Request failed", "error");
-                    }
-                });
+            function(isConfirm){
+                if (isConfirm) {
+                    $.ajax({
+                        type: "post", // 用POST方式传输
+                        dataType: 'json',
+                        url: "/borrow/confirmdo", // 目标地址
+                        data: { id :id },
+                        success: function (data) {
+                            if (data.code=="success") {
+                                sweetAlert("", "恭喜您！还款成功！", "success");
+                                setTimeout(function(){ window.location.href = "/CN/my/my_loan";},1500);
+                            } else {
+                                sweetAlert({
+                                    title:"操作失败!",
+                                    text: data.message,
+                                    type: "error",
+                                    showCancelButton: true,
+                                    confirmButtonText: "确定",
+                                    cancelButtonText: "取消",
+                                    closeOnConfirm: false,
+                                    closeOnCancel: true
+                                });
+                            }
+                        }
+                    });
+                }
             });
-
 
     }
 

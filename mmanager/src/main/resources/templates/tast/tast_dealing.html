@@ -2,9 +2,8 @@
 <html>
 <head>
     <meta http-equiv=Content-Type content="text/html; charset=utf-8">
-    <title>借贷记录</title>
+    <title>处理中</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <!-- CSS Libs -->
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
@@ -26,72 +25,70 @@
     <script  type="text/javascript" src="/js/dataTables.bootstrap.min.js"></script>
     <script  type="text/javascript" src="/js/sweet-alert.min.js"></script>
     <script  type="text/javascript" src="/js/common.js"></script>
-    <style>
-        .tabbutton a{ padding: 10px 40px;}
-    </style>
 </head>
 
 <body class="flat-blue common_body">
 <div class="bs-component">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/mainframe">系统首页</a></li>
-        <li class="breadcrumb-item">借贷管理</li>
-        <li class="breadcrumb-item active">借贷记录</li>
+        <li class="breadcrumb-item">任务处理</li>
+        <li class="breadcrumb-item active">处理中</li>
     </ol>
 </div>
 <div class="page-title">
-    <span class="title">借贷记录</span>
+    <span class="title">处理中</span>
 </div>
 <div class="row">
     <div class="col-xs-12">
         <div class="card">
-            <div class="card-header ">
-
+            <div class="card-header">
             </div>
-            <div class="card-body relative">
-                <div class="tabbutton w100" style="position: absolute;top: 30px;left:0;z-index: 999">
-                    <a href="/loanManage/loan_list?status=0" id="nostatus">未还款</a>
-                    <a href="/loanManage/loan_list?status=1" id="yesstatus">已还款</a>
-                </div>
+            <div class="card-body">
                 <table class="datatable table table-striped" id="table" cellspacing="0" width="100%">
                     <thead>
                     <tr>
-                        <th>序号</th>
-                        <th>借款人</th>
-                        <th>借款人电话</th>
-                        <th>借款金额</th>
-                        <th>期限(天)</th>
-                        <th>担保人</th>
-                        <th>借款状态</th>
-                        <th>借款网点</th>
-                        <th>流水号</th>
-                        <th>网点操作人</th>
+                        <th >序号</th>
+                        <th>任务类型</th>
+                        <th>申请人</th>
+                        <th>任务内容</th>
+                        <th>任务状态</th>
                         <th>创建时间</th>
                         <th>操作</th>
                     </tr>
                     </thead>
+
                 </table>
-                <div class="batch_play inblock">
-                    <a href="/loanManage/add_loan">添加</a>
-                </div>
             </div>
 
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    var LocString=String(window.document.location.href);
-    function geturl(str){
-        var rs=new RegExp("(^|)"+str+"=([^&]*)(&|$)","gi").exec(LocString),tmp;
-        if(tmp=rs)return tmp[2];
-        return null;
-    }
-    $(function () {
-        var status= decodeURI(geturl("status"));
-        if(status==0){ $("#nostatus").addClass("cur")}else { $("#yesstatus").addClass("cur")}
 
+
+<!--详细内容 模态框 （Modal） -->
+<div class="modal fade" id="myModal_dollar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times; </button>
+                <h4 class="modal-title" id="myModalLabel">任务详细内容</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-form-label" >内容：</label>
+                    <div class="w100 inblock" >
+                        <p id="taskcontent" style="line-height: 2"></p>
+                    </div>
+                </div>
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div>
+</div><!-- /.modal -->
+<script type="text/javascript">
+    $(function () {
         $('#table').DataTable( {
-            "order": [ 10, "desc" ],
+            "order": [ 5, "desc" ],
             "serverSide": true,
             searching: true,
             lengthChange: true,
@@ -132,8 +129,7 @@
                 }
             },
             ajax: {
-                url: "/borrow/queryAll",
-                data:{status:status},
+                url: "/task/queryMarkdo",
                 dataSrc: function (data) {
                     if (data.code=="403") {
                         sweetAlert({
@@ -162,53 +158,37 @@
                 });
             },
             "columns": [
-                {"data": "id" },
-                {"data": "borrower" },
-                {"data": "borrowerphone" },
-                {"data": "num",
-                    render:function(e,type,full,row){
-                        var type=currency_type(full.moneytype);
-                        return '<span>'+full.num+'('+type+')</span>';
-                    }
-                },
-                {"data": "term" },
-                {"data": "warrantor" },
-                {"data": "status",
-                    render:function(e,type,full,row){
-                        if(full.status==0){
-                            return '<span class="red">未还款</span>';
-                        }
-                        else if(full.status==1){
-                            return '<span class="green">已还款</span>';
-                        }
-
-                    }
-                },
-                {"data": "servicebranch" },
-                {"data": "snumber" },
+                {"data": "id"},
+                {"data": "taskname" },
                 {"data": "operauser" },
-                {"data": "createtime" },
-                {"data": "id",
+                {"data": "taskcontent" ,
                     render:function(e,type,full,row){
-                        if(full.status==0){
-                            return "<a href='javascript:;' onclick=\"conformdata("+full.id+")\"  class='blue' >确认还款</a>";
-                        }
-                        else if(full.status==1){
-                            return "<a href='javascript:;' onclick=\"conformdata("+full.id+")\"  class='gray' >已还款</a>";
-                        }
-
+                        return "<a href='javascript:;' data-toggle=\"modal\" data-target=\"#myModal_dollar\" class=\"blue text_overflow width120\" onclick=\"detail_task('"+full.taskcontent+"')\">"+full.taskcontent+"</a>"
+                    }
+                },
+                {"data": "state" ,
+                    render:function(e,type,full,row){
+                        return "<span class=\"red\">"+full.state+"</span>"
+                    }
+                },
+                {"data": "createtime" },
+                {"data": "id" ,
+                    render:function(e,type,full,row){
+                        return "<a href='javascript:;' onclick='deal_task("+full.id+")'>确认处理</a>"
                     }
                 }
             ]
         } );
     })
-
-
-    //确认还款
-    function conformdata(id) {
+    // 读取详细信息
+    function detail_task(content) {
+        $("#taskcontent").html(content);
+    }
+    // 确认处理任务
+    function deal_task(id) {
         sweetAlert({
-                title: "确定已还款吗？",
-                text: "",
+                title: "",
+                text: "确定已处理任务吗？",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonText: "确定",
@@ -219,36 +199,33 @@
             function(isConfirm){
                 if (isConfirm) {
                     $.ajax({
-                        type: "post", // 用POST方式传输
+                        type: "get", // 用POST方式传输
                         dataType: 'json',
-                        url: "/borrow/confirmdo", // 目标地址
+                        url: "/task/dotask", // 目标地址
                         data: { id :id },
                         success: function (data) {
-                            if (data.code=="success") {
-                                sweetAlert("", "恭喜您！还款成功", "success");
-                                setTimeout(function(){ window.location.href = "/loanManage/loan_list?status=1";},1500);
+                            if (data.code == "success") {
+                                sweetAlert("", "恭喜您！任务处理成功！", "success");
+                                setTimeout(function(){ window.location.href = "/tast/tast_finish";},1500);
                             }
-                            else if (data.code=="403") {
+                           else if (data.code=="403") {
                                 sweetAlert({
-                                    title: "",
-                                    text: "您的账号权限不足，无法操作此页面！",
-                                    type: "warning",
-                                    showCancelButton: false,
-                                    confirmButtonText: "确定",
-                                    closeOnConfirm: true
-                                });
-                            }
-                            else {
-                                sweetAlert({
-                                    title:"还款失败!",
-                                    text: data.message,
-                                    type: "error",
-                                    showCancelButton: true,
-                                    confirmButtonText: "确定",
-                                    cancelButtonText: "取消",
-                                    closeOnConfirm: false,
-                                    closeOnCancel: true
-                                });
+                                        title: "",
+                                        text: "您的账号权限不足，无法操作此页面！",
+                                        type: "warning",
+                                        showCancelButton: false,
+                                        confirmButtonText: "确定",
+                                        cancelButtonText: "取消",
+                                        closeOnConfirm: false,
+                                        closeOnCancel: true
+                                    },
+                                    function(isConfirm){
+                                        if (isConfirm) {
+                                            window.location.href = "/mainframe";
+                                        }
+                                    });
+                            }else {
+                                sweetAlert("", "任务处理失败！", "error");
                             }
                         }
                     });
@@ -256,9 +233,6 @@
             });
     }
 
-
 </script>
-
 </body>
-
 </html>

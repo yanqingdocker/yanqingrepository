@@ -88,7 +88,7 @@
 <script type="text/javascript">
     $(function () {
         $('#table').DataTable( {
-            "order": [ 4, "desc" ],
+            "order": [ 5, "desc" ],
             "serverSide": true,
             searching: true,
             lengthChange: true,
@@ -174,7 +174,7 @@
                 {"data": "createtime" },
                 {"data": "id" ,
                     render:function(e,type,full,row){
-                        return "<a href='javascript:;' onclick='deal_task("+full.id+")'>确认处理</a>"
+                        return "<a href='javascript:;' onclick='deal_task("+full.id+")'>标记处理</a>"
                     }
                 }
             ]
@@ -188,7 +188,7 @@
     function deal_task(id) {
         sweetAlert({
                 title: "",
-                text: "确定已处理任务吗？",
+                text: "确定标记处理任务吗？",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonText: "确定",
@@ -201,14 +201,32 @@
                     $.ajax({
                         type: "get", // 用POST方式传输
                         dataType: 'json',
-                        url: "/task/dotask", // 目标地址
+                        url: "/task/marktask", // 目标地址
                         data: { id :id },
                         success: function (data) {
                             if (data.code == "success") {
-                                sweetAlert("", "恭喜您！任务处理成功！", "success");
-                                setTimeout(function(){ window.location.href = "/tast/tast_finish";},1500);
-                            } else {
-                                sweetAlert("", "任务处理失败！", "error");
+                                sweetAlert("", "恭喜您！任务标记处理成功！", "success");
+                                setTimeout(function(){ window.location.href = "/tast/tast_dealing";},1500);
+                            }
+                            else if (data.code=="403") {
+                                sweetAlert({
+                                        title: "",
+                                        text: "您的账号权限不足，无法操作此页面！",
+                                        type: "warning",
+                                        showCancelButton: false,
+                                        confirmButtonText: "确定",
+                                        cancelButtonText: "取消",
+                                        closeOnConfirm: false,
+                                        closeOnCancel: true
+                                    },
+                                    function(isConfirm){
+                                        if (isConfirm) {
+                                            window.location.href = "/mainframe";
+                                        }
+                                    });
+                            }
+                            else {
+                                sweetAlert("", "任务标记处理失败！", "error");
                             }
                         }
                     });

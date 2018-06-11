@@ -5,13 +5,13 @@
     <meta name="viewport"  content="width=device-width, user-scalable=no, initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
     <meta http-equiv="X-UA-Compatible" content="IE=9" />
-    <title>发件箱</title>
+    <title>我的借贷</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
-    <link  rel="stylesheet" type="text/css"  href="/css/sweet-alert.css"/>
     <link rel="stylesheet" type="text/css" href="/css/base.css"/>
     <link rel="stylesheet" type="text/css" href="/css/css.css"/>
+    <link  rel="stylesheet" type="text/css"  href="/css/sweet-alert.css"/>
     <script  type="text/javascript" src="/js/jquery1.12.4.js"></script>
     <script  type="text/javascript" src="/js/bootstrap.min.js"></script>
     <script  type="text/javascript" src="/js/bootstrapValidator.min.js"></script>
@@ -19,6 +19,7 @@
     <script  type="text/javascript" src="/js/dataTables.bootstrap.min.js"></script>
     <script  type="text/javascript" src="/js/sweet-alert.min.js"></script>
     <script  type="text/javascript" src="/js/common.js"></script>
+    <script  type="text/javascript" src="/js/areajson.js"></script>
     <!--[if lte IE 9]>
     <script  type="text/javascript" src="/js/html5.min.js"></script>
     <script  type="text/javascript" src="/js/respond.min.js"></script>
@@ -29,14 +30,13 @@
 <script  type="text/javascript" src="/js/header.js"></script>
 <!--header end-->
 
-
 <div class=" p0 m0 fix-frist-top phone_frist-top">
     <div class="turn swiper-container " style="background:url(/images/pt.jpg) no-repeat center ; height: 500px; width:100%;background-size: cover" ></div>
 </div>
 <!--banner end-->
 
 <div class=" p0 m0 fix-frist-top pt30">
-    <div class="container row  p0 m" id="main_con">
+    <div class="container row  p0 m">
         <div class="col-lg-3 col-xs-12">
             <div class="panel panel-default bid_menu">
                 <h4 class=" menu_title">我的</h4>
@@ -111,79 +111,50 @@
             </div>
         </div>
         <!--左侧菜单end-->
-        <div class="col-lg-9 col-xs-12 r_whitebg" style="min-height: 556px">
-            <h4 class=" page_title">发件箱</h4>
-            <div class="inblock w100">
-                <table width="100%"  cellspacing="0" cellpadding="0" border="1" id="table"  class="table">
+        <div class="col-lg-9 col-xs-12 r_whitebg" style="min-height: 558px">
+            <h4 class=" page_title">我的借贷</h4>
+            <div class="inblock w100 mt20">
+                <table width="100%"  cellspacing="0" cellpadding="0" border="1"   class="table" id="table">
                     <thead>
                     <tr>
-                        <th width="60"></th>
-                        <th width="80">收件人</th>
-                        <th >标题</th>
-                        <th width="200">内容</th>
-                        <th class="tc" width="150">发件时间</th>
-                        <th class="tc" width="80">操作</th>
+                        <th>序号</th>
+                        <th>借款金额</th>
+                        <th >借款期限</th>
+                        <th width="60">状态</th>
+                        <th >担保人</th>
+                        <th >借款网点</th>
+                        <th >操作人员</th>
+                        <th >流水号</th>
+                        <th width="100">创建时间</th>
+                        <th >操作</th>
                     </tr>
                     </thead>
-
                 </table>
-                <div class="batch_play inblock">
-                    <div class="checkcustom ml10 mr10 inblock">
-                        <input rel='box_check_all' id="box_check_all" type="checkbox" name="" />
-                        <label class="box_check_all" for="box_check_all" >全选</label>
-                    </div>
-                    <div class="inblock">
-                        <a href="javascript:;" onclick="deletbatch()"  class="blue">删除</a>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 </div>
+
 <!--通用脚本-->
 <script  type="text/javascript" src="/js/footer.js"></script>
 
-<!--详细消息 模态框 （Modal） -->
-<div class="modal fade" id="myModal_dollar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times; </button>
-                <h4 class="modal-title" id="myModalLabel"> 邮件内容</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="col-form-label" >收件人：</label> <span id="sendphone"></span>
-                </div>
-                <div class="form-group">
-                    <label class="col-form-label" >时间：</label> <span id="sendtime"></span>
-                </div>
-                <div class="form-group">
-                    <label class="col-form-label inblock" >主题：</label><p class="inblock" id="sendtitle"></p>
-                </div>
-                <div class="form-group">
-                    <label class="col-form-label" >内容：</label>
-                    <div class="w100 inblock" >
-                        <p id="sendcontent"></p>
-                    </div>
-                </div>
-
-            </div>
-        </div><!-- /.modal-content -->
-    </div>
-</div><!-- /.modal -->
+</div>
 <script type="text/javascript">
-
     $(function () {
+        $(".nav-tabs .nav-item").on({click:function(){
+                $(this).addClass("cur").siblings().removeClass("cur");
+            }
+        });
         $("#nav_my").addClass("cur");//导航栏添加焦点
         $('#table').DataTable( {
+            // "order": [ 9, "desc" ],
             "serverSide": true,
-            searching: true,
-            lengthChange: true,
+            searching: false,
+            lengthChange: false,
             paging: true,
             scrollCollapse: true,
             serverSide: false,
-            search: true,
+            search: false,
             processing: true,
             /* scrollY: 500,   表格的高度限制*/
             scrollX: "100%",
@@ -217,134 +188,91 @@
                 }
             },
             ajax: {
-                url: "/message/querysend",
+                url: "/borrow/queryAll",
                 dataSrc: '',
                 error : function() {
                     window.location.href = "/CN/login";
                 }
             },
+            "fnDrawCallback"    : function(){
+                this.api().column(0).nodes().each(function(cell, i) {
+                    cell.innerHTML =  i + 1;
+                });
+            },
             "columns": [
+                {"data": "id" },
+                {"data": "num",
+                    render:function(e,type,full,row){
+                        return '<span>'+full.num+'('+full.moneytype+')</span>';
+                    }
+                },
+                {"data": "term" },
+                {"data": "status",
+                    render:function(e,type,full,row){
+                        if(full.status==1){
+                            return "<span class='gray'>已还款</span>";
+                        }
+                        else{  return "<span class='red'>未还款</span>";}
+
+                    }
+                },
+                {"data": "warrantor" },
+                {"data": "servicebranch" },
+                {"data": "operauser" },
+                {"data": "snumber" },
+                {"data": "createtime" },
                 {"data": "id" ,
-                    render:function(e){
-                        var html="<div class='checkcustom tc'> " +
-                            "<input type='checkbox'  id='checkx"+e+"' name='checklist' value='"+e+"'> " +
-                            "<label class='lable_check' for='checkx"+e+"'></label></div>";
-                        return html;
-                    }
-                },
-                {"data": "username" },
-                {"data": "title" ,
                     render:function(e,type,full,row){
-                        var html="<a href='javascript:;' title='"+e+"' data-toggle=\"modal\" data-target=\"#myModal_dollar\"  class='blue text_overflow width120' onclick='detail_msg("+full.id+")'>"+e+"</a>";
-                        return html;
-                    }
-                },
-                {"data": "content" ,
-                    render:function(e,type,full,row){
-                        var html="<p class='text_overflow width220'>"+e+"</p>";
-                        return html;
-                    }
-                },
-                {"data": "createTime" },
-                {"data": "id",
-                    render:function(e,type,full,row){
-                        return "<a href='javascript:;'  onclick='deletemsg("+full.id+")'  class=\"icon_delete\" title=\"删除\"></a>";
+                        return "<a href='javascript:;' class='blue'  onclick='repayment("+full.id+")'>还款</a>";
                     }
                 }
             ]
         } );
+
     })
 
-    // 点击check添加样式
-    $(document).on('click','.checkcustom label',function(){
-        $(this).toggleClass("on");
-    });
-    /*check全选*/
-    $("input[rel='box_check_all']").on("click",function(){
-        if($(this).prop("checked")===true){
-            $("input[name='checklist']").prop("checked",$(this).prop("checked")).siblings().addClass("on")
-
-        }else{
-            $("input[name='checklist']").prop("checked",false).siblings().removeClass("on")
-        }
-    });
-
-    // 批量删除邮件
-    function deletbatch(){
-        var idlist = '';
-        $('input:checkbox[name=checklist]:checked').each(function(k){
-            if(k == 0){
-                idlist = $(this).val();
-            }else{
-                idlist += ','+$(this).val();
-            }
-        });
-        $.ajax({
-            type: "get", // 用POST方式传输
-            dataType: 'json',
-            url: "/message/batchdelete", // 目标地址
-            data: { ids :idlist },
-            success: function (data) {
-                if (data.code=="success") {
-                    sweetAlert("", "恭喜您！删除成功！", "success");
-                    setTimeout(function(){ window.location.href = "/CN/my/outbox";},1500);
-                } else {
-                    sweetAlert({
-                        title:"删除失败！",
-                        text: "请选择要删除的邮件！",
-                        type: "error",
-                        showCancelButton: true,
-                        confirmButtonText: "确定",
-                        cancelButtonText: "取消",
-                        closeOnConfirm: false,
-                        closeOnCancel: true
+    // 注销账户
+    function repayment(id){
+        sweetAlert({
+                title: "",
+                text: "您将使用账户余额进行还款!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            },
+            function(isConfirm){
+                if (isConfirm) {
+                    $.ajax({
+                        type: "post", // 用POST方式传输
+                        dataType: 'json',
+                        url: "/borrow/confirmdo", // 目标地址
+                        data: { id :id },
+                        success: function (data) {
+                            if (data.code=="success") {
+                                sweetAlert("", "恭喜您！还款成功！", "success");
+                                setTimeout(function(){ window.location.href = "/CN/my/my_loan";},1500);
+                            } else {
+                                sweetAlert({
+                                    title:"操作失败!",
+                                    text: data.message,
+                                    type: "error",
+                                    showCancelButton: true,
+                                    confirmButtonText: "确定",
+                                    cancelButtonText: "取消",
+                                    closeOnConfirm: false,
+                                    closeOnCancel: true
+                                });
+                            }
+                        }
                     });
                 }
-            }
-        });
-    }
-    // 删除邮件
-    function deletemsg(msgid){
-        $.ajax({
-            type: "get", // 用POST方式传输
-            dataType: 'json',
-            url: "/message/delete", // 目标地址
-            data: { id :msgid },
-            success: function (data) {
-                if (data.code=="success") {
-                    sweetAlert("", "恭喜您！删除成功！", "success");
-                    setTimeout(function(){ window.location.href = "/CN/my/outbox";},1500);
-                } else {
-                    sweetAlert({
-                        title:"删除失败！!",
-                        text: data.message,
-                        type: "error",
-                        showCancelButton: true,
-                        confirmButtonText: "确定",
-                        cancelButtonText: "取消",
-                        closeOnConfirm: false,
-                        closeOnCancel: true
-                    });
-                }
-            }
-        });
-    }
-    // 读取详细信息
-    function detail_msg(msgid) {
-        $.ajax({
-            type: "get", // 用POST方式传输
-            dataType: 'json',
-            url: "/message/queryMessage", // 目标地址
-            data: { id :msgid },
-            success: function (data) {
-                $("#sendphone").html(data.username);
-                $("#sendtime").html(data.createTime);
-                $("#sendtitle").html(data.title);
-                $("#sendcontent").html(data.content);
+            });
 
-            }
-        });
     }
+
 </script>
 </body>
 </html>
