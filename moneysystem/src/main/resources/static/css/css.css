@@ -30,7 +30,7 @@
 .index .dropdown-toggle i.icon_down {  display: inline-block;  width: 25px;  height:25px;   vertical-align: middle;  background: url("../images/icon_down_white.png") no-repeat; background-size: contain; margin-left: 5px;  }
 .index .user_info .dropdown-toggle i.icon_down {  display: inline-block;  width: 20px;  height:20px;   vertical-align: middle;  background: url("../images/icon_down_white.png") no-repeat; background-size: contain; margin-left: 5px;  }
 .index .user_info a.nav-link{background: url("../images/icon_index_head.png") no-repeat left center;padding-left: 20px}
-.index .user_info a.nav-link.icon_vip{background: url("../images/icon_vip.png") no-repeat left center;padding-left: 20px}
+ .user_info a.nav-link.icon_vip{background: url("../images/icon_vip.png") no-repeat left center;padding-left: 20px}
 .user_info a{ width: 100%; display: block;height: 25px;line-height: 25px; color: #fff}
 .index .user_info a{ width: 100%; display: block;height: 25px;line-height: 25px; color: #fff; }
 .user_info  a.nav-link{background: url("../images/icon_index_head.png") no-repeat left center;padding-left: 20px}
