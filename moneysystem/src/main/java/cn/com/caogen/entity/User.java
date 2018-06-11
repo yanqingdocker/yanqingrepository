@@ -35,4 +35,6 @@ public class User implements Serializable {
     private String lasttime;
     //是否实名认证
     private int isauthentication;
+    //用户级别
+    public int leavel;
 }

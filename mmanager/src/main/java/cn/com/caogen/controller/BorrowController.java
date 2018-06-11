@@ -68,7 +68,11 @@ public class BorrowController {
         borrow.setServicebranch(currentUser.getServicebranch());
         borrow.setOperauser(currentUser.getUsername());
         String message=borrowService.add(borrow,IpUtil.getIpAddr(request));
-        return JSONObject.fromObject(new ResponseMessage(message)).toString();
+        if(message==null){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
+        }
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,message)).toString();
+
     }
 
     /**

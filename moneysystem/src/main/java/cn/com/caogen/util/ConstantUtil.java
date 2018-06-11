@@ -13,6 +13,7 @@ public class ConstantUtil {
     public static final String NOT_AUTHENTION="未认证用户不能创建账户";
     public static final String NOTUSER_OR_NOTAUTENTENTION="你所填写的用户不存在或者还未实名认证";
     public static final String NOTALLOWSELF="不能自己给自己发送信息，请填写要发送的正确手机号";
+    public static final String SYSTEMCOUNT_LESS="现金资金库余额不足";
     public static final String ERROR_ARGS="请检查参数是否正确";
     public static final String FAILSYSTEM="此接口正在维护中...";
     public static final String NOTTYPECOUNT="对方暂未开通类型的账户";
@@ -51,5 +52,9 @@ public class ConstantUtil {
     public static final String BANK_NOTAUTH="验证不通过,清核对信息";
     public static final String[] MONEY_TYPES=new String[]{"CNY","USD"};
     public static final String SESSIONCOLLCTION="sessionMap";
+    public static final String MONEY_RETURN ="现金还款" ;
+    public static final String MONEY_BORROW="现金预支";
+    public static final String CNY_LIB="人民币资金库";
+    public static final String USD_LIB="美元资金库";
 
 }
