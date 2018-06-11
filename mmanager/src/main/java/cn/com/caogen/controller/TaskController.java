@@ -1,5 +1,6 @@
 package cn.com.caogen.controller;
 
+import cn.com.caogen.entity.Muser;
 import cn.com.caogen.entity.Task;
 import cn.com.caogen.service.ITaskService;
 import cn.com.caogen.service.TaskServiceImpl;
@@ -63,12 +64,14 @@ public class TaskController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
         logger.info("dotask start:");
+        Muser user=(Muser)request.getSession().getAttribute("currentUser");
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("id",id);
         parmMap.put("state",ConstantUtil.TASK_DONE);
         parmMap.put("endtime",DateUtil.getTime());
-        String douser="操作员-"+request.getSession().getAttribute("username");
+        String douser="操作员-"+user.getUsername();
         parmMap.put("douser",douser);
+        parmMap.put("servicebranch",user.getServicebranch());
         taskService.updateTask(parmMap);
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }

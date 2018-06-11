@@ -18,5 +18,6 @@ public class Task {
     private String operauser;
     private String douser;
     private String endtime;
+    private String servicebranch;
 
 }
