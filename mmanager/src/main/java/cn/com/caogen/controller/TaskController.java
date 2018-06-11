@@ -76,6 +76,24 @@ public class TaskController {
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 
+    @RequestMapping("marktask")
+    public String markTask(@RequestParam("id") int id, HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
+        logger.info("dotask start:");
+        Muser user=(Muser)request.getSession().getAttribute("currentUser");
+        Map<String,Object> parmMap=new HashMap<String,Object>();
+        parmMap.put("id",id);
+        parmMap.put("state",ConstantUtil.TASK_DOING);
+        parmMap.put("endtime",DateUtil.getTime());
+        String douser="操作员-"+user.getUsername();
+        parmMap.put("douser",douser);
+        parmMap.put("servicebranch",user.getServicebranch());
+        taskService.updateTask(parmMap);
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
+    }
+
     @RequestMapping("queryAll")
     public String queryAll(HttpServletRequest request){
         if(!FilterAuthUtil.checkAuth(request)){
