@@ -1,10 +1,14 @@
 package cn.com.caogen.controller;
 
+import cn.com.caogen.entity.Count;
+import cn.com.caogen.entity.Operation;
+import cn.com.caogen.entity.Task;
 import cn.com.caogen.entity.User;
 
 import cn.com.caogen.externIsystem.service.IDCardService;
 import cn.com.caogen.externIsystem.service.MessageService;
 import cn.com.caogen.service.IUserService;
+import cn.com.caogen.service.TaskServiceImpl;
 import cn.com.caogen.util.*;
 import net.sf.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -36,7 +40,7 @@ public class UserController {
     private IUserService userServiceImpl;
 
     @Autowired
-    private StringRedisTemplate stringRedisTemplate;
+    private TaskServiceImpl taskService;
 
 
 
@@ -351,6 +355,26 @@ public class UserController {
                 }
             }
     }
+
+    /**
+     * 申请升级VIP
+     * @param
+     * @return
+     */
+    @RequestMapping(path="/applyVip",method = RequestMethod.GET)
+    public String applyVip(HttpServletRequest request) {
+
+        logger.info("applyVip start: ");
+        Task task=new Task();
+        task.setTaskname("VIP申请");
+        task.setOperauser(JedisUtil.getUser(request).getUsername());
+        task.setCreatetime(DateUtil.getDate());
+        task.setTaskcontent("平台账号为"+JedisUtil.getUser(request).getPhone()+"的用户申请开通VIP");
+        taskService.addTask(task);
+
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
+    }
+
 
 }
 

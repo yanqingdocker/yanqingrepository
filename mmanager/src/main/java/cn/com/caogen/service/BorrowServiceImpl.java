@@ -40,7 +40,7 @@ public class BorrowServiceImpl implements IBorrowService {
         def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
         TransactionStatus status=transactionManager.getTransaction(def);
         try {
-            borrowMapper.add(borrow);
+
             Map<String,String> parmMap=new HashMap<String, String>();
             parmMap.put("servicebranch",borrow.getServicebranch());
             parmMap.put("counttype",borrow.getMoneytype());
@@ -53,6 +53,7 @@ public class BorrowServiceImpl implements IBorrowService {
                 cashPoolMapper.update(cashPool);
 
             }
+            borrowMapper.add(borrow);
             operaService.add(getOperaTion(borrow,ip));
         }catch (Exception e){
             //有一个不成功能则回滚事务
