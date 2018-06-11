@@ -170,7 +170,7 @@ public class UserController {
             return userList.get(0);
         }
     }
-    @RequestMapping("queryByphone")
+    @RequestMapping(path = "queryByphone",method = RequestMethod.POST)
     public String queryByphone(@RequestParam("telphone") String telphone){
         User user=getUser(telphone,null);
         if(user==null){
