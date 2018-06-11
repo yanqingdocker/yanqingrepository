@@ -45,6 +45,18 @@ public class TaskController {
         logger.info("queryUndo start:");
         return JSONArray.fromObject(taskService.queryByState(ConstantUtil.TASK_UNDO)).toString();
     }
+    /**
+     * 查询处理中的任务
+     * @return
+     */
+    @RequestMapping("queryMarkdo")
+    public String queryMarkdo(HttpServletRequest request){
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
+        logger.info("queryUndo start:");
+        return JSONArray.fromObject(taskService.queryByState(ConstantUtil.TASK_DOING)).toString();
+    }
 
     /**
      * 查询已处理的任务
