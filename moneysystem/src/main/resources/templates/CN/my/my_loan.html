@@ -126,7 +126,7 @@
                         <th >操作人员</th>
                         <th >流水号</th>
                         <th width="100">创建时间</th>
-                        <th >操作</th>
+                        <th width="70">操作</th>
                     </tr>
                     </thead>
                 </table>
@@ -147,7 +147,7 @@
         });
         $("#nav_my").addClass("cur");//导航栏添加焦点
         $('#table').DataTable( {
-            // "order": [ 9, "desc" ],
+            "order": [ 8, "desc" ],
             "serverSide": true,
             searching: false,
             lengthChange: false,
@@ -223,7 +223,13 @@
                 {"data": "createtime" },
                 {"data": "id" ,
                     render:function(e,type,full,row){
-                        return "<a href='javascript:;' class='blue'  onclick='repayment("+full.id+")'>还款</a>";
+                        if(full.status==1){
+                            return " <a href='javascript:;' class='gray' >已还款</a>"
+                        }
+                        else if(full.status==0){
+                            return "<a href='javascript:;' class='blue'  onclick='repayment("+full.id+")'>还款</a>"
+                        }
+
                     }
                 }
             ]

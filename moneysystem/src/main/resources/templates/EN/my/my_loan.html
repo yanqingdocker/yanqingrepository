@@ -147,7 +147,7 @@
         });
         $("#nav_my").addClass("cur");//导航栏添加焦点
         $('#table').DataTable( {
-            "order": [ 9, "desc" ],
+            "order": [ 8, "desc" ],
             "serverSide": true,
             searching: false,
             lengthChange: false,
@@ -186,9 +186,9 @@
                 {"data": "status",
                     render:function(e,type,full,row){
                         if(full.status==1){
-                            return "<span class='gray'>已还款</span>";
+                            return "<span class='gray'>Reimbursement</span>";
                         }
-                        else{  return "<span class='red'>未还款</span>";}
+                        else{  return "<span class='red'>No repayment</span>";}
 
                     }
                 },
@@ -199,7 +199,13 @@
                 {"data": "createtime" },
                 {"data": "id" ,
                     render:function(e,type,full,row){
-                        return "<a href='javascript:;' class='blue'  onclick='repayment("+full.id+")'>还款</a>";
+                        if(full.status==1){
+                            return " <a href='javascript:;' class='gray' >Reimbursement</a>"
+                        }
+                        else if(full.status==0){
+                            return "<a href='javascript:;' class='blue'  onclick='repayment("+full.id+")'>Repayment</a>"
+                        }
+
                     }
                 }
             ]
@@ -211,11 +217,11 @@
     function repayment(id){
         sweetAlert({
                 title: "",
-                text: "您将使用账户余额进行还款!",
+                text: "You will use your account balance for repayment!",
                 type: "warning",
                 showCancelButton: true,
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
+                confirmButtonText: "Confirm",
+                cancelButtonText: "Cancel",
                 closeOnConfirm: false,
                 closeOnCancel: true
             },
@@ -228,16 +234,16 @@
                         data: { id :id },
                         success: function (data) {
                             if (data.code=="success") {
-                                sweetAlert("", "恭喜您！还款成功！", "success");
-                                setTimeout(function(){ window.location.href = "/CN/my/my_loan";},1500);
+                                sweetAlert("", "Congratulations on your successful repayment", "success");
+                                setTimeout(function(){ window.location.href = "/EN/my/my_loan";},1500);
                             } else {
                                 sweetAlert({
-                                    title:"操作失败!",
+                                    title:"Operation failed!",
                                     text: data.message,
                                     type: "error",
                                     showCancelButton: true,
-                                    confirmButtonText: "确定",
-                                    cancelButtonText: "取消",
+                                    confirmButtonText: "Confirm",
+                                    cancelButtonText: "Cancel",
                                     closeOnConfirm: false,
                                     closeOnCancel: true
                                 });

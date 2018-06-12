@@ -28,8 +28,8 @@
 </head>
 
 </head>
-<body class="common_body flat-blue">
-<div class="row info_num">
+<body class="common_body flat-blue mt20">
+<div class="row info_num" style="display: none" id="zb_show">
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
         <a href="#">
             <div class="card  summary-inline index_recharge">
@@ -147,6 +147,7 @@
 <script type="text/javascript">
     $(function(){
         tradenum();//统计各类型数量
+        information();
         //初始化echarts实例
         var myChart = echarts.init(document.getElementById('chartmain'));
         var outChart = echarts.init(document.getElementById('chartout'));
@@ -596,7 +597,7 @@
                     legend: {
                         orient : 'vertical',
                         x : 'left',
-                        data:['充值','兑换','现金存入','现金提现','现金兑换','转账']
+                        data:['充值','兑换','现金存入','现金转出','现金兑换','转账']
                     },
                     toolbox: {
                         show : true,
@@ -685,6 +686,26 @@
                 sweetAlert("", "请求失败！", "error");
             }
         });
+    }
+
+    // 获取登录成员信息
+    function information() {
+        $.ajax({
+            url: "/muser/getUser",
+            type: "get",
+            data: null,
+            dataType: 'json',
+            async: false,
+            contentType: 'application/json',
+            success: function (data) {
+                $(".manage_name").html(data.username);
+                $("#servicebranch").html(data.servicebranch);
+                if(data.servicebranch=="总部"){
+                    $("#zb_show").show();
+                }
+            }
+        });
+
     }
 </script>
 </body>
