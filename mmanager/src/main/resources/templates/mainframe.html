@@ -88,7 +88,7 @@
     </div>
 </div>
 <div class="row info_num">
-    <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12">
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
         <a href="#">
             <div class="card  summary-inline index_zr">
                 <div class="card-body">
@@ -102,7 +102,7 @@
             </div>
         </a>
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12">
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
         <a href="#">
             <div class="card  summary-inline index_zc">
                 <div class="card-body">
@@ -116,7 +116,7 @@
             </div>
         </a>
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12">
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
         <a href="#">
             <div class="card  summary-inline index_exchange">
                 <div class="card-body">
@@ -124,6 +124,20 @@
                     <div class="content">
                         <div class="title" id="dhnum">0</div>
                         <div class="sub-title ">现金兑换笔数</div>
+                    </div>
+                    <div class="clear-both"></div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+        <a href="#">
+            <div class="card  summary-inline index_exchange">
+                <div class="card-body">
+                    <i class="icon fa "></i>
+                    <div class="content">
+                        <div class="title" id="yznum">0</div>
+                        <div class="sub-title ">现金预支笔数</div>
                     </div>
                     <div class="clear-both"></div>
                 </div>
@@ -140,7 +154,8 @@
         <a href="javascript:;" data-id="30">本月</a>
         <a href="javascript:;" data-id="90">季度</a>
     </div>
-    <div class="  mt10 white_bg" id="chartpie" style="width:80%; height: 500px; padding: 20px; margin: 0 auto;"></div>
+    <div class="inblock mt10 white_bg" id="chartpie" style="width:80%; height: 500px; padding: 20px; margin: 0 auto;" ></div>
+    <div class="  mt10 white_bg" id="areapie" style="width:80%; height: 500px; padding: 20px; margin: 0 auto;"></div>
 </div>
 </div>
 <input type="hidden" id="dateinput" value="1">
@@ -151,15 +166,16 @@
         //初始化echarts实例
         var myChart = echarts.init(document.getElementById('chartmain'));
         var outChart = echarts.init(document.getElementById('chartout'));
-        var mypie = echarts.init(document.getElementById('chartpie'));
         trademoney(myChart);//收入折线图
         tradeout(outChart);//支出折线图
-        tradepie(mypie);//收支饼状图
+        var mypie = echarts.init(document.getElementById('chartpie'));
+        var areapie = echarts.init(document.getElementById('areapie'));
         $(".tabbutton a").click(function(){
             var value=$(this).attr("data-id");
             $("#dateinput").val(value);
             $(this).addClass("cur").siblings().removeClass("cur");
             tradepie(mypie);//收支饼状图
+            tradeareapie(areapie);//收支饼状图
         });
     })
 
@@ -518,7 +534,7 @@
             }
         });
     }
-    //统计各类型金额总和饼状图
+    //统计总部各类型金额总和饼状图
     function tradepie(mypie) {
         var date=$("#dateinput").val();
         $.ajax({
@@ -526,31 +542,34 @@
             data: {date:date},
             type: 'get',
             success: function (data) {
-                var cnypie=[{value:0,name:'充值'},{value:0,name:'兑换'},{value:0,name:'现金存入'},{value:0,name:'现金转出'},{value:0,name:'现金兑换'},{value:0,name:'转账'}];
-                var usdpie=[{value:0,name:'充值'},{value:0,name:'兑换'},{value:0,name:'现金存入'},{value:0,name:'现金转出'},{value:0,name:'现金兑换'},{value:0,name:'转账'}];
+                var cnypie=[{value:0,name:'现金存入'},{value:0,name:'现金转出'},{value:0,name:'现金兑换'},{value:0,name:'现金预支'},{value:0,name:'转账'},{value:0,name:'充值'},{value:0,name:'兑换'}];
+                var usdpie=[{value:0,name:'现金存入'},{value:0,name:'现金转出'},{value:0,name:'现金兑换'},{value:0,name:'现金预支'},{value:0,name:'转账'},{value:0,name:'充值'},{value:0,name:'兑换'}];
                 var obj=strToJson(data);
                 for(var i=0;i<obj.length;i++){
 
                     // 人民币
                     if(obj[i].counttype=="CNY"){
                         switch (obj[i].operatype) {
-                            case "充值":
+                            case "现金存入":
                                 cnypie[0].value=obj[i].sum;
                                 break;
-                            case "兑换":
-                                cnypie[1].value=obj[i].sum;
-                                break;
-                            case "现金存入":
-                                cnypie[2].value=obj[i].sum;
-                                break;
                             case "现金转出":
-                                cnypie[3].value=-obj[i].sum;
+                                cnypie[1].value=-obj[i].sum;
                                 break;
                             case "现金兑换":
-                                cnypie[4].value=obj[i].sum;
+                                cnypie[2].value=obj[i].sum;
+                                break;
+                            case "现金预支":
+                                cnypie[3].value=obj[i].sum;
                                 break;
                             case "转账":
+                                cnypie[4].value=obj[i].sum;
+                                break;
+                            case "充值":
                                 cnypie[5].value=obj[i].sum;
+                                break;
+                            case "兑换":
+                                cnypie[6].value=obj[i].sum;
                                 break;
                             default:
                                 break;
@@ -559,23 +578,26 @@
                     // 美元
                     if(obj[i].counttype=="USD"){
                         switch (obj[i].operatype) {
-                            case "充值":
+                            case "现金存入":
                                 usdpie[0].value=obj[i].sum;
                                 break;
-                            case "兑换":
-                                usdpie[1].value=obj[i].sum;
-                                break;
-                            case "现金存入":
-                                usdpie[2].value=obj[i].sum;
-                                break;
                             case "现金转出":
-                                usdpie[3].value=-obj[i].sum;
+                                usdpie[1].value=-obj[i].sum;
                                 break;
                             case "现金兑换":
-                                usdpie[4].value=obj[i].sum;
+                                usdpie[2].value=obj[i].sum;
+                                break;
+                            case "现金预支":
+                                usdpie[3].value=obj[i].sum;
                                 break;
                             case "转账":
+                                usdpie[4].value=obj[i].sum;
+                                break;
+                            case "充值":
                                 usdpie[5].value=obj[i].sum;
+                                break;
+                            case "兑换":
+                                usdpie[6].value=obj[i].sum;
                                 break;
                             default:
                                 break;
@@ -597,7 +619,7 @@
                     legend: {
                         orient : 'vertical',
                         x : 'left',
-                        data:['充值','兑换','现金存入','现金转出','现金兑换','转账']
+                        data:['现金存入','现金转出','现金兑换','现金预支','转账','充值','兑换']
                     },
                     toolbox: {
                         show : true,
@@ -649,6 +671,127 @@
         });
 
     }
+
+    //统计网点各类型金额总和饼状图
+    function tradeareapie(mypie) {
+        var date=$("#dateinput").val();
+        $.ajax({
+            url: '/opera/queryoperatype',
+            data: {date:date},
+            type: 'get',
+            success: function (data) {
+                var cnypie=[{value:0,name:'现金存入'},{value:0,name:'现金转出'},{value:0,name:'现金兑换'},{value:0,name:'现金预支'}];
+                var usdpie=[{value:0,name:'现金存入'},{value:0,name:'现金转出'},{value:0,name:'现金兑换'},{value:0,name:'现金预支'}];
+                var obj=strToJson(data);
+                for(var i=0;i<obj.length;i++){
+
+                    // 人民币
+                    if(obj[i].counttype=="CNY"){
+                        switch (obj[i].operatype) {
+                            case "现金存入":
+                                cnypie[0].value=obj[i].sum;
+                                break;
+                            case "现金转出":
+                                cnypie[1].value=-obj[i].sum;
+                                break;
+                            case "现金兑换":
+                                cnypie[2].value=obj[i].sum;
+                                break;
+                            case "现金预支":
+                                cnypie[3].value=obj[i].sum;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    // 美元
+                    if(obj[i].counttype=="USD"){
+                        switch (obj[i].operatype) {
+                            case "现金存入":
+                                usdpie[0].value=obj[i].sum;
+                                break;
+                            case "现金转出":
+                                usdpie[1].value=-obj[i].sum;
+                                break;
+                            case "现金兑换":
+                                usdpie[2].value=obj[i].sum;
+                                break;
+                            case "现金预支":
+                                usdpie[3].value=obj[i].sum;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+                }
+                // console.log(arrpie);
+                var option = {
+                    title : {
+                        text: '各类型交易金额分析',
+                        subtext: '',
+                        x:'center'
+                    },
+                    tooltip : {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        orient : 'vertical',
+                        x : 'left',
+                        data:['现金存入','现金转出','现金兑换','现金预支']
+                    },
+                    toolbox: {
+                        show : true,
+                        feature : {
+                            mark : {show: true},
+                            dataView : {show: true, readOnly: false},
+                            magicType : {
+                                show: true,
+                                type: ['pie', 'funnel'],
+                                option: {
+                                    funnel: {
+                                        x: '25%',
+                                        width: '50%',
+                                        funnelAlign: 'left',
+                                        max: 1548
+                                    }
+                                }
+                            },
+                            restore : {show: true},
+                            saveAsImage : {show: true}
+                        }
+                    },
+                    calculable : true,
+                    series : [
+                        {
+                            name:'人民币交易',
+                            type:'pie',
+                            radius : '55%',
+                            center : ['25%', 200],
+                            data:cnypie
+                        },
+                        {
+                            name:'美元交易',
+                            type:'pie',
+                            radius : '55%',
+                            center : ['75%', 200],
+                            data:usdpie
+                        }
+                    ]
+                };
+
+                //使用制定的配置项和数据显示图表
+                mypie.setOption(option);
+
+            },
+            error: function () {
+                sweetAlert("", "请求失败！", "error");
+            }
+        });
+
+    }
+
     //统计各类型数量
     function tradenum(){
         $.ajax({
@@ -679,6 +822,9 @@
                     else if(obj[i].operatype == "现金兑换"){
                         $("#dhnum").html(obj[i].counttype)
                     }
+                    else if(obj[i].operatype == "现金预支"){
+                        $("#yznum").html(obj[i].counttype)
+                    }
                 }
 
             },
@@ -690,6 +836,8 @@
 
     // 获取登录成员信息
     function information() {
+        var mypie = echarts.init(document.getElementById('chartpie'));
+        var areapie = echarts.init(document.getElementById('areapie'));
         $.ajax({
             url: "/muser/getUser",
             type: "get",
@@ -702,6 +850,13 @@
                 $("#servicebranch").html(data.servicebranch);
                 if(data.servicebranch=="总部"){
                     $("#zb_show").show();
+                    $("#areapie").hide();
+                    tradepie(mypie);//总部收支饼状图
+                }
+                else{
+
+                    $("#chartpie").hide();
+                    tradeareapie(areapie);//网点收支饼状图
                 }
             }
         });
