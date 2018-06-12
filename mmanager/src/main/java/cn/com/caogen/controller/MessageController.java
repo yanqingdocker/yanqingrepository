@@ -11,6 +11,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,7 +38,7 @@ public class MessageController {
         return JSONArray.fromObject(taskList).toString();
     }
 
-    @RequestMapping("accessmessage")
+    @RequestMapping(path = "accessmessage",method = RequestMethod.POST)
     public String domessage(@RequestParam("id") int id, HttpServletRequest request){
 
         Stream<Task> stream=taskService.queryAll().stream();
@@ -57,7 +58,7 @@ public class MessageController {
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 
-    @RequestMapping("refuesemessage")
+    @RequestMapping(path = "refuesemessage",method = RequestMethod.POST)
     public String refuesemessage(@RequestParam("id") int id, HttpServletRequest request){
         Stream<Task> stream=taskService.queryAll().stream();
         Task task=stream.filter((e)->e.getId()==id).collect(Collectors.toList()).get(0);
