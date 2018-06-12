@@ -20,7 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.text.html.HTML;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * author:huyanqing
@@ -43,7 +46,9 @@ public class TaskController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
         logger.info("queryUndo start:");
-        return JSONArray.fromObject(taskService.queryByState(ConstantUtil.TASK_UNDO)).toString();
+        Stream<Task> stream=taskService.queryByState(ConstantUtil.TASK_UNDO).stream();
+        List<Task> taskList=stream.filter((e)->!e.getTaskname().equals(ConstantUtil.VIP)).collect(Collectors.toList());
+        return JSONArray.fromObject(taskList).toString();
     }
     /**
      * 查询处理中的任务
@@ -55,7 +60,9 @@ public class TaskController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
         logger.info("queryUndo start:");
-        return JSONArray.fromObject(taskService.queryByState(ConstantUtil.TASK_DOING)).toString();
+        Stream<Task> stream=taskService.queryByState(ConstantUtil.TASK_DOING).stream();
+        List<Task> taskList=stream.filter((e)->!e.getTaskname().equals(ConstantUtil.VIP)).collect(Collectors.toList());
+        return JSONArray.fromObject(taskList).toString();
     }
 
     /**
@@ -68,7 +75,9 @@ public class TaskController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
         logger.info("queryDone start:");
-        return JSONArray.fromObject(taskService.queryByState(ConstantUtil.TASK_DONE)).toString();
+        Stream<Task> stream=taskService.queryByState(ConstantUtil.TASK_DONE).stream();
+        List<Task> taskList=stream.filter((e)->!e.getTaskname().equals(ConstantUtil.VIP)).collect(Collectors.toList());
+        return JSONArray.fromObject(taskList).toString();
     }
     @RequestMapping("dotask")
     public String doTask(@RequestParam("id") int id, HttpServletRequest request){

@@ -11,7 +11,7 @@ public class ConstantUtil {
     public static final String NOT_EQUAL_PHONE="提交的账号不一致或验证码错误";
     public static final String ALERADY_CUNT="该类型的账户已创建过";
     public static final String NOT_AUTHENTION="未认证用户不能创建账户";
-    public static final String NOTUSER_OR_NOTAUTENTENTION="你所填写的用户不存在或者还未实名认证";
+    public static final String NOTUSER_OR_NOTAUTENTENTION="此用户不存在或者还未实名认证";
     public static final String NOTALLOWSELF="不能自己给自己发送信息，请填写要发送的正确手机号";
     public static final String SYSTEMCOUNT_LESS="现金资金库余额不足";
     public static final String ERROR_ARGS="请检查参数是否正确";
@@ -21,6 +21,7 @@ public class ConstantUtil {
     public static final String NOTSRCORDEST="账户不存在";
     public static final String PAYPWDERROR="支付密码错误";
     public static final String ALREADY_APPLIY_COUNT="该账号已经被绑定到本平台";
+    public static final String VIP="VIP申请";
     public static final String FAIL="fail";
     public static final String SUCCESS="success";
     public static final String ONE="1";
@@ -56,5 +57,9 @@ public class ConstantUtil {
     public static final String MONEY_BORROW="现金预支";
     public static final String CNY_LIB="人民币资金库";
     public static final String USD_LIB="美元资金库";
+    public static final String TASK_UNDO="待处理";
+    public static final String TASK_DONE="已处理";
+    public static final String TASK_DOING="处理中";
+    public static final String RESUBMITASK="您已经提交过申请了，系统正在处理中，请勿重复提交";
 
 }

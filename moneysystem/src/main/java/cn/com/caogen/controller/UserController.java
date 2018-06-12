@@ -25,6 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * author:huyanqing
@@ -365,13 +367,21 @@ public class UserController {
     public String applyVip(HttpServletRequest request) {
 
         logger.info("applyVip start: ");
-        Task task=new Task();
-        task.setTaskname("VIP申请");
-        task.setOperauser(JedisUtil.getUser(request).getUsername());
-        task.setCreatetime(DateUtil.getDate());
-        task.setTaskcontent("平台账号为"+JedisUtil.getUser(request).getPhone()+"的用户申请开通VIP");
-        taskService.addTask(task);
+        if(JedisUtil.getUser(request).getIsauthentication()==0){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOTUSER_OR_NOTAUTENTENTION)).toString();
+        }
 
+        Stream<Task> stream=taskService.queryAll().stream();
+        Task task1=stream.filter((e)->e.getTaskcontent().equals(JedisUtil.getUser(request).getPhone())&&!e.getState().equals(ConstantUtil.TASK_DONE)).collect(Collectors.toList()).get(0);
+        if(task1!=null){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.RESUBMITASK)).toString();
+        }
+        Task task=new Task();
+        task.setTaskname(ConstantUtil.VIP);
+        task.setDouser(JedisUtil.getUser(request).getUsername());
+        task.setCreatetime(DateUtil.getDate());
+        task.setTaskcontent(JedisUtil.getUser(request).getPhone());
+        taskService.addTask(task);
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 

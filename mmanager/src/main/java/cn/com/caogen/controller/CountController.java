@@ -311,9 +311,7 @@ public class CountController {
 
     @RequestMapping(path="queryMoneyType",method = RequestMethod.GET)
     public String getMoneyType(HttpServletRequest request){
-        if(!FilterAuthUtil.checkAuth(request)){
-            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
-        }
+
         return JSONArray.fromObject(ConstantUtil.MONEY_TYPES).toString();
     }
 

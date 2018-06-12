@@ -20,6 +20,7 @@ public class ConstantUtil {
     public static final String NOTSRCORDEST="账户不存在";
     public static final String PAYPWDERROR="支付密码错误";
     public static final String ALREADY_APPLIY_COUNT="该账号已经被绑定到本平台";
+    public static final String SERVICE_BRANCH="总部";
     public static final String NOT_USER="平台上没有此账号";
     public static final String FAIL="fail";
     public static final String SUCCESS="success";
@@ -65,4 +66,5 @@ public class ConstantUtil {
     public static final String GIVEVIP_NOTCONDTION="该会员至少完成3笔以上汇兑才可授权VIP";
 
     public static final String MONEY_RETURN ="现金还款" ;
+    public static final String VIP="VIP申请";
 }

@@ -12,6 +12,9 @@ import java.util.List;
 public class FilterAuthUtil {
     public static boolean checkAuth(HttpServletRequest request){
         Muser currentUser=(Muser) request.getSession().getAttribute("currentUser");
+        if(currentUser==null){
+            return false;
+        }
         List<String> auths=currentUser.getAuths();
         String path=request.getRequestURI();
         for(String auth:auths){
