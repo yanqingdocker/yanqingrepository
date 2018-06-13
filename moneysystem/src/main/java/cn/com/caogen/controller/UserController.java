@@ -372,7 +372,7 @@ public class UserController {
         }
 
         Stream<Task> stream=taskService.queryAll().stream();
-        List<Task> taskList=stream.filter((e)->e.getTaskname().equals(ConstantUtil.VIP)&&!e.getState().equals(ConstantUtil.TASK_DONE)&&e.getTaskcontent().equals(JedisUtil.getUser(request).getPhone())).collect(Collectors.toList());
+        List<Task> taskList=stream.filter((e)->e.getTaskname().equals(ConstantUtil.VIP)&&e.getState().equals(ConstantUtil.TASK_UNDO)&&e.getTaskcontent().equals(JedisUtil.getUser(request).getPhone())).collect(Collectors.toList());
         if(taskList.size()>0){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.RESUBMITASK)).toString();
         }
@@ -381,6 +381,7 @@ public class UserController {
         task.setDouser(JedisUtil.getUser(request).getUsername());
         task.setCreatetime(DateUtil.getDate());
         task.setTaskcontent(JedisUtil.getUser(request).getPhone());
+        task.setState(ConstantUtil.TASK_UNDO);
         taskService.addTask(task);
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }

@@ -61,5 +61,7 @@ public class ConstantUtil {
     public static final String TASK_DONE="已处理";
     public static final String TASK_DOING="处理中";
     public static final String RESUBMITASK="您已经提交过申请了，系统正在处理中，请勿重复提交";
+    public static final String ACCESSVIP="已同意";
+    public static final String REFUSEVIP="已驳回";
 
 }

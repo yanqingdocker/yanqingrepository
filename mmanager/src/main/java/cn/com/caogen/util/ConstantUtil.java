@@ -67,4 +67,7 @@ public class ConstantUtil {
 
     public static final String MONEY_RETURN ="现金还款" ;
     public static final String VIP="VIP申请";
+    public static final String ACCESSVIP="已同意";
+    public static final String REFUSEVIP="已驳回";
+
 }

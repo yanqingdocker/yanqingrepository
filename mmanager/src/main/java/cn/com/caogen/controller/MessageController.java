@@ -47,6 +47,12 @@ public class MessageController {
         return JSONArray.fromObject(taskList).toString();
     }
 
+    /**
+     * 同意
+     * @param id
+     * @param request
+     * @return
+     */
     @RequestMapping(path = "accessmessage",method = RequestMethod.POST)
     public String domessage(@RequestParam("id") int id, HttpServletRequest request){
 
@@ -62,7 +68,7 @@ public class MessageController {
         MessageService.sendMessage(telphone,msg);
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("id",id);
-        parmMap.put("state",ConstantUtil.TASK_DONE);
+        parmMap.put("state",ConstantUtil.ACCESSVIP);
         parmMap.put("endtime",DateUtil.getTime());
         String douser="操作员-"+user.getUsername();
         parmMap.put("douser",douser);
@@ -70,6 +76,32 @@ public class MessageController {
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 
+    @RequestMapping(path = "queryaccess",method = RequestMethod.GET)
+    public String queryaccess(HttpServletRequest request){
+
+        Stream<Task> stream=taskService.queryAll().stream();
+        List<Task> taskList=stream.filter((e)->e.getTaskname().equals(ConstantUtil.VIP)&&e.getState().equals(ConstantUtil.ACCESSVIP)).collect(Collectors.toList());
+        return JSONArray.fromObject(taskList).toString();
+    }
+    @RequestMapping(path = "queryrefuse",method = RequestMethod.GET)
+    public String queryrefuse(HttpServletRequest request){
+        Stream<Task> stream=taskService.queryAll().stream();
+        List<Task> taskList=stream.filter((e)->e.getTaskname().equals(ConstantUtil.VIP)&&e.getState().equals(ConstantUtil.REFUSEVIP)).collect(Collectors.toList());
+        return JSONArray.fromObject(taskList).toString();
+    }
+    @RequestMapping(path = "querydoing",method = RequestMethod.GET)
+    public String querydoing(HttpServletRequest request){
+        Stream<Task> stream=taskService.queryAll().stream();
+        List<Task> taskList=stream.filter((e)->e.getTaskname().equals(ConstantUtil.VIP)&&e.getState().equals(ConstantUtil.TASK_UNDO)).collect(Collectors.toList());
+        return JSONArray.fromObject(taskList).toString();
+    }
+
+    /**
+     * 驳回
+     * @param id
+     * @param request
+     * @return
+     */
     @RequestMapping(path = "refuesemessage",method = RequestMethod.POST)
     public String refuesemessage(@RequestParam("id") int id, HttpServletRequest request){
         Stream<Task> stream=taskService.queryAll().stream();
@@ -80,7 +112,7 @@ public class MessageController {
         Muser user=(Muser)request.getSession().getAttribute("currentUser");
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("id",id);
-        parmMap.put("state",ConstantUtil.TASK_DONE);
+        parmMap.put("state",ConstantUtil.REFUSEVIP);
         parmMap.put("endtime",DateUtil.getTime());
         String douser="操作员-"+user.getUsername();
         parmMap.put("douser",douser);
