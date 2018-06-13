@@ -380,7 +380,7 @@ public class UserController {
         }
         Task task=new Task();
         task.setTaskname(ConstantUtil.VIP);
-        task.setDouser(JedisUtil.getUser(request).getUsername());
+        task.setOperauser(JedisUtil.getUser(request).getUsername());
         task.setCreatetime(DateUtil.getDate());
         task.setTaskcontent(JedisUtil.getUser(request).getPhone());
         task.setState(ConstantUtil.TASK_UNDO);
