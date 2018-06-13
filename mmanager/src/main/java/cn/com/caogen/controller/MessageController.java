@@ -34,7 +34,7 @@ public class MessageController {
     @RequestMapping("query")
     public String query(HttpServletRequest request){
         Stream<Task> stream=taskService.queryAll().stream();
-        List<Task> taskList=stream.filter((e)->!e.getTaskname().equals(ConstantUtil.VIP)).collect(Collectors.toList());
+        List<Task> taskList=stream.filter((e)->e.getTaskname().equals(ConstantUtil.VIP)).collect(Collectors.toList());
         return JSONArray.fromObject(taskList).toString();
     }
 
