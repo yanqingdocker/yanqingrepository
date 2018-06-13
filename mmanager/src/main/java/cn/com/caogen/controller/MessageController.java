@@ -11,6 +11,7 @@ import cn.com.caogen.util.DateUtil;
 import cn.com.caogen.util.ResponseMessage;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +63,7 @@ public class MessageController {
         User vipuser=getUser(telphone,null);
         vipuser.setLeavel(1);
         userServiceImpl.update(vipuser);
-        String msg="尊敬的客户您好！恭喜您，你申请开通VIP经审核已经成功通过。";
+        String msg="尊敬的客户您好！恭喜您，您申请开通VIP经审核已经通过。";
         MessageService.sendMessage(telphone,msg);
         Muser user=(Muser)request.getSession().getAttribute("currentUser");
         MessageService.sendMessage(telphone,msg);
@@ -108,7 +109,7 @@ public class MessageController {
         Stream<Task> stream=taskService.queryAll().stream();
         Task task=stream.filter((e)->e.getId()==id).collect(Collectors.toList()).get(0);
         String telphone=task.getTaskcontent();
-        String msg="尊敬的客户您好！对不起，你申请的开通VIP审核失败。";
+        String msg="尊敬的客户您好！对不起，您申请开通VIP经审核失败。";
         MessageService.sendMessage(telphone,msg);
         Muser user=(Muser)request.getSession().getAttribute("currentUser");
         Map<String,Object> parmMap=new HashMap<String,Object>();
