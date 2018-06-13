@@ -370,7 +370,9 @@ public class UserController {
         if(JedisUtil.getUser(request).getIsauthentication()==0){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOTUSER_OR_NOTAUTENTENTION)).toString();
         }
-
+        if(JedisUtil.getUser(request).getLeavel()==1){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ALREADYVIP)).toString();
+        }
         Stream<Task> stream=taskService.queryAll().stream();
         List<Task> taskList=stream.filter((e)->e.getTaskname().equals(ConstantUtil.VIP)&&e.getState().equals(ConstantUtil.TASK_UNDO)&&e.getTaskcontent().equals(JedisUtil.getUser(request).getPhone())).collect(Collectors.toList());
         if(taskList.size()>0){

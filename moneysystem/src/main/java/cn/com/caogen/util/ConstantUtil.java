@@ -55,13 +55,9 @@ public class ConstantUtil {
     public static final String SESSIONCOLLCTION="sessionMap";
     public static final String MONEY_RETURN ="现金还款" ;
     public static final String MONEY_BORROW="现金预支";
-    public static final String CNY_LIB="人民币资金库";
-    public static final String USD_LIB="美元资金库";
     public static final String TASK_UNDO="待处理";
-    public static final String TASK_DONE="已处理";
-    public static final String TASK_DOING="处理中";
     public static final String RESUBMITASK="您已经提交过申请了，系统正在处理中，请勿重复提交";
-    public static final String ACCESSVIP="已同意";
-    public static final String REFUSEVIP="已驳回";
+    public static final String ALREADYVIP="您已经是VIP客户了，无需再开通VIP了";
+
 
 }
