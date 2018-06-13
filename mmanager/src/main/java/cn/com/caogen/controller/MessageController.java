@@ -73,6 +73,7 @@ public class MessageController {
         String douser="操作员-"+user.getUsername();
         parmMap.put("douser",douser);
         parmMap.put("servicebranch",user.getServicebranch());
+        taskService.updateTask(parmMap);
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 
