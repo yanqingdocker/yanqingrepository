@@ -24,6 +24,11 @@
     <script  type="text/javascript" src="/js/dataTables.bootstrap.min.js"></script>
     <script  type="text/javascript" src="/js/sweet-alert.min.js"></script>
     <script  type="text/javascript" src="/js/common.js"></script>
+    <style>
+        .tabbutton a {
+            padding: 8px 20px;
+        }
+    </style>
 </head>
 
 <body class="flat-blue common_body">
@@ -43,6 +48,11 @@
             <div class="card-header">
             </div>
             <div class="card-body">
+                <div class="tabbutton w100" style="position: absolute;top: 30px;left:0;z-index: 999">
+                    <a href="javascript:;" data-id="querydoing" class="cur">待处理</a>
+                    <a href="javascript:;" data-id="queryaccess">已同意</a>
+                    <a href="javascript:;" data-id="queryrefuse">已驳回</a>
+                </div>
                 <table class="datatable table table-striped" cellspacing="0" width="100%" id="table">
                     <thead>
                     <tr>
@@ -52,6 +62,9 @@
                         <th>账号</th>
                         <th>状态</th>
                         <th>申请时间</th>
+                        <th>操作网点</th>
+                        <th>操作员</th>
+                        <th width="130">处理时间</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -66,6 +79,9 @@
 
 <script type="text/javascript">
     $(function () {
+        loadtable("querydoing");
+    })
+    function loadtable(todo){
         $('#table').DataTable( {
             "order": [ 5, "desc" ],
             "serverSide": true,
@@ -108,7 +124,7 @@
                 }
             },
             ajax: {
-                url: "/message/query",
+                url: '/message/'+todo+'',
                 dataSrc: function (data) {
                     if (data.code=="403") {
                         sweetAlert({
@@ -151,6 +167,9 @@
                     }
                 },
                 {"data": "createtime" },
+                {"data": "servicebranch" },
+                {"data": "douser" },
+                {"data": "endtime" },
                 {"data": "id" ,
                     render:function(e,type,full,row){
                         if(full.state=="已驳回"||full.state=="已同意"){
@@ -161,8 +180,15 @@
                 }
             ]
         } );
-    })
-
+    }
+    $(".tabbutton a").click(function(){
+        $(this).addClass("cur").siblings().removeClass("cur");
+        var oldTable = $('#table').dataTable();
+        oldTable.fnClearTable(); //清空一下table
+        oldTable.fnDestroy(); //还原初始化了的dataTable
+        var todo=$(this).attr("data-id");
+        loadtable(todo);
+    });
     // 同意申请
     function agree(id) {
         sweetAlert({
