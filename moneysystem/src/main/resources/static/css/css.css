@@ -127,7 +127,7 @@ a.list-group-item:hover, button.list-group-item:hover, a.list-group-item:focus, 
 .money_block .dollar{ background: url("../images/bg_my.png") no-repeat; width: 80%; height: 160px;background-size: contain}
 .table{ border-top-width: 1px; border-left-width: 1px;border-color: #e7e7e7 !important;border-style: solid;}
 .table  td{border-bottom-width: 1px;border-style: solid; border-right-width:1px ;border-color: #e7e7e7 !important;}
-.table>thead>tr>th{ border-bottom-width: 1px;border-style: solid;border-right-width:1px ;border-left-width:1px ;border-color: #e7e7e7 !important; font-size: 14px; color: #333;background: url(../images/table_thbg.png) repeat-x;  }
+.table>thead>tr>th{ border-bottom-width: 1px;border-style: solid;border-right-width:1px ;border-left-width:1px ;border-color: #e7e7e7 !important; font-size: 14px; color: #333;background: url(../images/table_thbg.png) repeat-x; white-space: nowrap; }
 .table td{color: #757474;}
 .table td:last-child{ text-align: center}
 .table tr.odd td{ background: #fff}
@@ -386,14 +386,15 @@ input[type="radio"], input[type="checkbox"] {
 
 /*登录页*/
 .login_form .login_input {
-    min-height: 50px;
+    height: 49px;
     width: 100%;margin: 0 auto;
     background:rgba(0,0,0,0.5) ; filter: progid:DXImageTransform.Microsoft.gradient(startcolorstr=#7F000000,endcolorstr=#7F000000);
     border: 1px solid #c1c1c4;
     border-radius: 6px;
     position: relative;
 }
-.login_form .login_input input{background:rgba(0,0,0,0.2) ; filter: progid:DXImageTransform.Microsoft.gradient(startcolorstr=#33000000,endcolorstr=#33000000); border: none;  color: #fff;  margin-left: 39px; width: auto; height: 47px;}
+.login_form .login_input input{background:rgba(0,0,0,0.2) ; filter: progid:DXImageTransform.Microsoft.gradient(startcolorstr=#33000000,endcolorstr=#33000000); border: none;  color: #fff;  margin-left: 39px; width: 89%; height: 48px;}
+.login_form .login_input input.codenum{width:60%;}
 .login_form .login_input input:focus{color:#fff;box-shadow:none}
 .login_form .login_input .icon {
     position: absolute;
@@ -412,7 +413,7 @@ input[type="radio"], input[type="checkbox"] {
 .login_bg{ background: url("../images/login_bg.png") no-repeat center center;background-size:cover;background-attachment: fixed; }
 .login_form{ background:rgba(255,255,255,0.3) ; filter: progid:DXImageTransform.Microsoft.gradient(startcolorstr=#4cffffff,endcolorstr=#4cffffff); padding:40px; border-radius: 6px;}
 .login_logo img{ width: 160px; margin-bottom: 30px}
-.login_form .code_btn{ margin-top: 6px; background:rgba(149,149,149,0.5) ; filter: progid:DXImageTransform.Microsoft.gradient(startcolorstr=#7F959595,endcolorstr=#7F959595); border-radius: 4px; font-size: 14px !important;}
+.login_form .code_btn{ margin-top: 5px; background:rgba(149,149,149,0.5) ; filter: progid:DXImageTransform.Microsoft.gradient(startcolorstr=#7F959595,endcolorstr=#7F959595); border-radius: 4px; font-size: 14px !important;}
 .login_form .code_btn:hover{ font-size: 14px;}
 .register_btn,.register_btn:hover{ font-size: 20px; font-weight: normal;}
 .register_btn{ width: 375px; margin: 0 auto}

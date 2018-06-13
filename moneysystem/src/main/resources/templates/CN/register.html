@@ -24,7 +24,7 @@
 </head>
 <body class="login_bg">
 <div class="m " style="width: 455px;margin-top: 6%">
-    <div class="login_logo tc"><img src="/images/logo.png" ></div>
+    <div class="login_logo tc"><a href="/"><img src="/images/logo.png" ></a></div>
     <div class="w100 inblock">
         <form id="registerForm">
             <div class="login_form">
@@ -37,7 +37,7 @@
                     <input type="password" class="form-control" name="password" onkeydown="javascript: if(event.keyCode == 13) save();"  placeholder="密码"/>
                 </div>
                 <div class="form-group login_input ">
-                    <div class="w100 inblock"><input type="text" class="form-control l" name="checkNum" placeholder="短信验证码" size="22" maxlength="10"><button type="button" class="btn btn-primary code_btn r mr5" id="getcode">发送验证码</button>
+                    <div class="w100 inblock"><input type="text" class="form-control l codenum" name="checkNum" placeholder="短信验证码" size="22" maxlength="10"><button type="button" class="btn btn-primary code_btn r mr5" id="getcode">发送验证码</button>
                     </div>
                 </div>
                 <div id="telephonenameTip"></div>

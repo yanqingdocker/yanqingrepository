@@ -286,7 +286,7 @@ div.dataTables_wrapper div.dataTables_processing{background: #fff;}
 .width220{width: 220px;}
 .width120{width: 120px;}
 .warning{ color: #ff5050; margin-left: 5px;font-size: 14px;}
-#mainFrame{ }
+#mainFrame{border: none; }
 
 /*表格*/
 .flat-blue .table.table-striped > tbody > tr:nth-of-type(odd) {
@@ -341,7 +341,7 @@ button.close {
     border-left: 1px solid #555;
 }
 .width235{ width: 235px;}
-
+.navbar .navbar-nav > li > a.index_home{background: url(../images/home.png) no-repeat;display: inline-block; width: 15px;  background-size: contain;}
 
 
 

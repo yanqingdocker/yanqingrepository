@@ -9,15 +9,20 @@
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" media="all" href="/css/daterangepicker-bs3.css"/>
     <link rel="stylesheet" type="text/css" href="/css/base.css"/>
     <link rel="stylesheet" type="text/css" href="/css/css.css"/>
+    <link  rel="stylesheet" type="text/css"  href="/css/sweet-alert.css"/>
     <script  type="text/javascript" src="/js/jquery1.12.4.js"></script>
     <script  type="text/javascript" src="/js/bootstrap.min.js"></script>
-    <script  type="text/javascript" src="/js/index.js"></script>
-
+    <script  type="text/javascript" src="/js/bootstrapValidator.min.js"></script>
+    <script  type="text/javascript" src="/js/sweet-alert.min.js"></script>
+    <script  type="text/javascript" src="/js/common.js"></script>
+    <script  type="text/javascript" src="/js/areajson.js"></script>
+    <script  type="text/javascript" src="/js/date.js"></script>
     <!--[if lte IE 9]>
-    <script type="text/javascript" src="/js/html5.min.js"></script>
-    <script type="text/javascript" src="/js/respond.min.js"></script>
+    <script  type="text/javascript" src="/js/html5.min.js"></script>
+    <script  type="text/javascript" src="/js/respond.min.js"></script>
     <![endif]-->
 </head>
 <body>
@@ -89,16 +94,14 @@
                 <form action="" method="">
                     <div class="form-group">
                         <label class="col-form-label w100">选择支出账户<span class="warning">*</span></label>
-                        <select class="custom-select  w100">
-                            <option value="1">21554664445545(人民币)</option>
-                            <option value="2">212145454545454(美元)</option>
+                        <select class="custom-select  w100" id="recharcount">
+
                         </select>
                     </div>
                     <div class="form-group">
                         <label class="col-form-label w100">支付宝<span class="warning">*</span></label>
-                        <select class="custom-select  w100">
-                            <option value="3">张(*****6787)</option>
-                            <option value="4">张(*****6887)</option>
+                        <select class="custom-select  w100" id="applyaccount">
+
                         </select>
                     </div>
                     <div class="form-group">
@@ -119,6 +122,74 @@
 
 <!--通用脚本-->
 <script  type="text/javascript" src="/js/footer.js"></script>
+
+<script  type="text/javascript" >
+    $(function(){
+        loadcount();//获取下拉账户
+        loadbankcard();//获取下拉银行卡
+    })
+    // 通过json同步获取下拉账户
+    function loadcount() {
+        $.ajax({
+            url: '/count/queryCountByUserid',
+            data: null,
+            type: 'get',
+            success: function (data) {
+                var jsonObj = $.parseJSON(data);//json字符串转数组
+                for (var i=0;i<jsonObj.length;i++)
+                {
+                    var html ='<option value="'+jsonObj[i].cardId+'">'+jsonObj[i].cardId+'('+currency_type (jsonObj[i].countType)+')'+'</option>';
+                    $("#recharcount").append(html);
+                }
+                if(jsonObj.length==0){
+                    sweetAlert({
+                            title: "请先申请账户，才能进行操作！",
+                            type: "warning",
+                            confirmButtonText: "去申请",
+                            closeOnConfirm: false
+                        },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                window.location.href = "/CN/my/my_account";
+                            }
+                        });
+                }
+
+            }
+        })
+    }
+
+    // 通过json同步获取下拉支付宝账户
+    function loadbankcard() {
+        $.ajax({
+            url: '/appliy/querybyUserid',
+            data: null,
+            type: 'get',
+            success: function (data) {
+                var jsonObj = $.parseJSON(data);//json字符串转数组
+                for (var i=0;i<jsonObj.length;i++)
+                {
+                    var html ='<option value="'+jsonObj[i].appliycount+'">'+jsonObj[i].appliycount+'('+jsonObj[i].realname+')'+'</option>';
+                    $("#applyaccount").append(html);
+                }
+                if(jsonObj.length==0){
+                    sweetAlert({
+                            title: "请先绑定支付宝，才能进行操作！",
+                            type: "warning",
+                            confirmButtonText: "去绑定",
+                            closeOnConfirm: false
+                        },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                window.location.href = "/CN/my/bind_account";
+                            }
+                        });
+                }
+
+            }
+        })
+    }
+</script>
 
 </body>
 </html>

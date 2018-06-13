@@ -210,7 +210,7 @@
                         data: { id :id },
                         success: function (data) {
                             if (data.code == "success") {
-                                sweetAlert("", "恭喜您！申请处理成功！", "success");
+                                sweetAlert("", "申请处理成功,已发送短信到用户手机！", "success");
                                 setTimeout(function(){ window.location.href = "/msgNotify/member_certificate";},1500);
                             }
                             else if (data.code=="403") {
@@ -262,7 +262,7 @@
                         data: { id :id },
                         success: function (data) {
                             if (data.code == "success") {
-                                sweetAlert("", "恭喜您！驳回处理成功！", "success");
+                                sweetAlert("", "驳回处理成功,已发送短信到用户手机！", "success");
                                 setTimeout(function(){ window.location.href = "/msgNotify/member_certificate";},1500);
                             }
                             else if (data.code=="403") {
@@ -283,7 +283,7 @@
                                     });
                             }
                             else {
-                                sweetAlert("", "驳回处理失败！", "error");
+                                sweetAlert("", "驳回处理失败,已发送短信到用户手机！", "error");
                             }
                         } ,
                         error: function () {
