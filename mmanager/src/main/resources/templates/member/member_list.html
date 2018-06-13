@@ -301,7 +301,20 @@
                                     closeOnCancel: true
                                 });
                             }
+                        },
+                        error: function (data) {
+                            sweetAlert({
+                                title:"升级失败!",
+                                text: "未实名认证会员请先前往网站进行自助实名认证。",
+                                type: "error",
+                                showCancelButton: true,
+                                confirmButtonText: "确定",
+                                cancelButtonText: "取消",
+                                closeOnConfirm: false,
+                                closeOnCancel: true
+                            });
                         }
+
                     });
                 }
             });

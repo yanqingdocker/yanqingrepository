@@ -190,6 +190,7 @@ table.dataTable.no-footer {
 .index_exchange .fa{ background: url("../images/index_exchange.png") no-repeat center; width: 55px; height: 55px; background-size: contain;vertical-align: middle;}
 .index_zc .fa{ background: url("../images/index_zc.png") no-repeat center; width: 55px; height: 55px; background-size: contain;vertical-align: middle;}
 .index_zr .fa{ background: url("../images/index_zr.png") no-repeat center; width: 55px; height: 55px; background-size: contain;vertical-align: middle;}
+.index_yz .fa{ background: url("../images/index_yz.png") no-repeat center; width: 55px; height: 55px; background-size: contain;vertical-align: middle;}
 .fa-inbox:before{ content: ""}
 .index_recharge .title{ color: #6fb5eb}
 .index_transfer .title{ color: #ff8bb3}
@@ -197,6 +198,7 @@ table.dataTable.no-footer {
 .index_exchange .title{ color: #dba4fb}
 .index_zc .title{ color: #ffd48a}
 .index_zr .title{ color: #ff928a}
+.index_yz .title{ color: #dca7fb}
 .card.summary-inline{ cursor: default}
 .card.summary-inline .card-body .content .sub-title{color: #a9a9a9; font-size: 16px; margin-top: 5px;}
 .card.summary-inline .card-body .content .title{ font-size: 36px;}
@@ -335,8 +337,10 @@ button.close {
 }
 
 .flat-blue .table > thead > tr > th{ white-space: nowrap;}
-
-
+.flat-blue .navbar .navbar-nav > li, .flat-blue .navbar.navbar-default .navbar-nav > li {
+    border-left: 1px solid #555;
+}
+.width235{ width: 235px;}
 
 
 

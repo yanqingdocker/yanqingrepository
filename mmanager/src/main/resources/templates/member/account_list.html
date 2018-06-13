@@ -152,10 +152,10 @@
                 {"data": "state",
                     render:function(e,type,full,row){
                         if(full.state==1){
-                            return "正常";
+                            return "<span class='green'>正常</span>";
                         }
                         else{
-                            return "冻结";
+                            return "<span class='red'>冻结</span>";
                         }
                     }
                 },

@@ -228,6 +228,9 @@
                             else {
                                 sweetAlert("", "任务标记处理失败！", "error");
                             }
+                        } ,
+                        error: function () {
+                            sweetAlert("", "请求失败！", "error");
                         }
                     });
                 }
