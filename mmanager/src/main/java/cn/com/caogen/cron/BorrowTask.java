@@ -56,7 +56,7 @@ public class BorrowTask {
                 logger.info("=================="+msg);
                 addTask(msg);
             }
-            String msg="尊敬的客户您好，您的预支订单"+temp+",请您尽快前往南方国际钱庄的任何一个网点进行处理。祝您生活愉快，谢谢。";
+            String msg="尊敬的客户您好，您的预支订单"+temp+",请您尽快前往南方国际的任何一个网点进行处理。祝您生活愉快，谢谢。";
             String telphone=borrow.getBorrowerphone();
             int c=MessageService.sendMessage(telphone,msg);
 

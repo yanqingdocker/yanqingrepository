@@ -146,7 +146,7 @@ public class AppliyController {
         User user=JedisUtil.getUser(request);
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("userid",user.getUserid());
-        List<Appliy> appliyList=appliyService.query(new HashMap<String,Object>());
+        List<Appliy> appliyList=appliyService.query(parmMap);
         return JSONArray.fromObject(appliyList).toString();
     }
 
