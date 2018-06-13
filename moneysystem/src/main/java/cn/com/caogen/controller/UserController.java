@@ -372,8 +372,8 @@ public class UserController {
         }
 
         Stream<Task> stream=taskService.queryAll().stream();
-        Task task1=stream.filter((e)->e.getTaskcontent().equals(JedisUtil.getUser(request).getPhone())&&!e.getState().equals(ConstantUtil.TASK_DONE)).collect(Collectors.toList()).get(0);
-        if(task1!=null){
+        List<Task> taskList=stream.filter((e)->e.getTaskname().equals(ConstantUtil.VIP)&&!e.getState().equals(ConstantUtil.TASK_DONE)&&e.getTaskcontent().equals(JedisUtil.getUser(request).getPhone())).collect(Collectors.toList());
+        if(taskList.size()>0){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.RESUBMITASK)).toString();
         }
         Task task=new Task();
