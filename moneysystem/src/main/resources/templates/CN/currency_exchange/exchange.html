@@ -378,7 +378,34 @@
                         }
                     },
                     tooltip : {
-                        trigger: 'axis'
+                        trigger: 'axis',
+                        dataView: {
+                            readOnly: true,
+                            optionToContent: function (opt) {
+                                var axisData = opt.xAxis[0].data;
+                                var series = opt.series;
+
+                                var tableDom = document.createElement("table");
+                                tableDom.setAttribute("id", "data_table");
+                                tableDom.setAttribute("class", "table_data_table");
+                                // <table id="test" class="table-bordered table-striped" style="width:100%;text-align:center"
+                                var table = '<thead><tr>'
+                                    + '<td>日期</td>'
+                                    + '<td>' + series[0].name + '</td>'
+                                    + '<td>' + series[1].name + '</td>'
+                                    + '</tr></thead><tbody>';
+                                for (var i = 0, l = axisData.length; i < l; i++) {
+                                    table += '<tr>'
+                                        + '<td>' + axisData[i] + '</td>'
+                                        + '<td>' + series[0].data[i] + '</td>'
+                                        + '<td>' + series[1].data[i] + '</td>'
+                                        + '</tr>';
+                                }
+                                table += '</tbody>';
+                                tableDom.innerHTML = table;
+                                return tableDom;
+                            }
+                        }
                     },
                     legend: {
                         data:['美元人民币','人民币美元']

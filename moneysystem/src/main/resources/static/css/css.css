@@ -30,7 +30,7 @@
 .index .dropdown-toggle i.icon_down {  display: inline-block;  width: 25px;  height:25px;   vertical-align: middle;  background: url("../images/icon_down_white.png") no-repeat; background-size: contain; margin-left: 5px;  }
 .index .user_info .dropdown-toggle i.icon_down {  display: inline-block;  width: 20px;  height:20px;   vertical-align: middle;  background: url("../images/icon_down_white.png") no-repeat; background-size: contain; margin-left: 5px;  }
 .index .user_info a.nav-link{background: url("../images/icon_index_head.png") no-repeat left center;padding-left: 20px}
- .user_info a.nav-link.icon_vip{background: url("../images/icon_vip.png") no-repeat left center;padding-left: 20px}
+.user_info a.nav-link.icon_vip{background: url("../images/icon_vip.png") no-repeat left center;padding-left: 20px}
 .user_info a{ width: 100%; display: block;height: 25px;line-height: 25px; color: #fff}
 .index .user_info a{ width: 100%; display: block;height: 25px;line-height: 25px; color: #fff; }
 .user_info  a.nav-link{background: url("../images/icon_index_head.png") no-repeat left center;padding-left: 20px}
@@ -60,7 +60,7 @@
 .index_btn{ margin-top: 60px}
 .index_btn .col-lg-4{ }
 .index_btn .col-lg-4 .show_block{border: 1px solid #cbcbcb; display: inline-block; width:75%; padding: 30px; border-radius: 8px;height: 250px; overflow: hidden; margin-bottom: 20px;}
-.index_btn .col-lg-4 .show_block:hover{box-shadow: 0 0 20px #56adfe;}
+.index_btn .col-lg-4 .show_block:hover{box-shadow: 0 0 60px #bfe4fd; border: none;}
 .index_btn .col-lg-4 .show_block h3{ font-size: 22px;transition-property: all;
     transition-duration: 0.5s;}
 .index_btn .col-lg-4 .show_block:hover h3{ font-size: 18px; margin-top: 15px}
@@ -425,13 +425,14 @@ input[type="radio"], input[type="checkbox"] {
 .step_block{ width: 500px;}
 .border_t{ border-top: 1px solid #a0a0a0}
 
-.quick_show{ background-color: #fcfcfc; padding-top: 50px;}
-.quick_show .floor{ margin-bottom:150px; }
+.quick_show{ }
+.quick_show .floor{ padding: 100px 0;}
 .quick_show .floor img{ }
 .quick_show .floor .word_r{padding-left: 100px; margin-top: 100px;}
 .quick_show .floor .word_l{ padding-right: 100px; margin-top: 160px;}
 
-.card-body:hover,.bank_logo .col-lg-6 a:hover,a.life_pay:hover{box-shadow: 0 0 20px #56adfe;}
+.card-body:hover,.bank_logo .col-lg-6 a:hover,a.life_pay:hover{box-shadow: 0 0 20px #56adfe;
+    border: 0;}
 .card-body:hover img,.bank_logo .col-lg-6 a:hover img,a.life_pay:hover img{transform:rotate(360deg);    transition-property: all;
     transition-duration: 2s;}
 .card-body:hover h3,.bank_logo .col-lg-6 a:hover h3,a.life_pay:hover h3{ color: #0099ff}
@@ -713,7 +714,10 @@ table.table thead .sorting:after,table.table thead .sorting_asc:after{ backgroun
 
 .table th { white-space: nowrap;}
 
-
+/*折线图数据视图样式*/
+.table_data_table{ width: 100%;border: 1px solid #ddd;border-top:0; border-right: 0}
+.table_data_table thead td{    border-style: solid;border-right-width: 1px;border-left-width: 0;border-color: #e7e7e7 !important;color: #333;background: url(../images/table_thbg.png) repeat-x !important;padding: 9px 18px;border-bottom: 0; height: 35px;text-align: center }
+.table_data_table tbody td{    border-top: 1px solid #ddd;padding:8px 10px; height: 35px; text-align: center ;border-right: 1px solid #ddd}
 
 
 

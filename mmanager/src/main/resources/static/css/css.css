@@ -202,7 +202,7 @@ table.dataTable.no-footer {
 .card.summary-inline{ cursor: default}
 .card.summary-inline .card-body .content .sub-title{color: #a9a9a9; font-size: 16px; margin-top: 5px;}
 .card.summary-inline .card-body .content .title{ font-size: 36px;}
-.info_num .col-md-3 .card:hover,.info_num .col-md-4 .card:hover{ box-shadow:2px 2px 8px #999;}
+.info_num .col-md-3 .card:hover,.info_num .col-md-4 .card:hover{ box-shadow:2px 2px 8px #dfdbdb;}
 table.dataTable thead th:first-child:after {
     opacity: 0;
     content: "";
@@ -344,10 +344,10 @@ button.close {
 .navbar .navbar-nav > li > a.index_home{background: url(../images/home.png) no-repeat;display: inline-block; width: 15px;  background-size: contain;}
 
 
-
-
-
-
+/*折线图数据视图样式*/
+.table_data_table{ width: 100%;border: 1px solid #ddd;border-top:0; border-right: 0}
+.table_data_table thead td{    border-style: solid;border-right-width: 1px;border-left-width: 0;border-color: #e7e7e7 !important;color: #333;background: url(../images/table_thbg.png) repeat-x !important;padding: 9px 18px;border-bottom: 0; height: 35px;text-align: center }
+.table_data_table tbody td{    border-top: 1px solid #ddd;padding:8px 10px; height: 35px; text-align: center ;border-right: 1px solid #ddd}
 
 
 

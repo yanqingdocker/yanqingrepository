@@ -31,11 +31,11 @@
         <form id="myform">
             <div class="form-group">
                 <label class="col-form-label" >用户名</label>
-                <input type="text" size="32" maxlength="30" name="username" class="onkeydown"  >
+                <input type="text" size="32" maxlength="30" name="username" class="onkeydown"  onkeydown="enter_down( event);" >
             </div>
             <div class="form-group">
                 <label class="col-form-label" >密&nbsp;&nbsp;&nbsp;码</label>
-                <input type="password" size="32" maxlength="20" name="password"  class="onkeydown" >
+                <input type="password" size="32" maxlength="20" name="password"  class="onkeydown" onkeydown="enter_down( event);" >
             </div>
             <div class="form-group mt10">
                 <button type="button" class="login_button" onclick="submitform()" data-loading-text="登录中...">登  录</button>
@@ -51,47 +51,47 @@
         if(top.location != location){
             top.location.href= location.href;//如果没有被iframe引用的话，则location与top.location是一样的！
         }
-        // $("#myform").bootstrapValidator({
-        //     feedbackIcons: {
-        //         //valid: 'glyphicon glyphicon-ok',
-        //         //invalid: 'glyphicon glyphicon-remove',
-        //         validating: 'glyphicon glyphicon-refresh'
-        //     },
-        //     fields: {
-        //         'username': {
-        //             validators: {
-        //                 notEmpty: {
-        //                     message: '用户名不可以为空'
-        //                 }
-        //             }
-        //         },
-        //         'password': {
-        //             validators: {
-        //                 notEmpty: {
-        //                     message: '密码不能为空'
-        //                 },
-        //                 stringLength: {
-        //                     /*长度提示*/
-        //                     min: 6,
-        //                     max: 30,
-        //                     message: '密码长度必须在6到30之间'
-        //                 },
-        //                 regexp: {
-        //                     regexp: /^[a-zA-Z0-9_\.]+$/,
-        //                     message: '密码由数字字母下划线和.组成'
-        //                 }
-        //             }
-        //         }
-        //     }
-        // })
+        $("#myform").bootstrapValidator({
+            feedbackIcons: {
+                //valid: 'glyphicon glyphicon-ok',
+                //invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                'username': {
+                    validators: {
+                        notEmpty: {
+                            message: '用户名不可以为空'
+                        }
+                    }
+                },
+                'password': {
+                    validators: {
+                        notEmpty: {
+                            message: '密码不能为空'
+                        },
+                        stringLength: {
+                            /*长度提示*/
+                            min: 6,
+                            max: 30,
+                            message: '密码长度必须在6到30之间'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_\.]+$/,
+                            message: '密码由数字字母下划线和.组成'
+                        }
+                    }
+                }
+            }
+        })
     })
     function submitform() {
-        // $("#myform").data("bootstrapValidator").enableFieldValidators("username", true);
-        // $("#myform").data("bootstrapValidator").enableFieldValidators("password", true);
-        // $("#myform").data("bootstrapValidator").validate();//手动对表单进行校检
-        // if (!$("#myform").data("bootstrapValidator").isValid()) {//判断校检是否通过
-        //     return;
-        // } else {
+        $("#myform").data("bootstrapValidator").enableFieldValidators("username", true);
+        $("#myform").data("bootstrapValidator").enableFieldValidators("password", true);
+        $("#myform").data("bootstrapValidator").validate();//手动对表单进行校检
+        if (!$("#myform").data("bootstrapValidator").isValid()) {//判断校检是否通过
+            return;
+        } else {
         $.ajax({
             type: "post",
             dataType: 'json',
@@ -121,15 +121,26 @@
                 }
             }
         })
-        // }
-    }
-
-    $(document).keydown(function(event){
-        if (event.keyCode === 13){
-            submitform();
         }
+    }
+    function enter_down(event) {
+        if(event.keyCode== "13") {
+            stopDefault(event);
+            submitform();
 
-    });
+        }
+    }
+    function stopDefault(e) {
+        //如果提供了事件对象，则这是一个非IE浏览器
+        if(e && e.preventDefault) {
+            //阻止默认浏览器动作(W3C)
+            e.preventDefault();
+        } else {
+            //IE中阻止函数器默认动作的方式
+            window.event.returnValue = false;
+        }
+        return false;
+    }
 
 </script>
 
