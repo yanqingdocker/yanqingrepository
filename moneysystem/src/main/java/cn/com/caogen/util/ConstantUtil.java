@@ -58,6 +58,7 @@ public class ConstantUtil {
     public static final String TASK_UNDO="待处理";
     public static final String RESUBMITASK="您已经提交过申请了，系统正在处理中，请勿重复提交";
     public static final String ALREADYVIP="您已经是VIP客户了，无需再开通VIP了";
+    public static final String SYSTEM="平台";
 
 
 }

@@ -23,11 +23,11 @@ import java.util.Map;
 @Controller
 @RequestMapping("/")
 public class PayService {
-	
+
 	PrintWriter out = null;
-	HttpServletResponse response =null;	
+	HttpServletResponse response =null;
 	static String encoding = "UTF-8";
-	
+
 	/**
 	 * 跳转到支付网关（PC和H5网关使用此接口）
 	 * @Description:
@@ -39,15 +39,18 @@ public class PayService {
 		try {
 			String id = "" + System.currentTimeMillis();
 			map.put("businessOrdid", id);
-			map.put("orderName", "测试");
+			map.put("orderName", "线上充值");
 			map.put("merId", Config.MERID);
 			map.put("terId", Config.TERID);
-			map.put("tradeMoney", 100);
-			map.put("selfParam", "自定义参数");
+			map.put("tradeMoney", map.get("blance"));
+			map.put("selfParam", "aa");
 			map.put("payType", 1000); // 1000默认支持所有支付方式
-			map.put("appSence", 1001);
-			map.put("syncURL", "http://xxxxx.cn");
-			map.put("asynURL","http://xxxxx.cn");
+			map.put("appSence",1001 );
+			String cardid=map.get("cardid").toString();
+			String blance=map.get("blance").toString();
+			String userid=map.get("userid").toString();
+			map.put("syncURL", "http://127.0.0.1/pay/goback?cardid="+cardid+"&&blance="+blance+"&&userid="+userid);
+			map.put("asynURL", "http://127.0.0.1/pay/goback?cardid="+cardid+"&&blance="+blance+"&&userid="+userid);
 
 			String json = GsonUtil.toJson(map);
 			// 获取请求的参数
@@ -185,7 +188,7 @@ public class PayService {
 					//请求服务器失败、商户出错处理
 					return ;
 				}
-					//服务器没有返回数据或返回异常
+				//服务器没有返回数据或返回异常
 				if(StringUtils.isEmpty(respTxt) || respTxt.contains("</html>")){
 					//商户出错处理
 					return;
@@ -348,5 +351,5 @@ public class PayService {
 		return sbHtml.toString();
 	}
 
-	
+
 }
