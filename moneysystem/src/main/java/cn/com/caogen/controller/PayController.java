@@ -84,7 +84,7 @@ public class PayController {
      * 支付后回调接口
      */
     @RequestMapping("/goback")
-    //@Transactional //开启事务，两个账户都更新成功是才算成功
+    @Transactional //开启事务，两个账户都更新成功是才算成功
     public String goBack(HttpServletRequest request) {
         logger.info("goBack start");
         Lock lock = new ReentrantLock();
