@@ -42,6 +42,19 @@ public class JedisUtil {
         User currentUser=(User)SerializeUtil.unserialize((byte[])map.get(request.getSession().getId()));
         return currentUser;
     }
+
+    public static User getUserbysessionid(String sessionid){
+        Jedis jedis=getJedis();
+        if(jedis==null){
+            return null;
+        }
+        Map<String,Object> map=(Map)SerializeUtil.unserialize(jedis.get(ConstantUtil.SESSIONCOLLCTION.getBytes()));
+        if(map==null||map.get(sessionid)==null){
+            return null;
+        }
+        User currentUser=(User)SerializeUtil.unserialize((byte[])map.get(sessionid));
+        return currentUser;
+    }
     public static Map<String,Object> getSessionMap(){
         Jedis jedis=getJedis();
         if(jedis==null){

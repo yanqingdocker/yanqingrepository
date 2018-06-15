@@ -5,6 +5,7 @@ import cn.com.caogen.entity.User;
 import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.JedisUtil;
 import cn.com.caogen.util.SerializeUtil;
+import cn.com.caogen.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -47,7 +48,6 @@ public class SystemFilter implements Filter {
     private Pattern pattern12=Pattern.compile("user/login");
     private Pattern pattern13=Pattern.compile("user/register");
     private Pattern pattern14=Pattern.compile("user/resetpwd");
-    private Pattern pattern15=Pattern.compile("pay/getcash");
     private Pattern pattern16=Pattern.compile("CN/more/trade_list");
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -65,7 +65,6 @@ public class SystemFilter implements Filter {
         patterns.add(pattern12);
         patterns.add(pattern13);
         patterns.add(pattern14);
-        patterns.add(pattern15);
         patterns.add(pattern16);
 
     }
@@ -88,6 +87,11 @@ public class SystemFilter implements Filter {
                     chain.doFilter(request,response);
                     return;
                 }else{
+                    user=JedisUtil.getUserbysessionid(httpServletRequest.getParameter("sessionid"));
+                    if(user!=null){
+                        chain.doFilter(request,response);
+                        return;
+                    }
                     httpServletResponse.sendRedirect("/CN/login");
                 }
             }

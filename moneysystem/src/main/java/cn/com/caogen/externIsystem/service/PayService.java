@@ -49,8 +49,9 @@ public class PayService {
 			String cardid=map.get("cardid").toString();
 			String blance=map.get("blance").toString();
 			String userid=map.get("userid").toString();
-			map.put("syncURL", "http://127.0.0.1/goback?cardid="+cardid+"&&blance="+blance+"&&userid="+userid);
-			map.put("asynURL", "http://127.0.0.1/goback?cardid="+cardid+"&&blance="+blance+"&&userid="+userid);
+			String sessionid=map.get("sessionid").toString();
+			map.put("syncURL", "http://127.0.0.1/goback?cardid="+cardid+"&&blance="+blance+"&&userid="+userid+"&&sessionid="+sessionid);
+			map.put("asynURL", "http://127.0.0.1/goback?cardid="+cardid+"&&blance="+blance+"&&userid="+userid+"&&sessionid="+sessionid);
 
 			String json = GsonUtil.toJson(map);
 			// 获取请求的参数

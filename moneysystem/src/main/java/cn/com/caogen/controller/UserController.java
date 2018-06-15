@@ -164,6 +164,9 @@ public class UserController {
                 request.getSession().setMaxInactiveInterval(1800);
                 checkSession(user.getUserid(),request);
                 Map<String,Object> sessionMap=JedisUtil.getSessionMap();
+                if(sessionMap==null){
+                    sessionMap=new HashMap<String,Object>();
+                }
                 sessionMap.put(request.getSession().getId(),SerializeUtil.serialize(user));
                 JedisUtil.getJedis().set(ConstantUtil.SESSIONCOLLCTION.getBytes(),SerializeUtil.serialize(sessionMap));
 

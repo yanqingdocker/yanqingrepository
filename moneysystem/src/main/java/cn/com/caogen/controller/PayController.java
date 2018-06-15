@@ -63,6 +63,7 @@ public class PayController {
             map.put("blance", blance);
             map.put("cardid",cardid );
             map.put("userid",JedisUtil.getUser(request).getUserid());
+            map.put("sessionid",request.getSession().getId());
             userid=JedisUtil.getUser(request).getUserid();
             msg=PayService.orderPay(map);
             response.setContentType("text/html");
@@ -72,45 +73,6 @@ public class PayController {
         } finally {
             lock.unlock();//释放锁
         }
-    }
-
-    /**
-     * 支付后回调接口
-     */
-    @RequestMapping("/goback")
-    @Transactional //开启事务，两个账户都更新成功是才算成功
-    public String goBack(HttpServletRequest request) {
-        logger.info("goBack start");
-        Lock lock = new ReentrantLock();
-        lock.lock();//加锁
-        try {
-            String userid=request.getParameter("userid");
-            if(StringUtil.checkStrs(userid)&&userid.equals(this.userid)){
-                String cardid = request.getParameter("cardid");
-                Double num=Double.parseDouble(request.getParameter("blance"))/100+Double.parseDouble(request.getParameter("blance"))%1;
-                Count personCount = countServiceImpl.queryById(cardid);
-                //更新个人账户
-                countServiceImpl.updateCount(cardid, personCount.getBlance() + num, null,null);
-                Operation operation=new Operation();
-                operation.setOperaType(ConstantUtil.SERVICETYPE_RECHARGE);
-                operation.setCountid(personCount.getCardId());
-                operation.setSnumber(SerialnumberUtil.Getnum());
-                operation.setOi(ConstantUtil.MONEY_IN);
-                operation.setCountType(personCount.getCountType());
-                operation.setSnumber(ConstantUtil.SYSTEM);
-                operation.setNum(num);
-                operation.setOperaTime(DateUtil.getTime());
-                operation.setOperaIp(IpUtil.getIpAddr(request));
-                operaService.add(new Operation());
-            }
-
-        } catch (Exception e) {
-            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL)).toString();
-        } finally {
-            lock.unlock();
-        }
-        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
-
     }
 
     /**
@@ -152,7 +114,7 @@ public class PayController {
             }
             countServiceImpl.updateCount(String.valueOf(count.getId()), count.getBlance() - Double.parseDouble(tradeMoney), null,null);
             Operation operation=new Operation();
-            operation.setOperaType(ConstantUtil.SERVICETYPE_RECHARGE);
+            operation.setOperaType(ConstantUtil.SERVICETYPE_DEPOSIT);
             operation.setCountid(count.getCardId());
             operation.setSnumber(SerialnumberUtil.Getnum());
             operation.setOi(ConstantUtil.MONEY_OUT);
@@ -161,6 +123,7 @@ public class PayController {
             operation.setNum(-Double.parseDouble(tradeMoney));
             operation.setOperaTime(DateUtil.getTime());
             operation.setOperaIp(IpUtil.getIpAddr(request));
+            operaService.add(operation);
 
         } catch (Exception e) {
             logger.info("cash fail");
