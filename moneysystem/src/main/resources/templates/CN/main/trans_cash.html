@@ -57,10 +57,10 @@
                             <div class="">
                                 <ul>
                                     <li><a href="/CN/main/pos_Bank">从银行提现</a></li>
-                                    <li><a href="/CN/main/pos_Alipay">从支付宝提现</a></li>
-                                    <li ><a href="/CN/main/pos_WeChat">从微信提现</a></li>
-                                    <li ><a href="/CN/main/pos_cash">现金提现</a></li>
-                                    <li ><a href="/CN/main/pos_bitcoin">比特币提现</a></li>
+                                    <li><a href="javascript:;">从支付宝提现</a></li> <!--href="/CN/main/pos_Alipay" -->
+                                    <li ><a href="javascript:;">从微信提现</a></li><!--href="/CN/main/pos_WeChat" -->
+                                    <li ><a href="javascript:;">现金提现</a></li><!--href="/CN/main/pos_cash" -->
+                                    <li ><a href="javascript:;">比特币提现</a></li><!--href="/CN/main/pos_bitcoin" -->
                                 </ul>
                             </div>
                         </div>
@@ -87,25 +87,25 @@
                     <h3 class="mt20 f18">提现到银行</h3>
                 </div>
             </a>
-            <a class="card border-primary mb-3 col-lg-4 mb20" href="/CN/main/pos_Alipay">
+            <a class="card border-primary mb-3 col-lg-4 mb20" href="javascript:;"><!--href="/CN/main/pos_Alipay" -->
                 <div class="card-body tc">
                     <img style="width: 120px" src="/images/icon_zfb.png">
                     <h3 class="mt20 f18">提现到支付宝</h3>
                 </div>
             </a>
-            <a class="card border-primary mb-3 col-lg-4 mb20" href="/CN/main/pos_WeChat">
+            <a class="card border-primary mb-3 col-lg-4 mb20" href="javascript:;"><!--href="/CN/main/pos_WeChat" -->
                 <div class="card-body tc">
                     <img style="width: 120px" src="/images/icon_wx.png">
                     <h3 class="mt20 f18">提现到微信</h3>
                 </div>
             </a>
-            <a class="card border-primary mb-3 col-lg-4 mb20" href="/CN/main/pos_cash">
+            <a class="card border-primary mb-3 col-lg-4 mb20" href="javascript:;"><!--href="/CN/main/pos_cash" -->
                 <div class="card-body tc">
                     <img style="width: 120px" src="/images/icon_wy.png">
                     <h3 class="mt20 f18">现金提现</h3>
                 </div>
             </a>
-            <a class="card border-primary mb-3 col-lg-4 mb20" href="/CN/main/pos_bitcoin">
+            <a class="card border-primary mb-3 col-lg-4 mb20" href="javascript:;"><!--href="/CN/main/pos_bitcoin" -->
                 <div class="card-body tc">
                     <img style="width: 120px" src="/images/icon_btb.png">
                     <h3 class="mt20 f18">比特币提现</h3>
@@ -118,5 +118,10 @@
 
 <!--通用脚本-->
 <script  type="text/javascript" src="/js/footer.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#nav_trans").addClass("cur");//导航栏添加焦点
+    })
+</script>
 </body>
 </html>

@@ -1,10 +1,23 @@
 package cn.com.caogen.controller;
 
-import cn.com.caogen.util.JedisUtil;
+import cn.com.caogen.entity.Count;
+import cn.com.caogen.entity.Operation;
+import cn.com.caogen.service.BankCardServiceImpl;
+import cn.com.caogen.service.CountServiceImpl;
+import cn.com.caogen.service.OperaServiceImpl;
+import cn.com.caogen.util.*;
+import net.sf.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * author:huyanqing
@@ -12,6 +25,55 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 public class PageController {
+    private static Logger logger = LoggerFactory.getLogger(PageController.class);
+    @Autowired
+    private OperaServiceImpl operaService;
+    @Autowired
+    private CountServiceImpl countServiceImpl;
+    @Autowired
+    private BankCardServiceImpl bankCardService;
+    @Autowired
+    private DataSourceTransactionManager transactionManager;
+    private int userid;
+    /**
+     * 支付后回调接口
+     */
+    @RequestMapping("/goback")
+    @Transactional //开启事务，两个账户都更新成功是才算成功
+    public String goBack(HttpServletRequest request) {
+        logger.info("goBack start");
+        Lock lock = new ReentrantLock();
+        lock.lock();//加锁
+        try {
+            String userid=request.getParameter("userid");
+            if(StringUtil.checkStrs(userid)&&userid.equals(String.valueOf(JedisUtil.getUser(request).getUserid()))){
+                String cardid = request.getParameter("cardid");
+                Double num=Double.parseDouble(request.getParameter("blance"))/100+Double.parseDouble(request.getParameter("blance"))%1;
+                Count personCount = countServiceImpl.queryById(cardid);
+                //更新个人账户
+                countServiceImpl.updateCount(cardid, personCount.getBlance() + num, null,null);
+                Operation operation=new Operation();
+                operation.setOperaType(ConstantUtil.SERVICETYPE_RECHARGE);
+                operation.setCountid(personCount.getCardId());
+                operation.setSnumber(SerialnumberUtil.Getnum());
+                operation.setOi(ConstantUtil.MONEY_IN);
+                operation.setCountType(personCount.getCountType());
+                operation.setServicebranch(ConstantUtil.SYSTEM);
+                operation.setNum(num);
+                operation.setOperaTime(DateUtil.getTime());
+                operation.setOperaIp(IpUtil.getIpAddr(request));
+                operaService.add(operation);
+            }
+
+        } catch (Exception e) {
+            return "CN/more/trade_list";
+        } finally {
+            lock.unlock();
+        }
+        return "CN/more/trade_list";
+
+    }
+
     //    中文版
     /**
      * 访问index界面

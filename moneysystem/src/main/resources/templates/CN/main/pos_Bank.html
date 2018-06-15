@@ -61,10 +61,10 @@
                             <div class="">
                                 <ul>
                                     <li><a href="/CN/main/pos_Bank">从银行提现</a></li>
-                                    <li><a href="/CN/main/pos_Alipay">从支付宝提现</a></li>
-                                    <li ><a href="/CN/main/pos_WeChat">从微信提现</a></li>
-                                    <li ><a href="/CN/main/pos_cash">现金提现</a></li>
-                                    <li ><a href="/CN/main/pos_bitcoin">比特币提现</a></li>
+                                    <li><a href="javascript:;">从支付宝提现</a></li><!--href="/CN/main/pos_Alipay"-->
+                                    <li ><a href="javascript:;">从微信提现</a></li><!--href="/CN/main/pos_Alipay"-->
+                                    <li ><a href="javascript:;">现金提现</a></li><!--href="/CN/main/pos_Alipay"-->
+                                    <li ><a href="javascript:;">比特币提现</a></li><!--href="/CN/main/pos_Alipay"-->
                                 </ul>
                             </div>
                         </div>
@@ -92,22 +92,24 @@
                 </div>
                 <div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;</div></div>
             <div class="inblock w100">
-                <form action="" method="">
+                <form id="myform">
                     <div class="form-group">
                         <label class="col-form-label w100">选择支出账户<span class="warning">*</span></label>
                         <select class="custom-select  w100" id="recharcount"></select>
+                        <input type="hidden" id="countid" name="countid">
                     </div>
                     <div class="form-group">
                         <label class="col-form-label w100">选择存入账户<span class="warning">*</span></label>
                         <select class="custom-select  w100" id="bankaccount">
                         </select>
+                        <input type="hidden" id="bankid" name="bankid">
                     </div>
                     <div class="form-group">
                         <label class="col-form-label" for="inputje">金额<span class="warning">*</span></label>
-                        <input class="form-control" placeholder="请输入金额" id="inputje" type="text">
+                        <input class="form-control" placeholder="请输入金额" id="inputje" type="text" name="tradeMoney">
                     </div>
 
-                    <button type="button" class="btn btn-primary btn-lg btn-block f14">提 交</button>
+                    <button type="button"  onclick="submitform()"  class="btn btn-primary btn-lg btn-block f14">提 交</button>
                 </form>
             </div>
 
@@ -121,7 +123,70 @@
     $(function(){
         loadcount();//获取下拉账户
         loadbankcard();//获取下拉银行卡
+        $("#nav_trans").addClass("cur");//导航栏添加焦点
+        $('#myform').bootstrapValidator({
+            feedbackIcons: {
+                //valid: 'glyphicon glyphicon-ok',
+                //invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                'tradeMoney': {
+                    validators: {
+                        notEmpty: {
+                            message: '充值金额不可以为空'
+                        },
+                        digits: {
+                            message: '充值金额只能包含数字。'
+                        },
+                        greaterThan: {
+                            value: 5,
+                            message: '充值金额必须大于5'
+                        }
+                    }
+                }
+            }
+        })
     })
+
+    function submitform() {
+        $('#myform').data('bootstrapValidator').enableFieldValidators('tradeMoney', true);
+        $('#myform').data('bootstrapValidator').validate();//手动对表单进行校检
+        if (!$('#myform').data('bootstrapValidator').isValid()) {//判断校检是否通过
+            return;
+        } else {
+            var real = $("#recharcount").val();
+            $("#countid").val(real);
+            $("#bankid").val($("#bankaccount").val());
+            // console.log($("#realcount").val());
+            //ajax的形式提交表单
+            var str = $("#myform").serializeObject(); //此处调用的就是我们写好的引入的方法，会将带有name的input，全部转为JSON。
+            var datas = JSON.stringify(str);//返回一个新字符串
+            // console.log(str);
+            // console.log(datas);
+            $.ajax({
+                url: '/pay/getcash',
+                data: {datas: datas},
+                type: 'post',
+                success: function (data) {
+                    // console.log(strToJson(data).code);
+                    if (strToJson(data).code == "success") {
+                        sweetAlert("", "恭喜您！提现成功！", "success");
+                        setTimeout(function () {
+                            window.location.href = "/CN/more/trade_list";
+                        }, 1500);
+                    }
+                    else {
+                        sweetAlert("", strToJson(data).message, "error");
+                    }
+                },
+                error: function () {
+                    sweetAlert("", "请求失败！", "error");
+                }
+            });
+        }
+    }
+
     // 通过json同步获取下拉账户
     function loadcount() {
         $.ajax({
@@ -132,7 +197,7 @@
                 var jsonObj = $.parseJSON(data);//json字符串转数组
                 for (var i=0;i<jsonObj.length;i++)
                 {
-                    var html ='<option value="'+jsonObj[i].cardId+'">'+jsonObj[i].cardId+'('+currency_type (jsonObj[i].countType)+')'+'</option>';
+                    var html ='<option value="'+jsonObj[i].id+'">'+jsonObj[i].cardId+'('+currency_type (jsonObj[i].countType)+')'+'</option>';
                     $("#recharcount").append(html);
                 }
                 if(jsonObj.length==0){
@@ -163,7 +228,7 @@
                 var jsonObj = $.parseJSON(data);//json字符串转数组
                 for (var i=0;i<jsonObj.length;i++)
                 {
-                    var html ='<option value="'+jsonObj[i].bankCard+'">'+jsonObj[i].bankCard+'('+jsonObj[i].bankType+')'+'</option>';
+                    var html ='<option value="'+jsonObj[i].id+'">'+jsonObj[i].bankCard+'('+jsonObj[i].bankType+')'+'</option>';
                     $("#bankaccount").append(html);
                 }
                 if(jsonObj.length==0){

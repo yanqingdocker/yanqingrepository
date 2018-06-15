@@ -431,8 +431,8 @@ input[type="radio"], input[type="checkbox"] {
 .quick_show .floor .word_r{padding-left: 100px; margin-top: 100px;}
 .quick_show .floor .word_l{ padding-right: 100px; margin-top: 160px;}
 
-.card-body:hover,.bank_logo .col-lg-6 a:hover,a.life_pay:hover{box-shadow: 0 0 20px #56adfe;
-    border: 0;}
+.card-body:hover,.bank_logo .col-lg-6 a:hover,a.life_pay:hover{box-shadow: 0 0 50px #bfe4fd;
+    border: 1px solid #fff;}
 .card-body:hover img,.bank_logo .col-lg-6 a:hover img,a.life_pay:hover img{transform:rotate(360deg);    transition-property: all;
     transition-duration: 2s;}
 .card-body:hover h3,.bank_logo .col-lg-6 a:hover h3,a.life_pay:hover h3{ color: #0099ff}

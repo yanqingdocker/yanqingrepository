@@ -9,6 +9,7 @@
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" media="all" href="/css/daterangepicker-bs3.css"/>
     <link rel="stylesheet" type="text/css" href="/css/base.css"/>
     <link rel="stylesheet" type="text/css" href="/css/css.css"/>
     <link  rel="stylesheet" type="text/css"  href="/css/sweet-alert.css"/>
@@ -17,7 +18,8 @@
     <script  type="text/javascript" src="/js/bootstrapValidator.min.js"></script>
     <script  type="text/javascript" src="/js/sweet-alert.min.js"></script>
     <script  type="text/javascript" src="/js/common.js"></script>
-    <script type="text/javascript" src="/js/moment.js"></script>
+    <script  type="text/javascript" src="/js/areajson.js"></script>
+    <script  type="text/javascript" src="/js/date.js"></script>
     <!--[if lte IE 9]>
     <script  type="text/javascript" src="/js/html5.min.js"></script>
     <script  type="text/javascript" src="/js/respond.min.js"></script>
@@ -60,10 +62,10 @@
                             <div class="">
                                 <ul>
                                     <li><a href="/EN/main/pos_Bank">Withdrawals To Bank</a></li>
-                                    <li><a href="/EN/main/pos_Alipay">Withdrawals To Alipay</a></li>
-                                    <li ><a href="/EN/main/pos_WeChat">Withdrawals To WeChat</a></li>
-                                    <li ><a href="/EN/main/pos_cash">Cash Withdrawals</a></li>
-                                    <li ><a href="/EN/main/pos_bitcoin">Bitcoin Withdrawals</a></li>
+                                    <li><a href="javascript:;">Withdrawals To Alipay</a></li> <!--href="/EN/main/pos_Alipay" -->
+                                    <li ><a href="javascript:;">Withdrawals To WeChat</a></li><!--href="/EN/main/pos_WeChat" -->
+                                    <li ><a href="javascript:;">Cash Withdrawals</a></li><!--href="/EN/main/pos_cash" -->
+                                    <li ><a href="javascript:;">Bitcoin Withdrawals</a></li><!--href="/EN/main/pos_bitcoin" -->
                                 </ul>
                             </div>
                         </div>
@@ -91,24 +93,23 @@
                 </div>
                 <div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;</div></div>
             <div class="inblock w100">
-                <form id="rechargeform">
+                <form id="rechargeform" action="/pay/recharge" method="post">
                     <div class="form-group">
-                        <label class="col-form-label w100">Select recharge account<span class="warning">*</span></label>
+                        <label class="col-form-label w100">Select a recharge account<span class="warning">*</span></label>
                         <select class="custom-select  w100" id="recharcount" field="count">
 
                         </select>
-                        <input type="hidden" id="realcount" name="countId">
+                        <input type="hidden" id="realcount" name="cardid">
                     </div>
-
                     <div class="form-group">
-                        <label class="col-form-label" for="inputje">Amount<span class="warning">*</span></label>
-                        <input class="form-control" placeholder="Please enter the amount" id="inputje" name="tradeMoney" type="text">
+                        <label class="col-form-label" for="inputje">Recharge amount<span class="warning">*</span></label>
+                        <input class="form-control" placeholder="Please enter the amount of recharge" id="inputje" name="tradeMoney" type="text">
                     </div>
                     <div class="form-group">
                         <label class="col-form-label" for="rechartype">Recharge method</label>
                         <input class="form-control" name="payType" disabled=""  value="" id="rechartype" type="text">
                     </div>
-                    <button type="button" onclick="submitform()" class="btn btn-primary btn-lg btn-block f14">Submit</button>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block f14">Submit</button>
                 </form>
             </div>
 
@@ -120,21 +121,24 @@
 <script  type="text/javascript" src="/js/ENfooter.js"></script>
 
 <script type="text/javascript">
+    $("#recharcount").change(function(){
+        var real = $("#recharcount").val();
+        $("#realcount").val(real);
+    });
     $(function(){
-        $("#nav_transfer").addClass("cur");//导航栏添加焦点
+        $("#nav_recharge").addClass("cur");//导航栏添加焦点
         loadcount();//获取下拉账户
-        loadbankcard();//获取银行卡
         var typeval=GetQueryString("payType");
         switch(typeval)
         {
             case '1':
                 $("#rechartype").val("Bank");
-                $(".page_title").html("Bank recharge");
+                $(".page_title").html("Bank Recharge");
                 $("#bank_account").show();
                 break;
             case '2':
                 $("#rechartype").val("Alipay");
-                $(".page_title").html("recharge on Alipay");
+                $(".page_title").html("Recharge on Alipay");
                 break;
             case '3':
                 $("#rechartype").val("WeChat");
@@ -161,25 +165,10 @@
                         },
                         digits: {
                             message: 'Transfer amount can only contain numbers'
-                        }
-                    }
-                },
-                'count':{
-                    validators:{
-                        notEmpty:{
-                            message:'Please select an expense account'
                         },
-                        callback: {
-                            message: 'Must choose a spending account',
-                            callback: function(value, validator)
-                            {
-                                if (value == 0) {
-                                    return false;
-                                } else {
-                                    return true;
-                                }
-
-                            }
+                        greaterThan: {
+                            value: 1,
+                            message: 'The amount of recharge must be more than 1'
                         }
                     }
                 }
@@ -196,9 +185,10 @@
                 var jsonObj = $.parseJSON(data);//json字符串转数组
                 for (var i=0;i<jsonObj.length;i++)
                 {
-                    var html ='<option value="'+jsonObj[i].cardId+'">'+jsonObj[i].cardId+'('+jsonObj[i].countType+')'+'</option>';
+                    var html ='<option value="'+jsonObj[i].id+'">'+jsonObj[i].cardId+'('+jsonObj[i].countType+')'+'</option>';
                     $("#recharcount").append(html);
                 }
+                $("#realcount").val($("#recharcount").val());
                 if(jsonObj.length==0){
                     sweetAlert({
                             title: "Please apply for an account before you can operate",
@@ -217,43 +207,6 @@
 
             }
         })
-    }
-
-    function submitform() {
-        $('#rechargeform').data('bootstrapValidator').enableFieldValidators('tradeMoney', true);
-        $('#rechargeform').data('bootstrapValidator').enableFieldValidators('payType', true);
-        $('#rechargeform').data('bootstrapValidator').validate();//手动对表单进行校检
-        if (!$('#rechargeform').data('bootstrapValidator').isValid()) {//判断校检是否通过
-            return;
-        } else {
-            var real = $("#recharcount").val();
-            $("#realcount").val(real);
-            console.log($("#realcount").val());
-            //ajax的形式提交表单
-            var str = $("#rechargeform").serializeObject(); //此处调用的就是我们写好的引入的方法，会将带有name的input，全部转为JSON。
-            var datas = JSON.stringify(str);//返回一个新字符串
-            // console.log(str);
-            // console.log(datas);
-            $.ajax({
-                url: '/pay/recharge',
-                data: {datas: datas},
-                type: 'post',
-                success: function (data) {
-                    if (data.code == "success") {
-                        sweetAlert("", "Congratulations on your successful recharge!", "success");
-                        setTimeout(function () {
-                            window.location.href = "/EN/more/trade_history";
-                        }, 1500);
-                    }
-                    else {
-                        sweetAlert("", "Recharge failed", "error");
-                    }
-                },
-                error: function () {
-                    sweetAlert("", "Request failed", "error");
-                }
-            });
-        }
     }
 </script>
 </body>

@@ -58,10 +58,10 @@
                             <div class="">
                                 <ul>
                                     <li><a href="/EN/main/pos_Bank">Withdrawals To Bank</a></li>
-                                    <li><a href="/EN/main/pos_Alipay">Withdrawals To Alipay</a></li>
-                                    <li ><a href="/EN/main/pos_WeChat">Withdrawals To WeChat</a></li>
-                                    <li ><a href="/EN/main/pos_cash">Cash Withdrawals</a></li>
-                                    <li ><a href="/EN/main/pos_bitcoin">Bitcoin Withdrawals</a></li>
+                                    <li><a href="javascript:;">Withdrawals To Alipay</a></li> <!--href="/EN/main/pos_Alipay" -->
+                                    <li ><a href="javascript:;">Withdrawals To WeChat</a></li><!--href="/EN/main/pos_WeChat" -->
+                                    <li ><a href="javascript:;">Cash Withdrawals</a></li><!--href="/EN/main/pos_cash" -->
+                                    <li ><a href="javascript:;">Bitcoin Withdrawals</a></li><!--href="/EN/main/pos_bitcoin" -->
                                 </ul>
                             </div>
                         </div>
@@ -88,25 +88,25 @@
                     <h3 class="mt20 f18">Recharge from bank</h3>
                 </div>
             </a>
-            <a class="card border-primary mb-3 col-lg-4 mb20" href="/EN/main/recharge_form?payType=2">
+            <a class="card border-primary mb-3 col-lg-4 mb20" href="javascript:;"><!--href="/EN/main/recharge_form?payType=2" -->
                 <div class="card-body tc">
                     <img style="width: 120px" src="/images/icon_zfb.png">
                     <h3 class="mt20 f18">Recharge from Alipay</h3>
                 </div>
             </a>
-            <a class="card border-primary mb-3 col-lg-4 mb20" href="/EN/main/recharge_form?payType=3">
+            <a class="card border-primary mb-3 col-lg-4 mb20" href="javascript:;"><!--href="/EN/main/recharge_form?payType=3" -->
                 <div class="card-body tc">
                     <img style="width: 120px" src="/images/icon_wx.png">
                     <h3 class="mt20 f18">Recharge from Wechat</h3>
                 </div>
             </a>
-            <a class="card border-primary mb-3 col-lg-4 mb20" href="/EN/main/recharge_form?payType=4">
+            <a class="card border-primary mb-3 col-lg-4 mb20" href="javascript:;"><!--href="/EN/main/recharge_form?payType=4" -->
                 <div class="card-body tc">
                     <img style="width: 120px" src="/images/icon_wy.png">
                     <h3 class="mt20 f18">Online banking recharge</h3>
                 </div>
             </a>
-            <a class="card border-primary mb-3 col-lg-4 mb20" href="/EN/main/recharge_btb?payType=5">
+            <a class="card border-primary mb-3 col-lg-4 mb20" href="javascript:;"><!--href="/EN/main/recharge_form?payType=5" -->
                 <div class="card-body tc">
                     <img style="width: 120px" src="/images/icon_btb.png">
                     <h3 class="mt20 f18">Bitcoin recharge</h3>
@@ -118,5 +118,10 @@
 </div>
 <!--通用脚本-->
 <script  type="text/javascript" src="/js/ENfooter.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#nav_recharge").addClass("cur");//导航栏添加焦点
+    })
+</script>
 </body>
 </html>

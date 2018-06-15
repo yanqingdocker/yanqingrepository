@@ -51,22 +51,16 @@ public class PayController {
     private int userid;
 
     @RequestMapping("/recharge")
-    public void pay( @RequestParam("datas") String datas, HttpServletResponse response,HttpServletRequest request) {
+    public void pay( @RequestParam("tradeMoney") String tradeMoney, @RequestParam("cardid") String cardid,HttpServletResponse response,HttpServletRequest request) {
         //@RequestParam("datas") String datas,
-        logger.info("pay start: datas="+datas);
-        if (!StringUtil.checkStrs(datas)) {
 
-        }
         Lock lock = new ReentrantLock();
         lock.lock();//加锁
         String msg="";
         try {
-            JSONObject jsonObject = JSONObject.fromObject(datas);
-            // 交易金额
-            String tradeMoney = String.valueOf(Integer.parseInt(jsonObject.getString("tradeMoney"))*100);
-            String cardid=jsonObject.getString("cardid");
+            String blance=String.valueOf(Integer.parseInt(tradeMoney)*100);
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("blance", tradeMoney);
+            map.put("blance", blance);
             map.put("cardid",cardid );
             map.put("userid",JedisUtil.getUser(request).getUserid());
             userid=JedisUtil.getUser(request).getUserid();

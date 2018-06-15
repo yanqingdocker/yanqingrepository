@@ -60,10 +60,10 @@
                             <div class="">
                                 <ul>
                                     <li><a href="/CN/main/pos_Bank">从银行提现</a></li>
-                                    <li><a href="/CN/main/pos_Alipay">从支付宝提现</a></li>
-                                    <li ><a href="/CN/main/pos_WeChat">从微信提现</a></li>
-                                    <li ><a href="/CN/main/pos_cash">现金提现</a></li>
-                                    <li ><a href="/CN/main/pos_bitcoin">比特币提现</a></li>
+                                    <li><a href="javascript:;">从支付宝提现</a></li> <!--href="/CN/main/pos_Alipay" -->
+                                    <li ><a href="javascript:;">从微信提现</a></li><!--href="/CN/main/pos_WeChat" -->
+                                    <li ><a href="javascript:;">现金提现</a></li><!--href="/CN/main/pos_cash" -->
+                                    <li ><a href="javascript:;">比特币提现</a></li><!--href="/CN/main/pos_bitcoin" -->
                                 </ul>
                             </div>
                         </div>
@@ -91,23 +91,23 @@
                 </div>
                 <div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;</div></div>
             <div class="inblock w100">
-                <form id="rechargeform">
+                <form id="rechargeform" action="/pay/recharge" method="post">
                     <div class="form-group">
                         <label class="col-form-label w100">选择充值账户<span class="warning">*</span></label>
                         <select class="custom-select  w100" id="recharcount" field="count">
 
                         </select>
-                        <input type="hidden" id="realcount" name="countId">
+                        <input type="hidden" id="realcount" name="cardid">
                     </div>
                     <div class="form-group">
-                        <label class="col-form-label" for="inputje">金额<span class="warning">*</span></label>
-                        <input class="form-control" placeholder="请输入金额" id="inputje" name="tradeMoney" type="text">
+                        <label class="col-form-label" for="inputje">充值金额<span class="warning">*</span></label>
+                        <input class="form-control" placeholder="请输入充值金额" id="inputje" name="tradeMoney" type="text">
                     </div>
                     <div class="form-group">
                         <label class="col-form-label" for="rechartype">充值方式</label>
                         <input class="form-control" name="payType" disabled=""  value="" id="rechartype" type="text">
                     </div>
-                    <button type="button" onclick="submitform()" class="btn btn-primary btn-lg btn-block f14">提 交</button>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block f14">提 交</button>
                 </form>
             </div>
 
@@ -119,9 +119,13 @@
 <script  type="text/javascript" src="/js/footer.js"></script>
 
 <script type="text/javascript">
+    $("#recharcount").change(function(){
+        var real = $("#recharcount").val();
+        $("#realcount").val(real);
+    });
     $(function(){
-        $("#nav_transfer").addClass("cur");//导航栏添加焦点
         loadcount();//获取下拉账户
+        $("#nav_recharge").addClass("cur");//导航栏添加焦点
         var typeval=GetQueryString("payType");
         switch(typeval)
         {
@@ -159,6 +163,10 @@
                         },
                         digits: {
                             message: '充值金额只能包含数字。'
+                        },
+                        greaterThan: {
+                            value: 1,
+                            message: '充值金额必须大于1'
                         }
                     }
                 },
@@ -194,9 +202,10 @@
                 var jsonObj = $.parseJSON(data);//json字符串转数组
                 for (var i=0;i<jsonObj.length;i++)
                 {
-                    var html ='<option value="'+jsonObj[i].cardId+'">'+jsonObj[i].cardId+'('+currency_type(jsonObj[i].countType)+')'+'</option>';
+                    var html ='<option value="'+jsonObj[i].id+'">'+jsonObj[i].cardId+'('+currency_type(jsonObj[i].countType)+')'+'</option>';
                     $("#recharcount").append(html);
                 }
+                $("#realcount").val($("#recharcount").val());
                 if(jsonObj.length==0){
                     sweetAlert({
                             title: "请先申请账户，才能进行操作！",
@@ -217,43 +226,6 @@
         })
     }
 
-    function submitform() {
-        $('#rechargeform').data('bootstrapValidator').enableFieldValidators('tradeMoney', true);
-        $('#rechargeform').data('bootstrapValidator').enableFieldValidators('payType', true);
-        $('#rechargeform').data('bootstrapValidator').validate();//手动对表单进行校检
-        if (!$('#rechargeform').data('bootstrapValidator').isValid()) {//判断校检是否通过
-            return;
-        } else {
-            var real = $("#recharcount").val();
-            $("#realcount").val(real);
-            // console.log($("#realcount").val());
-            //ajax的形式提交表单
-            var str = $("#rechargeform").serializeObject(); //此处调用的就是我们写好的引入的方法，会将带有name的input，全部转为JSON。
-            var datas = JSON.stringify(str);//返回一个新字符串
-            // console.log(str);
-            // console.log(datas);
-            $.ajax({
-                url: '/pay/recharge',
-                data: {datas: datas},
-                type: 'post',
-                success: function (data) {
-                    // console.log(strToJson(data).code);
-                    if (strToJson(data).code == "success") {
-                        sweetAlert("", "恭喜您！充值成功！", "success");
-                        setTimeout(function () {
-                            window.location.href = "/CN/more/trade_history";
-                        }, 1500);
-                    }
-                    else {
-                        sweetAlert("", "充值失败", "error");
-                    }
-                },
-                error: function () {
-                    sweetAlert("", "请求失败！", "error");
-                }
-            });
-        }
-    }
 </script>
 </body>
 </html>
