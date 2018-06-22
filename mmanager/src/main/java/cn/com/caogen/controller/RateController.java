@@ -1,9 +1,7 @@
 package cn.com.caogen.controller;
 
-import cn.com.caogen.util.ConstantUtil;
-import cn.com.caogen.util.FilterAuthUtil;
-import cn.com.caogen.util.IpUtil;
-import cn.com.caogen.util.ResponseMessage;
+import cn.com.caogen.util.*;
+import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
@@ -74,5 +72,31 @@ public class RateController {
         sb.append("{'buyPic':'").append(buyPid).append("','sellPic':'").append(sellPic).append("'}");
 
         return   JSONObject.fromObject(sb.toString()).toString();
+    }
+
+    /**
+     * 修改买卖汇率
+     * @param type
+     * @param sellPic 卖出价
+     * @param yesPic 买入价
+     * @return
+     */
+    @RequestMapping(path = "/update",method = RequestMethod.POST)
+    public String updateRate(@RequestParam("type") String type,@RequestParam("sellPic") String sellPic,@RequestParam("yesPic") String yesPic){
+        logger.info("update rate start");
+        if(!StringUtil.checkStrs(type,sellPic,yesPic)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
+        }
+        String rs=stringRedisTemplate.opsForValue().get(ConstantUtil.SENVEN);
+        if(StringUtil.checkStrs(rs)){
+            JSONObject jsonObject=JSONObject.fromObject(rs).getJSONObject(type);
+            jsonObject.element("sellPic",sellPic);
+            jsonObject.element("yesPic",yesPic);
+            stringRedisTemplate.opsForValue().set(ConstantUtil.SENVEN, jsonObject.toString());
+        }else{
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
+        }
+
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 }
