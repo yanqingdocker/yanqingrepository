@@ -222,7 +222,7 @@
                 data: {type: turntype},
                 dataType: "JSON",
                 success: function (data) {
-                    var realrate=1/data.sellPic;
+                    var realrate=data.sellPic;
                     $(".thisrate").val(realrate.toFixed(4));
                 },
                 error: function (data) {
