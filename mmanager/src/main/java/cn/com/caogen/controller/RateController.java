@@ -78,21 +78,25 @@ public class RateController {
      * 修改买卖汇率
      * @param type
      * @param sellPic 卖出价
-     * @param yesPic 买入价
+     * @param buyPic 买入价
      * @return
      */
     @RequestMapping(path = "/update",method = RequestMethod.POST)
-    public String updateRate(@RequestParam("type") String type,@RequestParam("sellPic") String sellPic,@RequestParam("yesPic") String yesPic){
+    public String updateRate(@RequestParam("type") String type,@RequestParam("sellPic") String sellPic,@RequestParam("buyPic") String buyPic){
         logger.info("update rate start");
-        if(!StringUtil.checkStrs(type,sellPic,yesPic)){
+        if(!StringUtil.checkStrs(type,sellPic,buyPic)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
         String rs=stringRedisTemplate.opsForValue().get(ConstantUtil.SENVEN);
         if(StringUtil.checkStrs(rs)){
             JSONObject jsonObject=JSONObject.fromObject(rs).getJSONObject(type);
             jsonObject.element("sellPic",sellPic);
-            jsonObject.element("yesPic",yesPic);
-            stringRedisTemplate.opsForValue().set(ConstantUtil.SENVEN, jsonObject.toString());
+            jsonObject.element("buyPic",buyPic);
+            JSONObject result=JSONObject.fromObject(rs);
+            result.element(type,jsonObject);
+
+
+            stringRedisTemplate.opsForValue().set(ConstantUtil.SENVEN, result.toString());
         }else{
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
         }
