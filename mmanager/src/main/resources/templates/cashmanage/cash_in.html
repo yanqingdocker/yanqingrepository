@@ -71,7 +71,7 @@
                     <div class="form-group">
                         <label  class="col-sm-2 control-label">今日汇率<span class="warning">*</span></label>
                         <div class="col-sm-10">
-                            <input type="text"  class="form-control thisrate" oninput="ratechange()">
+                            <input type="text"  class="form-control thisrate" name="thisrate" oninput="ratechange()">
                         </div>
                     </div>
                     <div class="form-group">
@@ -135,6 +135,17 @@
                     }
                 },
                 'num': {
+                    validators: {
+                        notEmpty: {
+                            message: '存入金额不能为空'
+                        },
+                        regexp: {
+                            regexp: /^[0-9_\.]+$/,
+                            message: '金额只能由数字组成。'
+                        }
+                    }
+                },
+                'thisrate': {
                     validators: {
                         notEmpty: {
                             message: '存入金额不能为空'
@@ -254,7 +265,8 @@
         var before= $("#beforemoney").val();
         var sellrate=$("#realrate").val();
         var changeafter=before*sellrate;
-        $("#aftermoney").val( Math.round(changeafter*10000)/10000);
+        var value= Math.round(changeafter*10000)/10000;
+        $("#aftermoney").val(decimal(value,0));//四舍五入到整数
     };
 
     // 手动改变汇率，实际汇率同时改变
@@ -281,7 +293,8 @@
                     var before= $("#beforemoney").val();
                     var sellrate=$("#realrate").val();
                     var changeafter=before*sellrate;
-                    $("#aftermoney").val( Math.round(changeafter*10000)/10000);
+                    var value= Math.round(changeafter*10000)/10000;
+                    $("#aftermoney").val(decimal(value,0));//四舍五入到整数
                 },
                 error: function (data) {
                     //终止请求动作.
@@ -304,7 +317,8 @@
                     var before= $("#beforemoney").val();
                     var sellrate=$("#realrate").val();
                     var changeafter=before*sellrate;
-                    $("#aftermoney").val( Math.round(changeafter*10000)/10000);
+                    var value= Math.round(changeafter*10000)/10000;
+                    $("#aftermoney").val(decimal(value,0));//四舍五入到整数
                 },
                 error: function (data) {
                     //终止请求动作.
