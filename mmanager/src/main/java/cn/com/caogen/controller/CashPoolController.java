@@ -9,15 +9,18 @@ import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * author:huyanqing
@@ -29,6 +32,9 @@ public class CashPoolController {
     private static Logger logger = LoggerFactory.getLogger(CashPoolController.class);
     @Autowired
     private CashPoolServiceImpl cashPoolService;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 查询现金库
@@ -43,6 +49,69 @@ public class CashPoolController {
         Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
         List<CashPool> cashPoolList=cashPoolService.queryByType(null,servicebranch);
         return JSONArray.fromObject(cashPoolList).toString();
+    }
+
+    /**
+     * 查询盈亏情况
+     * @return
+     */
+    @RequestMapping(path ="queryProf",method = RequestMethod.GET)
+    public String queryProf( HttpServletRequest request){
+
+        logger.info("queryAll start:");
+        String rs=stringRedisTemplate.opsForValue().get(ConstantUtil.SENVEN);
+        JSONObject jsonObject=JSONObject.fromObject(rs);
+        String buyPid=jsonObject.getJSONObject("USDCNY").getString("buyPic");
+        Double buy=Double.parseDouble(buyPid);
+
+
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        List<CashPool> cashPools=null;
+        try {
+            cashPools=(List)SerializeUtil.unserialize(JedisUtil.getJedis().get("cash".getBytes()));
+        }catch (NullPointerException e){
+            cashPools=(List)SerializeUtil.unserialize(JedisUtil.getJedis().get("cash".getBytes()));
+        }
+        List<CashPool> collection=new ArrayList<CashPool>();
+        for(CashPool cashPool:cashPools){
+            if(cashPool.getServicebranch().equals(currentUser.getServicebranch())){
+                collection.add(cashPool);
+            }
+        }
+        //cashPools=cashPools.stream().filter((e)->e.getServicebranch().equals(currentUser.getServicebranch())).collect(Collectors.toList());
+        double num1,num2;
+        CashPool cashPool=collection.get(0);
+        if(cashPool.getCounttype().equals(ConstantUtil.MONEY_CNY)){
+            num1=cashPool.getBlance()/buy;
+        }else {
+            num1=cashPool.getBlance();
+        }
+
+        cashPool=collection.get(1);
+        if(cashPool.getCounttype().equals(ConstantUtil.MONEY_CNY)){
+            num2=cashPool.getBlance()/buy;
+        }else {
+            num2=cashPool.getBlance();
+        }
+        double sum=num1+num2;
+
+
+        CashPool USDPoolk=cashPoolService.queryByType(ConstantUtil.MONEY_USD,currentUser.getServicebranch()).get(0);
+        CashPool CNYPoolk=cashPoolService.queryByType(ConstantUtil.MONEY_CNY,currentUser.getServicebranch()).get(0);
+        double currentNum=USDPoolk.getBlance()+CNYPoolk.getBlance()/buy;
+        if(currentNum-sum>0){
+            //赚钱
+            logger.info("赚钱");
+        }else  if(currentNum-sum==0) {
+            //持平
+            logger.info("持平");
+        }else{
+            //亏钱
+            logger.info("亏钱");
+        }
+        //插入数据库
+        logger.info("钱========"+(currentNum-sum));
+        return "";
     }
 
     /**

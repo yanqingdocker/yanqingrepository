@@ -13,7 +13,7 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-     id,countid,counttype,blance,lasttime
+     id,countid,counttype,blance,lasttime,servicebranch
     </sql>
 
     <select id="queryAll"  resultMap="BaseResultMap" >
