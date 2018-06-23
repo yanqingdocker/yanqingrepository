@@ -71,7 +71,7 @@
                     <div class="form-group">
                         <label  class="col-sm-2 control-label">今日汇率<span class="warning">*</span></label>
                         <div class="col-sm-10">
-                            <input type="text"  class="form-control thisrate" disabled>
+                            <input type="text"  class="form-control thisrate" oninput="ratechange()">
                         </div>
                     </div>
                     <div class="form-group">
@@ -219,7 +219,7 @@
                 dataType: "JSON",
                 success: function (data) {
                     $(".thisrate").val(data.buyPic);
-                    $("#realrate").val(data.buyPic);
+                    $("#realrate").val($(".thisrate").val());
                 },
                 error: function (data) {
                     //终止请求动作.
@@ -238,7 +238,8 @@
                 success: function (data) {
                     var realrate=data.sellPic;
                     $(".thisrate").val(realrate);
-                    $("#realrate").val((1/realrate).toFixed(4));
+                    var  rate=  $(".thisrate").val();
+                    $("#realrate").val((1/rate).toFixed(4));
                 },
                 error: function (data) {
                     //终止请求动作.
@@ -251,11 +252,70 @@
     // 兑换后金额
     function exchange() {
         var before= $("#beforemoney").val();
-        // var rate= $(".thisrate").val();
         var sellrate=$("#realrate").val();
         var changeafter=before*sellrate;
         $("#aftermoney").val( Math.round(changeafter*10000)/10000);
     };
+
+    // 手动改变汇率，实际汇率同时改变
+    function ratechange() {
+        var before = $(".acountbefore option:selected").attr("data-id");
+        var behind = $(".acountbehind option:selected").attr("data-id");
+        var types = before + behind;
+        var turntype = behind + before;
+        if (before == behind) {
+            $(".thisrate").val("1");
+            $("#realrate").val(1);
+            $(".tips").show();//提示
+        }
+
+        else if (allrate(types)=="1") {
+            $(".tips").hide();//提示
+            $.ajax({
+                url: "/rate/getSingleRate",
+                type: "get",
+                data: {type: types},
+                dataType: "JSON",
+                success: function (data) {
+                    $("#realrate").val($(".thisrate").val());
+                    var before= $("#beforemoney").val();
+                    var sellrate=$("#realrate").val();
+                    var changeafter=before*sellrate;
+                    $("#aftermoney").val( Math.round(changeafter*10000)/10000);
+                },
+                error: function (data) {
+                    //终止请求动作.
+                    data.abort();
+
+                }
+            });
+        }
+        else if(allrate(turntype)=="1") {
+            $(".tips").hide();//提示
+            $.ajax({
+                url: "/rate/getSingleRate",
+                type: "get",
+                data: {type: turntype},
+                dataType: "JSON",
+                success: function (data) {
+                    $(".thisrate").val();
+                    var  rate=  $(".thisrate").val();
+                    $("#realrate").val((1/rate).toFixed(4));
+                    var before= $("#beforemoney").val();
+                    var sellrate=$("#realrate").val();
+                    var changeafter=before*sellrate;
+                    $("#aftermoney").val( Math.round(changeafter*10000)/10000);
+                },
+                error: function (data) {
+                    //终止请求动作.
+                    data.abort();
+
+                }
+            });
+        }
+
+
+    } ;
     // 自选兑换查询是否在汇率表中
     function allrate(type){
         var value="";
