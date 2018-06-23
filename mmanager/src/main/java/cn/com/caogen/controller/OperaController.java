@@ -169,6 +169,12 @@ public class OperaController {
         return JSONArray.fromObject(list).toString();
     }
 
+    /**
+     * 查询各种操作的笔数
+     * @param date
+     * @param request
+     * @return
+     */
     @RequestMapping(path="queryoperacount",method = RequestMethod.GET)
     public String queryoperacount(@RequestParam("date") int date,HttpServletRequest request){
         if(!FilterAuthUtil.checkAuth(request)){

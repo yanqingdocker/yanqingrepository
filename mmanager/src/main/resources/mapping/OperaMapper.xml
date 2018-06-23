@@ -24,7 +24,7 @@
     </resultMap>
 
     <resultMap id="allcount" type="java.util.Map">
-        <result column="counttype" property="counttype" jdbcType="INTEGER"/>
+        <result column="operanum" property="counttype" jdbcType="INTEGER"/>
         <result column="operatype" property="operatype" jdbcType="VARCHAR"/>
     </resultMap>
 
@@ -63,7 +63,7 @@
         Order By operatime Desc
     </select>
 
-    <select id="queryoperatype" resultMap="allInfo" parameterType="int">
+    <select id="queryoperatype" resultMap="allInfo" parameterType="Map">
         select sum(num) as sum, counttype,operatype from operalog
         <choose>
             <when test="date!=null and date == '1'.toString()">
@@ -85,14 +85,17 @@
                 where false
             </otherwise>
         </choose>
-        and servicebranch=#{servicebranch} GROUP BY operatype,counttype
+        <if test="servicebranch != null">
+            and servicebranch =#{servicebranch}
+        </if>
+        GROUP BY operatype,counttype
 
     </select>
 
-    <select id="queryoperacount" resultMap="allcount" parameterType="int">
-        select count(operatype) as counttype, operatype from operalog
-        <choose>
-            <when test="date!=null and date == '1'.toString()">
+    <select id="queryoperacount" resultMap="allcount" parameterType="Map">
+        select count(operatype) as operanum, operatype from operalog
+      <choose>
+            <when test="date!=null">
                 where to_days(operatime) = to_days(now())
             </when>
             <when test="date!=null and date == '7'.toString()">
@@ -111,7 +114,10 @@
                 where false
             </otherwise>
         </choose>
-         and servicebranch=#{servicebranch} GROUP BY operatype
+        <if test="servicebranch != null">
+            and servicebranch =#{servicebranch}
+        </if>
+        GROUP BY operatype
 
     </select>
 

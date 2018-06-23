@@ -51,7 +51,7 @@ public class OperaServiceImpl implements IOperaService {
     @Override
     public List<Map<String, Object>> queryoperatype(int date,String servicebranch) {
         Map<String,Object> parmMap=new HashMap<String,Object>();
-        parmMap.put("date",date);
+        parmMap.put("date",String.valueOf(date));
         if(ConstantUtil.SERVICE_BRANCH.equals(servicebranch)){
             return operaMapper.queryoperatype(parmMap);
         }
@@ -62,7 +62,8 @@ public class OperaServiceImpl implements IOperaService {
     @Override
     public List<Map<String, Object>> queryoperacount(int date,String servicebranch) {
         Map<String,Object> parmMap=new HashMap<String,Object>();
-        parmMap.put("date",date);
+        parmMap.put("date",String.valueOf(date));
+
         if(ConstantUtil.SERVICE_BRANCH.equals(servicebranch)){
             return operaMapper.queryoperacount(parmMap);
         }
