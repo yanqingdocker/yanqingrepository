@@ -63,7 +63,12 @@ function handleAjaxError() {
         });
 
 }
-
+//对多位小数进行四舍五入
+//num是要处理的数字  v为要保留的小数位数
+function decimal(num,v){
+    var vv = Math.pow(10,v);
+    return Math.round(num*vv)/vv;
+}
 
 
 
