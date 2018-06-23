@@ -2,6 +2,7 @@ package cn.com.caogen.controller;
 
 import cn.com.caogen.entity.Muser;
 import cn.com.caogen.entity.Operation;
+import cn.com.caogen.entity.Task;
 import cn.com.caogen.entity.User;
 import cn.com.caogen.mapper.OperaMapper;
 import cn.com.caogen.service.IOperaService;
@@ -21,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * author:huyanqing
@@ -183,6 +186,19 @@ public class OperaController {
         Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
         List<Map<String,Object>> list=operaServiceimpl .queryoperacount(date,currentUser.getServicebranch());
         return JSONArray.fromObject(list).toString();
+    }
+
+
+    @RequestMapping(path="queryCashLog",method = RequestMethod.GET)
+    public String queryCashLog(HttpServletRequest request){
+       /* if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }*/
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        Stream<Operation> list=operaServiceimpl .queryAll("总部").stream();
+        List<Operation> operationList=list.filter((e)->e.getOperaType().contains("现金")).collect(Collectors.toList());
+
+        return JSONArray.fromObject(operationList).toString();
     }
 
 
