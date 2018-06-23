@@ -108,8 +108,8 @@ public class CashPoolController {
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("srccount",srcCashPool);
         parmMap.put("destcount",destCashPool);
-        parmMap.put("srcnum",destnum);
-        parmMap.put("destnum",srcnum);
+        parmMap.put("srcnum",srcnum);
+        parmMap.put("destnum",destnum);
         parmMap.put("ip",IpUtil.getIpAddr(request));
         parmMap.put("operauser",operuser);
         parmMap.put("servicebranch",currentUser.getServicebranch());
