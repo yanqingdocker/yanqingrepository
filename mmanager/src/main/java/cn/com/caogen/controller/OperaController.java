@@ -195,7 +195,7 @@ public class OperaController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }*/
         Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
-        Stream<Operation> list=operaServiceimpl .queryAll("总部").stream();
+        Stream<Operation> list=operaServiceimpl .queryAll(currentUser.getServicebranch()).stream();
         List<Operation> operationList=list.filter((e)->e.getOperaType().contains("现金")).collect(Collectors.toList());
 
         return JSONArray.fromObject(operationList).toString();
