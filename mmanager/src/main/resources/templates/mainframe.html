@@ -864,7 +864,7 @@
                         $("#cashnum").html(obj[i].counttype)
                     }
                     else if(obj[i].operatype == "兑换"){
-                        $("#changenum").html(obj[i].counttype)
+                        $("#changenum").html(obj[i].counttype/2)
                     }
                     else if(obj[i].operatype == "现金存入"){
                         $("#zrnum").html(obj[i].counttype)
@@ -873,7 +873,7 @@
                         $("#zcnum").html(obj[i].counttype)
                     }
                     else if(obj[i].operatype == "现金兑换"){
-                        $("#dhnum").html(obj[i].counttype)
+                        $("#dhnum").html(obj[i].counttype/2)
                     }
                     else if(obj[i].operatype == "现金预支"){
                         $("#yznum").html(obj[i].counttype)

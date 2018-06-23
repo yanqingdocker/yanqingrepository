@@ -60,8 +60,8 @@
                         </select>
                         <input type="hidden" id="srccounttype" name="srccounttype">
                     </div>
-                    <div class="w100 inblock" style="margin-left: 17%">
-                        <div class="tips red"></div>
+                    <div class="w100 inblock tips" style="margin-left: 17%;display: none">
+                        <div class=" red">请选择不同的货币类型</div>
                     </div>
                     <div class="form-group">
                         <label  class="col-sm-2 control-label">今日汇率</label>
@@ -92,11 +92,10 @@
         </div>
     </div>
 </div>
-
+<input type="hidden" id="realrate">
 <script type="text/javascript">
     $(function(){
         loadaccount();//加载账户类型
-        $(".tips").html("请选择不同的货币类型");
         $('#myform').bootstrapValidator({
             feedbackIcons: {
                 //valid: 'glyphicon glyphicon-ok',
@@ -125,6 +124,8 @@
         var behind = $(".acountbehind option:selected").attr("data-id");
         if (before == behind) {
             $(".thisrate").val("1");
+            $("#realrate").val(1);
+            $(".tips").show();//提示
         }
         $.ajax({
             url: '/count/queryMoneyType',
@@ -175,11 +176,12 @@
         var turntype = behind + before;
         if (before == behind) {
             $(".thisrate").val("1");
-            $(".tips").html("请选择不同的货币类型");
+            $("#realrate").val(1);
+            $(".tips").show();//提示
         }
 
         else if (allrate(types)=="1") {
-            $(".tips").html("");
+            $(".tips").hide();//提示
             $.ajax({
                 url: "/rate/getSingleRate",
                 type: "get",
@@ -187,6 +189,7 @@
                 dataType: "JSON",
                 success: function (data) {
                     $(".thisrate").val(data.buyPic);
+                    $("#realrate").val(data.buyPic);
                 },
                 error: function (data) {
                     //终止请求动作.
@@ -196,7 +199,7 @@
             });
         }
         else if(allrate(turntype)=="1") {
-            $(".tips").html("");
+            $(".tips").hide();//提示
             $.ajax({
                 url: "/rate/getSingleRate",
                 type: "get",
@@ -205,6 +208,7 @@
                 success: function (data) {
                     var realrate=data.sellPic;
                     $(".thisrate").val(realrate);
+                    $("#realrate").val((1/realrate).toFixed(4));
                 },
                 error: function (data) {
                     //终止请求动作.
@@ -217,8 +221,8 @@
     // 兑换后金额
     function exchange() {
         var before= $("#beforemoney").val();
-        var rate= $(".thisrate").val();
-        var sellrate=(1/rate).toFixed(4);
+       // var rate= $(".thisrate").val();
+        var sellrate=$("#realrate").val();
         var changeafter=before*sellrate;
         $("#aftermoney").val( Math.round(changeafter*10000)/10000);
     };

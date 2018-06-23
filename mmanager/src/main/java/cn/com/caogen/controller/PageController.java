@@ -123,6 +123,15 @@ public class PageController {
     }
 
     /**
+     *汇率修改
+     *
+     * @return
+     */
+    @RequestMapping("/exchangeRate/rate_change")
+    public String rate_change() {
+        return "exchangeRate/rate_change";
+    }
+    /**
      *汇率查询
      *
      * @return
@@ -184,6 +193,15 @@ public class PageController {
     @RequestMapping("/cashmanage/cash_change")
     public String cash_change() {
         return "cashmanage/cash_change";
+    }
+    /**
+     *现金管理--现金交易记录
+     *
+     * @return
+     */
+    @RequestMapping("/cashmanage/cashtrade_list")
+    public String cashtrade_list() {
+        return "cashmanage/cashtrade_list";
     }
     /**
      *后台管理员--管理员角色
