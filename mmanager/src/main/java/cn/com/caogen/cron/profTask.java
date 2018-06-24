@@ -31,8 +31,6 @@ public class profTask {
     private static Logger logger = LoggerFactory.getLogger(profTask.class);
 
     @Autowired
-    private StringRedisTemplate stringRedisTemplate;
-    @Autowired
     private CashPoolServiceImpl cashPoolService;
     @Autowired
     private ServiceBranchImpl serviceBranch;
@@ -54,9 +52,6 @@ public class profTask {
             }catch (NullPointerException e){
                 JedisUtil.getJedis().set("cash".getBytes(),SerializeUtil.serialize(cashPoolList));
             }
-
-            List<CashPool> cashPools=(List)SerializeUtil.unserialize(JedisUtil.getJedis().get("cash".getBytes()));
-
             logger.info("now time:" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         }
 

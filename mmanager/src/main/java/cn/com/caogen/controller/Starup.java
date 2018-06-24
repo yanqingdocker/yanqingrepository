@@ -1,8 +1,12 @@
 package cn.com.caogen.controller;
 
+import cn.com.caogen.entity.CashPool;
 import cn.com.caogen.externIsystem.service.RateService;
+import cn.com.caogen.service.CashPoolServiceImpl;
 import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.DataMonitor;
+import cn.com.caogen.util.JedisUtil;
+import cn.com.caogen.util.SerializeUtil;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +15,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 /**
  * author:huyanqing
@@ -24,7 +32,8 @@ public class Starup implements CommandLineRunner {
     private static Logger logger = LoggerFactory.getLogger(Starup.class);
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
-
+    @Autowired
+    private CashPoolServiceImpl cashPoolService;
     /**
      * 系统启动时首先调用汇率接口存入redis
      *
@@ -76,6 +85,17 @@ public class Starup implements CommandLineRunner {
           }catch (Exception e){
                 logger.info("exception");
           }
+
+        List<CashPool> cashPoolList=cashPoolService.queryAll();
+        logger.info(cashPoolList+"");
+        if(cashPoolList!=null||!cashPoolList.isEmpty()){
+            try {
+                JedisUtil.getJedis().set("cash".getBytes(),SerializeUtil.serialize(cashPoolList));
+            }catch (NullPointerException e){
+                JedisUtil.getJedis().set("cash".getBytes(),SerializeUtil.serialize(cashPoolList));
+            }
+            logger.info("now time:" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+        }
 
 
     }
