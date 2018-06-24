@@ -921,6 +921,7 @@
 
     }
 
+    //盈利情况
     function profit() {
         $.ajax({
             url: "/cashpool/queryProf",
@@ -930,14 +931,15 @@
             async: false,
             contentType: 'application/json',
             success: function (data) {
-                if (data.message > 0) {
-                    $("#profit_num").html('<span class="green">赚取 </span><b class="green f20">' + data.message + '</b>');
+                var a=data.message;
+                if (a>0) {
+                    $("#profit_num").html('<span class="green">赚取 </span><b class="green f20">' +  parseFloat(a).toFixed(4)+ '</b>');
                 }
-                else if (data.message == 0) {
-                    $("#profit_num").html('<span class="blue">持平 </span><b class="blue f20">' + data.message + '</b>');
+                else if (a == 0) {
+                    $("#profit_num").html('<span class="blue">持平 </span><b class="blue f20">' +  parseFloat(a).toFixed(4)+ '</b>');
                 }
                 else{
-                    $("#profit_num").html('<span class="red">亏损 </span><b class="red f20">' + data.message + '</b>');
+                    $("#profit_num").html('<span class="red">亏损 </span><b class="red f20">' +  parseFloat(a).toFixed(4)+ '</b>');
                 }
             }
         });
