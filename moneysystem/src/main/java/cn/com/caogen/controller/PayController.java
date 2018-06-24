@@ -116,13 +116,13 @@ public class PayController {
             Operation operation=new Operation();
             operation.setOperaType(ConstantUtil.SERVICETYPE_DEPOSIT);
             operation.setCountid(count.getCardId());
-            operation.setSnumber(SerialnumberUtil.Getnum());
             operation.setOi(ConstantUtil.MONEY_OUT);
             operation.setCountType(count.getCountType());
-            operation.setSnumber(ConstantUtil.SYSTEM);
+            operation.setSnumber(SerialnumberUtil.Getnum());
             operation.setNum(-Double.parseDouble(tradeMoney));
             operation.setOperaTime(DateUtil.getTime());
             operation.setOperaIp(IpUtil.getIpAddr(request));
+            operation.setOperaUser(JedisUtil.getUser(request).getUsername());
             operaService.add(operation);
 
         } catch (Exception e) {
