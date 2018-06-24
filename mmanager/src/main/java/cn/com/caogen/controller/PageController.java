@@ -406,4 +406,15 @@ public class PageController {
     public String add_loan() {
         return "loanManage/add_loan";
     }
+
+
+
+
+
+
+
+
+
+
+
 }

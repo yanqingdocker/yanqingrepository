@@ -146,7 +146,11 @@
         </a>
     </div>
 </div>
-<div class="inblock w100 mt10 white_bg" id="chartmain" style="width:100%; height: 400px; padding: 20px"></div>
+<div class="inblock w100 white_bg pl25 pt15 pb15">
+    <b class="f18">今日盈利情况</b>
+    <div class="f16 inblock ml30" id="profit_num"></div>
+</div>
+<div class="inblock w100 mt20 white_bg" id="chartmain" style="width:100%; height: 400px; padding: 20px"></div>
 <div class="inblock w100 mt20 white_bg" id="chartout" style="width:100%; height: 400px; padding: 20px"></div>
 <div class="inblock w100 mt20 white_bg pt30" >
     <div class="tabbutton w100 inblock pl20 pr20">
@@ -163,7 +167,8 @@
 <script type="text/javascript">
     $(function(){
         tradenum();//统计各类型数量
-        information();
+        information();//获取登录成员信息
+        profit();//统计亏盈情况
         //初始化echarts实例
         var myChart = echarts.init(document.getElementById('chartmain'));
         var outChart = echarts.init(document.getElementById('chartout'));
@@ -910,6 +915,29 @@
 
                     $("#chartpie").hide();
                     tradeareapie(areapie);//网点收支饼状图
+                }
+            }
+        });
+
+    }
+
+    function profit() {
+        $.ajax({
+            url: "/cashpool/queryProf",
+            type: "get",
+            data: null,
+            dataType: 'json',
+            async: false,
+            contentType: 'application/json',
+            success: function (data) {
+                if (data.message > 0) {
+                    $("#profit_num").html('<span class="green">赚取 </span><b class="green f20">' + data.message + '</b>');
+                }
+                else if (data.message == 0) {
+                    $("#profit_num").html('<span class="blue">持平 </span><b class="blue f20">' + data.message + '</b>');
+                }
+                else{
+                    $("#profit_num").html('<span class="red">亏损 </span><b class="red f20">' + data.message + '</b>');
                 }
             }
         });
