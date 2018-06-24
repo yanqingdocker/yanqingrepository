@@ -4,10 +4,7 @@ import cn.com.caogen.entity.CashPool;
 import cn.com.caogen.entity.Operation;
 import cn.com.caogen.mapper.CashPoolMapper;
 import cn.com.caogen.mapper.OperaMapper;
-import cn.com.caogen.util.ConstantUtil;
-import cn.com.caogen.util.DataMonitor;
-import cn.com.caogen.util.DateUtil;
-import cn.com.caogen.util.SerialnumberUtil;
+import cn.com.caogen.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
@@ -68,6 +65,11 @@ public class CashPoolServiceImpl implements ICashPoolService {
             srcoperation.setCountid(srccount.getCountid());
             srcoperation.setOperaTime(DateUtil.getTime());
             srcoperation.setServicebranch((String)parmMap.get("servicebranch"));
+            if(StringUtil.checkStrs((String)parmMap.get("remark"))){
+                srcoperation.setRemark((String)parmMap.get("remark"));
+            }else{
+                srcoperation.setRemark(null);
+            }
             operaMapper.add(srcoperation);
             //增加兑换转入的记录
             Operation destoperation=new Operation();
@@ -81,7 +83,11 @@ public class CashPoolServiceImpl implements ICashPoolService {
             destoperation.setCountid(destcount.getCountid());
             destoperation.setOperaTime(DateUtil.getTime());
             destoperation.setServicebranch((String)parmMap.get("servicebranch"));
-
+            if(StringUtil.checkStrs((String)parmMap.get("remark"))){
+                destoperation.setRemark((String)parmMap.get("remark"));
+            }else{
+                destoperation.setRemark(null);
+            }
             operaMapper.add(destoperation);
 
 

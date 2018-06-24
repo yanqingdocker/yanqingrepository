@@ -155,7 +155,7 @@ public class CashPoolController {
      * @return
      */
     @RequestMapping(path = "exchange",method = RequestMethod.POST)
-    public String exchange(@RequestParam("srccounttype") String srccounttype, @RequestParam("destcounttype") String destcounttype, @RequestParam("srcnum") Double srcnum, @RequestParam("destnum") Double destnum, HttpServletRequest request){
+    public String exchange(@RequestParam("srccounttype") String srccounttype, @RequestParam("destcounttype") String destcounttype, @RequestParam("srcnum") Double srcnum, @RequestParam("destnum") Double destnum, @RequestParam("remark") String remark, HttpServletRequest request){
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
@@ -181,6 +181,7 @@ public class CashPoolController {
         parmMap.put("ip",IpUtil.getIpAddr(request));
         parmMap.put("operauser",operuser);
         parmMap.put("servicebranch",currentUser.getServicebranch());
+        parmMap.put("remark",remark);
         cashPoolService.exchange(parmMap);
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
 

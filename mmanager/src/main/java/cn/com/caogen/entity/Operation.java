@@ -34,5 +34,7 @@ public class Operation {
 
     private String servicebranch;
 
+    private String remark;
+
 
 }
