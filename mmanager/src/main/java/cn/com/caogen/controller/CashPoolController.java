@@ -58,7 +58,7 @@ public class CashPoolController {
     @RequestMapping(path ="queryProf",method = RequestMethod.GET)
     public String queryProf( HttpServletRequest request){
 
-        logger.info("queryAll start:");
+        logger.info("queryProf start:");
         String rs=stringRedisTemplate.opsForValue().get(ConstantUtil.SENVEN);
         JSONObject jsonObject=JSONObject.fromObject(rs);
         String buyPid=jsonObject.getJSONObject("USDCNY").getString("buyPic");
@@ -78,7 +78,6 @@ public class CashPoolController {
                 collection.add(cashPool);
             }
         }
-        //cashPools=cashPools.stream().filter((e)->e.getServicebranch().equals(currentUser.getServicebranch())).collect(Collectors.toList());
         double num1,num2;
         CashPool cashPool=collection.get(0);
         if(cashPool.getCounttype().equals(ConstantUtil.MONEY_CNY)){
@@ -101,17 +100,17 @@ public class CashPoolController {
         double currentNum=USDPoolk.getBlance()+CNYPoolk.getBlance()/buy;
         if(currentNum-sum>0){
             //赚钱
-            logger.info("赚钱");
+            logger.info("赚取"+(currentNum-sum));
         }else  if(currentNum-sum==0) {
             //持平
             logger.info("持平");
         }else{
             //亏钱
-            logger.info("亏钱");
+            logger.info("亏损"+(currentNum-sum));
         }
         //插入数据库
-        logger.info("钱========"+(currentNum-sum));
-        return "";
+        logger.info("queryProf end money="+(currentNum-sum));
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS,String.valueOf(currentNum-sum))).toString();
     }
 
     /**
