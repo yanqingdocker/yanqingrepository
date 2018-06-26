@@ -125,12 +125,13 @@
         $("#area_option").toggle();
         event.stopImmediatePropagation();//取消事件冒泡；
     });
-    $('#area_option a').on('click',function(event){
+    $('#area_option a').on('click',function(){
         var selTxt=$(this).text();
         $('#area_select h4 span').text(selTxt);
         var areanum=$(this).attr('data-id');
         $("#areanum").val(areanum);
-
+        var number=$("#phone").val()
+        $("#Telephone").val($("#areanum").val()+number);
     });
     $(document).bind("click",function(){
         $("#area_option").hide();
@@ -140,7 +141,6 @@
         var number=$("#phone").val()
         $("#Telephone").val($("#areanum").val()+number);
     }
-
     // 第一步
     function nextstep() {
 
