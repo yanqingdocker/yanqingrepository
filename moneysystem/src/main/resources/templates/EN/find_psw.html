@@ -26,6 +26,9 @@
         .area_num_select.area_select {
             background: #999;padding: 0 15px;border-radius: 4px;margin-left: 0;
         }
+        .area_num_select.area_select h4{
+            height: 40px; line-height: 40px;
+        }
         .area_num_select.area_select .area_option {
             top:45px;border: 1px solid #ddd ;
         }
@@ -54,28 +57,32 @@
                 <form id="formone">
                     <div class="form-group">
                         <div class="w100 inblock">
-                        <label class="col-form-label">Enter the account you need to retrieve：</label>
-                        <div id="area_select" class="area_select area_num_select l mr10">
-                            <h4><span>Choose the country</span> <i></i></h4>
-                            <div id="area_option" class="area_option" style="display: none;width: 190px;">
-                                <a data-id="">Mainland China(default)</a>
-                                <a data-id="852">Hongkong, China</a>
-                                <a data-id="855 ">Cambodia</a>
-                                <a data-id="65 ">Singapore</a>
-                                <a data-id="60 ">Malaysia</a>
-                                <a data-id="66 ">Thailand</a>
-                                <a data-id="95 ">Myanmar</a>
-                                <a data-id="62 ">Indonesia</a>
-                                <a data-id="63 ">Philippines</a>
-                                <a data-id="84 ">Vietnam</a>
-                                <a data-id="856 ">Laos</a>
-                                <a data-id="673 ">Brunei</a>
+                            <label class="col-form-label">Enter the account you need to retrieve：</label>
+                            <div class="w100 inblock">
+                                <div id="area_select" class="area_select area_num_select l mr10">
+                                    <h4><span>Choose the country</span> <i></i></h4>
+                                    <div id="area_option" class="area_option" style="display: none;width: 190px;">
+                                        <a data-id="">Mainland China(default)</a>
+                                        <a data-id="852">Hongkong, China</a>
+                                        <a data-id="855 ">Cambodia</a>
+                                        <a data-id="65 ">Singapore</a>
+                                        <a data-id="60 ">Malaysia</a>
+                                        <a data-id="66 ">Thailand</a>
+                                        <a data-id="95 ">Myanmar</a>
+                                        <a data-id="62 ">Indonesia</a>
+                                        <a data-id="63 ">Philippines</a>
+                                        <a data-id="84 ">Vietnam</a>
+                                        <a data-id="856 ">Laos</a>
+                                        <a data-id="673 ">Brunei</a>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control l" name="phone" id="phone" placeholder="Phone Number" onkeydown="javascript: if(event.keyCode == 13) save();" style="width:42%;margin-left: 0" oninput="phonenum()"/>
+                                <input type="hidden" name="telphone"  id="Telephone" >
+                                <input type="hidden" id="areanum">
                             </div>
+                            <small class="help-block blue" style="display: block;">Tips:For Hongkong and foreign mobile phones, please select the drop-down box first</small>
+
                         </div>
-                        <input type="text" class="form-control l" name="phone" id="phone" placeholder="Phone Number" onkeydown="javascript: if(event.keyCode == 13) save();" style="width:42%;margin-left: 0" oninput="phonenum()"/>
-                        <input type="hidden" name="telphone"  id="Telephone" >
-                        <input type="hidden" id="areanum">
-                    </div>
                     </div>
                     <div class="form-group">
                         <div class="w100 inblock"> <input class="form-control  l mr15 " style="width: 55%;" maxlength="11"  name="checknum"  placeholder="Please enter the verification code" id="checknum"  type="text">
@@ -283,7 +290,7 @@
         $("#getcode").click(function () {
             //获取输入的手机号码
             var phoNum = $("#Telephone").val();
-            $("#formone").data("bootstrapValidator").validateField('telphone');
+            $("#formone").data("bootstrapValidator").validateField('phone');
             curCount = count;
 
             // 向后台发送处理数据

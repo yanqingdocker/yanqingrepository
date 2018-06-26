@@ -23,6 +23,17 @@
     <script  type="text/javascript" src="/js/html5.min.js"></script>
     <script  type="text/javascript" src="/js/respond.min.js"></script>
     <![endif]-->
+    <style>
+        .area_num_select.area_select {
+            background: #0390ee;padding: 0 15px;border-radius: 4px;margin-left: 0;
+        }
+        .area_num_select.area_select .area_option {
+            top:45px;border: 1px solid #ddd ;
+        }
+        .area_num_select.area_select h4 {
+            height: 38px;
+            line-height: 38px}
+    </style>
 </head>
 <body>
 <!--header star-->
@@ -119,7 +130,26 @@
                         <div class="f16 mb20"><b style="color: #555">旧手机号码：</b><b class="red" id="telnum"></b></div>
                         <div class="form-group">
                             <label class="col-form-label w100 " >新手机号码<span class="warning">*</span></label>
-                            <input class="form-control" placeholder="请输入新手机号码" id="newphone" name="newphone" type="text">
+                            <div id="area_select" class="area_select area_num_select l mr10 mb15">
+                                <h4><span>选择国家</span> <i></i></h4>
+                                <div id="area_option" class="area_option" style="display: none">
+                                    <a data-id="">中国大陆(默认)</a>
+                                    <a data-id="852">中国香港</a>
+                                    <a data-id="855 ">柬埔寨</a>
+                                    <a data-id="65 ">新加坡</a>
+                                    <a data-id="60 ">马来西亚</a>
+                                    <a data-id="66 ">泰国</a>
+                                    <a data-id="95 ">缅甸</a>
+                                    <a data-id="62 ">印度尼西亚</a>
+                                    <a data-id="63 ">菲律宾</a>
+                                    <a data-id="84 ">越南</a>
+                                    <a data-id="856 ">老挝</a>
+                                    <a data-id="673 ">文莱</a>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control l " name="phone" id="phone" placeholder="请输入新手机号码"  style="width:51%;margin-left: 0" oninput="phonenum()"/>
+                            <input type="hidden" name="newphone"  id="newphone" >
+                            <input type="hidden" id="areanum">
                         </div>
                         <div class="form-group mb30">
                             <label class="col-form-label w100" >验证码<span class="warning">*</span></label>
@@ -139,6 +169,27 @@
 <script  type="text/javascript" src="/js/footer.js"></script>
 
 <script type="text/javascript">
+    // 模拟重写select
+    $("#area_select").click(function (event) {
+        $("#area_option").toggle();
+        event.stopImmediatePropagation();//取消事件冒泡；
+    });
+    $('#area_option a').on('click',function(){
+        var selTxt=$(this).text();
+        $('#area_select h4 span').text(selTxt);
+        var areanum=$(this).attr('data-id');
+        $("#areanum").val(areanum);
+        var number=$("#phone").val()
+        $("#Telephone").val($("#areanum").val()+number);
+    });
+    $(document).bind("click",function(){
+        $("#area_option").hide();
+    });
+    // 输入电话号码实时赋值
+    function phonenum() {
+        var number=$("#phone").val()
+        $("#Telephone").val($("#areanum").val()+number);
+    }
     function submitform() {
         $('#myform').data('bootstrapValidator').enableFieldValidators('checknum', true);
         $('#myform').data('bootstrapValidator').enableFieldValidators('newphone', true);
@@ -187,15 +238,14 @@
                         }
                     }
                 },
-                'newphone': {
-                    message: '请输入正确的手机号',
+                'phone': {
+                    message: '香港及国外手机请先选择下拉框',
                     validators: {
                         notEmpty: {
                             message: '手机号不可以为空'
                         },
-                        regexp: {
-                            regexp: /^1[356789][0-9]{9}$/,
-                            message: '请输入正确的手机号'
+                        digits: {
+                            message: '手机号只能是数字'
                         }
                     }
                 }
