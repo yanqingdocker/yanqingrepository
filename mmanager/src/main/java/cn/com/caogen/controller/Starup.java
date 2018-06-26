@@ -47,6 +47,7 @@ public class Starup implements CommandLineRunner {
             return;
         }
         result=DataMonitor.reSet(result);
+        List<CashPool> cashPoolList=cashPoolService.queryAll();
           try {
               if(stringRedisTemplate.opsForValue().get(ConstantUtil.ONE)==null){
                   stringRedisTemplate.opsForValue().set(ConstantUtil.ONE, result);
@@ -82,21 +83,24 @@ public class Starup implements CommandLineRunner {
               stringRedisTemplate.opsForValue().set(ConstantUtil.FIVE,stringRedisTemplate.opsForValue().get(ConstantUtil.SIX));
               stringRedisTemplate.opsForValue().set(ConstantUtil.SIX,stringRedisTemplate.opsForValue().get(ConstantUtil.SENVEN));
               stringRedisTemplate.opsForValue().set(ConstantUtil.SENVEN,result);*/
+              if(SerializeUtil.unserialize(JedisUtil.getJedis().get("cash".getBytes()))!=null){
+                  JedisUtil.getJedis().set("cash".getBytes(),SerializeUtil.serialize(cashPoolList));
+              }
+
           }catch (Exception e){
                 logger.info("exception");
+
           }
 
-        List<CashPool> cashPoolList=cashPoolService.queryAll();
-        logger.info(cashPoolList+"");
-        if(cashPoolList!=null||!cashPoolList.isEmpty()){
-            try {
-                JedisUtil.getJedis().set("cash".getBytes(),SerializeUtil.serialize(cashPoolList));
-            }catch (NullPointerException e){
-                JedisUtil.getJedis().set("cash".getBytes(),SerializeUtil.serialize(cashPoolList));
-            }
-            logger.info("now time:" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-        }
+          try {
+              if(SerializeUtil.unserialize(JedisUtil.getJedis().get("cash".getBytes()))!=null){
+                  JedisUtil.getJedis().set("cash".getBytes(),SerializeUtil.serialize(cashPoolList));
+              }
 
+          }catch (Exception e){
+              logger.info("exception");
+          }
+        logger.info("now time:" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
     }
 

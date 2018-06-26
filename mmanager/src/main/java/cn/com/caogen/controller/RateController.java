@@ -82,10 +82,13 @@ public class RateController {
      * @return
      */
     @RequestMapping(path = "/update",method = RequestMethod.POST)
-    public String updateRate(@RequestParam("type") String type,@RequestParam("sellPic") String sellPic,@RequestParam("buyPic") String buyPic){
+    public String updateRate(HttpServletRequest request,@RequestParam("type") String type,@RequestParam("sellPic") String sellPic,@RequestParam("buyPic") String buyPic){
         logger.info("update rate start");
         if(!StringUtil.checkStrs(type,sellPic,buyPic)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
+        }
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
         String rs=stringRedisTemplate.opsForValue().get(ConstantUtil.SENVEN);
         if(StringUtil.checkStrs(rs)){

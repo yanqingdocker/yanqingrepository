@@ -1,6 +1,7 @@
 package cn.com.caogen.externIsystem.service;
 
 
+import cn.com.caogen.controller.WarrantorController;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.NameValuePair;
@@ -9,28 +10,52 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 
 public class MessageService {
-	
-	private static String Url = "http://106.wx96.com/webservice/sms.php?method=Submit";
+	private static Logger logger = LoggerFactory.getLogger(MessageService.class);
 
+	private static String chinaUrl = "http://106.wx96.com/webservice/sms.php?method=Submit";
+	private static String No_chinaUrl = "http://api.isms.ihuyi.com/webservice/isms.php?method=Submit";
+	private static String chinaAccount = "C01409210";
+	private static String chinaPassword = "b3add47d33a7368bfc546f51961a5173";
+	private static String No_chinaAccount = "I03715129";
+	private static String No_chinaPassword = "1185310f41d548bd331de627fa8bcfa1";
+	private static String pattern="^1[356789][0-9]{9}";
 	public  static int checkPhone(String phone) {
-		
 		HttpClient client = new HttpClient();
-		PostMethod method = new PostMethod(Url);
+		PostMethod method = null;
+		NameValuePair account= new NameValuePair("account","");
+		NameValuePair password= new NameValuePair("password","");
+		if(Pattern.matches(pattern,phone)){
+			account.setValue(chinaAccount);
+			password.setValue(chinaPassword);
+			method = new PostMethod(chinaUrl);
+
+		}else{
+			account.setValue(No_chinaAccount);
+			password.setValue(No_chinaPassword);
+			method = new PostMethod(No_chinaUrl);
+		}
+
 		client.getParams().setContentCharset("GBK");
 		method.setRequestHeader("ContentType","application/x-www-form-urlencoded;charset=GBK");
 		int mobile_code = (int)((Math.random()*9+1)*100000);
 
-	    String content = new String("您的验证码是：" + mobile_code + "。请不要把验证码泄露给其他人。");
+		String content = new String("您的验证码是：" + mobile_code + "。请不要把验证码泄露给其他人。");
+
+
 		NameValuePair[] data = {
-			    new NameValuePair("account", "C01409210"),
-			    new NameValuePair("password", "b3add47d33a7368bfc546f51961a5173"),
-			    new NameValuePair("mobile", phone),
-			    new NameValuePair("content", content),
+				account,
+				password,
+				new NameValuePair("mobile", phone),
+				new NameValuePair("content", content),
 		};
 		method.setRequestBody(data);
 		try {
@@ -39,7 +64,11 @@ public class MessageService {
 			Document doc = DocumentHelper.parseText(SubmitResult);
 			Element root = doc.getRootElement();
 			String code = root.elementText("code");
-			 if("2".equals(code)){
+
+
+
+			logger.info("==================="+code);
+			if("2".equals(code)){
 				return mobile_code;
 			}
 		} catch (HttpException e) {
@@ -57,15 +86,28 @@ public class MessageService {
 	public  static int sendMessage(String phone,String msg) {
 
 		HttpClient client = new HttpClient();
-		PostMethod method = new PostMethod(Url);
+		PostMethod method = null;
+		NameValuePair account= new NameValuePair("account","");
+		NameValuePair password= new NameValuePair("password","");
+		if(Pattern.matches(pattern,phone)){
+			account.setValue(chinaAccount);
+			password.setValue(chinaPassword);
+			method = new PostMethod(chinaUrl);
+
+		}else{
+			account.setValue(No_chinaAccount);
+			password.setValue(No_chinaPassword);
+			method = new PostMethod(No_chinaUrl);
+		}
+
 		client.getParams().setContentCharset("GBK");
 		method.setRequestHeader("ContentType","application/x-www-form-urlencoded;charset=GBK");
 		int mobile_code = (int)((Math.random()*9+1)*100000);
 
 		String content = new String(msg);
 		NameValuePair[] data = {
-				new NameValuePair("account", "C01409210"),
-				new NameValuePair("password", "b3add47d33a7368bfc546f51961a5173"),
+				account,
+				password,
 				new NameValuePair("mobile", phone),
 				new NameValuePair("content", content),
 		};
@@ -76,7 +118,7 @@ public class MessageService {
 			Document doc = DocumentHelper.parseText(SubmitResult);
 			Element root = doc.getRootElement();
 			String code = root.elementText("code");
-			System.out.println(code);
+			logger.info("==================="+code);
 			if("2".equals(code)){
 				return mobile_code;
 			}
