@@ -22,6 +22,14 @@
     <script  type="text/javascript" src="/js/html5.min.js"></script>
     <script  type="text/javascript" src="/js/respond.min.js"></script>
     <![endif]-->
+    <style>
+        .area_num_select.area_select {
+            background: #999;padding: 0 15px;border-radius: 4px;margin-left: 0;
+        }
+        .area_num_select.area_select .area_option {
+            top:45px;border: 1px solid #ddd ;
+        }
+    </style>
 </head>
 </head>
 <body >
@@ -45,12 +53,33 @@
             <div class="m step_block mt50" >
                 <form id="formone">
                     <div class="form-group">
-                        <label class="col-form-label">请输入您需要找回的账号：</label>
-                        <input type="text" class="form-control" placeholder="请输入手机号" maxlength="11" id="Telephone" name="telphone">
+                        <div class="w100 inblock">
+                            <label class="col-form-label block">请输入您需要找回的账号：</label>
+                            <div id="area_select" class="area_select area_num_select l mr10">
+                                <h4><span>选择国家</span> <i></i></h4>
+                                <div id="area_option" class="area_option" style="display: none">
+                                    <a data-id="">中国大陆(默认)</a>
+                                    <a data-id="852">中国香港</a>
+                                    <a data-id="855 ">柬埔寨</a>
+                                    <a data-id="65 ">新加坡</a>
+                                    <a data-id="60 ">马来西亚</a>
+                                    <a data-id="66 ">泰国</a>
+                                    <a data-id="95 ">缅甸</a>
+                                    <a data-id="62 ">印度尼西亚</a>
+                                    <a data-id="63 ">菲律宾</a>
+                                    <a data-id="84 ">越南</a>
+                                    <a data-id="856 ">老挝</a>
+                                    <a data-id="673 ">文莱</a>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control l " name="phone" id="phone" placeholder="请输入手机号"  style="width:60%;margin-left: 0" oninput="phonenum()"/>
+                            <input type="hidden" name="telphone"  id="Telephone" >
+                            <input type="hidden" id="areanum">
+                        </div>
                     </div>
                     <div class="form-group">
-                        <div class="w100 inblock"> <input class="form-control  l mr15 " style="width: 70%;" maxlength="11"  name="checknum"  placeholder="请输入验证码" id="checknum"  type="text">
-                            <button type="button" class="btn btn-primary code_btn r mr5 f14" id="getcode">发送验证码</button>
+                        <div class="w100 inblock"> <input class="form-control  l mr15 " style="width: 61%;" maxlength="11"  name="checknum"  placeholder="请输入验证码" id="checknum"  type="text">
+                            <button type="button" class="btn btn-primary code_btn l mr5 f14" id="getcode">发送验证码</button>
                         </div>
                         <div id="telephonenameTip"></div>
                     </div>
@@ -91,10 +120,31 @@
 
 
 <script type="text/javascript">
+    // 模拟重写select
+    $("#area_select").click(function (event) {
+        $("#area_option").toggle();
+        event.stopImmediatePropagation();//取消事件冒泡；
+    });
+    $('#area_option a').on('click',function(event){
+        var selTxt=$(this).text();
+        $('#area_select h4 span').text(selTxt);
+        var areanum=$(this).attr('data-id');
+        $("#areanum").val(areanum);
+
+    });
+    $(document).bind("click",function(){
+        $("#area_option").hide();
+    });
+    // 输入电话号码实时赋值
+    function phonenum() {
+        var number=$("#phone").val()
+        $("#Telephone").val($("#areanum").val()+number);
+    }
+
     // 第一步
     function nextstep() {
 
-        $('#formone').data('bootstrapValidator').enableFieldValidators('telphone', true);
+        $('#formone').data('bootstrapValidator').enableFieldValidators('phone', true);
         $('#formone').data('bootstrapValidator').enableFieldValidators('checknum', true);
         $('#formone').data('bootstrapValidator').validate();//手动对表单进行校检
         if (!$('#formone').data('bootstrapValidator').isValid()) {//判断校检是否通过
@@ -206,23 +256,15 @@
                 validating: 'glyphicon glyphicon-refresh'
             },
             fields: {
-                'telphone': {
-                    message: '手机号非法',
+                'phone': {
+                    message: '香港及国外手机请先选择下拉框',
                     validators: {
                         notEmpty: {
                             message: '手机号不可以为空'
                         },
-                        regexp: {
-                            regexp: /^1[356789][0-9]{9}$/,
-                            message: '手机号非法'
-                        },
-                        // remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}
-                        //     url: '/User/CheckTelephoneUnExist',//验证
-                        //     message: '用户不存在',
-                        //     delay: 500,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
-                        //     type: 'POST'//请求方式
-                        // }
-
+                        digits: {
+                            message: '手机号只能是数字'
+                        }
                     }
                 },
                 'checknum': {
@@ -238,7 +280,7 @@
 
         // 获取验证码
         $("#getcode").click(function () {
-            $("#formone").data("bootstrapValidator").validateField('telphone');
+            $("#formone").data("bootstrapValidator").validateField('phone');
             //获取输入的手机号码
             var phoNum = $("#Telephone").val();
             curCount = count;

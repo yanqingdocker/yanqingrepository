@@ -30,8 +30,29 @@
         <form id="registerForm">
             <div class="login_form">
                 <div class="form-group  login_input mb15">
-                    <i class="icon user"></i>
-                    <input type="text" class="form-control" name="telphone" id="Telephone" placeholder="Phone Number" onkeydown="enter_down( event);" />
+                    <div class="inblock w100">
+                        <i class="icon user"></i>
+                        <div id="area_select" class="area_select area_num_select l">
+                            <h4><span>Choose the country</span> <i></i></h4>
+                            <div id="area_option" class="area_option" style="display: none;width: 190px;">
+                                <a data-id="">Mainland China(default)</a>
+                                <a data-id="852">Hongkong, China</a>
+                                <a data-id="855 ">Cambodia</a>
+                                <a data-id="65 ">Singapore</a>
+                                <a data-id="60 ">Malaysia</a>
+                                <a data-id="66 ">Thailand</a>
+                                <a data-id="95 ">Myanmar</a>
+                                <a data-id="62 ">Indonesia</a>
+                                <a data-id="63 ">Philippines</a>
+                                <a data-id="84 ">Vietnam</a>
+                                <a data-id="856 ">Laos</a>
+                                <a data-id="673 ">Brunei</a>
+                            </div>
+                        </div>
+                        <input type="text" class="form-control r" name="phone" id="phone" placeholder="Phone Number" onkeydown="javascript: if(event.keyCode == 13) save();" style="width:42%;margin-left: 0" oninput="phonenum()"/>
+                        <input type="hidden" name="telphone"  id="Telephone" >
+                        <input type="hidden" id="areanum">
+                    </div>
                 </div>
                 <div class="form-group login_input mb15">
                     <i class="icon password"></i>
@@ -60,9 +81,23 @@
 
 
 <script type="text/javascript">
+    // 模拟重写select
+    $("#area_select").click(function (event) {
+        $("#area_option").toggle();
+        event.stopImmediatePropagation();//取消事件冒泡；
+    });
+    $('#area_option a').on('click',function(event){
+        var selTxt=$(this).text();
+        $('#area_select h4 span').text(selTxt);
+        var areanum=$(this).attr('data-id');
+        $("#areanum").val(areanum);
 
+    });
+    $(document).bind("click",function(){
+        $("#area_option").hide();
+    });
     function save() {
-        $('#registerForm').data('bootstrapValidator').enableFieldValidators('telphone', true);
+        $('#registerForm').data('bootstrapValidator').enableFieldValidators('phone', true);
         $('#registerForm').data('bootstrapValidator').enableFieldValidators('password', true);
         $('#registerForm').data('bootstrapValidator').validate();//手动对表单进行校检
         if (!$('#registerForm').data('bootstrapValidator').isValid()) {//判断校检是否通过
@@ -109,15 +144,14 @@
                 validating: 'glyphicon glyphicon-refresh'
             },
             fields: {
-                'telphone': {
+                'phone': {
                     message: 'please enter a valid phone number',
                     validators: {
                         notEmpty: {
                             message: 'Phone number cannot be empty'
                         },
-                        regexp: {
-                            regexp: /^1[356789][0-9]{9}$/,
-                            message: 'please enter a valid phone number'
+                        digits: {
+                            message: 'Phone number can only be digital'
                         }
                     }
                 },
