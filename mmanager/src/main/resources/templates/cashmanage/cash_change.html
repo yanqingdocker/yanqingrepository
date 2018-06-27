@@ -226,7 +226,7 @@
                     var realrate=data.sellPic;
                     $(".thisrate").val(realrate);
                     var  rate=  $(".thisrate").val();
-                    $("#realrate").val((1/rate).toFixed(4));
+                    $("#realrate").val(1/rate);
                 },
                 error: function (data) {
                     //终止请求动作.
@@ -239,10 +239,12 @@
     // 兑换后金额
     function exchange() {
         var before= $("#beforemoney").val();
-       // var rate= $(".thisrate").val();
+        // var rate= $(".thisrate").val();
         var sellrate=$("#realrate").val();
         var changeafter=before*sellrate;
-       var value= Math.round(changeafter*10000)/10000;
+        console.log(sellrate);
+        console.log(changeafter);
+        var value= Math.round(changeafter*10000)/10000;
         $("#aftermoney").val(decimal(value,0));//四舍五入到整数
     };
     // 手动改变汇率，实际汇率同时改变
@@ -289,7 +291,7 @@
                 success: function (data) {
                     $(".thisrate").val();
                     var  rate=  $(".thisrate").val();
-                    $("#realrate").val((1/rate).toFixed(4));
+                    $("#realrate").val(1/rate);
                     var before= $("#beforemoney").val();
                     var sellrate=$("#realrate").val();
                     var changeafter=before*sellrate;

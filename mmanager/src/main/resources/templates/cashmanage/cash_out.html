@@ -245,7 +245,7 @@
                     var realrate=data.sellPic;
                     $(".thisrate").val(realrate);
                     var  rate=  $(".thisrate").val();
-                    $("#realrate").val((1/rate).toFixed(4));
+                    $("#realrate").val(1/rate);
                 },
                 error: function (data) {
                     //终止请求动作.
@@ -308,7 +308,7 @@
                 success: function (data) {
                     $(".thisrate").val();
                     var  rate=  $(".thisrate").val();
-                    $("#realrate").val((1/rate).toFixed(4));
+                    $("#realrate").val(1/rate);
                     var before= $("#beforemoney").val();
                     var sellrate=$("#realrate").val();
                     var changeafter=before*sellrate;
