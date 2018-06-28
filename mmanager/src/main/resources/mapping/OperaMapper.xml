@@ -15,6 +15,8 @@
         <result column="operaip" property="operaIp" jdbcType="VARCHAR" />
         <result column="servicebranch" property="servicebranch" jdbcType="VARCHAR" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
 
     </resultMap>
 
@@ -30,11 +32,11 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-    id,snumber,countid,counttype,num,operatype,operatime,operauser,oi,operaip,servicebranch,remark
+    id,snumber,countid,counttype,num,operatype,operatime,operauser,oi,operaip,servicebranch,remark,phone,username
      </sql>
     <insert id="add" parameterType="cn.com.caogen.entity.Appliy">
-        insert into operalog (snumber,countid,counttype,num,operatype,operatime,operauser,oi,operaip,servicebranch,remark) values
-        (#{snumber,jdbcType=VARCHAR},#{countid,jdbcType=VARCHAR},#{countType,jdbcType=VARCHAR},#{num,jdbcType=DOUBLE},#{operaType,jdbcType=VARCHAR},#{operaTime,jdbcType=VARCHAR},#{operaUser,jdbcType=VARCHAR},#{oi,jdbcType=INTEGER},#{operaIp,jdbcType=VARCHAR},#{servicebranch,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR});
+        insert into operalog (snumber,countid,counttype,num,operatype,operatime,operauser,oi,operaip,servicebranch,remark,phone,username) values
+        (#{snumber,jdbcType=VARCHAR},#{countid,jdbcType=VARCHAR},#{countType,jdbcType=VARCHAR},#{num,jdbcType=DOUBLE},#{operaType,jdbcType=VARCHAR},#{operaTime,jdbcType=VARCHAR},#{operaUser,jdbcType=VARCHAR},#{oi,jdbcType=INTEGER},#{operaIp,jdbcType=VARCHAR},#{servicebranch,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR});
     </insert>
     <select id="queryAll"  resultMap="BaseResultMap" >
         select <include refid="Base_Column_List"/> from operalog  Order By operatime Desc

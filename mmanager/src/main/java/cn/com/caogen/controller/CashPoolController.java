@@ -155,12 +155,12 @@ public class CashPoolController {
      * @return
      */
     @RequestMapping(path = "exchange",method = RequestMethod.POST)
-    public String exchange(@RequestParam("srccounttype") String srccounttype, @RequestParam("destcounttype") String destcounttype, @RequestParam("srcnum") Double srcnum, @RequestParam("destnum") Double destnum, @RequestParam("remark") String remark, HttpServletRequest request){
+    public String exchange(@RequestParam("srccounttype") String srccounttype, @RequestParam("destcounttype") String destcounttype, @RequestParam("srcnum") Double srcnum, @RequestParam("destnum") Double destnum, @RequestParam("remark") String remark,@RequestParam("phone") String phone,@RequestParam("username") String username, HttpServletRequest request){
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
         logger.info("exchange start:");
-        if(!StringUtil.checkStrs(srccounttype,destcounttype,String.valueOf(srcnum),String.valueOf(destnum))){
+        if(!StringUtil.checkStrs(srccounttype,destcounttype,String.valueOf(srcnum),String.valueOf(destnum),phone,username)){
             logger.info(ConstantUtil.ERROR_ARGS);
            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
@@ -182,6 +182,8 @@ public class CashPoolController {
         parmMap.put("operauser",operuser);
         parmMap.put("servicebranch",currentUser.getServicebranch());
         parmMap.put("remark",remark);
+        parmMap.put("phone",phone);
+        parmMap.put("username",username);
         cashPoolService.exchange(parmMap);
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
 

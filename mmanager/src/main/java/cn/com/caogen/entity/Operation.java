@@ -31,10 +31,15 @@ public class Operation {
     private int oi;
     //操作IP
     private String operaIp;
-
+   //网点名称
     private String servicebranch;
-
+    //备注信息
     private String remark;
+    //联系电话
+    private String phone;
+    //客户姓名
+    private String username;
+
 
 
 }
