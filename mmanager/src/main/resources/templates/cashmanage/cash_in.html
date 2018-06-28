@@ -266,7 +266,7 @@
         var sellrate=$("#realrate").val();
         var changeafter=before*sellrate;
         var value= Math.round(changeafter*10000)/10000;
-        $("#aftermoney").val(decimal(value,0));//四舍五入到整数
+        $("#aftermoney").val(decimal(value,2));//四舍五入保留两位小数点
     };
 
     // 手动改变汇率，实际汇率同时改变
@@ -294,7 +294,7 @@
                     var sellrate=$("#realrate").val();
                     var changeafter=before*sellrate;
                     var value= Math.round(changeafter*10000)/10000;
-                    $("#aftermoney").val(decimal(value,0));//四舍五入到整数
+                    $("#aftermoney").val(decimal(value,2));//四舍五入保留两位小数点
                 },
                 error: function (data) {
                     //终止请求动作.
@@ -318,7 +318,7 @@
                     var sellrate=$("#realrate").val();
                     var changeafter=before*sellrate;
                     var value= Math.round(changeafter*10000)/10000;
-                    $("#aftermoney").val(decimal(value,0));//四舍五入到整数
+                    $("#aftermoney").val(decimal(value,2));//四舍五入保留两位小数点
                 },
                 error: function (data) {
                     //终止请求动作.
