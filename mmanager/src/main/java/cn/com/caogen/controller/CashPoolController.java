@@ -3,6 +3,8 @@ package cn.com.caogen.controller;
 import cn.com.caogen.entity.CashPool;
 import cn.com.caogen.entity.Muser;
 import cn.com.caogen.service.CashPoolServiceImpl;
+import cn.com.caogen.service.CountServiceImpl;
+import cn.com.caogen.service.OperaServiceImpl;
 import cn.com.caogen.util.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -32,6 +34,8 @@ public class CashPoolController {
     private static Logger logger = LoggerFactory.getLogger(CashPoolController.class);
     @Autowired
     private CashPoolServiceImpl cashPoolService;
+    @Autowired
+    private OperaServiceImpl operaService;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -187,5 +191,27 @@ public class CashPoolController {
         cashPoolService.exchange(parmMap);
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
 
+    }
+
+
+    /**
+     * 查询支出或收入美金
+     * @return
+     */
+    @RequestMapping(path ="queryScope",method = RequestMethod.GET)
+    public String queryScope(@RequestParam("starttime") String starttime,@RequestParam("endtime") String endtime, HttpServletRequest request){
+      /*  if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }*/
+        if(!StringUtil.checkStrs(starttime,endtime)){
+            logger.info(ConstantUtil.ERROR_ARGS);
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
+        }
+        logger.info("queryAll start:");
+        Map<String,String> parmMap=new HashMap<String,String>();
+        parmMap.put("starttime",starttime);
+        parmMap.put("endtime",endtime);
+        String rs=operaService.queryScope(parmMap);
+        return rs;
     }
 }

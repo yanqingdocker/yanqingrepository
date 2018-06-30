@@ -151,6 +151,10 @@
         and oi=#{oi} and servicebranch=#{servicebranch}  Order By operatime Desc;
 
     </select>
+    
+    <select id="queryScope" parameterType="Map" resultMap="BaseResultMap">
+          SELECT <include refid="Base_Column_List"/>  FROM operalog where operatime Between #{starttime} And #{endtime};
+    </select>
 
 
 

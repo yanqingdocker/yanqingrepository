@@ -65,6 +65,8 @@ public class CashPoolServiceImpl implements ICashPoolService {
             srcoperation.setCountid(srccount.getCountid());
             srcoperation.setOperaTime(DateUtil.getTime());
             srcoperation.setServicebranch((String)parmMap.get("servicebranch"));
+            srcoperation.setPhone((String)parmMap.get("phone"));
+            srcoperation.setUsername((String)parmMap.get("username"));
             if(StringUtil.checkStrs((String)parmMap.get("remark"))){
                 srcoperation.setRemark((String)parmMap.get("remark"));
             }else{
@@ -83,6 +85,8 @@ public class CashPoolServiceImpl implements ICashPoolService {
             destoperation.setCountid(destcount.getCountid());
             destoperation.setOperaTime(DateUtil.getTime());
             destoperation.setServicebranch((String)parmMap.get("servicebranch"));
+            destoperation.setUsername((String)parmMap.get("username"));
+            destoperation.setPhone((String)parmMap.get("phone"));
             if(StringUtil.checkStrs((String)parmMap.get("remark"))){
                 destoperation.setRemark((String)parmMap.get("remark"));
             }else{

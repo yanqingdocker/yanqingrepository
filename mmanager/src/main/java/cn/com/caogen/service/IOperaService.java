@@ -10,10 +10,11 @@ import java.util.Map;
  * Date:2018/5/8
  */
 public interface IOperaService {
-    public void add(Operation operation);
-    public List<Operation> queryAll(String servicebranch);
-    public List<Operation> queryAll(Map<String, Object> parmMap);
+    void add(Operation operation);
+    List<Operation> queryAll(String servicebranch);
+    List<Operation> queryAll(Map<String, Object> parmMap);
     List<Operation> queryByDate(Map<String, Object> parmMap);
     List<Map<String,Object>> queryoperatype(int date,String servicebranch);
     List<Map<String ,Object>> queryoperacount(int date,String servicebranch);
+    String queryScope(Map<String, String> parmMap);
 }

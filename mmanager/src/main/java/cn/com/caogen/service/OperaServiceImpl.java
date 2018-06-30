@@ -4,12 +4,15 @@ import cn.com.caogen.entity.Operation;
 import cn.com.caogen.mapper.OperaMapper;
 import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.StringUtil;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * author:huyanqing
@@ -69,5 +72,26 @@ public class OperaServiceImpl implements IOperaService {
         }
         parmMap.put("servicebranch",servicebranch);
         return operaMapper.queryoperacount(parmMap);
+    }
+
+    @Override
+    public String queryScope(Map<String, String> parmMap) {
+        List<Operation> operationList=operaMapper.queryScope(parmMap);
+        List<Operation> inUSD=operationList.stream().filter((e)->ConstantUtil.USD_LIB.equals(e.getCountid())&&e.getNum()>0).collect(Collectors.toList());
+        List<Operation> outUSD=operationList.stream().filter((e)->ConstantUtil.USD_LIB.equals(e.getCountid())&&e.getNum()<0).collect(Collectors.toList());
+        double inNum=0;
+        for(Operation operation:inUSD){
+           inNum+=operation.getNum();
+        }
+
+        double outNum=0;
+        for(Operation operation:outUSD){
+            outNum+=operation.getNum();
+        }
+        StringBuffer sb=new StringBuffer();
+        sb.append("{'inNum':'").append(inNum).append("','outNum':'").append(outNum).append("'}");
+
+
+        return JSONObject.fromObject(sb.toString()).toString();
     }
 }

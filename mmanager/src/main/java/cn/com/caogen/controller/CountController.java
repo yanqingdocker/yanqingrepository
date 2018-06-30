@@ -230,6 +230,7 @@ public class CountController {
         cashPool.setBlance(cashPool.getBlance()+Double.parseDouble(num));
         count.setBlance(count.getBlance()+Double.parseDouble(num));
         countServiceImpl.updateCount(String.valueOf(count.getId()),count.getBlance(),null,null);
+        cashPoolService.update(cashPool);
 
         String operuser="操作员-"+currentUser.getUsername();
         countServiceImpl.saveOperaLog(currentUser.getServicebranch(),count.getCardId(),count.getCountType(),Double.parseDouble(num),ConstantUtil.SERVICETYPE_INMONEY,operuser,ConstantUtil.MONEY_IN,IpUtil.getIpAddr(request));
