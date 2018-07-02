@@ -394,7 +394,7 @@
                                 }
                             });
                     }
-                    else if(data.code=="403") {
+                    else if(strToJson(data).code=="403") {
                         sweetAlert({
                                 title: "",
                                 text: "您的账号权限不足，无法操作此页面！",
