@@ -27,6 +27,26 @@ public class Operation {
     //操作人
     private String operaUser;
 
+    @Override
+    public String toString() {
+        return "Operation{" +
+                "id=" + id +
+                ", snumber='" + snumber + '\'' +
+                ", countid='" + countid + '\'' +
+                ", countType='" + countType + '\'' +
+                ", num=" + num +
+                ", operaType='" + operaType + '\'' +
+                ", operaTime='" + operaTime + '\'' +
+                ", operaUser='" + operaUser + '\'' +
+                ", oi=" + oi +
+                ", operaIp='" + operaIp + '\'' +
+                ", servicebranch='" + servicebranch + '\'' +
+                ", remark='" + remark + '\'' +
+                ", phone='" + phone + '\'' +
+                ", username='" + username + '\'' +
+                '}';
+    }
+
     //收入1/支出0
     private int oi;
     //操作IP

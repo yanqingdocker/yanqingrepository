@@ -1,14 +1,8 @@
 package cn.com.caogen.controller;
 
-import cn.com.caogen.entity.CashPool;
-import cn.com.caogen.entity.Count;
-import cn.com.caogen.entity.Muser;
-import cn.com.caogen.entity.User;
+import cn.com.caogen.entity.*;
 import cn.com.caogen.externIsystem.service.MessageService;
-import cn.com.caogen.service.CashPoolServiceImpl;
-import cn.com.caogen.service.CountServiceImpl;
-import cn.com.caogen.service.ICountService;
-import cn.com.caogen.service.IUserService;
+import cn.com.caogen.service.*;
 import cn.com.caogen.util.*;
 import net.sf.json.JSON;
 import net.sf.json.JSONArray;
@@ -233,8 +227,8 @@ public class CountController {
         cashPoolService.update(cashPool);
 
         String operuser="操作员-"+currentUser.getUsername();
-        countServiceImpl.saveOperaLog(currentUser.getServicebranch(),count.getCardId(),count.getCountType(),Double.parseDouble(num),ConstantUtil.SERVICETYPE_INMONEY,operuser,ConstantUtil.MONEY_IN,IpUtil.getIpAddr(request));
-        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
+        Operation operation=countServiceImpl.saveOperaLog(currentUser.getServicebranch(),count.getCardId(),count.getCountType(),Double.parseDouble(num),ConstantUtil.SERVICETYPE_INMONEY,operuser,ConstantUtil.MONEY_IN,IpUtil.getIpAddr(request));
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS,JSONObject.fromObject(operation).toString())).toString();
     }
 
     @RequestMapping(path = "/outMoney", method = RequestMethod.POST)
@@ -282,9 +276,9 @@ public class CountController {
         cashPoolService.update(cashPool);
         count.setBlance(count.getBlance()-Double.parseDouble(num));
         countServiceImpl.updateCount(String.valueOf(count.getId()),count.getBlance(),null,null);
-        countServiceImpl.saveOperaLog(currentUser.getServicebranch(),count.getCardId(),count.getCountType(),-Double.parseDouble(num),ConstantUtil.SERVICETYPE_OUTMONEY,operuser,ConstantUtil.MONEY_OUT,IpUtil.getIpAddr(request));
+        Operation operation=countServiceImpl.saveOperaLog(currentUser.getServicebranch(),count.getCardId(),count.getCountType(),-Double.parseDouble(num),ConstantUtil.SERVICETYPE_OUTMONEY,operuser,ConstantUtil.MONEY_OUT,IpUtil.getIpAddr(request));
 
-        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS,JSONObject.fromObject(operation).toString())).toString();
     }
 
 
@@ -369,4 +363,51 @@ public class CountController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL)).toString();
         }
     }
+
+
+    /**
+     * 打印票据
+     * @param type
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/printTicket", method = RequestMethod.POST)
+    public String printTicket(@RequestParam("type") String type,HttpServletRequest request,@RequestParam("msg") String msg) {
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
+        logger.info("checkPhone start: telphone="+type);
+        if (!StringUtil.checkStrs(type,msg)) {
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
+        }
+        String msg1="";
+        try {
+            JSONObject jsonObject = JSONObject.fromObject(msg);
+            String username=jsonObject.getString("username");
+            String srccounttype=jsonObject.getString("srccounttype");
+            String srcnum=jsonObject.getString("srcnum");
+            String destcounttype=jsonObject.getString("destcounttype");
+            String destnum=jsonObject.getString("destnum");
+            String servicebranch=jsonObject.getString("servicebranch");
+            String thisrate=jsonObject.getString("thisrate");
+            Map<String,Object> map=new HashMap<String, Object>();
+            map.put("username",username);
+            map.put("servicebranch",servicebranch);
+            map.put("thisrate",thisrate);
+            switch (type){
+                case "取款":System.out.println("调用打印服务");break;
+                case "存款":System.out.println("调用打印服务");break;
+            }
+            msg1=PrintServiceImp.printmenu("E:\\1.pdf","1.pdf",map,destcounttype,destnum);
+            //Thread.sleep(1000);
+
+            //msg1=PrintServiceImp.printmenu("E:\\1.pdf","1.pdf",map,srccounttype,srcnum);
+        }catch (Exception e){
+            logger.info("print fail");
+        }
+        return "";
+
+    }
+
+
 }
