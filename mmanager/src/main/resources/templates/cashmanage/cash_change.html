@@ -100,7 +100,6 @@
                         </div>
                     </div>
                     <input type="hidden" name="servicebranch" id="servicebranch">
-                    <input type="hidden" name="date" id="nowdate">
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <button type="button" class="btn btn-default" onclick="submitform()">提交兑换</button>
@@ -116,6 +115,7 @@
 <script type="text/javascript">
     $(function(){
         loadaccount();//加载账户类型
+        information();//获取网点
         $('#myform').bootstrapValidator({
             feedbackIcons: {
                 //valid: 'glyphicon glyphicon-ok',
@@ -361,7 +361,7 @@
             async: false,
             contentType: 'application/json',
             success: function (data) {
-                $("#servicebranch").html(data.servicebranch);
+                $("#servicebranch").val(data.servicebranch);
             }
         });
 
@@ -397,11 +397,11 @@
                             function(isConfirm){
                                 if (isConfirm) {
                                     //确认打印凭条
-                                    information();//获取网点
-                                    $("#nowdate").val(showdate());//获取当前时间
+                                    var str = $("#myform").serializeObject();
+                                    var datas = JSON.stringify(str);//返回一个新字符串
                                     $.ajax({
                                         url: '/print/prin',
-                                        data: $('#myform').serialize(),
+                                        data: {print:datas},
                                         type: 'post',
                                         success: function (data) {
                                             sweetAlert({
