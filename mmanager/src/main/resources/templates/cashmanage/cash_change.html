@@ -99,6 +99,8 @@
                             <input type="text" name="remark"  class="form-control" >
                         </div>
                     </div>
+                    <input type="hidden" name="servicebranch" id="servicebranch">
+                    <input type="hidden" name="date" id="nowdate">
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <button type="button" class="btn btn-default" onclick="submitform()">提交兑换</button>
@@ -349,7 +351,21 @@
         });
         return value;
     }
+    // 获取登录成员信息
+    function information() {
+        $.ajax({
+            url: "/muser/getUser",
+            type: "get",
+            data: null,
+            dataType: 'json',
+            async: false,
+            contentType: 'application/json',
+            success: function (data) {
+                $("#servicebranch").html(data.servicebranch);
+            }
+        });
 
+    }
     // 提交表单
     function submitform() {
         $('#myform').data('bootstrapValidator').enableFieldValidators('destnum', true);
@@ -381,6 +397,34 @@
                             function(isConfirm){
                                 if (isConfirm) {
                                     //确认打印凭条
+                                    information();//获取网点
+                                    $("#nowdate").val(showdate());//获取当前时间
+                                    $.ajax({
+                                        url: '/print/prin',
+                                        data: $('#myform').serialize(),
+                                        type: 'post',
+                                        success: function (data) {
+                                            sweetAlert({
+                                                    title: "正在打印中..",
+                                                    text:"打印完成请关闭该弹出框",
+                                                    type: "info",
+                                                    showCancelButton: false,
+                                                    confirmButtonColor: "#DD6B55",
+                                                    confirmButtonText: "关闭",
+                                                    cancelButtonText: "取消",
+                                                    closeOnConfirm: false,
+                                                    closeOnCancel: true
+                                                },
+                                                function(isConfirm) {
+                                                    if (isConfirm) {
+                                                        window.location.href = "/cashmanage/cashtrade_list";
+                                                    }
+                                                })
+                                        },
+                                        error: function () {
+                                            sweetAlert("", "请求失败！", "error");
+                                        }
+                                    })
                                 } else {
                                     window.location.href = "/cashmanage/cashtrade_list";
                                 }

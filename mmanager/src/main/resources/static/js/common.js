@@ -70,6 +70,13 @@ function decimal(num,v){
     return Math.round(num*vv)/vv;
 }
 
-
+// 获取当前年月日
+function showdate(){
+    var mydate = new Date();
+    var str = "" + mydate.getFullYear() + "-";
+    str += (mydate.getMonth()+1) + "-";
+    str += mydate.getDate() ;
+    return str;
+}
 
 
