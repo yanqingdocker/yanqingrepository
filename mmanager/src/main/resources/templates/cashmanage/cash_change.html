@@ -99,7 +99,6 @@
                             <input type="text" name="remark"  class="form-control" >
                         </div>
                     </div>
-                    <input type="hidden" name="servicebranch" id="servicebranch">
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <button type="button" class="btn btn-default" onclick="submitform()">提交兑换</button>
@@ -115,7 +114,6 @@
 <script type="text/javascript">
     $(function(){
         loadaccount();//加载账户类型
-        information();//获取网点
         $('#myform').bootstrapValidator({
             feedbackIcons: {
                 //valid: 'glyphicon glyphicon-ok',
@@ -351,21 +349,7 @@
         });
         return value;
     }
-    // 获取登录成员信息
-    function information() {
-        $.ajax({
-            url: "/muser/getUser",
-            type: "get",
-            data: null,
-            dataType: 'json',
-            async: false,
-            contentType: 'application/json',
-            success: function (data) {
-                $("#servicebranch").val(data.servicebranch);
-            }
-        });
 
-    }
     // 提交表单
     function submitform() {
         $('#myform').data('bootstrapValidator').enableFieldValidators('destnum', true);
@@ -397,11 +381,10 @@
                             function(isConfirm){
                                 if (isConfirm) {
                                     //确认打印凭条
-                                    var str = $("#myform").serializeObject();
-                                    var datas = JSON.stringify(str);//返回一个新字符串
+                                    var msg=strToJson(data).message;
                                     $.ajax({
-                                        url: '/print/prin',
-                                        data: {print:datas},
+                                        url: '/count/printTicket',
+                                        data: {msg:msg,type:"兑换"},
                                         type: 'post',
                                         success: function (data) {
                                             sweetAlert({

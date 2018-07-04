@@ -34,7 +34,7 @@ public class PrintServiceImp {
         Calendar date = Calendar.getInstance();
         String year = String.valueOf(date.get(Calendar.YEAR));
         String day = String.valueOf(date.get(Calendar.DATE));
-        String month = String.valueOf(date.get(Calendar.MONTH));
+        String month = String.valueOf(date.get(Calendar.MONTH)+1);
 
 
         String countid=map.get("username").toString();
@@ -44,6 +44,7 @@ public class PrintServiceImp {
 //        String destnum=map.get("destnum").toString();//手持金额
         String servicebranch=map.get("servicebranch").toString();//网点
         String thisrate=map.get("thisrate").toString();
+        String  snumber=map.get("snumber").toString();
 
         int j=0;
         PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
@@ -98,7 +99,7 @@ public class PrintServiceImp {
 
                               graphics2D.setFont(new Font("宋体",Font.CENTER_BASELINE, 12));
                               yIndex = drawString(graphics2D, countid, 82, 105, 250, 30);
-                              yIndex = drawString(graphics2D, type, 182, 105, 250, 30);
+                              yIndex = drawString(graphics2D, type, 192, 105, 250, 30);
                               yIndex = drawString(graphics2D, thisrate, 332, 105, 250, 30);
                               yIndex = drawString(graphics2D, moneynum, 102, 185, 250, 30);
 
@@ -108,8 +109,8 @@ public class PrintServiceImp {
                               yIndex = drawString(graphics2D, thisrate, 505, 155, 250, 30);
                               yIndex = drawString(graphics2D, moneynum, 505, 185, 250, 30);
                              // yIndex = drawString(graphics2D, "1%", 505, 210, 250, 30);
-                              yIndex = drawString(graphics2D, "2017080808080", 505, 305, 250, 30);
-                              yIndex = drawString(graphics2D, "2017080808080", 42, 335, 250, 30);
+                              yIndex = drawString(graphics2D, snumber, 490, 305, 250, 30);
+                              yIndex = drawString(graphics2D, snumber, 42, 335, 250, 30);
 
 
                               yIndex = drawString(graphics2D, servicebranch, 202, 378, 250, 30);

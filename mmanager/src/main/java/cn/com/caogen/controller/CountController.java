@@ -372,7 +372,7 @@ public class CountController {
      * @return
      */
     @RequestMapping(path = "/printTicket", method = RequestMethod.POST)
-    public String printTicket(@RequestParam("type") String type,HttpServletRequest request,@RequestParam("msg") String msg) {
+    public String printTicket(@RequestParam("types") String type,HttpServletRequest request,@RequestParam("msg") String msg) {
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
@@ -381,27 +381,75 @@ public class CountController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
         String msg1="";
+
         try {
             JSONObject jsonObject = JSONObject.fromObject(msg);
-            String username=jsonObject.getString("username");
-            String srccounttype=jsonObject.getString("srccounttype");
-            String srcnum=jsonObject.getString("srcnum");
-            String destcounttype=jsonObject.getString("destcounttype");
-            String destnum=jsonObject.getString("destnum");
-            String servicebranch=jsonObject.getString("servicebranch");
-            String thisrate=jsonObject.getString("thisrate");
-            Map<String,Object> map=new HashMap<String, Object>();
-            map.put("username",username);
-            map.put("servicebranch",servicebranch);
-            map.put("thisrate",thisrate);
+//            String username=jsonObject.getString("username");
+//            String srccounttype=jsonObject.getString("srccounttype");
+//            String srcnum=jsonObject.getString("srcnum");
+//            String destcounttype=jsonObject.getString("destcounttype");
+//            String destnum=jsonObject.getString("destnum");
+//            String servicebranch=jsonObject.getString("servicebranch");
+//            String thisrate=jsonObject.getString("thisrate");
+//            Map<String,Object> map=new HashMap<String, Object>();
+//            map.put("username",username);
+//            map.put("servicebranch",servicebranch);
+//            map.put("thisrate",thisrate);
             switch (type){
-                case "取款":System.out.println("调用打印服务");break;
-                case "存款":System.out.println("调用打印服务");break;
-            }
-            msg1=PrintServiceImp.printmenu("E:\\1.pdf","1.pdf",map,destcounttype,destnum);
-            //Thread.sleep(1000);
+                case "取款":
+                    String username=jsonObject.getString("username");
+                    String srccounttype=jsonObject.getString("type");
+                    String srcnum=jsonObject.getString("txnum");
 
-            //msg1=PrintServiceImp.printmenu("E:\\1.pdf","1.pdf",map,srccounttype,srcnum);
+                    //String destnum=jsonObject.getString("crnum");
+                    String servicebranch=jsonObject.getString("servicebranch");
+                    String thisrate=jsonObject.getString("thisrate");
+                    String snumber=jsonObject.getString("snumber");
+                    Map<String,Object> map=new HashMap<String, Object>();
+                    map.put("username",username);
+                    map.put("servicebranch",servicebranch);
+                    map.put("thisrate",thisrate);
+                    map.put("snumber",snumber);
+                    System.out.println("调用打印服务");
+                    msg1=PrintServiceImp.printmenu("E:\\1.pdf","1.pdf",map,srccounttype,srcnum);
+                break;
+                case "存款":
+                     username=jsonObject.getString("username");
+                     srccounttype=jsonObject.getString("type");
+                     srcnum=jsonObject.getString("num");
+                     //destcounttype=jsonObject.getString("type");
+                     //destnum=jsonObject.getString("crnum");
+                     servicebranch=jsonObject.getString("servicebranch");
+                     thisrate="";
+                     snumber=jsonObject.getString("snumber");
+                    Map<String,Object> map1=new HashMap<String, Object>();
+                    map1.put("username",username);
+                    map1.put("servicebranch",servicebranch);
+                    map1.put("thisrate",thisrate);
+                    map1.put("snumber",snumber);
+                    System.out.println("调用打印服务");
+                    msg1=PrintServiceImp.printmenu("E:\\1.pdf","1.pdf",map1,srccounttype,srcnum);
+                    break;
+                case "兑换":
+                     username=jsonObject.getString("username");
+                     srccounttype=jsonObject.getString("srccounttype");
+                     srcnum=jsonObject.getString("srcnum");
+                    String destcounttype=jsonObject.getString("destcounttype");
+                     String destnum=jsonObject.getString("destnum");
+                     servicebranch=jsonObject.getString("servicebranch");
+                     thisrate=jsonObject.getString("thisrate");
+                    Map<String,Object> map2=new HashMap<String, Object>();
+                    map2.put("username",username);
+                    map2.put("servicebranch",servicebranch);
+                    map2.put("thisrate",thisrate);
+                    msg1=PrintServiceImp.printmenu("E:\\1.pdf","1.pdf",map2,destcounttype,destnum);
+                    msg1=PrintServiceImp.printmenu("E:\\1.pdf","1.pdf",map2,srccounttype,srcnum);
+                    break;
+            }
+//            msg1=PrintServiceImp.printmenu("E:\\1.pdf","1.pdf",map,destcounttype,destnum);
+//            //Thread.sleep(1000);
+//
+//            msg1=PrintServiceImp.printmenu("E:\\1.pdf","1.pdf",map,srccounttype,srcnum);
         }catch (Exception e){
             logger.info("print fail");
         }
