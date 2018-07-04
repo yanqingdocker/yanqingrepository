@@ -41,7 +41,7 @@ public class SystemFilter implements Filter {
     private  Pattern pattern7=Pattern.compile("CN/register");
     private  Pattern pattern8=Pattern.compile("CN/find_psw");
 
-    private  Pattern pattern9=Pattern.compile(".*[(\\.js)||(\\.css)||(\\.png)||(\\.jpg)]");
+    private  Pattern pattern9=Pattern.compile(".*[(\\.js)||(\\.css)||(\\.png)||(\\.jpg)||(\\.ico)]");
 
     private Pattern pattern10=Pattern.compile("user/checkPhone");
     private Pattern pattern11=Pattern.compile("user/findpsw");
