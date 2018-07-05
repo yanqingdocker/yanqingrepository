@@ -1,11 +1,13 @@
 package cn.com.caogen.controller;
 
 import cn.com.caogen.entity.Count;
+import cn.com.caogen.entity.Task;
 import cn.com.caogen.entity.User;
 import cn.com.caogen.externIsystem.service.MessageService;
 import cn.com.caogen.service.CountServiceImpl;
 import cn.com.caogen.service.ICountService;
 import cn.com.caogen.service.IUserService;
+import cn.com.caogen.service.TaskServiceImpl;
 import cn.com.caogen.util.*;
 import net.sf.json.JSON;
 import net.sf.json.JSONArray;
@@ -39,6 +41,8 @@ public class CountController {
 
     @Autowired
     private IUserService userServiceImpl;
+    @Autowired
+    private TaskServiceImpl taskService;
 
     private static String check_Num = "";
 
@@ -299,5 +303,37 @@ public class CountController {
         }else{
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL)).toString();
         }
+    }
+    @RequestMapping(path = "/getOutCash",method = RequestMethod.POST)
+    public String getOutCash(HttpServletRequest request,@RequestParam("paypwd") String paypwd,@RequestParam("countid") String countid,@RequestParam("cardnum") String cardnum,@RequestParam("banktype") String banktype,@RequestParam("num") Double num,@RequestParam("username") String username){
+        if(!StringUtil.checkStrs(paypwd,countid,cardnum,banktype,String.valueOf(num),username)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
+        }
+        Count count=countServiceImpl.queryById(countid);
+        if(!count.getPayPwd().equals( MD5Util.string2MD5(paypwd))){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.PAYPWDERROR)).toString();
+        }
+        if(count.getBlance()<num){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOTBLANCE)).toString();
+        }
+        count.setBlance(count.getBlance()-num);
+        countServiceImpl.updateCount(countid, count.getBlance()-num, null,null);
+        Task task=new Task();
+        StringBuffer title=new StringBuffer();
+        title.append("系统账号为").append(JedisUtil.getUser(request).getPhone()).append("发起提现操作");
+        title.append("*******");
+        title.append("币种类型:").append(count.getCountType());
+        title.append("姓名:").append(username);
+        title.append("银行类别:").append(banktype);
+        title.append("银行卡号:").append(cardnum);
+        title.append("提现金额:").append(String.valueOf(num));
+        title.append("*******");
+
+        task.setCreatetime(DateUtil.getTime());
+        task.setState(ConstantUtil.TASK_UNDO);
+        task.setTaskcontent(title.toString());
+        task.setOperauser(JedisUtil.getUser(request).getUsername());
+        taskService.addTask(task);
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 }

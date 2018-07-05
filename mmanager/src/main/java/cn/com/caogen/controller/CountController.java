@@ -192,7 +192,7 @@ public class CountController {
     }
 
     @RequestMapping(path = "/inMoney", method = RequestMethod.POST)
-    public String inMoney(HttpServletRequest request,@RequestParam("telphone") String telphone,@RequestParam("type") String type,@RequestParam("num") String num){
+    public String inMoney(@RequestParam("username") String username,HttpServletRequest request,@RequestParam("telphone") String telphone,@RequestParam("type") String type,@RequestParam("num") String num){
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
@@ -202,6 +202,9 @@ public class CountController {
         User user = getUser(telphone, null);
         if(user==null){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOTSRCORDEST)).toString();
+        }
+        if(!user.getUsername().equals(username)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NO_AGREEMENT)).toString();
         }
         List<Count> countList=countServiceImpl.queryByUserId(user.getUserid());
         if(countList.isEmpty()){
@@ -232,16 +235,19 @@ public class CountController {
     }
 
     @RequestMapping(path = "/outMoney", method = RequestMethod.POST)
-    public String outMoney(HttpServletRequest request,@RequestParam("telphone") String telphone,@RequestParam("type") String type,@RequestParam("num") String num,@RequestParam("payPwd") String payPwd){
+    public String outMoney(@RequestParam("username") String username, HttpServletRequest request,@RequestParam("telphone") String telphone,@RequestParam("type") String type,@RequestParam("num") String num,@RequestParam("payPwd") String payPwd){
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
-        if(!StringUtil.checkStrs(telphone,type,num,payPwd)){
+        if(!StringUtil.checkStrs(username,telphone,type,num,payPwd)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
         User user = getUser(telphone, null);
         if(user==null){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOTSRCORDEST)).toString();
+        }
+        if(!user.getUsername().equals(username)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NO_AGREEMENT)).toString();
         }
         List<Count> countList=countServiceImpl.queryByUserId(user.getUserid());
         if(countList.isEmpty()){
