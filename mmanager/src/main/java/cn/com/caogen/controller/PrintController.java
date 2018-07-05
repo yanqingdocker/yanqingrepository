@@ -45,7 +45,6 @@ public class PrintController {
             msg=PrintServiceImp.printmenu("E:\\1.pdf","1.pdf",map,destcounttype,destnum);
             //Thread.sleep(1000);
 
-
             msg1=PrintServiceImp.printmenu("E:\\1.pdf","1.pdf",map,srccounttype,srcnum);
         }catch (Exception e){
             logger.info("print fail");

@@ -13,11 +13,14 @@ import java.nio.ByteBuffer;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 
+import cn.com.caogen.controller.UserController;
 import cn.com.caogen.util.DateUtil;
 import com.lowagie.text.DocumentException;
 //import com.nudms.server.nurse.servlet.CompressDataServlet;
 import com.sun.pdfview.PDFFile;
 import com.sun.pdfview.PDFPage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.util.Calendar;
@@ -29,14 +32,12 @@ import java.util.Map;
  *
  */
 public class PrintServiceImp {
-
+    private static Logger logger = LoggerFactory.getLogger(PrintServiceImp.class);
     public static String printmenu(String filepath, String printName, Map<String,Object> map,String type,String moneynum) throws  IOException,DocumentException, PrinterException{
         Calendar date = Calendar.getInstance();
         String year = String.valueOf(date.get(Calendar.YEAR));
         String day = String.valueOf(date.get(Calendar.DATE));
         String month = String.valueOf(date.get(Calendar.MONTH)+1);
-
-
         String countid=map.get("username").toString();
 //        String srccounttype=map.get("srccounttype").toString();
 //        String srcnum=map.get("srcnum").toString();
@@ -45,11 +46,10 @@ public class PrintServiceImp {
         String servicebranch=map.get("servicebranch").toString();//网点
         String thisrate=map.get("thisrate").toString();
         String  snumber=map.get("snumber").toString();
-
         int j=0;
         PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
         if(services.length == 0){
-            System.out.println("not found printer");
+            return "";
         }
         PrinterJob job = PrinterJob.getPrinterJob();
         for(PrintService ps: services){
@@ -59,16 +59,12 @@ public class PrintServiceImp {
                 j++;
             }
         }
-
         FileInputStream fis = new FileInputStream(filepath);
         byte[] pdfContent = new byte[fis.available()];
         fis.read(pdfContent, 0, fis.available());
         ByteBuffer buf = ByteBuffer.wrap(pdfContent);
         PDFFile pdfFile = new PDFFile(buf);
-
-
         Book bk = new Book();
-
         int num = pdfFile.getNumPages();
         for(int i=0; i<num; i++){
             PDFPage page = pdfFile.getPage(i+1);
@@ -122,34 +118,34 @@ public class PrintServiceImp {
                     , pf);
 
             Paper paper = pf.getPaper();
+            if(paper==null){
+                return "";
+            }
             double x = 0;
             double y = 0;
-
             if(page.getAspectRatio()<1){
                 double width = page.getBBox().getWidth();
                 double height = page.getBBox().getHeight();
-
                 paper.setImageableArea(x, y, width, height);
-
                 pf.setOrientation(PageFormat.PORTRAIT);
             }else{
 
                 double width = page.getBBox().getHeight();
                 double height = page.getBBox().getWidth();
-
                 paper.setImageableArea(x, y, width, height);
-
                 pf.setOrientation(PageFormat.LANDSCAPE);
             }
             pf.setPaper(paper);
-            System.out.println();
         }
         job.setPageable(bk);
         job.setJobName("My book");
         try {
+            logger.info("print start");
             job.print();
+            logger.info("print end");
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info("print fial");
+            return "";
         }
         return "success";
     }
