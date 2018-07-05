@@ -302,6 +302,13 @@ public class PageController {
     public String CNtrans_cash() {
         return "CN/main/trans_cash"; }
     /**
+     * 提现---外币提现
+     * @return
+     */
+    @RequestMapping("/CN/main/foreign_currency")
+    public String foreign_currency() {
+        return "CN/main/foreign_currency"; }
+    /**
      * 提现---从银行提现
      * @return
      */
@@ -618,6 +625,13 @@ public class PageController {
     @RequestMapping("/EN/main/trans_cash")
     public String ENtrans_cash() {
         return "EN/main/trans_cash"; }
+    /**
+     * 提现---外币提现
+     * @return
+     */
+    @RequestMapping("/EN/main/foreign_currency")
+    public String ENforeign_currency() {
+        return "EN/main/foreign_currency"; }
     /**
      * 提现---从银行提现
      * @return

@@ -5,7 +5,7 @@
     <meta name="viewport"  content="width=device-width, user-scalable=no, initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
     <meta http-equiv="X-UA-Compatible" content="IE=9" />
-    <title>提现到银行卡</title>
+    <title>外币提现</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <link rel="icon" type="image/png" href="/images/favicon.png">
@@ -86,7 +86,7 @@
         </div>
         <!--左侧菜单 end-->
         <div class="col-lg-9 col-xs-12 r_whitebg">
-            <h3 class="page_title">提现到银行</h3>
+            <h3 class="page_title">外币提现</h3>
             <div class="bs-component">
                 <div class="alert alert-dismissible alert-primary">
                     <button type="button" class="close" data-dismiss="alert">×</button>
@@ -101,14 +101,24 @@
                         <input type="hidden" id="countid" name="countid">
                     </div>
                     <div class="form-group">
-                        <label class="col-form-label w100">选择存入账户<span class="warning">*</span></label>
-                        <select class="custom-select  w100" id="bankaccount">
-                        </select>
-                        <input type="hidden" id="bankid" name="bankid">
+                        <label class="col-form-label w100" for="bankid">银行卡号<span class="warning">*</span></label>
+                        <input class="form-control" placeholder="请输入银行卡号" id="bankid" type="text" name="cardnum">
                     </div>
                     <div class="form-group">
-                        <label class="col-form-label" for="inputje">金额<span class="warning">*</span></label>
-                        <input class="form-control" placeholder="请输入金额" id="inputje" type="text" name="tradeMoney">
+                        <label class="col-form-label w100" for="banktype">银行卡类型<span class="warning">*</span></label>
+                        <input class="form-control" placeholder="请输入银行卡类型" id="banktype" type="text" name="banktype">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" for="inputje">提现金额<span class="warning">*</span></label>
+                        <input class="form-control" placeholder="请输入提现金额" id="inputje" type="text" name="num">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" for="name">持卡人姓名<span class="warning">*</span></label>
+                        <input class="form-control" placeholder="请输入持卡人姓名" id="name" type="text" name="username">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" for="pas">支出账户密码<span class="warning">*</span></label>
+                        <input class="form-control" placeholder="请输入支出账户密码" id="pas" type="password" name="paypwd">
                     </div>
 
                     <button type="button"  onclick="submitform()"  class="btn btn-primary btn-lg btn-block f14">提 交</button>
@@ -124,7 +134,6 @@
 <script  type="text/javascript" >
     $(function(){
         loadcount();//获取下拉账户
-        loadbankcard();//获取下拉银行卡
         $("#nav_trans").addClass("cur");//导航栏添加焦点
         $('#myform').bootstrapValidator({
             feedbackIcons: {
@@ -133,7 +142,7 @@
                 validating: 'glyphicon glyphicon-refresh'
             },
             fields: {
-                'tradeMoney': {
+                'num': {
                     validators: {
                         notEmpty: {
                             message: '金额不可以为空'
@@ -146,29 +155,66 @@
                             message: '金额必须大于5'
                         }
                     }
+                },
+                'paypwd': {
+                    validators: {
+                        notEmpty: {
+                            message: '密码不能为空'
+                        },
+                        stringLength: {
+                            /*长度提示*/
+                            min: 6,
+                            max: 30,
+                            message: '密码长度必须在6到30之间'
+                        }
+                    }
+                },
+                'cardnum': {
+                    validators: {
+                        notEmpty: {
+                            message: '不可以为空'
+                        },
+                        digits: {
+                            message: '只能是数字。'
+                        }
+                    }
+                },
+                'banktype': {
+                    validators: {
+                        notEmpty: {
+                            message: '不可以为空'
+                        }
+                    }
+                },
+                'username': {
+                    validators: {
+                        notEmpty: {
+                            message: '不可以为空'
+                        }
+                    }
                 }
             }
         })
     })
 
     function submitform() {
-        $('#myform').data('bootstrapValidator').enableFieldValidators('tradeMoney', true);
+        $('#myform').data('bootstrapValidator').enableFieldValidators('num', true);
+        $('#myform').data('bootstrapValidator').enableFieldValidators('cardnum', true);
+        $('#myform').data('bootstrapValidator').enableFieldValidators('banktype', true);
+        $('#myform').data('bootstrapValidator').enableFieldValidators('username', true);
+        $('#myform').data('bootstrapValidator').enableFieldValidators('paypwd', true);
         $('#myform').data('bootstrapValidator').validate();//手动对表单进行校检
         if (!$('#myform').data('bootstrapValidator').isValid()) {//判断校检是否通过
             return;
         } else {
             var real = $("#recharcount").val();
             $("#countid").val(real);
-            $("#bankid").val($("#bankaccount").val());
-            // console.log($("#realcount").val());
             //ajax的形式提交表单
-            var str = $("#myform").serializeObject(); //此处调用的就是我们写好的引入的方法，会将带有name的input，全部转为JSON。
-            var datas = JSON.stringify(str);//返回一个新字符串
-            // console.log(str);
-            // console.log(datas);
+            // var str = $("#myform").serializeObject(); //此处调用的就是我们写好的引入的方法，会将带有name的input，全部转为JSON。
+            // var datas = JSON.stringify(str);//返回一个新字符串
             $.ajax({
-                url: '/pay/getcash',
-                data: {datas: datas},
+                url: '/count/getOutCash',
+                data: $("#myform").serialize(),
                 type: 'post',
                 success: function (data) {
                     // console.log(strToJson(data).code);
@@ -220,36 +266,7 @@
         })
     }
 
-    // 通过json同步获取下拉银行卡
-    function loadbankcard() {
-        $.ajax({
-            url: '/bank/query',
-            data: null,
-            type: 'post',
-            success: function (data) {
-                var jsonObj = $.parseJSON(data);//json字符串转数组
-                for (var i=0;i<jsonObj.length;i++)
-                {
-                    var html ='<option value="'+jsonObj[i].id+'">'+jsonObj[i].bankCard+'('+jsonObj[i].bankType+')'+'</option>';
-                    $("#bankaccount").append(html);
-                }
-                if(jsonObj.length==0){
-                    sweetAlert({
-                            title: "请先绑定银行卡，才能进行操作！",
-                            type: "warning",
-                            confirmButtonText: "去绑定",
-                            closeOnConfirm: false
-                        },
-                        function (isConfirm) {
-                            if (isConfirm) {
-                                window.location.href = "/CN/my/bank_card";
-                            }
-                        });
-                }
 
-            }
-        })
-    }
 </script>
 
 </body>

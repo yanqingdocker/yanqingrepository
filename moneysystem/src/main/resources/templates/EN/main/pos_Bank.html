@@ -61,6 +61,7 @@
                         <div id="collapse4" class=" collapse in" role="tabpanel" aria-labelledby="heading4" aria-expanded="true">
                             <div class="">
                                 <ul>
+                                    <li><a href="/EN/main/foreign_currency">Foreign Currency Withdrawal</a></li>
                                     <li><a href="/EN/main/pos_Bank">Withdrawals To Bank</a></li>
                                     <li><a href="javascript:;">Withdrawals To Alipay</a></li> <!--href="/EN/main/pos_Alipay" -->
                                     <li ><a href="javascript:;">Withdrawals To WeChat</a></li><!--href="/EN/main/pos_WeChat" -->
@@ -134,14 +135,14 @@
                 'tradeMoney': {
                     validators: {
                         notEmpty: {
-                            message: 'The amount of the recharge can not be empty'
+                            message: 'Can not be empty'
                         },
                         digits: {
-                            message: 'The amount of the recharge can only include the number'
+                            message: 'Only for numbers'
                         },
                     greaterThan: {
                         value: 5,
-                        message: 'The amount of recharge must be more than 5'
+                        message: 'No less than 5'
                     }
                     }
                 }
