@@ -47,6 +47,9 @@ public class TaskController {
         }
         logger.info("queryUndo start:");
         Stream<Task> stream=taskService.queryByState(ConstantUtil.TASK_UNDO).stream();
+        if(stream==null){
+            return null;
+        }
         List<Task> taskList=stream.filter((e)->!e.getTaskname().equals(ConstantUtil.VIP)).collect(Collectors.toList());
         return JSONArray.fromObject(taskList).toString();
     }

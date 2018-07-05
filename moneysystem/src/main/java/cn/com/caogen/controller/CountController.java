@@ -1,13 +1,11 @@
 package cn.com.caogen.controller;
 
 import cn.com.caogen.entity.Count;
+import cn.com.caogen.entity.Operation;
 import cn.com.caogen.entity.Task;
 import cn.com.caogen.entity.User;
 import cn.com.caogen.externIsystem.service.MessageService;
-import cn.com.caogen.service.CountServiceImpl;
-import cn.com.caogen.service.ICountService;
-import cn.com.caogen.service.IUserService;
-import cn.com.caogen.service.TaskServiceImpl;
+import cn.com.caogen.service.*;
 import cn.com.caogen.util.*;
 import net.sf.json.JSON;
 import net.sf.json.JSONArray;
@@ -22,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.nio.file.OpenOption;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +42,8 @@ public class CountController {
     private IUserService userServiceImpl;
     @Autowired
     private TaskServiceImpl taskService;
+    @Autowired
+    private OperaServiceImpl operaService;
 
     private static String check_Num = "";
 
@@ -323,17 +324,30 @@ public class CountController {
         title.append("系统账号为").append(JedisUtil.getUser(request).getPhone()).append("发起提现操作");
         title.append("*******");
         title.append("币种类型:").append(count.getCountType());
-        title.append("姓名:").append(username);
-        title.append("银行类别:").append(banktype);
-        title.append("银行卡号:").append(cardnum);
-        title.append("提现金额:").append(String.valueOf(num));
+        title.append(",姓名:").append(username);
+        title.append(",银行类别:").append(banktype);
+        title.append(",银行卡号:").append(cardnum);
+        title.append(",提现金额:").append(String.valueOf(num));
         title.append("*******");
-
+        task.setTaskname(ConstantUtil.SERVICETYPE_DEPOSIT);
         task.setCreatetime(DateUtil.getTime());
         task.setState(ConstantUtil.TASK_UNDO);
         task.setTaskcontent(title.toString());
         task.setOperauser(JedisUtil.getUser(request).getUsername());
         taskService.addTask(task);
+        Operation operation=new Operation();
+        operation.setOperaUser("会员-"+JedisUtil.getUser(request).getUsername());
+        operation.setCountid(count.getCardId());
+        operation.setCountType(count.getCountType());
+        operation.setOperaType(ConstantUtil.SERVICETYPE_DEPOSIT);
+        operation.setOperaTime(task.getCreatetime());
+        operation.setSnumber(SerialnumberUtil.Getnum());
+        operation.setOperaIp(IpUtil.getIpAddr(request));
+        operation.setOi(ConstantUtil.MONEY_OUT);
+        operation.setNum(num);
+        operation.setServicebranch(ConstantUtil.SYSTEM);
+
+        operaService.add(operation);
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 }
