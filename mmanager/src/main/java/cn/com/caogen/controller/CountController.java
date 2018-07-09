@@ -7,6 +7,7 @@ import cn.com.caogen.util.*;
 import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.text.Document;
+import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -403,7 +405,7 @@ public class CountController {
                     map.put("thisrate",thisrate);
                     map.put("snumber",snumber);
                    logger.info("调用打印服务打印取款票据开始");
-                    msg1=PrintServiceImp.printmenu("E:\\1.pdf","1.pdf",map,srccounttype,srcnum);
+                    msg1=PrintServiceImp.printmenu("classpath:\\1.pdf","1.pdf",map,srccounttype,srcnum);
                     logger.info("调用打印服务打印取款票据结束");
                 break;
                 case "存款":
@@ -419,7 +421,7 @@ public class CountController {
                     map1.put("thisrate",thisrate);
                     map1.put("snumber",snumber);
                     logger.info("调用打印服务打印存款票据开始");
-                    msg1=PrintServiceImp.printmenu("E:\\1.pdf","1.pdf",map1,srccounttype,srcnum);
+                    msg1=PrintServiceImp.printmenu("classpath:\\1.pdf","1.pdf",map1,srccounttype,srcnum);
                     logger.info("调用打印服务打印存款票据结束");
                     break;
                 case "兑换":
@@ -435,8 +437,8 @@ public class CountController {
                      map2.put("servicebranch",servicebranch);
                      map2.put("thisrate",thisrate);
                     logger.info("调用打印服务打印兑换票据开始");
-                    msg1=PrintServiceImp.printmenu("E:\\1.pdf","1.pdf",map2,destcounttype,destnum);
-                    msg1=PrintServiceImp.printmenu("E:\\1.pdf","1.pdf",map2,srccounttype,srcnum);
+                    msg1=PrintServiceImp.printmenu("classpath:\\1.pdf","1.pdf",map2,destcounttype,destnum);
+                    msg1=PrintServiceImp.printmenu("classpath:\\1.pdf","1.pdf",map2,srccounttype,srcnum);
                     logger.info("调用打印服务打印兑换票据结束");
                     break;
             }
@@ -450,6 +452,5 @@ public class CountController {
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL)).toString();
 
     }
-
 
 }

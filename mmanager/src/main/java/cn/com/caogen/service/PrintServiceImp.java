@@ -21,6 +21,7 @@ import com.sun.pdfview.PDFFile;
 import com.sun.pdfview.PDFPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.ResourceUtils;
 
 import java.awt.*;
 import java.util.Calendar;
@@ -59,7 +60,7 @@ public class PrintServiceImp {
                 j++;
             }
         }
-        FileInputStream fis = new FileInputStream(filepath);
+        FileInputStream fis = new FileInputStream(ResourceUtils.getFile(filepath));
         byte[] pdfContent = new byte[fis.available()];
         fis.read(pdfContent, 0, fis.available());
         ByteBuffer buf = ByteBuffer.wrap(pdfContent);
