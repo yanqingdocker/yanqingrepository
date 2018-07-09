@@ -27,6 +27,11 @@
     <script  type="text/javascript" src="/js/sweet-alert.min.js"></script>
     <script  type="text/javascript" src="/js/common.js"></script>
     <script  type="text/javascript" src="/js/caculator.js"></script>
+    <script  type="text/javascript" src="/js/jquery.jqprint-0.3.js"></script>
+    <script  type="text/javascript" src="/js/jquery-migrate-1.2.1.min.js"></script>
+    <style>
+        #printid{ display: none}
+    </style>
 </head>
 
 <body class="flat-blue common_body">
@@ -50,7 +55,7 @@
                     <div class="form-group">
                         <label  class="col-sm-2 control-label">客户姓名<span class="warning">*</span></label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control"  placeholder="请输入客户姓名" name="username">
+                            <input type="text" class="form-control"  placeholder="请输入客户姓名" name="username" id="username">
                         </div>
                     </div>
                     <div class="form-group">
@@ -102,11 +107,31 @@
         </div>
     </div>
 </div>
+<div id="printid" style="position: relative">
+    <b id="pusername" style="left: 155px; top: 145px; display: inline-block;position:absolute;font-size: 14px"></b>
+    <b id="type" style="left: 345px; top: 145px; display: inline-block;position:absolute;font-size: 14px"></b>
+    <b id="thisrate" style="left: 532px; top: 145px; display: inline-block;position:absolute;font-size: 14px"></b>
+    <b id="year" style="left: 452px; top: 75px; display: inline-block;position:absolute;font-size: 14px"></b>
+    <b id="month" style="left: 525px; top: 75px; display: inline-block;position:absolute;font-size: 14px"></b>
+    <b id="day" style="left: 585px; top: 75px; display: inline-block;position:absolute;font-size: 14px"></b>
+    <b id="psnumber" style="left: 95px; top: 490px; display: inline-block;position:absolute;font-size: 14px"></b>
+    <b id="pmoneynum" style="left: 160px; top: 265px; display: inline-block;position:absolute;font-size: 14px"></b>
+    <b id="pservicebranch" style="left: 330px; top:558px; display: inline-block;position:absolute;font-size: 14px"></b>
+    <!--回单-->
+    <b id="husername" style="left: 780px; top: 145px;display: inline-block;position:absolute;font-size: 14px"></b>
+    <b id="htype" style="left:780px; top: 185px;display: inline-block;position:absolute;font-size: 14px"></b>
+    <b id="hthisrate" style="left: 780px; top: 225px;display: inline-block;position:absolute;font-size: 14px"></b>
+    <b id="hmoneynum" style="left: 780px; top: 265px;display: inline-block;position:absolute;font-size: 14px"></b>
+    <b id="hsnumber" style="left: 770px; top: 450px;display: inline-block;position:absolute;font-size: 14px"></b>
+    <b id="hyear" style="left: 740px; top: 75px;display: inline-block;position:absolute;font-size: 14px"></b>
+    <b id="hmonth" style="left: 810px; top: 75px;display: inline-block;position:absolute;font-size: 14px"></b>
+    <b id="hday" style="left: 870px; top: 75px;display: inline-block;position:absolute;font-size: 14px"></b>
+    <b id="hservicebranch" style="left: 785px; top: 560px;display: inline-block;position:absolute;font-size: 14px"></b>
+</div>
 <input type="hidden" id="realrate">
 <script type="text/javascript">
     $(function(){
         loadaccount();//加载账户类型
-        information();//获取网点
         $('#myform').bootstrapValidator({
             feedbackIcons: {
                 //valid: 'glyphicon glyphicon-ok',
@@ -151,7 +176,7 @@
                         }
                     }
                 },
-                'thisrate': {
+                'crnum': {
                     validators: {
                         notEmpty: {
                             message: '存入金额不能为空'
@@ -161,8 +186,26 @@
                             message: '金额只能由数字组成。'
                         }
                     }
-                }
+                },
+                'thisrate': {
+                    validators: {
+                        notEmpty: {
+                            message: '汇率不能为空'
+                        },
+                        regexp: {
+                            regexp: /^[0-9_\.]+$/,
+                            message: '汇率只能由数字组成。'
+                        }
+                    }
+                },
 
+                'username': {
+                    validators: {
+                        notEmpty: {
+                            message: '客户姓名不能为空'
+                        }
+                    }
+                }
             }
         });
     })
@@ -198,7 +241,6 @@
                 }
                 else {
                     var jsonObj = $.parseJSON(data);//json字符串转数组
-                    console.log(jsonObj.length);
                     for (var i = 0; i < jsonObj.length; i++) {
                         var html = '<option data-id="' + jsonObj[i] + '" value="' + jsonObj[i] + '">' + jsonObj[i] + '(' + currency_type(jsonObj[i]) + ')' + '</option>';
                         $(".account").append(html);
@@ -364,25 +406,14 @@
         });
         return value;
     }
-    // 获取登录成员信息
-    function information() {
-        $.ajax({
-            url: "/muser/getUser",
-            type: "get",
-            data: null,
-            dataType: 'json',
-            async: false,
-            contentType: 'application/json',
-            success: function (data) {
-                $("#servicebranch").val(data.servicebranch);
-            }
-        });
 
-    }
     // 提交表单
     function submitform() {
         $('#myform').data('bootstrapValidator').enableFieldValidators('telphone', true);
         $('#myform').data('bootstrapValidator').enableFieldValidators('num', true);
+        $('#myform').data('bootstrapValidator').enableFieldValidators('username', true);
+        $('#myform').data('bootstrapValidator').enableFieldValidators('crnum', true);
+        $('#myform').data('bootstrapValidator').enableFieldValidators('thisrate', true);
         $('#myform').data('bootstrapValidator').validate();//手动对表单进行校检
         if (!$('#myform').data('bootstrapValidator').isValid()) {//判断校检是否通过
             return;
@@ -394,9 +425,28 @@
                 data: $('#myform').serialize(),
                 type: 'post',
                 success: function (data) {
-                    var obj=new Array()
-                    obj.push($.parseJSON( strToJson(data).message ));
                     if (strToJson(data).code == "success") {
+                        var obj=new Array()
+                        obj.push($.parseJSON( strToJson(data).message ));
+                        var str=obj[0].operaTime;
+                        $("#hsnumber").html(obj[0].snumber);
+                        $("#psnumber").html(obj[0].snumber);
+                        $("#pusername").html($("#username").val());
+                        $("#husername").html($("#username").val());
+                        $("#type").html(obj[0].countType);
+                        $("#htype").html(obj[0].countType);
+                        $("#pmoneynum").html(obj[0].num);
+                        $("#hmoneynum").html(obj[0].num);
+                        $("#pservicebranch").html(obj[0].servicebranch);
+                        $("#hservicebranch").html(obj[0].servicebranch);
+                        $("#year").html(str.substring(0,4));
+                        $("#hyear").html(str.substring(0,4));
+                        $("#month").html(str.substring(6,7));
+                        $("#hmonth").html(str.substring(6,7));
+                        $("#day").html(str.substring(9,10));
+                        $("#hday").html(str.substring(9,10));
+                        $("#thisrate").html($(".thisrate").val());
+                        $("#hthisrate").html($(".thisrate").val());
                         sweetAlert({
                                 title: "",
                                 text:"恭喜您！现金存入成功！是否立即打印凭证？",
@@ -411,39 +461,15 @@
                             function(isConfirm){
                                 if (isConfirm) {
                                     //确认打印凭条
-                                    $("#snumber").val(obj[0].snumber);
-                                    var str = $("#myform").serializeObject();
-                                    var datas = JSON.stringify(str);//返回一个新字符串
-                                    $.ajax({
-                                        url: '/count/printTicket',
-                                        data: {msg:datas,types:"存款"},
-                                        type: 'post',
-                                        success: function (data) {
-                                            sweetAlert({
-                                                    title: "正在打印中..",
-                                                    text:"打印完成请关闭该弹出框",
-                                                    type: "info",
-                                                    showCancelButton: false,
-                                                    confirmButtonColor: "#DD6B55",
-                                                    confirmButtonText: "关闭",
-                                                    cancelButtonText: "取消",
-                                                    closeOnConfirm: false,
-                                                    closeOnCancel: true
-                                                },
-                                                function(isConfirm) {
-                                                    if (isConfirm) {
-                                                        window.location.href = "/cashmanage/cashtrade_list";
-                                                    }
-                                                })
-                                        },
-                                        error: function () {
-                                            sweetAlert("", "请求失败！", "error");
-                                        }
-                                    })
+                                    print();
+
                                 } else {
                                     window.location.href = "/cashmanage/cashtrade_list";
                                 }
                             });
+                    }
+                    else if(strToJson(data).code=="fail"){
+                        sweetAlert("", strToJson(data).message, "error");
                     }
                     else if(strToJson(data).code=="403") {
                         sweetAlert({
@@ -472,6 +498,45 @@
                 }
             });
         }
+    }
+
+
+    var hkey_root,hkey_path,hkey_key
+    hkey_root="HKEY_CURRENT_USER"
+    hkey_path="\\Software\\Microsoft\\Internet Explorer\\PageSetup\\"
+
+    // 设置页眉页脚为空
+    function PageSetup_Null()
+    {
+        try{
+            var RegWsh = new ActiveXObject("WScript.Shell") ;
+            hkey_key="header" ;
+            RegWsh.RegWrite(hkey_root+hkey_path+hkey_key,"") ;
+            hkey_key="footer" ;
+            RegWsh.RegWrite(hkey_root+hkey_path+hkey_key,"") ;
+        }
+        catch(e){}
+    }
+
+    function print(){
+        PageSetup_Null() ;
+        $("#printid").jqprint();
+        sweetAlert({
+                title: "正在打印中..",
+                text:"打印完成请关闭该弹出框",
+                type: "info",
+                showCancelButton: false,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "关闭",
+                cancelButtonText: "取消",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            },
+            function(isConfirm) {
+                if (isConfirm) {
+                    window.location.href = "/cashmanage/cashtrade_list";
+                }
+            })
     }
 </script>
 </body>
