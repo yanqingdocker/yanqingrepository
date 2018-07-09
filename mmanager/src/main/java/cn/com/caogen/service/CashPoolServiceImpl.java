@@ -55,7 +55,7 @@ public class CashPoolServiceImpl implements ICashPoolService {
             cashPoolMapper.update(destcount);
             //增加兑换转出记录
             Operation srcoperation=new Operation();
-            srcoperation.setSnumber(SerialnumberUtil.Getnum());
+            srcoperation.setSnumber(parmMap.get("snum").toString());
             srcoperation.setOperaIp((String)parmMap.get("ip"));
             srcoperation.setOi(ConstantUtil.MONEY_OUT);
             srcoperation.setOperaUser((String)parmMap.get("operauser"));
@@ -75,7 +75,7 @@ public class CashPoolServiceImpl implements ICashPoolService {
             operaMapper.add(srcoperation);
             //增加兑换转入的记录
             Operation destoperation=new Operation();
-            destoperation.setSnumber(SerialnumberUtil.Getnum());
+            destoperation.setSnumber(parmMap.get("snum").toString());
             destoperation.setOperaIp((String)parmMap.get("ip"));
             destoperation.setOi(ConstantUtil.MONEY_IN);
             destoperation.setOperaUser((String)parmMap.get("operauser"));

@@ -2,6 +2,7 @@ package cn.com.caogen.controller;
 
 import cn.com.caogen.entity.CashPool;
 import cn.com.caogen.entity.Muser;
+import cn.com.caogen.entity.Operation;
 import cn.com.caogen.service.CashPoolServiceImpl;
 import cn.com.caogen.service.CountServiceImpl;
 import cn.com.caogen.service.OperaServiceImpl;
@@ -188,8 +189,19 @@ public class CashPoolController {
         parmMap.put("remark",remark);
         parmMap.put("phone",phone);
         parmMap.put("username",username);
+        parmMap.put("snum",SerialnumberUtil.Getnum());
         cashPoolService.exchange(parmMap);
-        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
+        Operation srcoperation=new Operation();
+        srcoperation.setSnumber(parmMap.get("snum").toString());
+        srcoperation.setOperaUser((String)parmMap.get("operauser"));
+        srcoperation.setOperaType(ConstantUtil.MONEY_EXCHANGE);
+        srcoperation.setCountType(srccounttype+"兑换"+destcounttype);
+        srcoperation.setNum(-(Double)parmMap.get("srcnum"));
+        srcoperation.setServicebranch((String)parmMap.get("servicebranch"));
+        srcoperation.setPhone((String)parmMap.get("phone"));
+        srcoperation.setUsername((String)parmMap.get("username"));
+        srcoperation.setOperaTime(DateUtil.getDate());
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS,JSONObject.fromObject(srcoperation).toString())).toString();
 
     }
 

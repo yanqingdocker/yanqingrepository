@@ -123,13 +123,16 @@
     <b id="month" style="left: 525px; top: 75px; display: inline-block;position:absolute;font-size: 14px"></b>
     <b id="day" style="left: 585px; top: 75px; display: inline-block;position:absolute;font-size: 14px"></b>
     <b id="psnumber" style="left: 95px; top: 490px; display: inline-block;position:absolute;font-size: 14px"></b>
+    <b id="pdmoneynum" style="left: 490px; top: 265px; display: inline-block;position:absolute;font-size: 14px"></b>
     <b id="pmoneynum" style="left: 160px; top: 265px; display: inline-block;position:absolute;font-size: 14px"></b>
     <b id="pservicebranch" style="left: 330px; top:558px; display: inline-block;position:absolute;font-size: 14px"></b>
+
     <!--回单-->
     <b id="husername" style="left: 780px; top: 145px;display: inline-block;position:absolute;font-size: 14px"></b>
     <b id="htype" style="left:780px; top: 185px;display: inline-block;position:absolute;font-size: 14px"></b>
-    <b id="hthisrate" style="left: 780px; top: 225px;display: inline-block;position:absolute;font-size: 14px"></b>
-    <b id="hmoneynum" style="left: 780px; top: 265px;display: inline-block;position:absolute;font-size: 14px"></b>
+    <b id="hmoneynum" style="left: 780px; top: 225px;display: inline-block;position:absolute;font-size: 14px"></b>
+    <b id="hdmoneynum" style="left: 780px; top:265px;display: inline-block;position:absolute;font-size: 14px"></b>
+    <b id="hthisrate" style="left: 780px; top: 305px;display: inline-block;position:absolute;font-size: 14px"></b>
     <b id="hsnumber" style="left: 770px; top: 450px;display: inline-block;position:absolute;font-size: 14px"></b>
     <b id="hyear" style="left: 740px; top: 75px;display: inline-block;position:absolute;font-size: 14px"></b>
     <b id="hmonth" style="left: 810px; top: 75px;display: inline-block;position:absolute;font-size: 14px"></b>
@@ -433,8 +436,10 @@
                                     $("#husername").html($("#username").val());
                                     $("#type").html(obj[0].countType);
                                     $("#htype").html(obj[0].countType);
-                                    $("#pmoneynum").html(obj[0].destnum);
-                                    $("#hmoneynum").html(obj[0].destnum);
+                                    $("#pmoneynum").html($("#beforemoney").val());
+                                    $("#hmoneynum").html($("#beforemoney").val());
+                                    $("#pdmoneynum").html($("#aftermoney").val());
+                                    $("#hdmoneynum").html($("#aftermoney").val());
                                     $("#pservicebranch").html(obj[0].servicebranch);
                                     $("#hservicebranch").html(obj[0].servicebranch);
                                     $("#year").html(str.substring(0,4));
