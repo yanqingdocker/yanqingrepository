@@ -17,5 +17,5 @@ public interface IOperaService {
     List<Map<String,Object>> queryoperatype(int date,String servicebranch);
     List<Map<String ,Object>> queryoperacount(int date,String servicebranch);
     String queryScope(Map<String, String> parmMap);
-    void queryByOrderNum(String snumber);
+    int datarecover(String snumber);
 }

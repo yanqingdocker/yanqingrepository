@@ -69,5 +69,6 @@ public class ConstantUtil {
     public static final String VIP="VIP申请";
     public static final String ACCESSVIP="已同意";
     public static final String REFUSEVIP="已驳回";
+    public static final String ERROR_SNUMBER="对不起，该流水不存在";
 
 }

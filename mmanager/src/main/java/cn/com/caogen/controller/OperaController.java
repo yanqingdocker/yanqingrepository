@@ -202,6 +202,22 @@ public class OperaController {
         return JSONArray.fromObject(operationList).toString();
     }
 
+    @RequestMapping(path="datarecover",method = RequestMethod.POST)
+    public String datarecover(@RequestParam("snumber") String snumber,HttpServletRequest request){
+      /*  if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }*/
+
+        int rs=operaServiceimpl.datarecover(snumber);
+        if(rs==0){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
+        }else{
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_SNUMBER)).toString();
+        }
+
+    }
+
+
 
 
 }

@@ -100,11 +100,13 @@ public class OperaServiceImpl implements IOperaService {
     }
 
     @Override
-    public void queryByOrderNum(String snumber) {
+    public int datarecover(String snumber) {
         List<CashPool> cashPools=cashPoolMapper.queryAll();
         List<Operation> operationList=operaMapper.queryByOrderNum(snumber);
+        if(operationList.isEmpty()){
+            return 1;
+        }
         for(Operation operation:operationList){
-
             switch (operation.getCountType()){
                 case ConstantUtil.MONEY_USD:
                     CashPool temp=null;
@@ -139,5 +141,6 @@ public class OperaServiceImpl implements IOperaService {
             }
 
         }
+        return 0;
     }
 }

@@ -164,7 +164,7 @@ public class CashPoolController {
      * @return
      */
     @RequestMapping(path = "exchange",method = RequestMethod.POST)
-    public String exchange(@RequestParam("carduname") String carduname,@RequestParam("cardName") String cardName,@RequestParam("cardNum") String cardNum,@RequestParam("srccounttype") String srccounttype, @RequestParam("destcounttype") String destcounttype, @RequestParam("srcnum") Double srcnum, @RequestParam("destnum") Double destnum, @RequestParam("remark") String remark,@RequestParam("phone") String phone,@RequestParam("username") String username, HttpServletRequest request){
+    public String exchange(@RequestParam("srccounttype") String srccounttype, @RequestParam("destcounttype") String destcounttype, @RequestParam("srcnum") Double srcnum, @RequestParam("destnum") Double destnum, @RequestParam("remark") String remark,@RequestParam("phone") String phone,@RequestParam("username") String username,@RequestParam("carduname") String carduname,@RequestParam("cardName") String cardName,@RequestParam("cardNum") String cardNum, HttpServletRequest request){
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
