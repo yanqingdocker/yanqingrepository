@@ -98,65 +98,80 @@
         if (!$('#myform').data('bootstrapValidator').isValid()) {//判断校检是否通过
             return;
         } else {
-            $.ajax({
-                url: '/opera/datarecover',
-                data: $('#myform').serialize(),
-                type: 'post',
-                success: function (data) {
-                    if (strToJson(data).code == "success") {
-                        sweetAlert({
-                            title: "",
-                            text:"数据恢复中，请稍等..",
-                            showCancelButton: false,
-                            showConfirmButton: false ,
-                            imageUrl: "/images/data_recovery.gif"
-                        });
-                        setTimeout(function(){
-                            sweetAlert({
-                                    title: "",
-                                    text: "数据已恢复完成！",
-                                    type: "success",
-                                    showCancelButton: false,
-                                    confirmButtonText: "确定",
-                                    cancelButtonText: "取消",
-                                    closeOnConfirm: false,
-                                    closeOnCancel: true
-                                },
-                                function(isConfirm){
-                                    if (isConfirm) {
-                                        window.location.href = "/cashmanage/data_recovery";
-                                    }
-                                });
-                        },5000);
-
-
-                    }
-                    else if(strToJson(data).code=="fail"){
-                        sweetAlert("", strToJson(data).message, "error");
-                    }
-                    else if(strToJson(data).code=="403") {
-                        sweetAlert({
-                                title: "",
-                                text: "您的账号权限不足，无法操作此页面！",
-                                type: "warning",
-                                showCancelButton: false,
-                                confirmButtonText: "确定",
-                                cancelButtonText: "取消",
-                                closeOnConfirm: false,
-                                closeOnCancel: true
-                            },
-                            function(isConfirm){
-                                if (isConfirm) {
-                                    window.location.href = "/mainframe";
-                                }
-                            });
-                    }
-
+            sweetAlert({
+                    title: "",
+                    text: "确定要恢复数据吗",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    closeOnConfirm: false,
+                    closeOnCancel: true
                 },
-                error: function () {
-                    sweetAlert("", "请求失败！", "error");
-                }
-            });
+                function(isConfirm){
+                    if (isConfirm) {
+                        $.ajax({
+                            url: '/opera/datarecover',
+                            data: $('#myform').serialize(),
+                            type: 'post',
+                            success: function (data) {
+                                if (strToJson(data).code == "success") {
+                                    sweetAlert({
+                                        title: "",
+                                        text:"数据恢复中，请稍等..",
+                                        showCancelButton: false,
+                                        showConfirmButton: false ,
+                                        imageUrl: "/images/data_recovery.gif"
+                                    });
+                                    setTimeout(function(){
+                                        sweetAlert({
+                                                title: "",
+                                                text: "数据已恢复完成！",
+                                                type: "success",
+                                                showCancelButton: false,
+                                                confirmButtonText: "确定",
+                                                cancelButtonText: "取消",
+                                                closeOnConfirm: false,
+                                                closeOnCancel: true
+                                            },
+                                            function(isConfirm){
+                                                if (isConfirm) {
+                                                    window.location.href = "/cashmanage/data_recovery";
+                                                }
+                                            });
+                                    },5000);
+
+
+                                }
+                                else if(strToJson(data).code=="fail"){
+                                    sweetAlert("", strToJson(data).message, "error");
+                                }
+                                else if(strToJson(data).code=="403") {
+                                    sweetAlert({
+                                            title: "",
+                                            text: "您的账号权限不足，无法操作此页面！",
+                                            type: "warning",
+                                            showCancelButton: false,
+                                            confirmButtonText: "确定",
+                                            cancelButtonText: "取消",
+                                            closeOnConfirm: false,
+                                            closeOnCancel: true
+                                        },
+                                        function(isConfirm){
+                                            if (isConfirm) {
+                                                window.location.href = "/mainframe";
+                                            }
+                                        });
+                                }
+
+                            },
+                            error: function () {
+                                sweetAlert("", "请求失败！", "error");
+                            }
+                        });
+                    }
+                });
+
         }
     }
 
