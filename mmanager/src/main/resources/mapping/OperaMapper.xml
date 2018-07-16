@@ -40,7 +40,10 @@
     </insert>
     <select id="queryAll"  resultMap="BaseResultMap" >
         select <include refid="Base_Column_List"/> from operalog  Order By operatime Desc
+    </select>
 
+    <select id="queryByOrderNum"  resultMap="BaseResultMap" parameterType="string">
+        select <include refid="Base_Column_List"/> from operalog where snumber=#{snumber}
     </select>
 
     <select id="queryCondition"  resultMap="BaseResultMap" parameterType="Map">

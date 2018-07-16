@@ -344,7 +344,7 @@ public class CountController {
         operation.setSnumber(SerialnumberUtil.Getnum());
         operation.setOperaIp(IpUtil.getIpAddr(request));
         operation.setOi(ConstantUtil.MONEY_OUT);
-        operation.setNum(num);
+        operation.setNum(-num);
         operation.setServicebranch(ConstantUtil.SYSTEM);
 
         operaService.add(operation);

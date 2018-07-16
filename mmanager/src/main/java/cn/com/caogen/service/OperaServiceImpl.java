@@ -1,6 +1,8 @@
 package cn.com.caogen.service;
 
+import cn.com.caogen.entity.CashPool;
 import cn.com.caogen.entity.Operation;
+import cn.com.caogen.mapper.CashPoolMapper;
 import cn.com.caogen.mapper.OperaMapper;
 import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.StringUtil;
@@ -22,6 +24,8 @@ import java.util.stream.Stream;
 public class OperaServiceImpl implements IOperaService {
     @Autowired
     private OperaMapper operaMapper;
+    @Autowired
+    private CashPoolMapper cashPoolMapper;
     @Override
     public void add(Operation operation) {
             operaMapper.add(operation);
@@ -93,5 +97,47 @@ public class OperaServiceImpl implements IOperaService {
 
 
         return JSONObject.fromObject(sb.toString()).toString();
+    }
+
+    @Override
+    public void queryByOrderNum(String snumber) {
+        List<CashPool> cashPools=cashPoolMapper.queryAll();
+        List<Operation> operationList=operaMapper.queryByOrderNum(snumber);
+        for(Operation operation:operationList){
+
+            switch (operation.getCountType()){
+                case ConstantUtil.MONEY_USD:
+                    CashPool temp=null;
+                    for(CashPool cashPool:cashPools){
+                        if(cashPool.getServicebranch().equals(operation.getServicebranch())){
+                            temp=cashPool;
+                            break;
+                        }
+                    }
+                    if(operation.getNum()>0){
+                        temp.setBlance(temp.getBlance()-operation.getNum());
+                    }else{
+                        temp.setBlance(temp.getBlance()+operation.getNum());
+                    }
+                    cashPoolMapper.update(temp);
+                    break;
+                case ConstantUtil.MONEY_CNY:
+                    CashPool temp1=null;
+                    for(CashPool cashPool:cashPools){
+                        if(cashPool.getServicebranch().equals(operation.getServicebranch())){
+                            temp1=cashPool;
+                            break;
+                        }
+                    }
+                    if(operation.getNum()>0){
+                        temp1.setBlance(temp1.getBlance()-operation.getNum());
+                    }else{
+                        temp1.setBlance(temp1.getBlance()+operation.getNum());
+                    }
+                    cashPoolMapper.update(temp1);
+                    break;
+            }
+
+        }
     }
 }

@@ -3,9 +3,11 @@ package cn.com.caogen.controller;
 import cn.com.caogen.entity.CashPool;
 import cn.com.caogen.entity.Muser;
 import cn.com.caogen.entity.Operation;
+import cn.com.caogen.entity.Task;
 import cn.com.caogen.service.CashPoolServiceImpl;
 import cn.com.caogen.service.CountServiceImpl;
 import cn.com.caogen.service.OperaServiceImpl;
+import cn.com.caogen.service.TaskServiceImpl;
 import cn.com.caogen.util.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -37,6 +39,8 @@ public class CashPoolController {
     private CashPoolServiceImpl cashPoolService;
     @Autowired
     private OperaServiceImpl operaService;
+    @Autowired
+    private TaskServiceImpl taskService;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -160,7 +164,7 @@ public class CashPoolController {
      * @return
      */
     @RequestMapping(path = "exchange",method = RequestMethod.POST)
-    public String exchange(@RequestParam("srccounttype") String srccounttype, @RequestParam("destcounttype") String destcounttype, @RequestParam("srcnum") Double srcnum, @RequestParam("destnum") Double destnum, @RequestParam("remark") String remark,@RequestParam("phone") String phone,@RequestParam("username") String username, HttpServletRequest request){
+    public String exchange(@RequestParam("carduname") String carduname,@RequestParam("cardName") String cardName,@RequestParam("cardNum") String cardNum,@RequestParam("srccounttype") String srccounttype, @RequestParam("destcounttype") String destcounttype, @RequestParam("srcnum") Double srcnum, @RequestParam("destnum") Double destnum, @RequestParam("remark") String remark,@RequestParam("phone") String phone,@RequestParam("username") String username, HttpServletRequest request){
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
@@ -201,6 +205,23 @@ public class CashPoolController {
         srcoperation.setPhone((String)parmMap.get("phone"));
         srcoperation.setUsername((String)parmMap.get("username"));
         srcoperation.setOperaTime(DateUtil.getDate());
+        Task task=new Task();
+        StringBuffer title=new StringBuffer();
+        Muser muser=(Muser)request.getSession().getAttribute("currentUser");
+        title.append(muser.getServicebranch()).append("网点发起兑换操作");
+        title.append("*******");
+        title.append(",币种:").append(destcounttype);
+        title.append("开户行:").append(cardName);
+        title.append(",持卡人姓名:").append(carduname);
+        title.append(",银行卡号:").append(cardNum);
+        title.append(",金额:").append(String.valueOf(destnum));
+        title.append("*******");
+        task.setCreatetime(DateUtil.getTime());
+        task.setState(ConstantUtil.TASK_UNDO);
+        task.setTaskcontent(title.toString());
+        task.setOperauser(muser.getUsername());
+        taskService.addTask(task);
+
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS,JSONObject.fromObject(srcoperation).toString())).toString();
 
     }
