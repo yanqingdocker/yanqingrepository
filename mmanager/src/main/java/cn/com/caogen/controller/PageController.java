@@ -406,7 +406,15 @@ public class PageController {
     public String add_loan() {
         return "loanManage/add_loan";
     }
-
+    /**
+     *数据恢复
+     *
+     * @return
+     */
+    @RequestMapping("/cashmanage/data_recovery")
+    public String data_recovery() {
+        return "cashmanage/data_recovery";
+    }
 
 
 

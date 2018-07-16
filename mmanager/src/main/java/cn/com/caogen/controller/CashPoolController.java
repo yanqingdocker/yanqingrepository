@@ -11,6 +11,7 @@ import cn.com.caogen.service.TaskServiceImpl;
 import cn.com.caogen.util.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -206,16 +207,15 @@ public class CashPoolController {
         srcoperation.setUsername((String)parmMap.get("username"));
         srcoperation.setOperaTime(DateUtil.getDate());
         Task task=new Task();
+        task.setTaskname(ConstantUtil.MONEY_EXCHANGE);
         StringBuffer title=new StringBuffer();
         Muser muser=(Muser)request.getSession().getAttribute("currentUser");
         title.append(muser.getServicebranch()).append("网点发起兑换操作");
-        title.append("*******");
-        title.append(",币种:").append(destcounttype);
-        title.append("开户行:").append(cardName);
-        title.append(",持卡人姓名:").append(carduname);
-        title.append(",银行卡号:").append(cardNum);
-        title.append(",金额:").append(String.valueOf(destnum));
-        title.append("*******");
+        title.append(";,币种:").append(destcounttype);
+        title.append(";,开户行:").append(cardName);
+        title.append(";,持卡人姓名:").append(carduname);
+        title.append(";,银行卡号:").append(cardNum);
+        title.append(";,金额:").append(String.valueOf(destnum));
         task.setCreatetime(DateUtil.getTime());
         task.setState(ConstantUtil.TASK_UNDO);
         task.setTaskcontent(title.toString());
@@ -247,4 +247,7 @@ public class CashPoolController {
         String rs=operaService.queryScope(parmMap);
         return rs;
     }
+
+
+
 }
