@@ -79,4 +79,38 @@ function showdate(){
     return str;
 }
 
+// 实时更新未处理任务
+setInterval("task_nodeal()",10000);
 
+// 显示未处理任务条数
+function task_nodeal() {
+    $.ajax({
+        url: "/task/queryUndo",
+        type: "get",
+        data: null,
+        dataType: 'json',
+        async: false,
+        contentType: 'application/json',
+        success: function (data) {
+            if(data.length>0){
+                $("#nodeal_num").html(data.length);
+                $("#msg_status").addClass("danger");
+                $("#tast_num").html(data.length);
+                $("#indexAlert").show();
+            }
+            else if (data.code=="403") {
+                $("#msg_status").hide();
+                $("#indexAlert").hide();
+            }
+            else {
+                $("#msg_status").removeClass("danger");
+                $("#indexAlert").hide();
+            }
+
+        },
+        error: function () {
+            window.location.href = "/login";
+        },
+    });
+
+}

@@ -185,7 +185,8 @@
     })
     // 读取详细信息
     function detail_task(content) {
-        $("#taskcontent").html(content);
+        var str=content.replace(/,/g,'<br>');
+        $("#taskcontent").html(str);
     }
 
 </script>

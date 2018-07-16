@@ -21,7 +21,7 @@
     <link rel="stylesheet" type="text/css" href="/css/css.css">
     <script type="text/javascript" src="/js/jquery.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
-
+    <script  type="text/javascript" src="/js/common.js"></script>
 </head>
 
 <body class="flat-blue relative">
@@ -53,38 +53,38 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="dropdown danger">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-star-half-o"></i> 4</a>
-                        <ul class="dropdown-menu danger  animated fadeInDown">
-                            <li class="title">
-                                Notification <span class="badge pull-right">4</span>
-                            </li>
-                            <li>
-                                <ul class="list-group notifications">
-                                    <a href="#">
-                                        <li class="list-group-item">
-                                            <span class="badge">1</span> <i class="fa fa-exclamation-circle icon"></i> new registration
-                                        </li>
-                                    </a>
-                                    <a href="#">
-                                        <li class="list-group-item">
-                                            <span class="badge success">1</span> <i class="fa fa-check icon"></i> new orders
-                                        </li>
-                                    </a>
-                                    <a href="#">
-                                        <li class="list-group-item">
-                                            <span class="badge danger">2</span> <i class="fa fa-comments icon"></i> customers messages
-                                        </li>
-                                    </a>
-                                    <a href="#">
-                                        <li class="list-group-item message">
-                                            view all
-                                        </li>
-                                    </a>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
+                    <!--<li class="dropdown danger">-->
+                        <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-star-half-o"></i> 4</a>-->
+                        <!--<ul class="dropdown-menu danger  animated fadeInDown">-->
+                            <!--<li class="title">-->
+                                <!--Notification <span class="badge pull-right">4</span>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<ul class="list-group notifications">-->
+                                    <!--<a href="#">-->
+                                        <!--<li class="list-group-item">-->
+                                            <!--<span class="badge">1</span> <i class="fa fa-exclamation-circle icon"></i> new registration-->
+                                        <!--</li>-->
+                                    <!--</a>-->
+                                    <!--<a href="#">-->
+                                        <!--<li class="list-group-item">-->
+                                            <!--<span class="badge success">1</span> <i class="fa fa-check icon"></i> new orders-->
+                                        <!--</li>-->
+                                    <!--</a>-->
+                                    <!--<a href="#">-->
+                                        <!--<li class="list-group-item">-->
+                                            <!--<span class="badge danger">2</span> <i class="fa fa-comments icon"></i> customers messages-->
+                                        <!--</li>-->
+                                    <!--</a>-->
+                                    <!--<a href="#">-->
+                                        <!--<li class="list-group-item message">-->
+                                            <!--view all-->
+                                        <!--</li>-->
+                                    <!--</a>-->
+                                <!--</ul>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</li>-->
                     <li class="dropdown profile">
                         <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-expanded="false" > <span class="manage_name"></span><span class="caret"></span></a>
                         <ul class="dropdown-menu animated fadeInDown">
@@ -445,39 +445,6 @@
                 if (data.code=="success") {
                     sweetAlert("", "退出成功！", "success");
                     setTimeout(function(){ window.location.href = "/login";},1500);
-                }
-
-            },
-            error: function () {
-                window.location.href = "/login";
-            },
-        });
-
-    }
-
-    // 显示未处理任务条数
-    function task_nodeal() {
-        $.ajax({
-            url: "/task/queryUndo",
-            type: "get",
-            data: null,
-            dataType: 'json',
-            async: false,
-            contentType: 'application/json',
-            success: function (data) {
-                if(data.length>0){
-                    $("#nodeal_num").html(data.length);
-                    $("#msg_status").addClass("danger");
-                    $("#tast_num").html(data.length);
-                    $("#indexAlert").show();
-                }
-                else if (data.code=="403") {
-                    $("#msg_status").hide();
-                    $("#indexAlert").hide();
-                }
-                else {
-                    $("#msg_status").removeClass("danger");
-                    $("#indexAlert").hide();
                 }
 
             },

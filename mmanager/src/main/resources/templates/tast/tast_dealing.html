@@ -183,7 +183,8 @@
     })
     // 读取详细信息
     function detail_task(content) {
-        $("#taskcontent").html(content);
+        var str=content.replace(/,/g,'<br>');
+        $("#taskcontent").html(str);
     }
     // 确认处理任务
     function deal_task(id) {
