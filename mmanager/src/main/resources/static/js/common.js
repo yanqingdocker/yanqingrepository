@@ -107,10 +107,7 @@ function task_nodeal() {
                 $("#indexAlert").hide();
             }
 
-        },
-        error: function () {
-            window.location.href = "/login";
-        },
+        }
     });
 
 }
