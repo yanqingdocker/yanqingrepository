@@ -124,8 +124,8 @@
     $(function () {
         $("#txtstarDate").calendar();
         $("#txtEndDate").calendar();
-        information();//获取成员信息
         loadnetwork();//加载网点
+        information();//获取成员信息
         $('#table').DataTable({
             "order": [ 9, "desc" ],
             "serverSide": true,
@@ -264,8 +264,8 @@
                         });
                 }
                 else {
-                    $("#inNum").html(strToJson(data).inNum);
-                    $("#outNum").html(-strToJson(data).outNum);
+                    $("#inNum").html( parseFloat(strToJson(data).inNum).toFixed(4));
+                    $("#outNum").html(parseFloat(-strToJson(data).outNum).toFixed(4));
                 }
 
             },
