@@ -52,7 +52,18 @@
             <div class="card-body relative">
                 <form id="myform">
                     <div class="row">
-                        <div class="col-lg-4 mb0">
+                        <div class="col-lg-2 mb0" id="network" style="display: none">
+                            <div class="form-group  ">
+                                <label class="col-form-label">选择网点<span class="warning">*</span></label>
+                                <div class="input-prepend input-group dateselect w100" >
+                                    <select class="select_input  w100"  id="select_network">
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                        <input  type="hidden" id="branchname" name="branchname" value="">
+                        <div class="col-lg-3 mb0">
                             <div class="form-group  ">
                                 <label class="col-form-label">开始时间<span class="warning">*</span></label>
                                 <div class="input-prepend input-group dateselect " >
@@ -60,7 +71,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 mb0">
+                        <div class="col-lg-3 mb0">
                             <div class="form-group  ">
                                 <label class="col-form-label">结束时间<span class="warning">*</span></label>
                                 <div class="input-prepend input-group dateselect " >
@@ -68,7 +79,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 mb0">
+                        <div class="col-lg-3 mb0">
                             <button type="button" style="margin-top: 26px" class="btn btn-default" onclick="submitform()">查询美金交易</button>
                         </div>
                     </div>
@@ -113,6 +124,8 @@
     $(function () {
         $("#txtstarDate").calendar();
         $("#txtEndDate").calendar();
+        information();//获取成员信息
+        loadnetwork();//加载网点
         $('#table').DataTable({
             "order": [ 9, "desc" ],
             "serverSide": true,
@@ -226,6 +239,7 @@
 
     // 查询记录
     function submitform() {
+        information();
         $("#dollar_num").show();
         $.ajax({
             url: '/cashpool/queryScope',
@@ -259,6 +273,61 @@
                 sweetAlert("", "请求失败！", "error");
             }
         });
+    }
+    // 加载网点
+    function loadnetwork() {
+        $.ajax({
+            url: '/servicebranch/queryAll',
+            data: null,
+            type: 'get',
+            success: function (data) {
+                if (data.code == "403") {
+                    sweetAlert({
+                            title: "",
+                            text: "您的账号权限不足，无法操作此页面！",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonText: "确定",
+                            cancelButtonText: "取消",
+                            closeOnConfirm: false,
+                            closeOnCancel: true
+                        },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                window.location.href = "/mainframe";
+                            }
+                        });
+                }
+                else {
+                    var jsonObj = $.parseJSON(data);//json字符串转数组
+                    for (var i = 0; i < jsonObj.length; i++) {
+                        var html = '<option value="' + jsonObj[i].branchname + '">' + jsonObj[i].branchname + '</option>';
+                        $("#select_network").append(html);
+
+                    }
+
+                }
+            }
+        });
+    }
+    // 获取登录成员信息
+    function information() {
+        $.ajax({
+            url: "/muser/getUser",
+            type: "get",
+            data: null,
+            dataType: 'json',
+            async: false,
+            contentType: 'application/json',
+            success: function (data) {
+                if(data.servicebranch=="总部"){
+                    $("#network").show();
+                    var net=$("#select_network").val();
+                    $("#branchname").val(net);
+                }
+            }
+        });
+
     }
 </script>
 </body>
