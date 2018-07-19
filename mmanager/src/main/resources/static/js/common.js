@@ -80,8 +80,10 @@ function showdate(){
 }
 
 // 实时更新未处理任务
-setInterval("task_nodeal()",10000);
-
+setInterval(function(){
+    task_nodeal()
+},10000);
+var tastnum=0;
 // 显示未处理任务条数
 function task_nodeal() {
     $.ajax({
@@ -93,10 +95,18 @@ function task_nodeal() {
         contentType: 'application/json',
         success: function (data) {
             if(data.length>0){
+                $("#hide_tast").val(data.length);
                 $("#nodeal_num").html(data.length);
                 $("#msg_status").addClass("danger");
                 $("#tast_num").html(data.length);
                 $("#indexAlert").show();
+                if( data.length>tastnum){
+                    $.notifySetup({sound: '../audio/notify.mp3'});
+                    $("#indexAlert").notify({sticky: true});
+                    tastnum=data.length;
+                }
+
+
             }
             else if (data.code=="403") {
                 $("#msg_status").hide();
@@ -111,3 +121,4 @@ function task_nodeal() {
     });
 
 }
+
