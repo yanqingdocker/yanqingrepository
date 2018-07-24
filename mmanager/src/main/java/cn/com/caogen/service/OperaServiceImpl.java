@@ -7,6 +7,7 @@ import cn.com.caogen.mapper.OperaMapper;
 import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.StringUtil;
 import net.sf.json.JSONObject;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +40,9 @@ public class OperaServiceImpl implements IOperaService {
         }
         parmMap.put("servicebranch",servicebranch);
         return operaMapper.queryCondition(parmMap);
+    }
+    public List<Operation> queryAll() {
+        return operaMapper.queryAll();
     }
 
     @Override
@@ -87,7 +91,6 @@ public class OperaServiceImpl implements IOperaService {
         for(Operation operation:inUSD){
            inNum+=operation.getNum();
         }
-
         double outNum=0;
         for(Operation operation:outUSD){
             outNum+=operation.getNum();
@@ -111,36 +114,70 @@ public class OperaServiceImpl implements IOperaService {
                 case ConstantUtil.MONEY_USD:
                     CashPool temp=null;
                     for(CashPool cashPool:cashPools){
-                        if(cashPool.getServicebranch().equals(operation.getServicebranch())){
+                        if(cashPool.getCounttype().equals(ConstantUtil.MONEY_USD)&&cashPool.getServicebranch().equals(operation.getServicebranch())){
                             temp=cashPool;
                             break;
                         }
                     }
+                    if(temp==null){
+                        return 1;
+                    }
                     if(operation.getNum()>0){
                         temp.setBlance(temp.getBlance()-operation.getNum());
+                        if(!operation.getServicebranch().equals(ConstantUtil.SERVICE_BRANCH)){
+                            CashPool temp1=null;
+                            for(CashPool cashPool:cashPools){
+                                if(cashPool.getCounttype().equals(ConstantUtil.MONEY_USD)&&cashPool.getServicebranch().equals(ConstantUtil.SERVICE_BRANCH)){
+                                    temp1=cashPool;
+                                    break;
+                                }
+                            }
+                            temp1.setBlance(temp.getBlance()-operation.getNum());
+                            cashPoolMapper.update(temp1);
+                        }
+
+
                     }else{
-                        temp.setBlance(temp.getBlance()+operation.getNum());
+                        temp.setBlance(temp.getBlance()+(-operation.getNum()));
+                        if(!operation.getServicebranch().equals(ConstantUtil.SERVICE_BRANCH)){
+                            CashPool temp1=null;
+                            for(CashPool cashPool:cashPools){
+                                if(cashPool.getCounttype().equals(ConstantUtil.MONEY_USD)&&cashPool.getServicebranch().equals(ConstantUtil.SERVICE_BRANCH)){
+                                    temp1=cashPool;
+                                    break;
+                                }
+                            }
+                            temp1.setBlance(temp.getBlance()+(-operation.getNum()));
+                            cashPoolMapper.update(temp1);
+                        }
                     }
                     cashPoolMapper.update(temp);
+
                     break;
                 case ConstantUtil.MONEY_CNY:
                     CashPool temp1=null;
                     for(CashPool cashPool:cashPools){
-                        if(cashPool.getServicebranch().equals(operation.getServicebranch())){
+                        if(cashPool.getCounttype().equals(ConstantUtil.MONEY_CNY)&&cashPool.getServicebranch().equals(operation.getServicebranch())){
                             temp1=cashPool;
                             break;
                         }
                     }
+                    if(temp1==null){
+                        return 1;
+                    }
                     if(operation.getNum()>0){
                         temp1.setBlance(temp1.getBlance()-operation.getNum());
                     }else{
-                        temp1.setBlance(temp1.getBlance()+operation.getNum());
+                        temp1.setBlance(temp1.getBlance()+(-operation.getNum()));
                     }
                     cashPoolMapper.update(temp1);
+
                     break;
             }
-
         }
+        operaMapper.delete(snumber);
         return 0;
     }
+
 }
+

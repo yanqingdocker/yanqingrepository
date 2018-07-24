@@ -206,16 +206,20 @@ public class CashPoolController {
         srcoperation.setPhone((String)parmMap.get("phone"));
         srcoperation.setUsername((String)parmMap.get("username"));
         srcoperation.setOperaTime(DateUtil.getDate());
+        if(!StringUtil.checkStrs(cardName,carduname,cardNum)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS,JSONObject.fromObject(srcoperation).toString())).toString();
+
+        }
         Task task=new Task();
         task.setTaskname(ConstantUtil.MONEY_EXCHANGE);
         StringBuffer title=new StringBuffer();
         Muser muser=(Muser)request.getSession().getAttribute("currentUser");
         title.append(muser.getServicebranch()).append("网点发起兑换操作");
-        title.append(";,币种:").append(destcounttype);
+        title.append(";,币种:").append(srccounttype);
         title.append(";,开户行:").append(cardName);
         title.append(";,持卡人姓名:").append(carduname);
         title.append(";,银行卡号:").append(cardNum);
-        title.append(";,金额:").append(String.valueOf(destnum));
+        title.append(";,金额:").append(String.valueOf(srcnum));
         task.setCreatetime(DateUtil.getTime());
         task.setState(ConstantUtil.TASK_UNDO);
         task.setTaskcontent(title.toString());
@@ -232,7 +236,7 @@ public class CashPoolController {
      * @return
      */
     @RequestMapping(path ="queryScope",method = RequestMethod.GET)
-    public String queryScope(@RequestParam("starttime") String starttime,@RequestParam("endtime") String endtime, HttpServletRequest request){
+    public String queryScope(@RequestParam("branchname") String servicebranch,@RequestParam("starttime") String starttime,@RequestParam("endtime") String endtime, HttpServletRequest request){
       /*  if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }*/
@@ -244,6 +248,12 @@ public class CashPoolController {
         Map<String,String> parmMap=new HashMap<String,String>();
         parmMap.put("starttime",starttime);
         parmMap.put("endtime",endtime);
+        if(StringUtil.checkStrs(servicebranch)){
+            parmMap.put("servicebranch",servicebranch);
+        }else{
+            Muser muser=(Muser)request.getSession().getAttribute("currentUser");
+            parmMap.put("servicebranch",muser.getServicebranch());
+        }
         String rs=operaService.queryScope(parmMap);
         return rs;
     }

@@ -6,6 +6,7 @@ import cn.com.caogen.entity.Task;
 import cn.com.caogen.entity.User;
 import cn.com.caogen.mapper.OperaMapper;
 import cn.com.caogen.service.IOperaService;
+import cn.com.caogen.service.OperaServiceImpl;
 import cn.com.caogen.service.UserServiceImpl;
 import cn.com.caogen.util.*;
 import net.sf.json.JSONArray;
@@ -35,7 +36,7 @@ public class OperaController {
 
     private static Logger logger = LoggerFactory.getLogger(OperaController.class);
     @Autowired
-    private IOperaService operaServiceimpl;
+    private OperaServiceImpl operaServiceimpl;
     @Autowired
     private UserServiceImpl userServiceimpl;
 
@@ -51,7 +52,7 @@ public class OperaController {
         }
         logger.info("queryAll start:");
         Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
-        return JSONArray.fromObject(operaServiceimpl.queryAll(currentUser.getServicebranch())).toString();
+        return JSONArray.fromObject(operaServiceimpl.queryAll()).toString();
     }
 
     /**

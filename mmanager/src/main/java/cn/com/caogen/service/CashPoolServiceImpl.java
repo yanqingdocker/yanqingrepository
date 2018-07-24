@@ -16,6 +16,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * author:huyanqing
@@ -48,11 +49,28 @@ public class CashPoolServiceImpl implements ICashPoolService {
             srccount.setBlance(srccount.getBlance()-(Double)parmMap.get("srcnum"));
             srccount.setLasttime(DateUtil.getTime());
             cashPoolMapper.update(srccount);
+
            //更新转入现金库数据
             CashPool destcount=(CashPool)parmMap.get("destcount");
             destcount.setBlance(destcount.getBlance()+(Double)parmMap.get("destnum"));
             destcount.setLasttime(DateUtil.getTime());
             cashPoolMapper.update(destcount);
+
+            //更新现金库
+            if(!srccount.getServicebranch().equals(ConstantUtil.SERVICE_BRANCH)){
+                List<CashPool> cashPools=cashPoolMapper.queryAll();
+                cashPools=cashPools.stream().filter((e)->e.getServicebranch().equals(ConstantUtil.SERVICE_BRANCH)).collect(Collectors.toList());
+                for(CashPool cashPool:cashPools){
+                    if(cashPool.getCounttype().equals(srccount.getCounttype())){
+                        cashPool.setBlance(cashPool.getBlance()-(Double)parmMap.get("srcnum"));
+                        cashPoolMapper.update(cashPool);
+                    }else if(cashPool.getCounttype().equals(destcount.getCounttype())){
+                        cashPool.setBlance(cashPool.getBlance()+(Double)parmMap.get("destnum"));
+                        cashPoolMapper.update(cashPool);
+                    }
+                }
+            }
+
             //增加兑换转出记录
             Operation srcoperation=new Operation();
             srcoperation.setSnumber(parmMap.get("snum").toString());

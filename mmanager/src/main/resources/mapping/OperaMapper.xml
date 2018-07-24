@@ -41,6 +41,9 @@
     <select id="queryAll"  resultMap="BaseResultMap" >
         select <include refid="Base_Column_List"/> from operalog  Order By operatime Desc
     </select>
+    <select id="delete"  parameterType="string">
+       delete from operalog where snumber=#{snumber}
+    </select>
 
     <select id="queryByOrderNum"  resultMap="BaseResultMap" parameterType="string">
         select <include refid="Base_Column_List"/> from operalog where snumber=#{snumber}
@@ -156,7 +159,11 @@
     </select>
     
     <select id="queryScope" parameterType="Map" resultMap="BaseResultMap">
-          SELECT <include refid="Base_Column_List"/>  FROM operalog where operatime Between #{starttime} And #{endtime};
+          SELECT <include refid="Base_Column_List"/>  FROM operalog where
+            <if test="servicebranch != null">
+               servicebranch =#{servicebranch} and
+            </if>
+          operatime Between #{starttime} And #{endtime};
     </select>
 
 

@@ -20,4 +20,5 @@ public interface OperaMapper {
     List<Map<String ,Object>> queryoperacount(Map<String, Object> parmMap);
     List<Operation> queryScope(Map<String,String> parmMap);
     List<Operation> queryByOrderNum(String snumber);
+    void delete(String snumber);
 }
