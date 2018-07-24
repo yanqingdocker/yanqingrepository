@@ -1,21 +1,19 @@
 package cn.com.caogen.controller;
 
-import cn.com.caogen.entity.Appliy;
+import cn.com.caogen.entity.Loss;
 import cn.com.caogen.entity.Muser;
 import cn.com.caogen.entity.Profits;
-import cn.com.caogen.mapper.ProfitsMapper;
-import cn.com.caogen.service.AppliyServiceImpl;
+import cn.com.caogen.mapper.LossMapper;
+import cn.com.caogen.service.LossServiceImpl;
 import cn.com.caogen.service.ProfitsServiceImpl;
 import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.DateUtil;
-import cn.com.caogen.util.FilterAuthUtil;
 import cn.com.caogen.util.ResponseMessage;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,28 +29,27 @@ import java.util.Map;
  * Date:2018/5/8
  */
 @RestController
-@RequestMapping("/profits")
-public class ProfitsController {
-    private static Logger logger = LoggerFactory.getLogger(ProfitsController.class);
+@RequestMapping("/loss")
+public class LossController {
+    private static Logger logger = LoggerFactory.getLogger(LossController.class);
     @Autowired
-    private ProfitsServiceImpl profitsService;
+    private LossServiceImpl lossService;
 
 
     @RequestMapping(path = "add",method = RequestMethod.POST)
-    public String add(@RequestParam("destobj") String destobj,@RequestParam("moneytype") String moneytype,@RequestParam("num") Double num,@RequestParam("remark") String remark, HttpServletRequest request) throws Exception {
+    public String add(@RequestParam("projectname") String projectname,@RequestParam("moneytype") String moneytype,@RequestParam("num") Double num,@RequestParam("remark") String remark, HttpServletRequest request) throws Exception {
         logger.info("add start:");
         /*       if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }*/
-        Profits profits=new Profits();
-        profits.setDestobj(destobj);
-        profits.setCreattime(DateUtil.getTime());
-        profits.setMoneytype(moneytype);
-        profits.setNum(num);
-        profits.setRemark(remark);
-        Muser muser=(Muser)request.getSession().getAttribute("currentUser");
-        profits.setOperauser(muser.getUsername());
-        int rs=profitsService.add(profits);
+        Loss loss=new Loss();
+        loss.setProjectname(projectname);
+        loss.setMoneytype(moneytype);
+        loss.setCreattime(DateUtil.getTime());
+        loss.setNum(num);
+        loss.setRemark(remark);
+        loss.setOperauser("admin");
+        int rs=lossService.add(loss);
         if(rs==0){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.SYSTEMCOUNT_LESS)).toString();
         }
@@ -69,8 +66,8 @@ public class ProfitsController {
        }*/
         logger.info("queryAll start:");
         Map<String,Object> parmMap=new HashMap<String,Object>();
-        List<Profits> profits=profitsService.queryAll();
-        return JSONArray.fromObject(profits).toString();
+        List<Loss> losses=lossService.queryAll();
+        return JSONArray.fromObject(losses).toString();
       }
 
 }

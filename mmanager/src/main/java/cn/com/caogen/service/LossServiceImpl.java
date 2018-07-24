@@ -1,9 +1,9 @@
 package cn.com.caogen.service;
 
 import cn.com.caogen.entity.CashPool;
-import cn.com.caogen.entity.Profits;
+import cn.com.caogen.entity.Loss;
 import cn.com.caogen.mapper.CashPoolMapper;
-import cn.com.caogen.mapper.ProfitsMapper;
+import cn.com.caogen.mapper.LossMapper;
 import cn.com.caogen.util.ConstantUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -20,48 +20,51 @@ import java.util.List;
  * Date:2018/7/24
  */
 @Service
-public class ProfitsServiceImpl implements IProfitsService {
+public class LossServiceImpl implements ILossService{
     @Autowired
-    private ProfitsMapper profitsMapper;
+    private LossMapper lossMapper;
     @Autowired
     private CashPoolMapper cashPoolMapper;
     @Autowired
     private DataSourceTransactionManager transactionManager;
+
+
+    public static final long baseCardId = 688485602360L;
     @Override
     @Transactional
-    public int add(Profits profits) {
+    public int add(Loss loss) {
         List<CashPool> cashPools=cashPoolMapper.queryAll();
         CashPool temp=null;
         for(CashPool cashPool:cashPools){
-            if(cashPool.getServicebranch().equals(ConstantUtil.SERVICE_BRANCH)&&cashPool.getCounttype().equals(profits.getMoneytype())){
+            if(cashPool.getServicebranch().equals(ConstantUtil.SERVICE_BRANCH)&&cashPool.getCounttype().equals(loss.getMoneytype())){
                 temp=cashPool;
                 break;
             }
         }
-        if(temp!=null&&temp.getBlance()>profits.getNum()){
-            temp.setBlance(temp.getBlance()-profits.getNum());
+        if(temp!=null&&temp.getBlance()>loss.getNum()){
+            temp.setBlance(temp.getBlance()-loss.getNum());
         }else{
             return 0;
         }
-
         DefaultTransactionDefinition def=new DefaultTransactionDefinition();
-        def.setName("addprofits");
+        def.setName("addloss");
         def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
         TransactionStatus status=transactionManager.getTransaction(def);
         try{
             //更新资金库
             cashPoolMapper.update(temp);
-            profitsMapper.add(profits);
+            lossMapper.add(loss);
         }catch (Exception e){
             //有一个不成功能则回滚事务
             transactionManager.rollback(status);
             return 0;
         }
+
         return 1;
     }
 
     @Override
-    public List<Profits> queryAll() {
-        return profitsMapper.queryAll();
+    public List<Loss> queryAll() {
+        return lossMapper.queryAll();
     }
 }

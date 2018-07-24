@@ -8,12 +8,12 @@ import java.util.List;
  * author:huyanqing
  * Date:2018/7/24
  */
-public interface ProfitsService {
+public interface IProfitsService {
     /**
      * 增加分配记录
      * @param profits
      */
-    void add(Profits profits);
+    int add(Profits profits);
 
     /**
      * 查询分配记录
