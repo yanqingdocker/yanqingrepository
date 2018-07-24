@@ -407,7 +407,7 @@ public class PageController {
         return "loanManage/add_loan";
     }
     /**
-     *数据恢复
+     *现金柜台-数据恢复
      *
      * @return
      */
@@ -416,7 +416,24 @@ public class PageController {
         return "cashmanage/data_recovery";
     }
 
-
+    /**
+     *资金库-利润分配列表
+     *
+     * @return
+     */
+    @RequestMapping("/capitalbank/profit_fplist")
+    public String profit_fplist() {
+        return "capitalbank/profit_fplist";
+    }
+    /**
+     *资金库-新增利润分配
+     *
+     * @return
+     */
+    @RequestMapping("/capitalbank/add_profit_fp")
+    public String add_profit_fp() {
+        return "capitalbank/add_profit_fp";
+    }
 
 
 
