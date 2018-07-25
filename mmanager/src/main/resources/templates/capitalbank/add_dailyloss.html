@@ -100,7 +100,6 @@
         </div>
     </div>
 </div>
-
 <script type="text/javascript">
     $(function () {
         loadaccount();//加载货币类型
@@ -189,10 +188,11 @@
             var type = $("#currency_type").val();
             $("#moneytype").val(type);
             var inconmetype=income_type(parseFloat($('#oival').val()));
-            var details="项目名称："+$('#projectname').val()+"，收支类型："+inconmetype+"，币种类型："+ $("#moneytype").val()+"，金额："+$('#num').val()+"，备注："+$('#remark').val()+"";
+            var details="<div class='tl' style='margin-left: 70px; margin-right: 70px;'><b>项目名称：</b>"+$('#projectname').val()+"<b class='pl15'>收支类型：</b>"+inconmetype+"<br/><b>币种类型：</b>"+ $("#moneytype").val()+"<b class='pl15'>金额：</b>"+$('#num').val()+"<br/><b>备注：</b>"+$('#remark').val()+"</div>";
             sweetAlert({
                     title: "确定添加以下信息吗？",
                     text: details,
+                    html: true ,
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonText: "确定",

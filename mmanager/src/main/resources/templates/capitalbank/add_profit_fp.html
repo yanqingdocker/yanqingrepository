@@ -289,10 +289,11 @@
             else {  $("#destobj").val($("#shareholder_type").val());}
             var type = $("#currency_type").val();
             $("#moneytype").val(type);
-            var details="分配对象："+ $("#destobj").val()+"，币种类型："+ $("#moneytype").val()+"，分配额度："+$('#num').val()+"，备注："+$('#remark').val()+"";
+            var details="<div class='tl' style='margin-left: 70px; margin-right: 70px;'><b>分配对象：</b>"+$('#destobj').val()+"<br/><b>币种类型：</b>"+$("#moneytype").val()+"<b class='pl15'>分配额度：</b>"+$('#num').val()+"<br/><b>备注：</b>"+$('#remark').val()+"</div>";
             sweetAlert({
                     title: "确定添加以下信息吗？",
                     text: details,
+                    html: true ,
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonText: "确定",
