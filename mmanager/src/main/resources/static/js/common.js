@@ -43,7 +43,19 @@ function currency_type(types) {
             break;
     }
 }
-
+function income_type(types) {
+    switch(types)
+    {
+        case 0:
+            return "支出"
+            break;
+        case 1:
+            return "收入"
+            break;
+        default:
+            break;
+    }
+}
 //接口返回异常，超时登录
 function handleAjaxError() {
     sweetAlert({
