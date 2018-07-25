@@ -12,15 +12,19 @@ import lombok.Setter;
 public class Loss {
     private int id;
     /**
-     * 损耗项目名称
+     * 收支
+     */
+    private int oi;
+    /**
+     * 项目名称
      */
     private String projectname;
     /**
-     * 损耗金额类型
+     * 金额类型
      */
     private String moneytype;
     /***
-     * 损耗金额
+     * 金额
      */
     private double num;
     /**
@@ -28,7 +32,7 @@ public class Loss {
      */
     private String operauser;
     /**
-     * 损耗时间
+     * 时间
      */
     private String creattime;
     /**

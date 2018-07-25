@@ -36,38 +36,43 @@ public class LossController {
     private LossServiceImpl lossService;
 
 
-    @RequestMapping(path = "add",method = RequestMethod.POST)
-    public String add(@RequestParam("projectname") String projectname,@RequestParam("moneytype") String moneytype,@RequestParam("num") Double num,@RequestParam("remark") String remark, HttpServletRequest request) throws Exception {
+    @RequestMapping(path = "add", method = RequestMethod.POST)
+    public String add(@RequestParam("oi") int oi, @RequestParam("projectname") String projectname, @RequestParam("moneytype") String moneytype, @RequestParam("num") Double num, @RequestParam("remark") String remark, HttpServletRequest request) throws Exception {
         logger.info("add start:");
         /*       if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }*/
-        Loss loss=new Loss();
+        Loss loss = new Loss();
+        loss.setOi(oi);
         loss.setProjectname(projectname);
         loss.setMoneytype(moneytype);
         loss.setCreattime(DateUtil.getTime());
-        loss.setNum(num);
+        if (ConstantUtil.MONEY_IN == oi) {
+            loss.setNum(num);
+        } else if (ConstantUtil.MONEY_OUT == oi) {
+            loss.setNum(-num);
+        }
+
         loss.setRemark(remark);
-        loss.setOperauser("admin");
-        int rs=lossService.add(loss);
-        if(rs==0){
-            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.SYSTEMCOUNT_LESS)).toString();
+        Muser muser = (Muser) request.getSession().getAttribute("currentUser");
+        loss.setOperauser(muser.getUsername());
+        int rs = lossService.add(loss);
+        if (rs == 0) {
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.SYSTEMCOUNT_LESS)).toString();
         }
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 
 
-
-
-   @RequestMapping(path = "queryAll",method = RequestMethod.GET)
+    @RequestMapping(path = "queryAll", method = RequestMethod.GET)
     public String queryAll(HttpServletRequest request) throws Exception {
     /*  if(!FilterAuthUtil.checkAuth(request)){
            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
        }*/
         logger.info("queryAll start:");
-        Map<String,Object> parmMap=new HashMap<String,Object>();
-        List<Loss> losses=lossService.queryAll();
+        Map<String, Object> parmMap = new HashMap<String, Object>();
+        List<Loss> losses = lossService.queryAll();
         return JSONArray.fromObject(losses).toString();
-      }
+    }
 
 }
