@@ -54,7 +54,7 @@
                     <div class="form-group">
                         <label  class="col-sm-2 control-label">项目名称<span class="warning">*</span></label>
                         <div class="col-sm-10">
-                            <input class="form-control"  maxlength="300" type="text" name="projectname" >
+                            <input class="form-control" id="projectname" maxlength="300" type="text" name="projectname" >
                         </div>
                     </div>
                     <div class="form-group">
@@ -81,13 +81,13 @@
                     <div class="form-group">
                         <label  class="col-sm-2 control-label">金额<span class="warning">*</span></label>
                         <div class="col-sm-10">
-                            <input class="form-control"  maxlength="50" type="text" name="num" >
+                            <input class="form-control" id="num"  maxlength="50" type="text" name="num" >
                         </div>
                     </div>
                     <div class="form-group">
                         <label  class="col-sm-2 control-label">备注</label>
                         <div class="col-sm-10">
-                            <textarea class="form-control"  name="remark" ></textarea>
+                            <textarea class="form-control" id="remark" name="remark" ></textarea>
                         </div>
                     </div>
                     <div class="form-group">
@@ -186,45 +186,61 @@
             return;
         } else {
             $("#oival").val($(":radio:checked").val());
-            console.log($("#oival").val());
             var type = $("#currency_type").val();
             $("#moneytype").val(type);
-            $.ajax({
-                url: '/loss/add',
-                data: $("#myform").serialize(),
-                type: 'post',
-                error: function (data) {
-                    sweetAlert("", "请求失败！", "error");
+            var inconmetype=income_type(parseFloat($('#oival').val()));
+            var details="项目名称："+$('#projectname').val()+"，收支类型："+inconmetype+"，币种类型："+ $("#moneytype").val()+"，金额："+$('#num').val()+"，备注："+$('#remark').val()+"";
+            sweetAlert({
+                    title: "确定添加以下信息吗？",
+                    text: details,
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    closeOnConfirm: false,
+                    closeOnCancel: true
                 },
-                success: function (data) {
-                    if (strToJson(data).code == "success") {
-                        sweetAlert("", "恭喜您！添加成功！", "success");
-                        setTimeout(function () {
-                            window.location.href = "/capitalbank/daily_loss";
-                        }, 1500);
-                    }
-                    else if(strToJson(data).code=="403") {
-                        sweetAlert({
-                                title: "",
-                                text: "您的账号权限不足，无法操作此页面！",
-                                type: "warning",
-                                showCancelButton: false,
-                                confirmButtonText: "确定",
-                                cancelButtonText: "取消",
-                                closeOnConfirm: false,
-                                closeOnCancel: true
+                function(isConfirm) {
+                    if (isConfirm) {
+                        $.ajax({
+                            url: '/loss/add',
+                            data: $("#myform").serialize(),
+                            type: 'post',
+                            error: function (data) {
+                                sweetAlert("", "请求失败！", "error");
                             },
-                            function(isConfirm){
-                                if (isConfirm) {
-                                    window.location.href = "/mainframe";
+                            success: function (data) {
+                                if (strToJson(data).code == "success") {
+                                    sweetAlert("", "恭喜您！添加成功！", "success");
+                                    setTimeout(function () {
+                                        window.location.href = "/capitalbank/daily_loss";
+                                    }, 1500);
                                 }
-                            });
+                                else if(strToJson(data).code=="403") {
+                                    sweetAlert({
+                                            title: "",
+                                            text: "您的账号权限不足，无法操作此页面！",
+                                            type: "warning",
+                                            showCancelButton: false,
+                                            confirmButtonText: "确定",
+                                            cancelButtonText: "取消",
+                                            closeOnConfirm: false,
+                                            closeOnCancel: true
+                                        },
+                                        function(isConfirm){
+                                            if (isConfirm) {
+                                                window.location.href = "/mainframe";
+                                            }
+                                        });
+                                }
+                                else {
+                                    sweetAlert("", strToJson(data).message, "error");
+                                }
+                            }
+                        })
                     }
-                    else {
-                        sweetAlert("", strToJson(data).message, "error");
-                    }
-                }
-            })
+                });
+
         }
     }
 </script>

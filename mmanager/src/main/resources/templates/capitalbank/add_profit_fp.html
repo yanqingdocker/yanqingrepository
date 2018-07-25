@@ -87,13 +87,13 @@
                     <div class="form-group">
                         <label  class="col-sm-2 control-label">分配额度<span class="warning">*</span></label>
                         <div class="col-sm-10">
-                            <input class="form-control"  maxlength="50" type="text" name="num" >
+                            <input class="form-control" id="num" maxlength="50" type="text" name="num" >
                         </div>
                     </div>
                     <div class="form-group">
                         <label  class="col-sm-2 control-label">备注</label>
                         <div class="col-sm-10">
-                            <textarea class="form-control"  name="remark" ></textarea>
+                            <textarea class="form-control" id="remark"  name="remark" ></textarea>
                         </div>
                     </div>
                     <div class="form-group">
@@ -287,45 +287,60 @@
                 $("#destobj").val($("#network_type").val());
             }
             else {  $("#destobj").val($("#shareholder_type").val());}
-            console.log($("#destobj").val());
             var type = $("#currency_type").val();
             $("#moneytype").val(type);
-            $.ajax({
-                url: '/profits/add',
-                data: $("#myform").serialize(),
-                type: 'post',
-                error: function (data) {
-                    sweetAlert("", "请求失败！", "error");
+            var details="分配对象："+ $("#destobj").val()+"，币种类型："+ $("#moneytype").val()+"，分配额度："+$('#num').val()+"，备注："+$('#remark').val()+"";
+            sweetAlert({
+                    title: "确定添加以下信息吗？",
+                    text: details,
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    closeOnConfirm: false,
+                    closeOnCancel: true
                 },
-                success: function (data) {
-                    if (strToJson(data).code == "success") {
-                        sweetAlert("", "恭喜您！利润分配成功！", "success");
-                        setTimeout(function () {
-                            window.location.href = "/capitalbank/profit_fplist";
-                        }, 1500);
-                    }
-                    else if(strToJson(data).code=="403") {
-                        sweetAlert({
-                                title: "",
-                                text: "您的账号权限不足，无法操作此页面！",
-                                type: "warning",
-                                showCancelButton: false,
-                                confirmButtonText: "确定",
-                                cancelButtonText: "取消",
-                                closeOnConfirm: false,
-                                closeOnCancel: true
+                function(isConfirm) {
+                    if (isConfirm) {
+                        $.ajax({
+                            url: '/profits/add',
+                            data: $("#myform").serialize(),
+                            type: 'post',
+                            error: function (data) {
+                                sweetAlert("", "请求失败！", "error");
                             },
-                            function(isConfirm){
-                                if (isConfirm) {
-                                    window.location.href = "/mainframe";
+                            success: function (data) {
+                                if (strToJson(data).code == "success") {
+                                    sweetAlert("", "恭喜您！利润分配成功！", "success");
+                                    setTimeout(function () {
+                                        window.location.href = "/capitalbank/profit_fplist";
+                                    }, 1500);
                                 }
-                            });
+                                else if(strToJson(data).code=="403") {
+                                    sweetAlert({
+                                            title: "",
+                                            text: "您的账号权限不足，无法操作此页面！",
+                                            type: "warning",
+                                            showCancelButton: false,
+                                            confirmButtonText: "确定",
+                                            cancelButtonText: "取消",
+                                            closeOnConfirm: false,
+                                            closeOnCancel: true
+                                        },
+                                        function(isConfirm){
+                                            if (isConfirm) {
+                                                window.location.href = "/mainframe";
+                                            }
+                                        });
+                                }
+                                else {
+                                    sweetAlert("", strToJson(data).message, "error");
+                                }
+                            }
+                        })
                     }
-                    else {
-                        sweetAlert("", strToJson(data).message, "error");
-                    }
-                }
-            })
+                });
+
         }
     }
 </script>
