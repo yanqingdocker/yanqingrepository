@@ -47,6 +47,10 @@
             <div class="card-header">
             </div>
             <div class="card-body">
+                <div style="position: relative; left: 30%; top: 30px;">
+                    <div class="inblock red f18"> <span>人民币分配总计：￥</span><b id="cnytotal"></b></div>
+                    <div class="inblock ml80 green f18"> <span>美元分配总计：$</span><b id="usdtotal"></b> </div>
+                </div>
                 <table class="datatable table table-striped" id="table" cellspacing="0" width="100%">
                     <thead>
                     <tr>
@@ -134,6 +138,16 @@
                             });
                     }
                     else {
+                        var cnytotal=0;
+                        var usdtotal=0;
+                        for(var i=0;i<data.length; i++){
+                            if(data[i].moneytype=="CNY"){
+                                cnytotal+=data[i].num;
+                            }
+                            else {  usdtotal+=data[i].num;}
+                        }
+                        $("#cnytotal").html(cnytotal);
+                        $("#usdtotal").html(usdtotal);
                         return data;
                     }
                 },
