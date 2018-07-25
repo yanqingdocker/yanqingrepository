@@ -434,6 +434,24 @@ public class PageController {
     public String add_profit_fp() {
         return "capitalbank/add_profit_fp";
     }
+    /**
+     *资金库-日常损耗列表
+     *
+     * @return
+     */
+    @RequestMapping("/capitalbank/add_dailyloss")
+    public String add_dailyloss() {
+        return "capitalbank/add_dailyloss";
+    }
+    /**
+     *资金库-新增日常损耗
+     *
+     * @return
+     */
+    @RequestMapping("/capitalbank/daily_loss")
+    public String daily_loss() {
+        return "capitalbank/daily_loss";
+    }
 
 
 

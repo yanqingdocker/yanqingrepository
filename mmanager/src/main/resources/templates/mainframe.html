@@ -905,17 +905,22 @@
             async: false,
             contentType: 'application/json',
             success: function (data) {
-                $(".manage_name").html(data.username);
-                $("#servicebranch").html(data.servicebranch);
-                if(data.servicebranch=="总部"){
-                    $("#zb_show").show();
-                    $("#areapie").hide();
-                    tradepie(mypie);//总部收支饼状图
+                if(data==null){
+                    window.location.href = "/login";
                 }
-                else{
+                else {
+                    $(".manage_name").html(data.username);
+                    $("#servicebranch").html(data.servicebranch);
+                    if (data.servicebranch == "总部") {
+                        $("#zb_show").show();
+                        $("#areapie").hide();
+                        tradepie(mypie);//总部收支饼状图
+                    }
+                    else {
 
-                    $("#chartpie").hide();
-                    tradeareapie(areapie);//网点收支饼状图
+                        $("#chartpie").hide();
+                        tradeareapie(areapie);//网点收支饼状图
+                    }
                 }
             }
         });

@@ -55,36 +55,36 @@
                         </ul>
                     </li>
                     <!--<li class="dropdown danger">-->
-                        <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-star-half-o"></i> 4</a>-->
-                        <!--<ul class="dropdown-menu danger  animated fadeInDown">-->
-                            <!--<li class="title">-->
-                                <!--Notification <span class="badge pull-right">4</span>-->
-                            <!--</li>-->
-                            <!--<li>-->
-                                <!--<ul class="list-group notifications">-->
-                                    <!--<a href="#">-->
-                                        <!--<li class="list-group-item">-->
-                                            <!--<span class="badge">1</span> <i class="fa fa-exclamation-circle icon"></i> new registration-->
-                                        <!--</li>-->
-                                    <!--</a>-->
-                                    <!--<a href="#">-->
-                                        <!--<li class="list-group-item">-->
-                                            <!--<span class="badge success">1</span> <i class="fa fa-check icon"></i> new orders-->
-                                        <!--</li>-->
-                                    <!--</a>-->
-                                    <!--<a href="#">-->
-                                        <!--<li class="list-group-item">-->
-                                            <!--<span class="badge danger">2</span> <i class="fa fa-comments icon"></i> customers messages-->
-                                        <!--</li>-->
-                                    <!--</a>-->
-                                    <!--<a href="#">-->
-                                        <!--<li class="list-group-item message">-->
-                                            <!--view all-->
-                                        <!--</li>-->
-                                    <!--</a>-->
-                                <!--</ul>-->
-                            <!--</li>-->
-                        <!--</ul>-->
+                    <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-star-half-o"></i> 4</a>-->
+                    <!--<ul class="dropdown-menu danger  animated fadeInDown">-->
+                    <!--<li class="title">-->
+                    <!--Notification <span class="badge pull-right">4</span>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                    <!--<ul class="list-group notifications">-->
+                    <!--<a href="#">-->
+                    <!--<li class="list-group-item">-->
+                    <!--<span class="badge">1</span> <i class="fa fa-exclamation-circle icon"></i> new registration-->
+                    <!--</li>-->
+                    <!--</a>-->
+                    <!--<a href="#">-->
+                    <!--<li class="list-group-item">-->
+                    <!--<span class="badge success">1</span> <i class="fa fa-check icon"></i> new orders-->
+                    <!--</li>-->
+                    <!--</a>-->
+                    <!--<a href="#">-->
+                    <!--<li class="list-group-item">-->
+                    <!--<span class="badge danger">2</span> <i class="fa fa-comments icon"></i> customers messages-->
+                    <!--</li>-->
+                    <!--</a>-->
+                    <!--<a href="#">-->
+                    <!--<li class="list-group-item message">-->
+                    <!--view all-->
+                    <!--</li>-->
+                    <!--</a>-->
+                    <!--</ul>-->
+                    <!--</li>-->
+                    <!--</ul>-->
                     <!--</li>-->
                     <li class="dropdown profile">
                         <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-expanded="false" > <span class="manage_name"></span><span class="caret"></span></a>
@@ -247,6 +247,8 @@
                                         <li><a href="/capitalbank/cash_initialization" target="iframename">资金库初始化</a>
                                         </li>
                                         <li><a href="/capitalbank/profit_fplist" target="iframename">利润分配</a>
+                                        </li>
+                                        <li><a href="/capitalbank/daily_loss" target="iframename">日常损耗</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -467,12 +469,19 @@
             async: false,
             contentType: 'application/json',
             success: function (data) {
-                $(".manage_name").html(data.username);
-                $("#servicebranch").html(data.servicebranch);
-                if(data.servicebranch=="总部"){
-                    $("#network_drop").show();
-                    $("#manage_user").show();
+                if(data==null){
+                    window.location.href = "/login";
                 }
+                else{
+                    $(".manage_name").html(data.username);
+                    $("#servicebranch").html(data.servicebranch);
+                    if(data.servicebranch=="总部"){
+                        $("#network_drop").show();
+                        $("#manage_user").show();
+                    }
+                }
+
+
             }
         });
 
