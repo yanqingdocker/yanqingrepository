@@ -47,9 +47,10 @@
             <div class="card-header">
             </div>
             <div class="card-body">
-                <div style="position: relative; left: 30%; top: 30px;">
+                <div style="position: relative; left: 30%; top: 30px; display: inline-block;z-index: 999">
                     <div class="inblock red f18"> <span>人民币分配总计：￥</span><b id="cnytotal"></b></div>
                     <div class="inblock ml80 green f18"> <span>美元分配总计：$</span><b id="usdtotal"></b> </div>
+                    <button type="button" class="btn btn-default" onclick="refresh()">刷新</button>
                 </div>
                 <table class="datatable table table-striped" id="table" cellspacing="0" width="100%">
                     <thead>
@@ -169,7 +170,48 @@
 
             ]
         });
+        $("#table_filter input").attr('placeholder',"请输入分配对象");
+
     })
+    function refresh() {
+        var cnytotal=0;
+        var usdtotal=0;
+        var val= $("#table_filter input").val();
+        $.ajax({
+            url: "/profits/queryAll",
+            type: "get",
+            data: null,
+            dataType: "JSON",
+            success: function (data) {
+                if (val == "") {
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].moneytype == "CNY") {
+                            cnytotal += data[i].num;
+                            console.log(data[i].destobj);
+                        }
+                        else {
+                            usdtotal += data[i].num;
+                        }
+                    }
+                }
+                else {
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].destobj == val || data[i].destobj.indexOf(val) != -1) {
+                            if (data[i].moneytype == "CNY") {
+                                cnytotal += data[i].num;
+                            }
+                            else {
+                                usdtotal += data[i].num;
+                            }
+                        }
+                    }
+                }
+                $("#cnytotal").html(cnytotal);
+                $("#usdtotal").html(usdtotal);
+
+            }
+        });
+    }
 </script>
 
 </body>
