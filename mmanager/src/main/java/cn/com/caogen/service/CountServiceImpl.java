@@ -8,6 +8,7 @@ import cn.com.caogen.util.*;
 import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +79,7 @@ public class CountServiceImpl implements ICountService {
         if(count==null){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL)).toString();
         }
-        if(blance!=0){
+        if(blance>=0){
             count.setBlance(blance);
         }
         if(state!=null){
@@ -128,6 +129,7 @@ public class CountServiceImpl implements ICountService {
         }
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL)).toString();
     }
+
 
     @Override
     public String queryByUserId(String userid) {
