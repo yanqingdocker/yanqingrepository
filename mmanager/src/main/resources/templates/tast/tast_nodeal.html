@@ -90,6 +90,7 @@
     $(function () {
         information();
     })
+    //正常列表
     function tablelist() {
         $('#table').DataTable( {
             "order": [ 5, "desc" ],
@@ -281,6 +282,7 @@
             ]
         } );
     }
+
     // 读取详细信息
     function detail_task(content) {
         var str=content.replace(/,/g,'<br>');
