@@ -88,6 +88,11 @@
 </div><!-- /.modal -->
 <script type="text/javascript">
     $(function () {
+        information();
+
+
+    })
+    function tablelist() {
         $('#table').DataTable( {
             "order": [ 5, "desc" ],
             "serverSide": true,
@@ -175,12 +180,109 @@
                 {"data": "createtime" },
                 {"data": "id" ,
                     render:function(e,type,full,row){
-                        return "<a href='javascript:;' onclick='deal_task("+full.id+")'>确认处理</a>"
+                        return "<a href='javascript:;' onclick='deal_task("+full.id+")'>标记处理</a>"
                     }
                 }
             ]
         } );
-    })
+    }
+
+    //不是总部隐藏最后一列
+    function tablehide() {
+        $('#table').DataTable( {
+            "order": [ 5, "desc" ],
+            "serverSide": true,
+            columnDefs: [ { "targets": [ 6 ], "visible": false }],
+            searching: true,
+            lengthChange: true,
+            paging: true,
+            scrollCollapse: true,
+            serverSide: false,
+            search: true,
+            processing: true,
+            /* scrollY: 500,   表格的高度限制*/
+            scrollX: "100%",
+            scrollXInner: "100%",
+            scrollCollapse: true,
+            jQueryUI: false,
+            autoWidth: true,
+            autoSearch: false,
+            language: {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项搜索结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 条数据",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "暂无数据",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            },
+            ajax: {
+                url: "/task/queryMarkdo",
+                dataSrc: function (data) {
+                    if (data.code=="403") {
+                        sweetAlert({
+                                title: "",
+                                text: "您的账号权限不足，无法操作此页面！",
+                                type: "warning",
+                                showCancelButton: false,
+                                confirmButtonText: "确定",
+                                cancelButtonText: "取消",
+                                closeOnConfirm: false,
+                                closeOnCancel: true
+                            },
+                            function(isConfirm){
+                                if (isConfirm) {
+                                    window.location.href = "/mainframe";
+                                }
+                            });
+                    }
+                    else{ return data;}
+                },
+                error: handleAjaxError //接口返回异常，超时登录
+            },
+            "fnDrawCallback"    : function(){
+                this.api().column(0).nodes().each(function(cell, i) {
+                    cell.innerHTML =  i + 1;
+                });
+            },
+            "columns": [
+                {"data": "id"},
+                {"data": "taskname" },
+                {"data": "operauser" },
+                {"data": "taskcontent" ,
+                    render:function(e,type,full,row){
+                        return "<a href='javascript:;' data-toggle=\"modal\" data-target=\"#myModal_dollar\" class=\"blue text_overflow width120\" onclick=\"detail_task('"+full.taskcontent+"')\">"+full.taskcontent+"</a>"
+                    }
+                },
+                {"data": "state" ,
+                    render:function(e,type,full,row){
+                        return "<span class=\"red\">"+full.state+"</span>"
+                    }
+                },
+                {"data": "createtime" },
+                {"data": "id" ,
+                    render:function(e,type,full,row){
+                        return "<a href='javascript:;' onclick='deal_task("+full.id+")'>标记处理</a>"
+                    }
+                }
+            ]
+        } );
+    }
     // 读取详细信息
     function detail_task(content) {
         var str=content.replace(/,/g,'<br>');
@@ -210,7 +312,7 @@
                                 sweetAlert("", "恭喜您！任务处理成功！", "success");
                                 setTimeout(function(){ window.location.href = "/tast/tast_finish";},1500);
                             }
-                           else if (data.code=="403") {
+                            else if (data.code=="403") {
                                 sweetAlert({
                                         title: "",
                                         text: "您的账号权限不足，无法操作此页面！",
@@ -237,7 +339,26 @@
                 }
             });
     }
+    // 获取登录成员信息
+    function information() {
+        $.ajax({
+            url: "/muser/getUser",
+            type: "get",
+            data: null,
+            dataType: 'json',
+            async: false,
+            contentType: 'application/json',
+            success: function (data) {
+                if(data.servicebranch=="总部"){
+                    tablelist();
+                }
+                else {
+                    tablehide()//隐藏操作一列
+                }
+            }
+        });
 
+    }
 </script>
 </body>
 </html>
