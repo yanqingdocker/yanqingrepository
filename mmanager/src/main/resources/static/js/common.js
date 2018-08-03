@@ -96,6 +96,7 @@ setInterval(function(){
     task_nodeal();
     task_dealed()
 },10000);
+
 var tastnum=0;
 // 显示未处理任务条数
 function task_nodeal() {
