@@ -50,7 +50,12 @@ public class TaskController {
         if(stream==null){
             return null;
         }
+        Muser muser=(Muser)request.getSession().getAttribute("currentUser");
         List<Task> taskList=stream.filter((e)->!e.getTaskname().equals(ConstantUtil.VIP)).collect(Collectors.toList());
+        if(ConstantUtil.SERVICE_BRANCH.equals(muser.getServicebranch())){
+            return JSONArray.fromObject(taskList).toString();
+        }
+        taskList= taskList.stream().filter((e)->e.getTaskcontent().split("网点")[0].equals(muser.getServicebranch())).collect(Collectors.toList());
         return JSONArray.fromObject(taskList).toString();
     }
     /**
@@ -63,9 +68,16 @@ public class TaskController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
         logger.info("queryUndo start:");
+        Muser muser=(Muser)request.getSession().getAttribute("currentUser");
         Stream<Task> stream=taskService.queryByState(ConstantUtil.TASK_DOING).stream();
         List<Task> taskList=stream.filter((e)->!e.getTaskname().equals(ConstantUtil.VIP)).collect(Collectors.toList());
+
+        if(ConstantUtil.SERVICE_BRANCH.equals(muser.getServicebranch())){
+            return JSONArray.fromObject(taskList).toString();
+        }
+        taskList= taskList.stream().filter((e)->e.getTaskcontent().split("网点")[0].equals(muser.getServicebranch())).collect(Collectors.toList());
         return JSONArray.fromObject(taskList).toString();
+
     }
 
     /**
@@ -78,9 +90,15 @@ public class TaskController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
         logger.info("queryDone start:");
+        Muser muser=(Muser)request.getSession().getAttribute("currentUser");
         Stream<Task> stream=taskService.queryByState(ConstantUtil.TASK_DONE).stream();
         List<Task> taskList=stream.filter((e)->!e.getTaskname().equals(ConstantUtil.VIP)).collect(Collectors.toList());
+        if(ConstantUtil.SERVICE_BRANCH.equals(muser.getServicebranch())){
+            return JSONArray.fromObject(taskList).toString();
+        }
+        taskList= taskList.stream().filter((e)->e.getTaskcontent().split("网点")[0].equals(muser.getServicebranch())).collect(Collectors.toList());
         return JSONArray.fromObject(taskList).toString();
+
     }
     @RequestMapping("dotask")
     public String doTask(@RequestParam("id") int id, HttpServletRequest request){
