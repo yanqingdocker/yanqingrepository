@@ -137,7 +137,7 @@ function task_nodeal() {
 
 }
 
-var num=0;
+var num=0
 function taskend() {
     $.ajax({
         url: "/task/queryDone",
@@ -157,7 +157,7 @@ function taskend() {
     });
 
 }
-var nodeal
+var nodeal=0
 // 显示已处理任务条数
 function myfun() {
     if(num>0){
