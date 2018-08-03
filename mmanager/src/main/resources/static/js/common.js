@@ -93,7 +93,8 @@ function showdate(){
 
 // 实时更新未处理任务
 setInterval(function(){
-    task_nodeal()
+    task_nodeal();
+    task_dealed()
 },10000);
 var tastnum=0;
 // 显示未处理任务条数
@@ -107,17 +108,18 @@ function task_nodeal() {
         contentType: 'application/json',
         success: function (data) {
             if(data.length>0){
-                $("#hide_tast").val(data.length);
-                $("#nodeal_num").html(data.length);
-                $("#msg_status").addClass("danger");
-                $("#tast_num").html(data.length);
-                $("#indexAlert").show();
-                if( data.length>tastnum){
-                    $.notifySetup({sound: '../audio/notify.mp3'});
-                    $("#indexAlert").notify({sticky: true});
-                    tastnum=data.length;
+                if($("#servicebranch").html()=="总部"){
+                    $("#hide_tast").val(data.length);
+                    $("#nodeal_num").html(data.length);
+                    $("#msg_status").addClass("danger");
+                    $("#tast_num").html(data.length);
+                    $("#indexAlert").show();
+                    if( data.length>tastnum){
+                        $.notifySetup({sound: '../audio/notify.mp3'});
+                        $("#indexAlert").notify({sticky: true});
+                        tastnum=data.length;
+                    }
                 }
-
 
             }
             else if (data.code=="403") {
@@ -134,3 +136,58 @@ function task_nodeal() {
 
 }
 
+var num=0;
+function taskend() {
+    $.ajax({
+        url: "/task/queryDone",
+        type: "get",
+        data: null,
+        dataType: 'json',
+        async: false,
+        contentType: 'application/json',
+        success: function (data) {
+            if(data.length>0){
+                $("#dealnum").val(data.length);
+                num=$("#dealnum").val();
+
+            }
+
+        }
+    });
+
+}
+var nodeal
+// 显示已处理任务条数
+function myfun() {
+    if(num>0){
+        nodeal=num;
+    }
+}
+window.onload = myfun;
+
+function task_dealed() {
+    $.ajax({
+        url: "/task/queryDone",
+        type: "get",
+        data: null,
+        dataType: 'json',
+        async: false,
+        contentType: 'application/json',
+        success: function (data) {
+            if(data.length>0){
+                if($("#servicebranch").html()!="总部"){
+                    if( data.length>nodeal){
+                        $("#networkAlert").show();
+                        $.notifySetup({sound: '../audio/netnotice.mp3'});
+                        $("#networkAlert").notify({sticky: true});
+                        nodeal=data.length;
+                    }
+
+
+                }
+            }
+
+        }
+    });
+
+}

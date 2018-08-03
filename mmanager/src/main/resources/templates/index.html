@@ -386,18 +386,27 @@
             © 2018 Copyright <a href="JavaScript:;" >南方国际货币兑换后台管理系统</a>
         </div>
     </footer>
-    <div id="indexAlert" class="tc">
+    <div id="indexAlert" class="tc" style="display: none">
         <i class="icon_alarm"></i>
         <h3>您有<b class="red" id="tast_num"></b>条待处理任务！</h3>
         <a href="/tast/tast_nodeal" target="iframename">去处理</a>
         <a href="JavaScript:;" id="closeAlert"  target="iframename">我知道了</a>
     </div>
+    <div id="networkAlert" class="tc" style="display: none">
+        <i class="icon_alarm"></i>
+        <h3>您有任务已被平台处理</h3>
+        <a href="/tast/tast_finish" id="lookdeal" target="iframename">查看</a>
+    </div>
 </div>
+<input type="hidden" id="dealnum">
 <script type="text/javascript">
     $(function(){
         autodivheight();
         $("#closeAlert").click(function () {
             $(this).parent().hide();
+        });
+        $("#lookdeal").click(function(){
+            $("#networkAlert").hide();
         })
     });
 
@@ -436,6 +445,7 @@
     $(function(){
         task_nodeal();
         information();
+        taskend();
     })
     function logout() {
         $.ajax({

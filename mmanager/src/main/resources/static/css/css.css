@@ -306,6 +306,11 @@ div.dataTables_scrollBody table tbody tr td:first-child{ text-align: center}
 #indexAlert a{ background-color:#00b4ff;color: #fff;border-radius: 4px; width: 110px;height: 35px; line-height: 35px; text-align: center ;display: inline-block; margin-right: 5px; margin-left: 5px; margin-top: 20px; font-size: 14px;}
 #indexAlert .icon_alarm{ background: url(../images/icon_tast.png) no-repeat;position: absolute;left: 128px; top: -35px; display: inline-block; width: 65px; height: 65px; background-size: contain; }
 
+#networkAlert{ position: absolute; right: 32px;bottom: 15px; border: 1px solid #e3e3e3; border-radius: 6px;background-color:#fff; padding: 20px 40px; padding-top: 35px;}
+#networkAlert h3{ font-size: 16px;font-weight: normal; margin-top: 20px;}
+#networkAlert a{ background-color:#00b4ff;color: #fff;border-radius: 4px; width: 110px;height: 35px; line-height: 35px; text-align: center ;display: inline-block; margin-right: 5px; margin-left: 5px; margin-top: 20px; font-size: 14px;}
+#networkAlert .icon_alarm{ background: url(../images/icon_tast.png) no-repeat;position: absolute;left: 128px; top: -35px; display: inline-block; width: 65px; height: 65px; background-size: contain; }
+
 form .checkbox3.checkbox-inline{ margin-right: 15px;}
 form .checkbox3 label::before {   top: 8px; }
 .card .card-body{ padding-top: 40px;}
