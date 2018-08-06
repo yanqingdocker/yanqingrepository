@@ -248,8 +248,12 @@ public class CashPoolController {
         Map<String,String> parmMap=new HashMap<String,String>();
         parmMap.put("starttime",starttime);
         parmMap.put("endtime",endtime);
+
         if(StringUtil.checkStrs(servicebranch)){
-            parmMap.put("servicebranch",servicebranch);
+            if(!"全部".equals(servicebranch)){
+                parmMap.put("servicebranch",servicebranch);
+            }
+
         }else{
             Muser muser=(Muser)request.getSession().getAttribute("currentUser");
             parmMap.put("servicebranch",muser.getServicebranch());
