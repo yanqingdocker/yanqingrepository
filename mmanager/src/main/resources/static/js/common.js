@@ -137,7 +137,8 @@ function task_nodeal() {
 
 }
 
-var num=0
+// 显示已处理任务条数
+var nodeal=0;
 function taskend() {
     $.ajax({
         url: "/task/queryDone",
@@ -148,23 +149,14 @@ function taskend() {
         contentType: 'application/json',
         success: function (data) {
             if(data.length>0){
-                $("#dealnum").val(data.length);
-                num=$("#dealnum").val();
-
+                nodeal=data.length;
             }
 
         }
     });
 
 }
-var nodeal=0
-// 显示已处理任务条数
-function myfun() {
-    if(num>0){
-        nodeal=num;
-    }
-}
-window.onload = myfun;
+
 
 function task_dealed() {
     $.ajax({
