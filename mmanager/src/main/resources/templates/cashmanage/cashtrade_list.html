@@ -58,6 +58,7 @@
                                 <label class="col-form-label">选择网点<span class="warning">*</span></label>
                                 <div class="input-prepend input-group dateselect w100" >
                                     <select class="select_input  w100"  id="select_network">
+                                        <option value="全部">全部</option>
                                     </select>
                                 </div>
 
@@ -302,8 +303,9 @@
                 }
                 else {
                     var jsonObj = $.parseJSON(data);//json字符串转数组
+                    var html="";
                     for (var i = 0; i < jsonObj.length; i++) {
-                        var html = '<option value="' + jsonObj[i].branchname + '">' + jsonObj[i].branchname + '</option>';
+                        html = '<option value="' + jsonObj[i].branchname + '">' + jsonObj[i].branchname + '</option>';
                         $("#select_network").append(html);
 
                     }
