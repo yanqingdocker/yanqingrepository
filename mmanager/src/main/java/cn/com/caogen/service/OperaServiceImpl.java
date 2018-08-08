@@ -85,8 +85,16 @@ public class OperaServiceImpl implements IOperaService {
     @Override
     public String queryScope(Map<String, String> parmMap) {
         List<Operation> operationList=operaMapper.queryScope(parmMap);
-        List<Operation> inUSD=operationList.stream().filter((e)->ConstantUtil.USD_LIB.equals(e.getCountid())&&e.getNum()>0).collect(Collectors.toList());
-        List<Operation> outUSD=operationList.stream().filter((e)->ConstantUtil.USD_LIB.equals(e.getCountid())&&e.getNum()<0).collect(Collectors.toList());
+        List<Operation> inUSD=null;
+        List<Operation> outUSD=null;
+        String type=parmMap.get("type");
+        if(ConstantUtil.MONEY_USD.equals(type)){
+             inUSD=operationList.stream().filter((e)->ConstantUtil.USD_LIB.equals(e.getCountid())&&e.getNum()>0).collect(Collectors.toList());
+             outUSD=operationList.stream().filter((e)->ConstantUtil.USD_LIB.equals(e.getCountid())&&e.getNum()<0).collect(Collectors.toList());
+        }else if(ConstantUtil.MONEY_CNY.equals(type)){
+             inUSD=operationList.stream().filter((e)->ConstantUtil.MONEY_CNY.equals(e.getCountid())&&e.getNum()>0).collect(Collectors.toList());
+             outUSD=operationList.stream().filter((e)->ConstantUtil.MONEY_CNY.equals(e.getCountid())&&e.getNum()<0).collect(Collectors.toList());
+        }
         double inNum=0;
         for(Operation operation:inUSD){
            inNum+=operation.getNum();

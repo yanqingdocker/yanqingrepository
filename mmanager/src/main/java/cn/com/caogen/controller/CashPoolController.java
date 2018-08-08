@@ -236,11 +236,11 @@ public class CashPoolController {
      * @return
      */
     @RequestMapping(path ="queryScope",method = RequestMethod.GET)
-    public String queryScope(@RequestParam("branchname") String servicebranch,@RequestParam("starttime") String starttime,@RequestParam("endtime") String endtime, HttpServletRequest request){
+    public String queryScope(@RequestParam("branchname") String servicebranch,@RequestParam("starttime") String starttime,@RequestParam("endtime") String endtime, @RequestParam("type") String type,HttpServletRequest request){
       /*  if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }*/
-        if(!StringUtil.checkStrs(starttime,endtime)){
+        if(!StringUtil.checkStrs(starttime,endtime,type)){
             logger.info(ConstantUtil.ERROR_ARGS);
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
@@ -248,6 +248,7 @@ public class CashPoolController {
         Map<String,String> parmMap=new HashMap<String,String>();
         parmMap.put("starttime",starttime);
         parmMap.put("endtime",endtime);
+        parmMap.put("type",type);
 
         if(StringUtil.checkStrs(servicebranch)){
             if(!"全部".equals(servicebranch)){
