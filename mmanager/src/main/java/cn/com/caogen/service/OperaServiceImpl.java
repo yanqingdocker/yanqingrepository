@@ -6,6 +6,7 @@ import cn.com.caogen.mapper.CashPoolMapper;
 import cn.com.caogen.mapper.OperaMapper;
 import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.StringUtil;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,8 +107,10 @@ public class OperaServiceImpl implements IOperaService {
         StringBuffer sb=new StringBuffer();
         sb.append("{'inNum':'").append(inNum).append("','outNum':'").append(outNum).append("'}");
 
-
-        return JSONObject.fromObject(sb.toString()).toString();
+        StringBuffer rs=new StringBuffer();
+        rs.append("{'region':").append(JSONObject.fromObject(sb.toString())).append(",'regionlist':");
+        rs.append(JSONArray.fromObject(operationList));
+        return JSONObject.fromObject(rs.toString()).toString();
     }
 
     @Override
