@@ -111,8 +111,10 @@
                         datetime.push(jsondata.USDCNY.date.substring(5, 10));
 
                     }
-                    var lastsrate = arr[5].USDCNY.buyPic;//美元买入价
-                    var lastrmb = arr[5].USDCNY.sellPic;//人民币买入价
+                    var len=arr.length-1;
+                    console.log(len);
+                    var lastsrate = arr[len].USDCNY.buyPic;//美元买入价
+                    var lastrmb = arr[len].USDCNY.sellPic;//人民币买入价
                     $("#dollatrate").html(lastsrate);
                     var fixrmb = lastrmb;
                     $("#rmbtrate").html(fixrmb);

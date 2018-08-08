@@ -93,8 +93,8 @@ public class OperaServiceImpl implements IOperaService {
              inUSD=operationList.stream().filter((e)->ConstantUtil.USD_LIB.equals(e.getCountid())&&e.getNum()>0).collect(Collectors.toList());
              outUSD=operationList.stream().filter((e)->ConstantUtil.USD_LIB.equals(e.getCountid())&&e.getNum()<0).collect(Collectors.toList());
         }else if(ConstantUtil.MONEY_CNY.equals(type)){
-             inUSD=operationList.stream().filter((e)->ConstantUtil.MONEY_CNY.equals(e.getCountid())&&e.getNum()>0).collect(Collectors.toList());
-             outUSD=operationList.stream().filter((e)->ConstantUtil.MONEY_CNY.equals(e.getCountid())&&e.getNum()<0).collect(Collectors.toList());
+             inUSD=operationList.stream().filter((e)->ConstantUtil.CNY_LIB.equals(e.getCountid())&&e.getNum()>0).collect(Collectors.toList());
+             outUSD=operationList.stream().filter((e)->ConstantUtil.CNY_LIB.equals(e.getCountid())&&e.getNum()<0).collect(Collectors.toList());
         }
         double inNum=0;
         for(Operation operation:inUSD){
@@ -109,7 +109,14 @@ public class OperaServiceImpl implements IOperaService {
 
         StringBuffer rs=new StringBuffer();
         rs.append("{'region':").append(JSONObject.fromObject(sb.toString())).append(",'regionlist':");
-        rs.append(JSONArray.fromObject(operationList));
+        if(ConstantUtil.MONEY_CNY.equals(type)){
+            operationList=operationList.stream().filter((e)->ConstantUtil.CNY_LIB.equals(e.getCountid())).collect(Collectors.toList());
+            rs.append(JSONArray.fromObject(operationList)).append("}");
+        }else if(ConstantUtil.MONEY_USD.equals(type)){
+            operationList=operationList.stream().filter((e)->ConstantUtil.USD_LIB.equals(e.getCountid())).collect(Collectors.toList());
+            rs.append(JSONArray.fromObject(operationList)).append("}");
+        }
+
         return JSONObject.fromObject(rs.toString()).toString();
     }
 

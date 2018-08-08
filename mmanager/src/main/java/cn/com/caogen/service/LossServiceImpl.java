@@ -42,7 +42,7 @@ public class LossServiceImpl implements ILossService{
             }
         }
         if(temp!=null&&temp.getBlance()>loss.getNum()){
-            temp.setBlance(temp.getBlance()-loss.getNum());
+            temp.setBlance(temp.getBlance()+loss.getNum());
         }else{
             return 0;
         }
