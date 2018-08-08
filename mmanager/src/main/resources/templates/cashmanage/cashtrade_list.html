@@ -51,7 +51,7 @@
 
             </div>
             <div class="card-body relative">
-                <form id="myform">
+                <form id="myform" style="margin-bottom: 15px;">
                     <div class="row">
                         <div class="col-lg-2 mb0" id="network" style="display: none">
                             <div class="form-group  ">
@@ -233,24 +233,12 @@
                 {"data": "countid"},
                 {"data": "oi" ,
                     render:function(e,type,full,row){
-                        if(full.oi==0){
-                            return "<span class='red'>支出</span>";
-                        }
-                        if(full.oi==1){
-                            return "<span class='green'>收入</span>";
-                        }
-
+                        return income_type(full.oi);
                     }
                 },
                 {"data": "num" ,
                     render:function(e,type,full,row){
-                        if(full.oi==0){
-                            return "<span class='red'>"+full.num+"</span>";
-                        }
-                        if(full.oi==1){
-                            return "<span class='green'>"+full.num+"</span>";
-                        }
-
+                        return income_num(full.num);
                     }
                 },
                 {"data": "countType"},
@@ -266,10 +254,30 @@
             ]
         });
     })
-
+    function income_type(types) {
+        switch(types)
+        {
+            case 0:
+                return "<span class='red'>支出</span>"
+                break;
+            case 1:
+                return "<span class='green'>收入</span>"
+                break;
+            default:
+                break;
+        }
+    }
+    function income_num(num) {
+        if(num>0){
+            return '<span class="green">'+num+'</span>'
+        }
+        else {
+            return '<span class="red">'+num+'</span>'
+        }
+    }
     // 查询记录
     function submitform(types) {
-        // information();
+        information();
         $(".batch_play").css("top","0");
         $("#mytable").html("");
         $("#table_wrapper").hide();
@@ -313,11 +321,11 @@
                     var html="";
                     for (var i=0; i<obj.regionlist.length; i++){
                         html='<tr role="row" > '+
-                            '<td>'+parseInt(i+1)+'</td>' +
+                            '<td class="tc">'+parseInt(i+1)+'</td>' +
                             '<td>'+obj.regionlist[i].operaUser+'</td>' +
                             '<td>'+obj.regionlist[i].countid+'</td>' +
                             '<td>'+income_type(obj.regionlist[i].oi)+'</td>' +
-                            '<td>'+obj.regionlist[i].num+'</td>' +
+                            '<td>'+income_num(obj.regionlist[i].num)+'</td>' +
                             '<td>'+obj.regionlist[i].countType+'</td>' +
                             '<td>'+obj.regionlist[i].operaType+'</td>' +
                             '<td>'+obj.regionlist[i].operaIp+'</td>' +

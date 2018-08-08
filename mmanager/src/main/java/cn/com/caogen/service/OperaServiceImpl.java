@@ -90,11 +90,23 @@ public class OperaServiceImpl implements IOperaService {
         List<Operation> outUSD=null;
         String type=parmMap.get("type");
         if(ConstantUtil.MONEY_USD.equals(type)){
-             inUSD=operationList.stream().filter((e)->ConstantUtil.USD_LIB.equals(e.getCountid())&&e.getNum()>0).collect(Collectors.toList());
-             outUSD=operationList.stream().filter((e)->ConstantUtil.USD_LIB.equals(e.getCountid())&&e.getNum()<0).collect(Collectors.toList());
+            if(StringUtil.checkStrs(parmMap.get("servicebranch"))){
+                inUSD=operationList.stream().filter((e)->ConstantUtil.USD_LIB.equals(e.getCountid())&&e.getNum()>0&&e.getServicebranch().equals(parmMap.get("servicebranch"))).collect(Collectors.toList());
+                outUSD=operationList.stream().filter((e)->ConstantUtil.USD_LIB.equals(e.getCountid())&&e.getNum()<0&&e.getServicebranch().equals(parmMap.get("servicebranch"))).collect(Collectors.toList());
+            }else{
+                inUSD=operationList.stream().filter((e)->ConstantUtil.USD_LIB.equals(e.getCountid())&&e.getNum()>0).collect(Collectors.toList());
+                outUSD=operationList.stream().filter((e)->ConstantUtil.USD_LIB.equals(e.getCountid())&&e.getNum()<0).collect(Collectors.toList());
+            }
+
         }else if(ConstantUtil.MONEY_CNY.equals(type)){
-             inUSD=operationList.stream().filter((e)->ConstantUtil.CNY_LIB.equals(e.getCountid())&&e.getNum()>0).collect(Collectors.toList());
-             outUSD=operationList.stream().filter((e)->ConstantUtil.CNY_LIB.equals(e.getCountid())&&e.getNum()<0).collect(Collectors.toList());
+            if(StringUtil.checkStrs(parmMap.get("servicebranch"))){
+                inUSD=operationList.stream().filter((e)->ConstantUtil.CNY_LIB.equals(e.getCountid())&&e.getNum()>0&&e.getServicebranch().equals(parmMap.get("servicebranch"))).collect(Collectors.toList());
+                outUSD=operationList.stream().filter((e)->ConstantUtil.CNY_LIB.equals(e.getCountid())&&e.getNum()<0&&e.getServicebranch().equals(parmMap.get("servicebranch"))).collect(Collectors.toList());
+            }else{
+                inUSD=operationList.stream().filter((e)->ConstantUtil.CNY_LIB.equals(e.getCountid())&&e.getNum()>0).collect(Collectors.toList());
+                outUSD=operationList.stream().filter((e)->ConstantUtil.CNY_LIB.equals(e.getCountid())&&e.getNum()<0).collect(Collectors.toList());
+            }
+
         }
         double inNum=0;
         for(Operation operation:inUSD){
@@ -110,10 +122,19 @@ public class OperaServiceImpl implements IOperaService {
         StringBuffer rs=new StringBuffer();
         rs.append("{'region':").append(JSONObject.fromObject(sb.toString())).append(",'regionlist':");
         if(ConstantUtil.MONEY_CNY.equals(type)){
-            operationList=operationList.stream().filter((e)->ConstantUtil.CNY_LIB.equals(e.getCountid())).collect(Collectors.toList());
+            if(StringUtil.checkStrs(parmMap.get("servicebranch"))){
+                operationList=operationList.stream().filter((e)->ConstantUtil.CNY_LIB.equals(e.getCountid())&&e.getServicebranch().equals(parmMap.get("servicebranch"))).collect(Collectors.toList());
+            }else{
+                operationList=operationList.stream().filter((e)->ConstantUtil.CNY_LIB.equals(e.getCountid())).collect(Collectors.toList());
+            }
+
             rs.append(JSONArray.fromObject(operationList)).append("}");
         }else if(ConstantUtil.MONEY_USD.equals(type)){
-            operationList=operationList.stream().filter((e)->ConstantUtil.USD_LIB.equals(e.getCountid())).collect(Collectors.toList());
+            if(StringUtil.checkStrs(parmMap.get("servicebranch"))){
+                operationList=operationList.stream().filter((e)->ConstantUtil.USD_LIB.equals(e.getCountid())&&e.getServicebranch().equals(parmMap.get("servicebranch"))).collect(Collectors.toList());
+            }else{
+                operationList=operationList.stream().filter((e)->ConstantUtil.USD_LIB.equals(e.getCountid())).collect(Collectors.toList());
+            }
             rs.append(JSONArray.fromObject(operationList)).append("}");
         }
 
