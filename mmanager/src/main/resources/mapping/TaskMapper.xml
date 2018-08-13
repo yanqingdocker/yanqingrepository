@@ -19,7 +19,7 @@
     id,taskname,taskcontent,createtime,state,operauser,douser,endtime,servicebranch,snum
      </sql>
     <insert id="addTask" parameterType="cn.com.caogen.entity.Task">
-        insert into task (taskname,taskcontent,createtime,state,operauser,snum) values (#{taskname,jdbcType=VARCHAR},#{taskcontent,jdbcType=VARCHAR},#{createtime,jdbcType=VARCHAR},'待处理',#{operauser,jdbcType=VARCHAR},{snum,jdbcType=VARCHAR});
+        insert into task (taskname,taskcontent,createtime,state,operauser,snum) values (#{taskname,jdbcType=VARCHAR},#{taskcontent,jdbcType=VARCHAR},#{createtime,jdbcType=VARCHAR},'待处理',#{operauser,jdbcType=VARCHAR},#{snum,jdbcType=VARCHAR});
     </insert>
     <update id="updateTask" parameterType="map">
         update task set state=#{state},douser=#{douser},servicebranch=#{servicebranch},endtime=#{endtime} where id=#{id}

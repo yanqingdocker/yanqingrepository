@@ -70,5 +70,6 @@ public class ConstantUtil {
     public static final String ACCESSVIP="已同意";
     public static final String REFUSEVIP="已驳回";
     public static final String ERROR_SNUMBER="对不起，该流水不存在";
+    public static final String ERROR_DATE="对不起，现时间段内系统处于维护升级中...，请在8点~17点时间段内进行办理业务";
 
 }
