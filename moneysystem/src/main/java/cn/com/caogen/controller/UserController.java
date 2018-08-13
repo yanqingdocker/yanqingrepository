@@ -205,7 +205,7 @@ public class UserController {
     }
 
     /**
-     * 重置密码
+     * 重置密码 pc端
      * @param telphone
      * @param password
      * @return
@@ -222,6 +222,30 @@ public class UserController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL)).toString();
         }
         user.setPassword(password);
+        user.setLasttime(DateUtil.getTime());
+        userServiceImpl.update(user);
+
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
+    }
+
+    /**
+     * 重置密码 手机端
+     * @param oldpassword
+     * @param newpassword
+     * @return
+     */
+    @RequestMapping(path="/resetpwdmode",method = RequestMethod.POST)
+    public String resetpwdmode(@RequestParam("oldpassword") String oldpassword,@RequestParam("newpassword") String newpassword,HttpServletRequest request) {
+        logger.info("resetpwd start: oldpassword="+oldpassword+",newpassword="+newpassword);
+        if (!StringUtil.checkStrs(oldpassword,newpassword)) {
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
+        }
+        if(!MD5Util.string2MD5(oldpassword).equals(JedisUtil.getUser(request).getPassword())){
+            //旧密码错误
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_OLDPASSWORD)).toString();
+        }
+        User user=JedisUtil.getUser(request);
+        user.setPassword(newpassword);
         user.setLasttime(DateUtil.getTime());
         userServiceImpl.update(user);
 

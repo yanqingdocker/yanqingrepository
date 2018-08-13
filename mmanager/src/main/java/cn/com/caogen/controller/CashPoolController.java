@@ -179,7 +179,7 @@ public class CashPoolController {
         logger.info("user=:"+currentUser.getUsername());
         if(!ConstantUtil.SERVICE_BRANCH.equals(currentUser.getServicebranch())){
             int num=Integer.parseInt(DateUtil.getTime().split(" ")[1].split(":")[0]);
-            if(9>num||num>13){
+            if(9>num||num>18){
                 return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_DATE)).toString();
             }
         }
