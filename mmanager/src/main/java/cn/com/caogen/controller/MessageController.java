@@ -56,7 +56,9 @@ public class MessageController {
      */
     @RequestMapping(path = "accessmessage",method = RequestMethod.POST)
     public String domessage(@RequestParam("id") int id, HttpServletRequest request){
-
+        logger.info("accessmessage start id="+id);
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         Stream<Task> stream=taskService.queryAll().stream();
         Task task=stream.filter((e)->e.getId()==id).collect(Collectors.toList()).get(0);
         String telphone=task.getTaskcontent();
@@ -80,19 +82,27 @@ public class MessageController {
 
     @RequestMapping(path = "queryaccess",method = RequestMethod.GET)
     public String queryaccess(HttpServletRequest request){
-
+        logger.info("queryaccess start");
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         Stream<Task> stream=taskService.queryAll().stream();
         List<Task> taskList=stream.filter((e)->e.getTaskname().equals(ConstantUtil.VIP)&&e.getState().equals(ConstantUtil.ACCESSVIP)).collect(Collectors.toList());
         return JSONArray.fromObject(taskList).toString();
     }
     @RequestMapping(path = "queryrefuse",method = RequestMethod.GET)
     public String queryrefuse(HttpServletRequest request){
+        logger.info("queryrefuse start");
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         Stream<Task> stream=taskService.queryAll().stream();
         List<Task> taskList=stream.filter((e)->e.getTaskname().equals(ConstantUtil.VIP)&&e.getState().equals(ConstantUtil.REFUSEVIP)).collect(Collectors.toList());
         return JSONArray.fromObject(taskList).toString();
     }
     @RequestMapping(path = "querydoing",method = RequestMethod.GET)
     public String querydoing(HttpServletRequest request){
+        logger.info("querydoing start");
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         Stream<Task> stream=taskService.queryAll().stream();
         List<Task> taskList=stream.filter((e)->e.getTaskname().equals(ConstantUtil.VIP)&&e.getState().equals(ConstantUtil.TASK_UNDO)).collect(Collectors.toList());
         return JSONArray.fromObject(taskList).toString();
@@ -106,6 +116,9 @@ public class MessageController {
      */
     @RequestMapping(path = "refuesemessage",method = RequestMethod.POST)
     public String refuesemessage(@RequestParam("id") int id, HttpServletRequest request){
+        logger.info("refuesemessage start id="+id);
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         Stream<Task> stream=taskService.queryAll().stream();
         Task task=stream.filter((e)->e.getId()==id).collect(Collectors.toList()).get(0);
         String telphone=task.getTaskcontent();

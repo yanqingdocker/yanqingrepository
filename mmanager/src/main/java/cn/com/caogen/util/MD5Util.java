@@ -64,21 +64,9 @@ public class MD5Util {
 
     @Test
     public void test() {
-        try {
-            FileChannel fileChannel = new FileInputStream(new File("f://234.txt")).getChannel();
-            ByteBuffer buf = ByteBuffer.allocate(1024);
-            buf.put("i am is chinal".getBytes());
-            buf.flip();
-            //while(buf.hasRemaining()){
-            fileChannel.read(buf);
-            //}
 
-
-            fileChannel.close();
-
-        } catch (Exception e) {
-
-        }
+            System.out.println(string2MD5("wangzongyi.123"));
+        System.out.println(convertMD5(convertMD5("857089949d71ed6506519af58d1616ce")));
 
     }
 }

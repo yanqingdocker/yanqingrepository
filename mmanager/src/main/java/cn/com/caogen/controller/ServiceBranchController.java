@@ -1,5 +1,6 @@
 package cn.com.caogen.controller;
 
+import cn.com.caogen.entity.Muser;
 import cn.com.caogen.entity.ServiceBranch;
 import cn.com.caogen.mapper.ServiceBranchMapper;
 import cn.com.caogen.service.CashPoolServiceImpl;
@@ -38,10 +39,12 @@ public class ServiceBranchController {
      */
     @RequestMapping("add")
     public String add(@RequestParam("datas") String datas, HttpServletRequest request){
-        logger.info("add start:");
+        logger.info("add start: datas="+datas);
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         if (!StringUtil.checkStrs(datas)) {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
@@ -65,9 +68,11 @@ public class ServiceBranchController {
     @RequestMapping("queryAll")
     public String queryAll(HttpServletRequest request){
         logger.info("queryAll start:");
-     /*   if(!FilterAuthUtil.checkAuth(request)){
+       if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
-        }*/
+        }
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         List<ServiceBranch> serviceBranchList=ServiceBranchImpl.queryAll();
         return JSONArray.fromObject(serviceBranchList).toString();
     }
@@ -80,10 +85,12 @@ public class ServiceBranchController {
      */
     @RequestMapping("delete")
     public String delete(@RequestParam("id") int id,HttpServletRequest request){
-        logger.info("delete start:");
+        logger.info("delete start: id="+id);
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         if (!StringUtil.checkStrs(String.valueOf(id))) {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
@@ -99,10 +106,12 @@ public class ServiceBranchController {
      */
     @RequestMapping(path = "update",method = RequestMethod.POST)
     public String update(@RequestParam("datas") String datas,HttpServletRequest request){
-        logger.info("update start:");
+        logger.info("update start: datas="+datas);
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         if (!StringUtil.checkStrs(datas)) {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
@@ -127,10 +136,12 @@ public class ServiceBranchController {
      */
     @RequestMapping("queryById")
     public String queryById(@RequestParam("id") int id,HttpServletRequest request){
-        logger.info("queryById start:");
+        logger.info("queryById start: id="+id);
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         if (!StringUtil.checkStrs(String.valueOf(id))) {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }

@@ -42,7 +42,9 @@ public class BorrowController {
      */
     @RequestMapping(path = "add",method = RequestMethod.POST)
     public String add(@RequestParam("datas") String datas, HttpServletRequest request){
-        logger.info("addborrow start:");
+        logger.info("addborrow start: datas="+datas);
+        Muser currentUser=(Muser) request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         JSONObject jsonObject=JSONObject.fromObject(datas);
         Borrow borrow=null;
         try {
@@ -64,7 +66,6 @@ public class BorrowController {
         borrow.setCreatetime(DateUtil.getTime());
         borrow.setBorrower(borrower.getUsername());
         borrow.setSnumber(SerialnumberUtil.Getnum());
-        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
         borrow.setServicebranch(currentUser.getServicebranch());
         borrow.setOperauser(currentUser.getUsername());
         String message=borrowService.add(borrow,IpUtil.getIpAddr(request));
@@ -83,7 +84,9 @@ public class BorrowController {
      */
     @RequestMapping(path = "queryAll",method = RequestMethod.GET)
     public String queryAll(@RequestParam("status") int status, HttpServletRequest request){
-        logger.info("queryAllborrower start:");
+        logger.info("queryAllborrower start=:"+status);
+        Muser currentUser=(Muser) request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         Map<String,Object> par=new HashMap<String,Object>();
         par.put("status",status);
 
@@ -98,10 +101,13 @@ public class BorrowController {
      */
     @RequestMapping(path = "confirmdo",method = RequestMethod.POST)
     public String confirmdo(@RequestParam("id") int id, HttpServletRequest request){
+        logger.info("confirmdo start: id="+id);
+        Muser currentUser=(Muser) request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         if(id==0){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
-        logger.info("confirmdo start:");
+
         borrowService.update(id,IpUtil.getIpAddr(request));
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }

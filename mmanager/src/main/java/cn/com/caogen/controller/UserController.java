@@ -86,10 +86,14 @@ public class UserController {
      */
     @RequestMapping(path = "/queryAll", method = RequestMethod.GET)
     public String batchdelete(HttpServletRequest request) {
+        logger.info("queryMuser start: ");
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
-           logger.info("queryMuser start: ");
+
+
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
            List<User> users= userServiceImpl.queryAll(new HashMap<String,Object>());
            return JSONArray.fromObject(users).toString();
 
@@ -102,11 +106,14 @@ public class UserController {
      * @return
      */
     @RequestMapping(path="/resetpwd",method = RequestMethod.POST)
-        public String resetpwd(@RequestParam("telphone") String telphone,@RequestParam("password") String password,HttpServletRequest request) {
+    public String resetpwd(@RequestParam("telphone") String telphone,@RequestParam("password") String password,HttpServletRequest request) {
+        logger.info("resetpwd start: telphone="+telphone+",password="+password);
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
-        logger.info("resetpwd start: telphone="+telphone+",password="+password);
+
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         if (!StringUtil.checkStrs(telphone,password)) {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
@@ -129,11 +136,12 @@ public class UserController {
      */
     @RequestMapping(path="/giveVip",method = RequestMethod.POST)
     public String giveVip(@RequestParam("telphone") String telphone,HttpServletRequest request) {
-       /* if(!FilterAuthUtil.checkAuth(request)){
-            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
-        }*/
-
         logger.info("giveVip start: telphone="+telphone);
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         if (!StringUtil.checkStrs(telphone)) {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }

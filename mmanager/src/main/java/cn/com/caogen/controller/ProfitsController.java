@@ -40,10 +40,12 @@ public class ProfitsController {
 
     @RequestMapping(path = "add",method = RequestMethod.POST)
     public String add(@RequestParam("destobj") String destobj,@RequestParam("moneytype") String moneytype,@RequestParam("num") Double num,@RequestParam("remark") String remark, HttpServletRequest request) throws Exception {
-        logger.info("add start:");
-        /*       if(!FilterAuthUtil.checkAuth(request)){
+        logger.info("add start: destobj="+destobj+",moneytype="+moneytype+",num="+num+",remark="+remark);
+        if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
-        }*/
+        }
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         Profits profits=new Profits();
         profits.setDestobj(destobj);
         profits.setCreattime(DateUtil.getTime());
@@ -64,10 +66,13 @@ public class ProfitsController {
 
    @RequestMapping(path = "queryAll",method = RequestMethod.GET)
     public String queryAll(HttpServletRequest request) throws Exception {
-    /*  if(!FilterAuthUtil.checkAuth(request)){
+       logger.info("queryAll start:");
+        if(!FilterAuthUtil.checkAuth(request)){
            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
-       }*/
-        logger.info("queryAll start:");
+       }
+
+       Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+       logger.info("user=:"+currentUser.getUsername());
         Map<String,Object> parmMap=new HashMap<String,Object>();
         List<Profits> profits=profitsService.queryAll();
         return JSONArray.fromObject(profits).toString();

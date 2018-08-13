@@ -1,5 +1,6 @@
 package cn.com.caogen.controller;
 
+import cn.com.caogen.entity.Muser;
 import cn.com.caogen.util.*;
 import net.sf.json.JSON;
 import net.sf.json.JSONArray;
@@ -36,10 +37,13 @@ public class RateController {
      */
     @RequestMapping(path = "/queryAll", method = RequestMethod.GET)
     public String getRates(HttpServletRequest request) {
+        logger.info("queryAll start");
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
-        logger.info("getRates start");
+
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         List<String> list = new ArrayList<String>(7);
         list.add(stringRedisTemplate.opsForValue().get(ConstantUtil.ONE));
         list.add(stringRedisTemplate.opsForValue().get(ConstantUtil.TWO));
@@ -63,7 +67,10 @@ public class RateController {
     }
 
     @RequestMapping(path = "/getSingleRate", method = RequestMethod.GET)
-    public String getSingleRate(@RequestParam("type") String type){
+    public String getSingleRate(@RequestParam("type") String type,HttpServletRequest request){
+        logger.info("getSingleRate start: type="+type);
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         String rs=stringRedisTemplate.opsForValue().get(ConstantUtil.SENVEN);
         JSONObject jsonObject=JSONObject.fromObject(rs);
         String buyPid=jsonObject.getJSONObject(type).getString("buyPic");
@@ -83,12 +90,15 @@ public class RateController {
      */
     @RequestMapping(path = "/update",method = RequestMethod.POST)
     public String updateRate(HttpServletRequest request,@RequestParam("type") String type,@RequestParam("sellPic") String sellPic,@RequestParam("buyPic") String buyPic){
-        logger.info("update rate start");
-        if(!StringUtil.checkStrs(type,sellPic,buyPic)){
-            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
-        }
+        logger.info("update rate start type="+type+",sellPic="+sellPic+",buyPic="+buyPic);
+
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
+        if(!StringUtil.checkStrs(type,sellPic,buyPic)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
         String rs=stringRedisTemplate.opsForValue().get(ConstantUtil.SENVEN);
         if(StringUtil.checkStrs(rs)){

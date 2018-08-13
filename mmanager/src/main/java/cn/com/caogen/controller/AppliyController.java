@@ -1,6 +1,7 @@
 package cn.com.caogen.controller;
 
 import cn.com.caogen.entity.Appliy;
+import cn.com.caogen.entity.Muser;
 import cn.com.caogen.service.AppliyServiceImpl;
 import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.DateUtil;
@@ -33,8 +34,6 @@ public class AppliyController {
     @Autowired
     private AppliyServiceImpl appliyService;
 
-    @Autowired
-    private StringRedisTemplate stringRedisTemplate;
 
 
 
@@ -48,7 +47,8 @@ public class AppliyController {
            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
        }
         logger.info("queryAll start:");
-        Map<String,Object> parmMap=new HashMap<String,Object>();
+        Muser currentUser=(Muser) request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         List<Appliy> appliyList=appliyService.query(new HashMap<String,Object>());
         return JSONArray.fromObject(appliyList).toString();
     }

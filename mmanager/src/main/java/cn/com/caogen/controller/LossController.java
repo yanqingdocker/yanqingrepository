@@ -8,6 +8,7 @@ import cn.com.caogen.service.LossServiceImpl;
 import cn.com.caogen.service.ProfitsServiceImpl;
 import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.DateUtil;
+import cn.com.caogen.util.FilterAuthUtil;
 import cn.com.caogen.util.ResponseMessage;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -38,10 +39,12 @@ public class LossController {
 
     @RequestMapping(path = "add", method = RequestMethod.POST)
     public String add(@RequestParam("oi") int oi, @RequestParam("projectname") String projectname, @RequestParam("moneytype") String moneytype, @RequestParam("num") Double num, @RequestParam("remark") String remark, HttpServletRequest request) throws Exception {
-        logger.info("add start:");
-        /*       if(!FilterAuthUtil.checkAuth(request)){
+        logger.info("add start: oi="+oi+"projectname="+projectname+"，moneytype="+moneytype+",num="+num+",remark="+remark);
+        if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
-        }*/
+        }
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         Loss loss = new Loss();
         loss.setOi(oi);
         loss.setProjectname(projectname);
@@ -66,11 +69,13 @@ public class LossController {
 
     @RequestMapping(path = "queryAll", method = RequestMethod.GET)
     public String queryAll(HttpServletRequest request) throws Exception {
-    /*  if(!FilterAuthUtil.checkAuth(request)){
-           return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
-       }*/
         logger.info("queryAll start:");
-        Map<String, Object> parmMap = new HashMap<String, Object>();
+     if(!FilterAuthUtil.checkAuth(request)){
+           return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+       }
+
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         List<Loss> losses = lossService.queryAll();
         return JSONArray.fromObject(losses).toString();
     }

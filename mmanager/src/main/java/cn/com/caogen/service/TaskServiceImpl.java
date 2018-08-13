@@ -35,4 +35,5 @@ public class TaskServiceImpl implements  ITaskService {
     public List<Task> queryAll() {
         return taskMapper.queryAll();
     }
+
 }

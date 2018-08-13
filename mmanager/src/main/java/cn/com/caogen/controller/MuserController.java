@@ -56,10 +56,12 @@ public class MuserController {
      */
     @RequestMapping(path = "/batchdelete", method = RequestMethod.GET)
     public String batchdelete(@RequestParam("ids") String ids,HttpServletRequest request) {
+        logger.info("batchdelete start: ids="+ids);
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
-        logger.info("batchdelete start: ids="+ids);
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         if (StringUtil.checkStrs(ids)) {
             userServiceImpl.deleteUser(ids);
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
@@ -74,10 +76,13 @@ public class MuserController {
      */
     @RequestMapping(path = "/queryAll", method = RequestMethod.GET)
     public String queryAll(HttpServletRequest request) {
+        logger.info("queryMuser startst: ");
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
-        logger.info("queryMuser startst: ");
+
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         List<Muser> musers= userServiceImpl.queryMusers();
         for (Muser muser:musers){
             List<UserRole> userRoles=userRoleService.queryByUserId(muser.getId());
@@ -102,9 +107,12 @@ public class MuserController {
      */
     @RequestMapping(path="/restPwd",method = RequestMethod.POST)
     public String update(@RequestParam("id") String id,@RequestParam("password") String password,HttpServletRequest request){
+        logger.info("queryMuser startst: id="+id+",password="+password);
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         userServiceImpl.updateMuser(id,password);
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
@@ -117,10 +125,13 @@ public class MuserController {
      */
     @RequestMapping(path ="/add", method = RequestMethod.POST)
     public String add(@RequestParam("servicebranch") String servicebranch,@RequestParam("username") String username,@RequestParam("password") String password,@RequestParam("roleids") String roleids,HttpServletRequest request) {
+        logger.info("add start: servicebranch="+servicebranch+",username"+username+",password"+password+",roleids"+roleids);
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
-        logger.info("add start: ");
+
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         if(!StringUtil.checkStrs(servicebranch,username,password,roleids)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
@@ -147,8 +158,9 @@ public class MuserController {
      */
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     public String login(@RequestParam("username") String username,@RequestParam("password") String password,HttpServletRequest request,HttpServletResponse response) {
-        logger.info("login start: ");
-        int i=6;
+        logger.info("login start: username="+username+",password"+password);
+
+
         boolean flag=StringUtil.checkStrs(username,password);
         if(!flag){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
@@ -167,7 +179,8 @@ public class MuserController {
                 }
             }
         }
-
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL)).toString();
 
     }
@@ -180,6 +193,9 @@ public class MuserController {
     @RequestMapping(path = "/logout",method = RequestMethod.GET)
     public String logout(HttpServletRequest request) {
         logger.info("logout start");
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
+
         sessionMap.remove(request.getSession().getId());
         userMap.remove(request.getSession().getAttribute("userid"));
         request.getSession().invalidate();
@@ -196,6 +212,9 @@ public class MuserController {
     @RequestMapping(path = "/getUser",method = RequestMethod.GET)
     public String getUser(HttpServletRequest request) {
         logger.info("getUser start");
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
+
         Muser muser=(Muser)request.getSession().getAttribute("currentUser");
         return JSONObject.fromObject(muser).toString();
     }

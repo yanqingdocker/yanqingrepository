@@ -46,33 +46,6 @@ public class CountController {
 
     private static String phone = "";
 
-    /**
-     * 创建账户
-     *
-     * @param countType
-     * @return
-     */
-    @RequestMapping(path = "/createCount", method = RequestMethod.POST)
-    public String createCount(@RequestParam("countType") String countType, @RequestParam("payPwd") String payPwd, HttpServletRequest request) {
-        if(!FilterAuthUtil.checkAuth(request)){
-            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
-        }
-        logger.info("createCount start :countType=" + countType);
-
-        if (StringUtil.checkStrs(countType)) {
-            if (checkUser(request.getSession().getAttribute("phone").toString())) {
-                payPwd = MD5Util.string2MD5(payPwd);
-                return countServiceImpl.createCount(countType, payPwd, request.getSession().getAttribute("userid").toString());
-
-            } else {
-                return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.NOT_AUTHENTION)).toString();
-            }
-        } else {
-            logger.error("startOrstopcount id or state is null;");
-            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ERROR_ARGS)).toString();
-        }
-
-    }
 
     /**
      * 修改账户状态
@@ -87,6 +60,8 @@ public class CountController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
         logger.info("startOrstopcount start: id="+id+" state="+state);
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         if (StringUtil.checkStrs(id, state)) {
             return countServiceImpl.updateCount(id, 0, state,null);
         } else {
@@ -105,99 +80,33 @@ public class CountController {
      * @return
      */
     @RequestMapping(path = "/queryCount", method = RequestMethod.GET)
-    public String queryCount(@RequestParam("id") String id) {
+    public String queryCount(@RequestParam("id") String id,HttpServletRequest request) {
 
-        logger.info("queryCount start ");
-
+        logger.info("queryCount start id="+id);
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         return JSONObject.fromObject(countServiceImpl.queryById(id)).toString();
     }
 
 
     /**
-     * 转账
-     *
-     * @param id
-     * @param moneynum
-     * @param receivecount
-     * @param payPwd
+     * 现金存入
+     * @param username
+     * @param request
+     * @param telphone
+     * @param type
+     * @param num
      * @return
      */
-    @RequestMapping(path = "/switch", method = RequestMethod.POST)
-    public String countSwitch(HttpServletRequest request,@RequestParam("countid") String id, @RequestParam("moneynum") Double moneynum, @RequestParam("receivecount") String receivecount, @RequestParam("payPwd") String payPwd) {
-        if(!FilterAuthUtil.checkAuth(request)){
-            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
-        }
-        logger.info("countSwitch start: countid="+id+",moneynum="+moneynum+",receivecount="+receivecount+",payPaw="+payPwd);
-        if (!StringUtil.checkStrs(id, String.valueOf(moneynum), receivecount)) {
-            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ERROR_ARGS)).toString();
-        }
-        Count srccount = countServiceImpl.queryById(id);
-        //校验支付密码
-        payPwd = MD5Util.string2MD5(payPwd);
-        if (!payPwd.equals(srccount.getPayPwd())) {
-            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.PAYPWDERROR)).toString();
-        }
-        //校验账户余额
-        if (srccount.getBlance() < moneynum) {
-            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.NOTBLANCE)).toString();
-        }
-        User user = getUser(receivecount, null);
-        if (user == null) {
-            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.PAYPWDERROR)).toString();
-        }
-        //校验对方账户
-        List<Count> countList = countServiceImpl.queryByUserId(user.getUserid());
-        Count destCount = null;
-        for (Count tempcount : countList) {
-            if (tempcount.getCountType().equals(srccount.getCountType())) {
-                destCount = tempcount;
-                break;
-            }
-        }
-        if (destCount == null) {
-            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.NOTTYPECOUNT)).toString();
-
-        }
-        countServiceImpl.countswitch(srccount, destCount, moneynum);
-        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
-
-    }
-
-    /**
-     * 兑换
-     *
-     * @param datas
-     * @return
-     */
-    @RequestMapping(path = "/exchange", method = RequestMethod.POST)
-    public String exchange(@RequestParam("datas") String datas,HttpServletRequest request) {
-        if(!FilterAuthUtil.checkAuth(request)){
-            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
-        }
-        logger.info("exchange start: datas="+datas);
-        if (!StringUtil.checkStrs(datas)) {
-            return net.sf.json.JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ERROR_ARGS)).toString();
-        }
-
-        JSONObject jsonObject = JSONObject.fromObject(datas);
-        String srccountid = jsonObject.getString("srcountid");
-        String destcountid = jsonObject.getString("destcountid");
-        Double srcmoney = jsonObject.getDouble("srcmoney");
-        Double destmoney = jsonObject.getDouble("destmoney");
-        String payPwd = jsonObject.getString("paypwd");
-        payPwd = MD5Util.string2MD5(payPwd);
-        if (!StringUtil.checkStrs(srccountid, destcountid, String.valueOf(srcmoney), String.valueOf(destmoney), payPwd)) {
-            return net.sf.json.JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ERROR_ARGS)).toString();
-        }
-        return countServiceImpl.exchange(srccountid, destcountid, srcmoney, destmoney, payPwd);
-
-    }
 
     @RequestMapping(path = "/inMoney", method = RequestMethod.POST)
     public String inMoney(@RequestParam("username") String username,HttpServletRequest request,@RequestParam("telphone") String telphone,@RequestParam("type") String type,@RequestParam("num") String num){
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
+        logger.info("inMoney start: username="+username+",telphone="+telphone+",type="+type+",num"+num);
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         if(!StringUtil.checkStrs(telphone,type,num)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
@@ -224,7 +133,6 @@ public class CountController {
         if(flag){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOTTYPECOUNT)).toString();
         }
-        Muser currentUser=(Muser) request.getSession().getAttribute("currentUser");
         CashPool cashPool=cashPoolService.queryByType(type,currentUser.getServicebranch()).get(0);
         cashPool.setBlance(cashPool.getBlance()+Double.parseDouble(num));
         count.setBlance(count.getBlance()+Double.parseDouble(num));
@@ -236,11 +144,24 @@ public class CountController {
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS,JSONObject.fromObject(operation).toString())).toString();
     }
 
+    /**
+     * 现金转出
+     * @param username
+     * @param request
+     * @param telphone
+     * @param type
+     * @param num
+     * @param payPwd
+     * @return
+     */
     @RequestMapping(path = "/outMoney", method = RequestMethod.POST)
     public String outMoney(@RequestParam("username") String username, HttpServletRequest request,@RequestParam("telphone") String telphone,@RequestParam("type") String type,@RequestParam("num") String num,@RequestParam("payPwd") String payPwd){
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
+        logger.info("outMoney start: username="+username+",telphone="+telphone+",type="+type+",num"+num);
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         if(!StringUtil.checkStrs(username,telphone,type,num,payPwd)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
@@ -273,7 +194,6 @@ public class CountController {
         if(count.getBlance()<Double.parseDouble(num)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOTBLANCE)).toString();
         }
-        Muser currentUser=(Muser) request.getSession().getAttribute("currentUser");
         String operuser="操作员-"+currentUser.getUsername();
         CashPool cashPool=cashPoolService.queryByType(type,currentUser.getServicebranch()).get(0);
         if(cashPool.getBlance()<Double.parseDouble(num)){
@@ -291,8 +211,14 @@ public class CountController {
 
 
     @RequestMapping(path = "/queryblancebyType", method = RequestMethod.GET)
-    public String queryblancebyType() {
+    public String queryblancebyType(HttpServletRequest request) {
         logger.info("queryblancebyType start ");
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
+
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         List<Map<String,Object>> list=countServiceImpl.queryblancebyType();
         return JSONArray.fromObject(list).toString();
     }
@@ -308,6 +234,9 @@ public class CountController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
         logger.info("queryAllCount start ");
+
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         return countServiceImpl.queryAll();
     }
 

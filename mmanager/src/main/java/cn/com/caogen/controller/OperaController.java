@@ -164,10 +164,13 @@ public class OperaController {
 
     @RequestMapping(path="queryoperatype",method = RequestMethod.GET)
     public String queryoperatype(@RequestParam("date") int date,HttpServletRequest request){
+        logger.info("queryoperacount start: date="+date);
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
         Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
+
         List<Map<String,Object>> list=operaServiceimpl .queryoperatype(date,currentUser.getServicebranch());
 
         return JSONArray.fromObject(list).toString();
@@ -181,10 +184,13 @@ public class OperaController {
      */
     @RequestMapping(path="queryoperacount",method = RequestMethod.GET)
     public String queryoperacount(@RequestParam("date") int date,HttpServletRequest request){
+        logger.info("queryoperacount start: date="+date);
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
         Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
+
         List<Map<String,Object>> list=operaServiceimpl .queryoperacount(date,currentUser.getServicebranch());
         return JSONArray.fromObject(list).toString();
     }
@@ -192,11 +198,12 @@ public class OperaController {
 
     @RequestMapping(path="queryCashLog",method = RequestMethod.GET)
     public String queryCashLog(HttpServletRequest request){
+        logger.info("queryCashLog start:");
        if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
-
         Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         Stream<Operation> list=operaServiceimpl .queryAll(currentUser.getServicebranch()).stream();
         List<Operation> operationList=list.filter((e)->e.getOperaType().contains("现金")).collect(Collectors.toList());
 
@@ -205,10 +212,12 @@ public class OperaController {
 
     @RequestMapping(path="datarecover",method = RequestMethod.POST)
     public String datarecover(@RequestParam("snumber") String snumber,HttpServletRequest request){
-      /*  if(!FilterAuthUtil.checkAuth(request)){
+        logger.info("datarecover start: snumber="+snumber);
+        if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
-        }*/
-
+        }
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         int rs=operaServiceimpl.datarecover(snumber);
         if(rs==0){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();

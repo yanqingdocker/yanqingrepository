@@ -12,13 +12,14 @@
         <result column="douser" property="douser" jdbcType="VARCHAR" />
         <result column="endtime" property="endtime" jdbcType="VARCHAR" />
         <result column="servicebranch" property="servicebranch" jdbcType="VARCHAR" />
+        <result column="snum" property="snum" jdbcType="VARCHAR" />
     </resultMap>
 
     <sql id="Base_Column_List" >
-    id,taskname,taskcontent,createtime,state,operauser,douser,endtime,servicebranch
+    id,taskname,taskcontent,createtime,state,operauser,douser,endtime,servicebranch,snum
      </sql>
     <insert id="addTask" parameterType="cn.com.caogen.entity.Task">
-        insert into task (taskname,taskcontent,createtime,state,operauser) values (#{taskname,jdbcType=VARCHAR},#{taskcontent,jdbcType=VARCHAR},#{createtime,jdbcType=VARCHAR},'待处理',#{operauser,jdbcType=VARCHAR});
+        insert into task (taskname,taskcontent,createtime,state,operauser,snum) values (#{taskname,jdbcType=VARCHAR},#{taskcontent,jdbcType=VARCHAR},#{createtime,jdbcType=VARCHAR},'待处理',#{operauser,jdbcType=VARCHAR},{snum,jdbcType=VARCHAR});
     </insert>
     <update id="updateTask" parameterType="map">
         update task set state=#{state},douser=#{douser},servicebranch=#{servicebranch},endtime=#{endtime} where id=#{id}
@@ -29,5 +30,8 @@
     <select id="queryAll" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/> from task
     </select>
+    <delete id="deleteBysnum" parameterType="String">
+        delete from task where snum=#{snum,jdbcType=VARCHAR};
+    </delete>
     
 </mapper>

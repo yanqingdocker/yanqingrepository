@@ -16,4 +16,5 @@ public interface TaskMapper {
         void updateTask(Map<String,Object> parmMap);
         List<Task> queryByState(String state);
         List<Task> queryAll();
+        void deleteBysnum(String snum);
 }

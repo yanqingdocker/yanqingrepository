@@ -45,7 +45,7 @@ public class TaskController {
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
-        logger.info("queryUndo start:");
+
         Stream<Task> stream=taskService.queryByState(ConstantUtil.TASK_UNDO).stream();
         if(stream==null){
             return null;
@@ -55,6 +55,7 @@ public class TaskController {
         if(ConstantUtil.SERVICE_BRANCH.equals(muser.getServicebranch())){
             return JSONArray.fromObject(taskList).toString();
         }
+
         taskList= taskList.stream().filter((e)->e.getTaskcontent().split("网点")[0].equals(muser.getServicebranch())).collect(Collectors.toList());
         return JSONArray.fromObject(taskList).toString();
     }
@@ -67,7 +68,6 @@ public class TaskController {
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
-        logger.info("queryUndo start:");
         Muser muser=(Muser)request.getSession().getAttribute("currentUser");
         Stream<Task> stream=taskService.queryByState(ConstantUtil.TASK_DOING).stream();
         List<Task> taskList=stream.filter((e)->!e.getTaskname().equals(ConstantUtil.VIP)).collect(Collectors.toList());
@@ -89,7 +89,7 @@ public class TaskController {
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
-        logger.info("queryDone start:");
+
         Muser muser=(Muser)request.getSession().getAttribute("currentUser");
         Stream<Task> stream=taskService.queryByState(ConstantUtil.TASK_DONE).stream();
         List<Task> taskList=stream.filter((e)->!e.getTaskname().equals(ConstantUtil.VIP)).collect(Collectors.toList());
@@ -102,10 +102,13 @@ public class TaskController {
     }
     @RequestMapping("dotask")
     public String doTask(@RequestParam("id") int id, HttpServletRequest request){
+        logger.info("dotask start: id="+id);
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
-        logger.info("dotask start:");
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
+
         Muser user=(Muser)request.getSession().getAttribute("currentUser");
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("id",id);
@@ -120,10 +123,13 @@ public class TaskController {
 
     @RequestMapping("marktask")
     public String markTask(@RequestParam("id") int id, HttpServletRequest request){
+        logger.info("dotask start: id="+id);
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
-        logger.info("dotask start:");
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
+
         Muser user=(Muser)request.getSession().getAttribute("currentUser");
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("id",id);
@@ -138,10 +144,13 @@ public class TaskController {
 
     @RequestMapping("queryAll")
     public String queryAll(HttpServletRequest request){
+        logger.info("queryAll start:");
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
-        logger.info("queryAll start:");
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
+        ;
         return JSONArray.fromObject(taskService.queryAll()).toString();
     }
 }

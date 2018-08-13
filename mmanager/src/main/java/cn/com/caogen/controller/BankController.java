@@ -1,6 +1,7 @@
 package cn.com.caogen.controller;
 
 import cn.com.caogen.entity.BankCard;
+import cn.com.caogen.entity.Muser;
 import cn.com.caogen.externIsystem.service.BackCardService;
 import cn.com.caogen.service.IBankCardService;
 import cn.com.caogen.util.ConstantUtil;
@@ -46,6 +47,8 @@ public class BankController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
         logger.info("query start");
+        Muser currentUser=(Muser) request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         Map<String, Object> parmMap = new HashMap<String, Object>();
         List<BankCard> bankCardList = bankCardService.queryCondition(parmMap);
         return JSONArray.fromObject(bankCardList).toString();

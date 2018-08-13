@@ -1,6 +1,7 @@
 package cn.com.caogen.controller;
 
 import cn.com.caogen.entity.Authoirty;
+import cn.com.caogen.entity.Muser;
 import cn.com.caogen.entity.Role;
 import cn.com.caogen.entity.RoleAuth;
 import cn.com.caogen.service.AuthoirtyServiceImpl;
@@ -48,9 +49,12 @@ public class RoleController {
      */
     @RequestMapping(path = "addRole",method = RequestMethod.POST)
     public String addRole(@RequestParam("rolename") String rolename, @RequestParam("authdis") String authdis, HttpServletRequest request){
+        logger.info("addRole starat: rolename="+rolename+"authdis="+authdis);
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         if(!StringUtil.checkStrs(rolename)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
@@ -73,9 +77,12 @@ public class RoleController {
      */
     @RequestMapping(path = "deleteRole",method = RequestMethod.POST)
     public String deleteRole(@RequestParam("id") int id,HttpServletRequest request){
+        logger.info("deleteRole start: id="+id);
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         if(!StringUtil.checkStrs(String.valueOf(id))){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
@@ -90,9 +97,12 @@ public class RoleController {
      */
     @RequestMapping(path = "queryRole",method = RequestMethod.GET)
     public String queryRole(@RequestParam("id") String id,HttpServletRequest request){
+        logger.info("queryRole start: id="+id);
         if(!StringUtil.checkStrs(id)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         Role role=roleServiceimpl.queryById(Integer.parseInt(id));
         return JSONObject.fromObject(role).toString();
     }
@@ -103,9 +113,12 @@ public class RoleController {
      */
     @RequestMapping(path = "queryAll",method = RequestMethod.GET)
     public String queryAll(HttpServletRequest request){
+        logger.info("queryAll start:");
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         List<Role> roleList=roleServiceimpl.queryAll();
         for(Role role:roleList){
             List<RoleAuth> roleAuths=roleAuthService.queryByRoleId(role.getId());
@@ -127,9 +140,12 @@ public class RoleController {
      */
     @RequestMapping(path = "updateRole",method = RequestMethod.POST)
     public String updateRole(@RequestParam("id") String id,@RequestParam("rolename") String rolename,HttpServletRequest request){
+        logger.info("updateRole start: id="+id+",rolename="+rolename);
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         if(!StringUtil.checkStrs(id,rolename)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }

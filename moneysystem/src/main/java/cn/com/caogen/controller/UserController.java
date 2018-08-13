@@ -224,6 +224,7 @@ public class UserController {
         user.setPassword(password);
         user.setLasttime(DateUtil.getTime());
         userServiceImpl.update(user);
+
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 

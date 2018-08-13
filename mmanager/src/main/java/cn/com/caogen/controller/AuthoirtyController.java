@@ -1,6 +1,7 @@
 package cn.com.caogen.controller;
 
 import cn.com.caogen.entity.Authoirty;
+import cn.com.caogen.entity.Muser;
 import cn.com.caogen.service.IAuthoirtyService;
 import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.FilterAuthUtil;
@@ -41,6 +42,8 @@ public class AuthoirtyController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
         logger.info("add start");
+        Muser currentUser=(Muser) request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         if(!StringUtil.checkStrs(authoirtyname,url)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
@@ -64,6 +67,8 @@ public class AuthoirtyController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
         logger.info("add update");
+        Muser currentUser=(Muser) request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         if(!StringUtil.checkStrs(id,authoirtyname,url)){
             logger.error("update"+ConstantUtil.ERROR_ARGS);
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
@@ -91,6 +96,8 @@ public class AuthoirtyController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
         logger.info("delete start: ids="+ids);
+        Muser currentUser=(Muser) request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         if (!StringUtil.checkStrs(ids)) {
             logger.error("delete"+ConstantUtil.ERROR_ARGS);
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
@@ -111,6 +118,8 @@ public class AuthoirtyController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
         logger.info("queryAll");
+        Muser currentUser=(Muser) request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         return JSONArray.fromObject(authoirtyService.queryAll()).toString();
     }
 

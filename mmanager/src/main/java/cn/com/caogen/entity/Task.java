@@ -19,5 +19,6 @@ public class Task {
     private String douser;
     private String endtime;
     private String servicebranch;
+    private String snum;
 
 }

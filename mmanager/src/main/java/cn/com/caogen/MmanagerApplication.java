@@ -31,9 +31,9 @@ public class MmanagerApplication {
         SpringApplication.run(MmanagerApplication.class, args);
 
     }
-/*    @Bean
+    @Bean
     public FilterRegistrationBean indexFilterRegistration(){
         FilterRegistrationBean filterRegistrationBean=new FilterRegistrationBean(new SystemFilter());
         return filterRegistrationBean;
-    }*/
+    }
 }

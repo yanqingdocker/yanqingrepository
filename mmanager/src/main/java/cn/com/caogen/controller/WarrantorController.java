@@ -1,12 +1,10 @@
 package cn.com.caogen.controller;
 
+import cn.com.caogen.entity.Muser;
 import cn.com.caogen.entity.Warrantor;
 import cn.com.caogen.mapper.WarrantorMapper;
 import cn.com.caogen.service.WarrantorServiceImpl;
-import cn.com.caogen.util.ConstantUtil;
-import cn.com.caogen.util.DateUtil;
-import cn.com.caogen.util.ResponseMessage;
-import cn.com.caogen.util.StringUtil;
+import cn.com.caogen.util.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
@@ -38,7 +36,12 @@ public class WarrantorController {
      */
     @RequestMapping(path = "add",method = RequestMethod.POST)
     public String add(@RequestParam("datas") String datas,HttpServletRequest request){
-        logger.info("add warrantor start;");
+        logger.info("add warrantor start; datas="+datas);
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         JSONObject jsonObject=JSONObject.fromObject(datas);
         try {
             Warrantor warrantor=(Warrantor) StringUtil.toBean(Warrantor.class,jsonObject);
@@ -58,6 +61,10 @@ public class WarrantorController {
     @RequestMapping(path = "queryAll",method = RequestMethod.GET)
     public String queryAll(HttpServletRequest request){
         logger.info("queryAll start:");
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
+
         return JSONArray.fromObject(warrantorService.queryAll()).toString();
     }
     /**
@@ -80,7 +87,12 @@ public class WarrantorController {
      */
     @RequestMapping(path = "update",method = RequestMethod.POST)
     public String update(@RequestParam("datas") String datas,HttpServletRequest request){
-        logger.info("update start:");
+        logger.info("update start: datas="+datas);
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         JSONObject jsonObject=JSONObject.fromObject(datas);
         try{
             Warrantor warrantor=(Warrantor) StringUtil.toBean(Warrantor.class,jsonObject);
@@ -99,7 +111,13 @@ public class WarrantorController {
      */
     @RequestMapping(path = "deleteById",method = RequestMethod.GET)
     public String deleteById(@RequestParam("id") int id, HttpServletRequest request){
-        logger.info("deleteById start:");
+        logger.info("deleteById start: id="+id);
+
+        if(!FilterAuthUtil.checkAuth(request)){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
+        }
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         warrantorService.deleteById(id);
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }

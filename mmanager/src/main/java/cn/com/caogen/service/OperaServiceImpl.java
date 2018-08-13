@@ -4,6 +4,7 @@ import cn.com.caogen.entity.CashPool;
 import cn.com.caogen.entity.Operation;
 import cn.com.caogen.mapper.CashPoolMapper;
 import cn.com.caogen.mapper.OperaMapper;
+import cn.com.caogen.mapper.TaskMapper;
 import cn.com.caogen.util.ConstantUtil;
 import cn.com.caogen.util.StringUtil;
 import net.sf.json.JSONArray;
@@ -28,6 +29,8 @@ public class OperaServiceImpl implements IOperaService {
     private OperaMapper operaMapper;
     @Autowired
     private CashPoolMapper cashPoolMapper;
+    @Autowired
+    private TaskMapper taskMapper;
     @Override
     public void add(Operation operation) {
             operaMapper.add(operation);
@@ -215,6 +218,7 @@ public class OperaServiceImpl implements IOperaService {
             }
         }
         operaMapper.delete(snumber);
+        taskMapper.deleteBysnum(snumber);
         return 0;
     }
 

@@ -27,25 +27,6 @@ public class Operation {
     //操作人
     private String operaUser;
 
-    @Override
-    public String toString() {
-        return "Operation{" +
-                "id=" + id +
-                ", snumber='" + snumber + '\'' +
-                ", countid='" + countid + '\'' +
-                ", countType='" + countType + '\'' +
-                ", num=" + num +
-                ", operaType='" + operaType + '\'' +
-                ", operaTime='" + operaTime + '\'' +
-                ", operaUser='" + operaUser + '\'' +
-                ", oi=" + oi +
-                ", operaIp='" + operaIp + '\'' +
-                ", servicebranch='" + servicebranch + '\'' +
-                ", remark='" + remark + '\'' +
-                ", phone='" + phone + '\'' +
-                ", username='" + username + '\'' +
-                '}';
-    }
 
     //收入1/支出0
     private int oi;
@@ -59,6 +40,13 @@ public class Operation {
     private String phone;
     //客户姓名
     private String username;
+
+    //持卡人姓名
+    private String cardUname;
+    //开户行
+    private String cardName;
+    //卡号
+    private String cardNum;
 
 
 

@@ -55,8 +55,9 @@ public class CashPoolController {
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
-        logger.info("queryAll start:");
-        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("queryAll start: servicebranch="+servicebranch);
+        Muser currentUser=(Muser) request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         List<CashPool> cashPoolList=cashPoolService.queryByType(null,servicebranch);
         return JSONArray.fromObject(cashPoolList).toString();
     }
@@ -69,13 +70,14 @@ public class CashPoolController {
     public String queryProf( HttpServletRequest request){
 
         logger.info("queryProf start:");
+        Muser currentUser=(Muser) request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         String rs=stringRedisTemplate.opsForValue().get(ConstantUtil.SENVEN);
         JSONObject jsonObject=JSONObject.fromObject(rs);
         String buyPid=jsonObject.getJSONObject("USDCNY").getString("buyPic");
         Double buy=Double.parseDouble(buyPid);
 
 
-        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
         List<CashPool> cashPools=null;
         try {
             cashPools=(List)SerializeUtil.unserialize(JedisUtil.getJedis().get("cash".getBytes()));
@@ -135,11 +137,14 @@ public class CashPoolController {
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
+        logger.info("initCashPool start:   type="+type+",num="+num+",oi="+oi);
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         if(!StringUtil.checkStrs(type,String.valueOf(num),String.valueOf(oi))){
             logger.info(ConstantUtil.ERROR_ARGS);
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
-        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+
        CashPool cashPool=cashPoolService.queryByType(type,currentUser.getServicebranch()).get(0);
         if (oi==ConstantUtil.MONEY_OUT){
             if(cashPool.getBlance()<num){
@@ -169,12 +174,15 @@ public class CashPoolController {
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
-        logger.info("exchange start:");
+        logger.info("exchange start: srccounttype="+srccounttype+",destcounttype="+destcounttype+",srcnum="+srcnum+",destnum="+destnum+",remark="+remark+",phone="+phone+",username="+username+",carduname="+carduname+",cardName="+cardName+",cardNum="+cardNum);
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
+
         if(!StringUtil.checkStrs(srccounttype,destcounttype,String.valueOf(srcnum),String.valueOf(destnum),phone,username)){
             logger.info(ConstantUtil.ERROR_ARGS);
            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
-        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+
         CashPool srcCashPool=cashPoolService.queryByType(srccounttype,currentUser.getServicebranch()).get(0);
         if(srcCashPool.getBlance()<srcnum){
             logger.info(ConstantUtil.SYSTEMCOUNT_LESS);
@@ -195,6 +203,9 @@ public class CashPoolController {
         parmMap.put("phone",phone);
         parmMap.put("username",username);
         parmMap.put("snum",SerialnumberUtil.Getnum());
+        parmMap.put("cardName",cardName);
+        parmMap.put("carduname",carduname);
+        parmMap.put("cardNum",cardNum);
         cashPoolService.exchange(parmMap);
         Operation srcoperation=new Operation();
         srcoperation.setSnumber(parmMap.get("snum").toString());
@@ -206,10 +217,10 @@ public class CashPoolController {
         srcoperation.setPhone((String)parmMap.get("phone"));
         srcoperation.setUsername((String)parmMap.get("username"));
         srcoperation.setOperaTime(DateUtil.getDate());
-        if(!StringUtil.checkStrs(cardName,carduname,cardNum)){
-            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS,JSONObject.fromObject(srcoperation).toString())).toString();
-
-        }
+//        if(!StringUtil.checkStrs(cardName,carduname,cardNum)){
+//            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS,JSONObject.fromObject(srcoperation).toString())).toString();
+//
+//        }
         Task task=new Task();
         task.setTaskname(ConstantUtil.MONEY_EXCHANGE);
         StringBuffer title=new StringBuffer();
@@ -224,6 +235,7 @@ public class CashPoolController {
         task.setState(ConstantUtil.TASK_UNDO);
         task.setTaskcontent(title.toString());
         task.setOperauser(muser.getUsername());
+        task.setSnum(srcoperation.getSnumber());
         taskService.addTask(task);
 
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS,JSONObject.fromObject(srcoperation).toString())).toString();
@@ -240,11 +252,14 @@ public class CashPoolController {
       /*  if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }*/
+        logger.info("queryAll start: branchname="+servicebranch+",starttime="+starttime+",endtime="+endtime+",type="+type);
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         if(!StringUtil.checkStrs(starttime,endtime,type)){
             logger.info(ConstantUtil.ERROR_ARGS);
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
-        logger.info("queryAll start:");
+
         Map<String,String> parmMap=new HashMap<String,String>();
         parmMap.put("starttime",starttime);
         parmMap.put("endtime",endtime);

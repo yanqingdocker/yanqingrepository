@@ -1,5 +1,6 @@
 package cn.com.caogen.controller;
 
+import cn.com.caogen.entity.Muser;
 import cn.com.caogen.entity.RoleAuth;
 import cn.com.caogen.entity.UserRole;
 import cn.com.caogen.mapper.UserRoleMapper;
@@ -41,9 +42,12 @@ public class UserRoleController {
 
     @RequestMapping(path = "add",method = RequestMethod.POST)
     public String add(@RequestParam("roleid") int roleid, @RequestParam("userid") int userid, HttpServletRequest request){
+       logger.info("add start: roleid="+roleid+",userid="+userid);
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         UserRole userRole=new UserRole();
        userRole.setRoleid(roleid);
        userRole.setUserid(userid);
@@ -62,9 +66,12 @@ public class UserRoleController {
     }
     @RequestMapping(path="/batchupdate",method = RequestMethod.POST)
     public String batchupdate(@RequestParam("userid") int userid,@RequestParam("roleids") String roleids,HttpServletRequest request){
+        logger.info("batchupdate start: userid="+userid+",roleids="+roleids);
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
+        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+        logger.info("user=:"+currentUser.getUsername());
         if(!StringUtil.checkStrs(String.valueOf(userid),roleids)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.ERROR_ARGS)).toString();
         }
