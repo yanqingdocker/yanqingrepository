@@ -93,7 +93,7 @@
                                 <div class="profile-info">
                                     <h4 class="username manage_name" ></h4>
                                     <div class="btn-group margin-bottom-2x" role="group">
-                                        <!--<button type="button" class="btn btn-default"><i class="fa fa-user"></i> Profile</button>-->
+                                        <button type="button" class="btn btn-default"   data-toggle="modal" data-target="#myModal_psw">修改密码</button>
                                         <button type="button" class="btn btn-default" onclick="logout()"><i class="fa fa-sign-out"></i> 退出</button>
                                     </div>
                                 </div>
@@ -398,6 +398,35 @@
         <a href="/tast/tast_finish" id="lookdeal" target="iframename">查看</a>
     </div>
 </div>
+
+<!--详细消息 模态框 （Modal） -->
+<div class="modal fade" id="myModal_psw" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times; </button>
+                <h4 class="modal-title" id="myModalLabel"> 修改密码</h4>
+            </div>
+            <div class="modal-body">
+                <form id="myform" >
+                    <input type="hidden" id="userid" name="id">
+                    <div class="form-group">
+                        <label class="col-form-label" >密码：</label>
+                        <input class="form-control" type="password" name="password" placeholder="请输入密码">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" >确认密码：</label>
+                        <input class="form-control" type="password" name="conformpaypwd" placeholder="请再次输入密码">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary w100" onclick="submitform()">确认修改 </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div>
+</div><!-- /.modal -->
+
 <input type="hidden" id="dealnum">
 <script type="text/javascript">
     $(function(){
@@ -438,7 +467,7 @@
 <script type="text/javascript" src="/js/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript" src="/js/select2.full.min.js"></script>
 <script  type="text/javascript" src="/js/sweet-alert.min.js"></script>
-
+<script  type="text/javascript" src="/js/bootstrapValidator.min.js"></script>
 <script type="text/javascript" src="/js/app.js"></script>
 <!--<script type="text/javascript" src="/js/index.js"></script>-->
 <script type="text/javascript">
@@ -446,7 +475,43 @@
         task_nodeal();
         information();
         taskend();
+        $('#myform').bootstrapValidator({
+            feedbackIcons: {
+                //valid: 'glyphicon glyphicon-ok',
+                //invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                'password': {
+                    validators: {
+                        notEmpty: {
+                            message: '密码不能为空'
+                        },
+                        stringLength: {
+                            /*长度提示*/
+                            min: 6,
+                            max: 30,
+                            message: '密码长度必须在6到30之间'
+                        },
+                    }
+                },
+                'conformpaypwd': {
+                    message: '密码无效',
+                    validators: {
+                        notEmpty: {
+                            message: '密码不能为空'
+                        },
+                        identical: {//相同
+                            field: 'password',
+                            message: '两次密码不一致'
+                        }
+                    }
+                }
+            }
+        })
     })
+
+    //退出
     function logout() {
         $.ajax({
             url: "/muser/logout",
@@ -482,6 +547,7 @@
                     window.location.href = "/login";
                 }
                 else{
+                    $("#userid").val(data.id);
                     $(".manage_name").html(data.username);
                     $("#servicebranch").html(data.servicebranch);
                     if(data.servicebranch=="总部"){
@@ -495,7 +561,46 @@
         });
 
     }
+    //重置管理员密码
+    function submitform() {
+        $('#myform').data('bootstrapValidator').enableFieldValidators('password', true);
+        $('#myform').data('bootstrapValidator').enableFieldValidators('conformpaypwd', true);
+        $('#myform').data('bootstrapValidator').validate();//手动对表单进行校检
+        if (!$('#myform').data('bootstrapValidator').isValid()) {//判断校检是否通过
+            return;
+        } else {
+            $.ajax({
+                url: '/muser/restPwd',
+                data: $('#myform').serialize(),
+                type: 'post',
+                success: function (data) {
+                    if (strToJson(data).code == "success") {
+                        sweetAlert("", "恭喜您！密码修改成功！", "success");
+                        setTimeout(function () {
+                            window.location.href = "/login";
+                        }, 1500);
+                    }
+                    else if (strToJson(data).code=="403") {
+                        sweetAlert({
+                            title: "",
+                            text: "您的账号权限不足，无法操作此页面！",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonText: "确定",
+                            closeOnConfirm: true
+                        });
+                    }
+                    else {
+                        sweetAlert("", "密码修改失败", "error");
+                    }
 
+                },
+                error: function () {
+                    sweetAlert("", "请求失败！", "error");
+                }
+            });
+        }
+    }
 </script>
 </body>
 

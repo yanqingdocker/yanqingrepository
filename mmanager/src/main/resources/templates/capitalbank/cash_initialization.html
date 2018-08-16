@@ -207,6 +207,7 @@
             $("#currency").val(type);
             var net=$("#network_type").val();
             $("#network").val(net);
+            var net= $("#network").val();
             $("#tradetype").val($("#trade").val());
             $.ajax({
                 url: '/cashpool/initCashPool',
@@ -219,7 +220,7 @@
                     if (strToJson(data).code == "success") {
                         sweetAlert("", "恭喜您！资金库初始化成功！", "success");
                         setTimeout(function () {
-                            window.location.href = "/capitalbank/cash_bank?netaddress=";
+                            window.location.href = '/capitalbank/cash_bank?netaddress='+net+'';
                         }, 1500);
                     }
                     else if(strToJson(data).code=="403") {
