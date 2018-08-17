@@ -86,7 +86,7 @@ public class CashPoolServiceImpl implements ICashPoolService {
             srcoperation.setPhone((String)parmMap.get("phone"));
             srcoperation.setUsername((String)parmMap.get("username"));
             srcoperation.setCardName((String)parmMap.get("cardName"));
-            srcoperation.setCardUname((String)parmMap.get("cardUname"));
+            srcoperation.setCardUname((String)parmMap.get("carduname"));
             srcoperation.setCardNum((String)parmMap.get("cardNum"));
             if(StringUtil.checkStrs((String)parmMap.get("remark"))){
                 srcoperation.setRemark((String)parmMap.get("remark"));
@@ -109,7 +109,7 @@ public class CashPoolServiceImpl implements ICashPoolService {
             destoperation.setUsername((String)parmMap.get("username"));
             destoperation.setPhone((String)parmMap.get("phone"));
             destoperation.setCardName((String)parmMap.get("cardName"));
-            destoperation.setCardUname((String)parmMap.get("cardUname"));
+            destoperation.setCardUname((String)parmMap.get("carduname"));
             destoperation.setCardNum((String)parmMap.get("cardNum"));
             if(StringUtil.checkStrs((String)parmMap.get("remark"))){
                 destoperation.setRemark((String)parmMap.get("remark"));
