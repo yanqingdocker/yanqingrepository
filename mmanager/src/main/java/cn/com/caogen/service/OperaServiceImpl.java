@@ -174,7 +174,7 @@ public class OperaServiceImpl implements IOperaService {
                                     break;
                                 }
                             }
-                            temp1.setBlance(temp.getBlance()-operation.getNum());
+                            temp1.setBlance(temp1.getBlance()-operation.getNum());
                             cashPoolMapper.update(temp1);
                         }
 
@@ -189,7 +189,7 @@ public class OperaServiceImpl implements IOperaService {
                                     break;
                                 }
                             }
-                            temp1.setBlance(temp.getBlance()+(-operation.getNum()));
+                            temp1.setBlance(temp1.getBlance()+(-operation.getNum()));
                             cashPoolMapper.update(temp1);
                         }
                     }
@@ -209,8 +209,31 @@ public class OperaServiceImpl implements IOperaService {
                     }
                     if(operation.getNum()>0){
                         temp1.setBlance(temp1.getBlance()-operation.getNum());
+                        if(!operation.getServicebranch().equals(ConstantUtil.SERVICE_BRANCH)){
+                            CashPool temp2=null;
+                            for(CashPool cashPool:cashPools){
+                                if(cashPool.getCounttype().equals(ConstantUtil.MONEY_CNY)&&cashPool.getServicebranch().equals(ConstantUtil.SERVICE_BRANCH)){
+                                    temp2=cashPool;
+                                    break;
+                                }
+                            }
+                            temp2.setBlance(temp2.getBlance()-operation.getNum());
+                            cashPoolMapper.update(temp2);
+                        }
                     }else{
+
                         temp1.setBlance(temp1.getBlance()+(-operation.getNum()));
+                        if(!operation.getServicebranch().equals(ConstantUtil.SERVICE_BRANCH)){
+                            CashPool temp2=null;
+                            for(CashPool cashPool:cashPools){
+                                if(cashPool.getCounttype().equals(ConstantUtil.MONEY_CNY)&&cashPool.getServicebranch().equals(ConstantUtil.SERVICE_BRANCH)){
+                                    temp2=cashPool;
+                                    break;
+                                }
+                            }
+                            temp2.setBlance(temp2.getBlance()+(-operation.getNum()));
+                            cashPoolMapper.update(temp2);
+                        }
                     }
                     cashPoolMapper.update(temp1);
 

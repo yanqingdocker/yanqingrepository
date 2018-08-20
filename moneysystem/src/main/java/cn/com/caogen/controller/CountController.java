@@ -9,6 +9,7 @@ import cn.com.caogen.service.*;
 import cn.com.caogen.util.*;
 import net.sf.json.JSON;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -167,6 +168,10 @@ public class CountController {
         if (!StringUtil.checkStrs(id)) {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ERROR_ARGS)).toString();
         }
+        Count count=countServiceImpl.queryById(id);
+        if(count==null){
+            return "";
+        }
 
         return JSONObject.fromObject(countServiceImpl.queryById(id)).toString();
     }
@@ -188,6 +193,10 @@ public class CountController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ERROR_ARGS)).toString();
         }
         Count srccount = countServiceImpl.queryById(id);
+        if(srccount==null){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.NOTFOUND_COUNT)).toString();
+
+        }
         //校验支付密码
         payPwd = MD5Util.string2MD5(payPwd);
         if (!payPwd.equals(srccount.getPayPwd())) {
@@ -233,19 +242,23 @@ public class CountController {
         if (!StringUtil.checkStrs(datas)) {
             return net.sf.json.JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ERROR_ARGS)).toString();
         }
-
-        JSONObject jsonObject = JSONObject.fromObject(datas);
-        String srccountid = jsonObject.getString("srcountid");
-        String destcountid = jsonObject.getString("destcountid");
-        Double srcmoney = jsonObject.getDouble("srcmoney");
-        Double destmoney = jsonObject.getDouble("destmoney");
-        String payPwd = jsonObject.getString("paypwd");
-        payPwd = MD5Util.string2MD5(payPwd);
-        if (!StringUtil.checkStrs(srccountid, destcountid, String.valueOf(srcmoney), String.valueOf(destmoney), payPwd)) {
+        try {
+            JSONObject jsonObject = JSONObject.fromObject(datas);
+            String srccountid = jsonObject.getString("srcountid");
+            String destcountid = jsonObject.getString("destcountid");
+            Double srcmoney = jsonObject.getDouble("srcmoney");
+            Double destmoney = jsonObject.getDouble("destmoney");
+            String payPwd = jsonObject.getString("paypwd");
+            payPwd = MD5Util.string2MD5(payPwd);
+            if (!StringUtil.checkStrs(srccountid, destcountid, String.valueOf(srcmoney), String.valueOf(destmoney), payPwd)) {
+                return net.sf.json.JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ERROR_ARGS)).toString();
+            }
+            String operuser="会员-"+user.getUsername();
+            return countServiceImpl.exchange(srccountid, destcountid, srcmoney, destmoney, payPwd,IpUtil.getIpAddr(request),operuser);
+        }catch (JSONException e){
             return net.sf.json.JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.ERROR_ARGS)).toString();
         }
-        String operuser="会员-"+user.getUsername();
-        return countServiceImpl.exchange(srccountid, destcountid, srcmoney, destmoney, payPwd,IpUtil.getIpAddr(request),operuser);
+
 
     }
 
@@ -350,4 +363,34 @@ public class CountController {
         operaService.add(operation);
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
+
+
+    @RequestMapping(path="/scanPay",method = RequestMethod.POST)
+    public String scanPay(@RequestParam("telphone") String telphone,@RequestParam("type") String type,@RequestParam("num") Double num,@RequestParam("payPwd") String payPwd, HttpServletRequest request){
+        logger.info("scanPay start:");
+        if (!StringUtil.checkStrs(telphone,type,String.valueOf(num),payPwd)) {
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
+        }
+        User srcUser=JedisUtil.getUser(request);
+        User destUser=getUser(telphone,null);
+
+        String rs=countServiceImpl.scanPay(srcUser,destUser,type,num,payPwd,IpUtil.getIpAddr(request));
+        return rs;
+
+    }
+
+    @RequestMapping(path="/settypeAndnum",method = RequestMethod.POST)
+    public String scanPay(@RequestParam("type") String type,@RequestParam("num") Double num,HttpServletRequest request){
+        logger.info("scanPay start:");
+        if (!StringUtil.checkStrs(type,String.valueOf(num))) {
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
+        }
+        User user=JedisUtil.getUser(request);
+        user.setType(type);
+        user.setNum(num);
+
+        return JSONObject.fromObject(user).toString();
+
+    }
+
 }

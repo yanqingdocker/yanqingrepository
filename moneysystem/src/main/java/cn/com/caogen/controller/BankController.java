@@ -114,6 +114,12 @@ public class BankController {
     public String unbind(@RequestParam("id") String id) {
         logger.info("unbind start: id="+id);
         if (StringUtil.checkStrs(id)) {
+            Map<String,Object> parmMap=new HashMap<String,Object>();
+            parmMap.put("id",Integer.parseInt(id));
+            List<BankCard> list=bankCardService.queryCondition(parmMap);
+            if(list==null){
+                return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_BACKID)) .toString();
+            }
             bankCardService.delete(Integer.parseInt(id));
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS, "解绑成功")).toString();
         }else {
@@ -129,6 +135,9 @@ public class BankController {
     public String query(HttpServletRequest request) {
         logger.info("query start");
         User user=JedisUtil.getUser(request);
+        if(user==null){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOT_LOGIN)).toString();
+        }
         Map<String, Object> parmMap = new HashMap<String, Object>();
         parmMap.put("userid",user.getUserid());
         List<BankCard> bankCardList = bankCardService.queryCondition(parmMap);

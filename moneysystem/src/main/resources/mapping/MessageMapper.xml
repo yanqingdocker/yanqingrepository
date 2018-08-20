@@ -23,7 +23,7 @@
         #{messagetype,jdbcType=VARCHAR},#{userid,jdbcType=VARCHAR});
     </insert>
 
-    <update id="updateMessage" parameterType="int">
+    <update id="updateMessage" parameterType="Map">
         update message set visiable=#{visiable}
         where id=#{id,jdbcType=INTEGER }
     </update>

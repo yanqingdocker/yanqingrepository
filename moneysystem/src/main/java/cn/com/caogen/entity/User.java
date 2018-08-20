@@ -36,5 +36,11 @@ public class User implements Serializable {
     //是否实名认证
     private int isauthentication;
     //用户级别
-    public int leavel;
+    private int leavel;
+    //用户头像
+    private  String img;
+    //交易类型
+    private String type;
+    //交易金额
+    private Double num;
 }

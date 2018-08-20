@@ -2,12 +2,14 @@ package cn.com.caogen.service;
 
 import cn.com.caogen.entity.Count;
 import cn.com.caogen.entity.Operation;
+import cn.com.caogen.entity.User;
 import cn.com.caogen.mapper.CountMapper;
 import cn.com.caogen.mapper.OperaMapper;
 import cn.com.caogen.util.*;
 import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +76,7 @@ public class CountServiceImpl implements ICountService {
         if(count==null){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL)).toString();
         }
-        if(blance!=0){
+        if(blance>=0){
             count.setBlance(blance);
         }
         if(state!=null){
@@ -166,7 +168,16 @@ public class CountServiceImpl implements ICountService {
 
     @Override
     public Count queryById(String id) {
-        Count count=countMapper.queryById(Integer.parseInt(id));
+        Count count=null;
+        try {
+             count=countMapper.queryById(Integer.parseInt(id));
+        }catch (NumberFormatException e){
+            return null;
+        }
+
+        if(count==null){
+            return null;
+        }
         String checkCode=DataMonitor.getValiateCode(count,"id","checkCode","exception","state");
         if(!checkCode.equals(count.getCheckCode())){
             count.setState("0");
@@ -277,6 +288,54 @@ public class CountServiceImpl implements ICountService {
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
 
+    @Transactional
+    public String scanPay(User srcUser, User destUser,String type,Double num,String payPwd,String ip){
+        List<Count> srccountList=queryByUserId(srcUser.getUserid());
+        Count srcCount=null;
+        if(srccountList==null){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOTSRCORDEST)).toString();
+        }
+        for(Count count:srccountList){
+            if(type.equals(count.getCountType())){
+                srcCount=count;
+                break;
+            }
+        }
+        if(!payPwd.equals(srcCount.getPayPwd())){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.PAYPWDERROR)).toString();
+        }
+        if(srcCount.getBlance()<num){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOTBLANCE)).toString();
+        }
+
+        List<Count> destcountList=queryByUserId(destUser.getUserid());
+        Count destCount=null;
+        if(destcountList==null){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOTTYPECOUNT)).toString();
+        }
+        for(Count count:destcountList){
+            if(type.equals(count.getCountType())){
+                destCount=count;
+                break;
+            }
+        }
+        DefaultTransactionDefinition def=new DefaultTransactionDefinition();
+        def.setName("scanPay");
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        TransactionStatus status=transactionManager.getTransaction(def);
+        try {
+            updateCount(String.valueOf(srcCount.getId()),srcCount.getBlance()-num,null,null);
+            updateCount(String.valueOf(destCount.getId()),destCount.getBlance()+num,null,null);
+            saveOperaLog(srcCount.getCardId(),srcCount.getCountType(),-num,ConstantUtil.SERVICETYPE_SWITCH,srcUser.getUsername(),ConstantUtil.MONEY_OUT,ip);
+            saveOperaLog(destCount.getCardId(),destCount.getCountType(),num,ConstantUtil.SERVICETYPE_EXCHANGE,srcUser.getUsername(),ConstantUtil.MONEY_IN,ip);
+        }catch (Exception e){
+            //有一个不成功能则回滚事务
+            transactionManager.rollback(status);
+        }
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
+
+    }
+
 
     public void saveOperaLog(String countid,String counttype,Double num,String operatype,String operauser,int oi,String operaip){
             Operation operation=new Operation();
@@ -291,5 +350,7 @@ public class CountServiceImpl implements ICountService {
             operation.setOperaIp(operaip);
             operaMapper.add(operation);
     }
+
+
 
 }

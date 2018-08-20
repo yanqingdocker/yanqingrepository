@@ -99,6 +99,9 @@ public class MessageController {
     public String reciveMessage(HttpServletRequest request) {
         logger.info("reciveMessage start");
         User currentUser=JedisUtil.getUser(request);
+        if(currentUser==null){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOT_LOGIN)).toString();
+        }
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("userid",currentUser.getUserid());
         parmMap.put("messagetype",0);
@@ -116,7 +119,7 @@ public class MessageController {
         logger.info("markSend start: id="+id);
         if (StringUtil.checkStrs(id)) {
             Map<String,Object> parmMap=new HashMap<String,Object>();
-            parmMap.put("id",id);
+            parmMap.put("id",Integer.parseInt(id));
             parmMap.put("visiable",1);
             messageService.update(parmMap);
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();

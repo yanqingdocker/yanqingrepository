@@ -10,6 +10,7 @@ import cn.com.caogen.externIsystem.service.MessageService;
 import cn.com.caogen.service.IUserService;
 import cn.com.caogen.service.TaskServiceImpl;
 import cn.com.caogen.util.*;
+import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -63,8 +66,11 @@ public class UserController {
         if (!StringUtil.checkStrs(checknum,newphone)) {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
-        if(!checknum.equals(check_Num)||!newphone.equals(phone)){
+        if(!checknum.equals(check_Num)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOT_EQUAL_PHONE)).toString();
+        }
+        if(getUser(newphone,null)!=null){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ALERDY_PHONE)).toString();
         }
 
         User user=JedisUtil.getUser(request);
@@ -74,6 +80,31 @@ public class UserController {
         sessionMap.put(request.getSession().getId(),SerializeUtil.serialize(user));
         JedisUtil.getJedis().set(ConstantUtil.SESSIONCOLLCTION.getBytes(),SerializeUtil.serialize(sessionMap));
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
+    }
+
+    /**
+     * 修改手机号
+     * @param img
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/uploadimg",method = RequestMethod.POST)
+    public String uploadimg(@RequestParam("img") String img,HttpServletRequest request) {
+        logger.info("updatephone start:");
+        if (!StringUtil.checkStrs(img)) {
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
+        }
+        User user=JedisUtil.getUser(request);
+        user.setImg(img);
+        userServiceImpl.update(user);
+        Map<String,Object> sessionMap=JedisUtil.getSessionMap();
+        if(sessionMap==null){
+            sessionMap=new HashMap<String,Object>();
+        }
+        sessionMap.put(request.getSession().getId(),SerializeUtil.serialize(user));
+        JedisUtil.getJedis().set(ConstantUtil.SESSIONCOLLCTION.getBytes(),SerializeUtil.serialize(sessionMap));
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
+
     }
 
     /**
@@ -324,29 +355,37 @@ public class UserController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
         User currentUser=JedisUtil.getUser(request);
-        JSONObject jsonObject=JSONObject.fromObject(datas);
-        String username=jsonObject.getString("username");
-        String idcard=jsonObject.getString("idcard");
-        String birthday=jsonObject.getString("birthday");
-        String email=jsonObject.getString("email");
-        String address=jsonObject.getString("address");
-        String phone=currentUser.getPhone();
-        User user=getUser(phone,null);
-        if(IDCardService.authentication(username,idcard)){
-            user.setUsername(username);
-            user.setLasttime(DateUtil.getTime());
-            user.setBirthday(birthday);
-            user.setEmail(email);
-            user.setIdcard(idcard);
-            user.setAddress(address);
-            user.setIsauthentication(1);
-
-            userServiceImpl.update(user);
-            Map<String,Object> sessionMap=JedisUtil.getSessionMap();
-            sessionMap.put(request.getSession().getId(),SerializeUtil.serialize(user));
-            JedisUtil.getJedis().set(ConstantUtil.SESSIONCOLLCTION.getBytes(),SerializeUtil.serialize(sessionMap));
-            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
+        if(currentUser==null){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.NOT_LOGIN)).toString();
         }
+        try {
+            JSONObject jsonObject=JSONObject.fromObject(datas);
+            String username=jsonObject.getString("username");
+            String idcard=jsonObject.getString("idcard");
+            String birthday=jsonObject.getString("birthday");
+            String email=jsonObject.getString("email");
+            String address=jsonObject.getString("address");
+            String phone=currentUser.getPhone();
+            User user=getUser(phone,null);
+            if(IDCardService.authentication(username,idcard)){
+                user.setUsername(username);
+                user.setLasttime(DateUtil.getTime());
+                user.setBirthday(birthday);
+                user.setEmail(email);
+                user.setIdcard(idcard);
+                user.setAddress(address);
+                user.setIsauthentication(1);
+
+                userServiceImpl.update(user);
+                Map<String,Object> sessionMap=JedisUtil.getSessionMap();
+                sessionMap.put(request.getSession().getId(),SerializeUtil.serialize(user));
+                JedisUtil.getJedis().set(ConstantUtil.SESSIONCOLLCTION.getBytes(),SerializeUtil.serialize(sessionMap));
+                return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
+            }
+        }catch (JSONException e){
+            return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
+        }
+
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL)).toString();
     }
 

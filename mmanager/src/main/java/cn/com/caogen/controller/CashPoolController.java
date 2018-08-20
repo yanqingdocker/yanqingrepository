@@ -179,6 +179,7 @@ public class CashPoolController {
         logger.info("user=:"+currentUser.getUsername());
         if(!ConstantUtil.SERVICE_BRANCH.equals(currentUser.getServicebranch())){
             int num=Integer.parseInt(DateUtil.getTime().split(" ")[1].split(":")[0]);
+            logger.info("num="+num);
             if(9>num||num>18){
                 return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_DATE)).toString();
             }
@@ -218,7 +219,7 @@ public class CashPoolController {
         srcoperation.setSnumber(parmMap.get("snum").toString());
         srcoperation.setOperaUser((String)parmMap.get("operauser"));
         srcoperation.setOperaType(ConstantUtil.MONEY_EXCHANGE);
-        srcoperation.setCountType(srccounttype+"兑换"+destcounttype);
+        srcoperation.setCountType(destcounttype+"兑换"+srccounttype);
         srcoperation.setNum(-(Double)parmMap.get("srcnum"));
         srcoperation.setServicebranch((String)parmMap.get("servicebranch"));
         srcoperation.setPhone((String)parmMap.get("phone"));

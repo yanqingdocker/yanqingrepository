@@ -59,6 +59,10 @@ public class ConstantUtil {
     public static final String RESUBMITASK="您已经提交过申请了，系统正在处理中，请勿重复提交";
     public static final String ALREADYVIP="您已经是VIP客户了，无需再开通VIP了";
     public static final String SYSTEM="平台";
-
+    public static final String ERROR_OLDPASSWORD="旧密码错误";
+    public static final String ERROR_BACKID="id不存在";
+    public static final String NOTFOUND_COUNT="此账户id不存在";
+    public static final String NOT_LOGIN="请先登录再访问";
+    public static final String ALERDY_PHONE="该手机号已经被占用，请更改其他手机号";
 
 }
