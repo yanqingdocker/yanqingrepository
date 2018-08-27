@@ -13,13 +13,14 @@
         <result column="endtime" property="endtime" jdbcType="VARCHAR" />
         <result column="servicebranch" property="servicebranch" jdbcType="VARCHAR" />
         <result column="snum" property="snum" jdbcType="VARCHAR" />
+        <result column="rate" property="rate" jdbcType="VARCHAR" />
     </resultMap>
 
     <sql id="Base_Column_List" >
-    id,taskname,taskcontent,createtime,state,operauser,douser,endtime,servicebranch,snum
+    id,taskname,taskcontent,createtime,state,operauser,douser,endtime,servicebranch,snum,rate
      </sql>
     <insert id="addTask" parameterType="cn.com.caogen.entity.Task">
-        insert into task (taskname,taskcontent,createtime,state,operauser,snum) values (#{taskname,jdbcType=VARCHAR},#{taskcontent,jdbcType=VARCHAR},#{createtime,jdbcType=VARCHAR},'待处理',#{operauser,jdbcType=VARCHAR},#{snum,jdbcType=VARCHAR});
+        insert into task (taskname,taskcontent,createtime,state,operauser,snum,rate) values (#{taskname,jdbcType=VARCHAR},#{taskcontent,jdbcType=VARCHAR},#{createtime,jdbcType=VARCHAR},'待处理',#{operauser,jdbcType=VARCHAR},#{snum,jdbcType=VARCHAR},#{rate,jdbcType=VARCHAR});
     </insert>
     <update id="updateTask" parameterType="map">
         update task set state=#{state},douser=#{douser},servicebranch=#{servicebranch},endtime=#{endtime} where id=#{id}

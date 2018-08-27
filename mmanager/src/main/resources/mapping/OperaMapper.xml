@@ -20,6 +20,7 @@
         <result column="cardname" property="cardName" jdbcType="VARCHAR" />
         <result column="carduname" property="cardUname" jdbcType="VARCHAR" />
         <result column="cardnum" property="cardNum" jdbcType="VARCHAR" />
+        <result column="rate" property="rate" jdbcType="VARCHAR" />
 
 
     </resultMap>
@@ -36,11 +37,11 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-    id,snumber,countid,counttype,num,operatype,operatime,operauser,oi,operaip,servicebranch,remark,phone,username,cardname,carduname,cardnum
+    id,snumber,countid,counttype,num,operatype,operatime,operauser,oi,operaip,servicebranch,remark,phone,username,cardname,carduname,cardnum,rate
      </sql>
     <insert id="add" parameterType="cn.com.caogen.entity.Appliy">
-        insert into operalog (snumber,countid,counttype,num,operatype,operatime,operauser,oi,operaip,servicebranch,remark,phone,username,cardname,carduname,cardnum) values
-        (#{snumber,jdbcType=VARCHAR},#{countid,jdbcType=VARCHAR},#{countType,jdbcType=VARCHAR},#{num,jdbcType=DOUBLE},#{operaType,jdbcType=VARCHAR},#{operaTime,jdbcType=VARCHAR},#{operaUser,jdbcType=VARCHAR},#{oi,jdbcType=INTEGER},#{operaIp,jdbcType=VARCHAR},#{servicebranch,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR},#{cardName,jdbcType=VARCHAR},#{cardUname,jdbcType=VARCHAR},#{cardNum,jdbcType=VARCHAR});
+        insert into operalog (snumber,countid,counttype,num,operatype,operatime,operauser,oi,operaip,servicebranch,remark,phone,username,cardname,carduname,cardnum,rate) values
+        (#{snumber,jdbcType=VARCHAR},#{countid,jdbcType=VARCHAR},#{countType,jdbcType=VARCHAR},#{num,jdbcType=DOUBLE},#{operaType,jdbcType=VARCHAR},#{operaTime,jdbcType=VARCHAR},#{operaUser,jdbcType=VARCHAR},#{oi,jdbcType=INTEGER},#{operaIp,jdbcType=VARCHAR},#{servicebranch,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR},#{cardName,jdbcType=VARCHAR},#{cardUname,jdbcType=VARCHAR},#{cardNum,jdbcType=VARCHAR},#{rate,jdbcType=VARCHAR});
     </insert>
     <select id="queryAll"  resultMap="BaseResultMap" >
         select <include refid="Base_Column_List"/> from operalog  Order By operatime Desc

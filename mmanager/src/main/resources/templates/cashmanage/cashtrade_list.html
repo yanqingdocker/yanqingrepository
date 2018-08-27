@@ -104,6 +104,7 @@
                         <th>序号</th>
                         <th>账户操作人</th>
                         <th>账户ID</th>
+                        <th>汇率</th>
                         <th>收入/支出</th>
                         <th>交易金额</th>
                         <th>货币类型</th>
@@ -127,6 +128,7 @@
                         <th>序号</th>
                         <th>账户操作人</th>
                         <th>账户ID</th>
+                        <th>汇率</th>
                         <th>收入/支出</th>
                         <th>交易金额</th>
                         <th>货币类型</th>
@@ -237,6 +239,7 @@
                 {"data": "id"},
                 {"data": "operaUser"},
                 {"data": "countid"},
+                {"data": "rate"},
                 {"data": "oi" ,
                     render:function(e,type,full,row){
                         return income_type(full.oi);
@@ -338,6 +341,7 @@
                                 '<td class="tc">'+parseInt(i+1)+'</td>' +
                                 '<td>'+obj.regionlist[i].operaUser+'</td>' +
                                 '<td>'+obj.regionlist[i].countid+'</td>' +
+                                '<td>'+obj.regionlist[i].rate+'</td>' +
                                 '<td>'+income_type(obj.regionlist[i].oi)+'</td>' +
                                 '<td>'+income_num(obj.regionlist[i].num)+'</td>' +
                                 '<td>'+obj.regionlist[i].countType+'</td>' +

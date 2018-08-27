@@ -20,5 +20,6 @@ public class Task {
     private String endtime;
     private String servicebranch;
     private String snum;
+    private String rate;
 
 }

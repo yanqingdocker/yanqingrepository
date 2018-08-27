@@ -170,7 +170,7 @@ public class CashPoolController {
      * @return
      */
     @RequestMapping(path = "exchange",method = RequestMethod.POST)
-    public String exchange(@RequestParam("srccounttype") String srccounttype, @RequestParam("destcounttype") String destcounttype, @RequestParam("srcnum") Double srcnum, @RequestParam("destnum") Double destnum, @RequestParam("remark") String remark,@RequestParam("phone") String phone,@RequestParam("username") String username,@RequestParam("carduname") String carduname,@RequestParam("cardName") String cardName,@RequestParam("cardNum") String cardNum, HttpServletRequest request){
+    public String exchange(@RequestParam("srccounttype") String srccounttype, @RequestParam("destcounttype") String destcounttype, @RequestParam("srcnum") Double srcnum, @RequestParam("destnum") Double destnum, @RequestParam("remark") String remark,@RequestParam("phone") String phone,@RequestParam("username") String username,@RequestParam("carduname") String carduname,@RequestParam("cardName") String cardName,@RequestParam("cardNum") String cardNum, @RequestParam("rate") String rate,HttpServletRequest request){
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
@@ -214,6 +214,7 @@ public class CashPoolController {
         parmMap.put("cardName",cardName);
         parmMap.put("carduname",carduname);
         parmMap.put("cardNum",cardNum);
+        parmMap.put("rate",rate);
         cashPoolService.exchange(parmMap);
         Operation srcoperation=new Operation();
         srcoperation.setSnumber(parmMap.get("snum").toString());
@@ -239,11 +240,13 @@ public class CashPoolController {
         title.append(";,持卡人姓名:").append(carduname);
         title.append(";,银行卡号:").append(cardNum);
         title.append(";,金额:").append(String.valueOf(srcnum));
+        title.append(";,汇率:").append(rate);
         task.setCreatetime(DateUtil.getTime());
         task.setState(ConstantUtil.TASK_UNDO);
         task.setTaskcontent(title.toString());
         task.setOperauser(muser.getUsername());
         task.setSnum(srcoperation.getSnumber());
+        task.setRate(rate);
         taskService.addTask(task);
 
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS,JSONObject.fromObject(srcoperation).toString())).toString();
