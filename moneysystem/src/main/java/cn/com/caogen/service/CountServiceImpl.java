@@ -35,10 +35,10 @@ public class CountServiceImpl implements ICountService {
     private OperaMapper operaMapper;
     @Autowired
     private DataSourceTransactionManager transactionManager;
-    public static final long baseCardId = 688485602360L;
+    public static final long baseCardId = 6884856023600001L;
 
     @Override
-    public String createCount(String countType, String payPwd,String userId) {
+    public String createCount(String countType, String payPwd,String userId,String username) {
         List<Count> list=countMapper.queryByUserId(Integer.parseInt(userId));
         for(Count count:list){
             if(countType.equals(count.getCountType())){
@@ -58,6 +58,7 @@ public class CountServiceImpl implements ICountService {
         count.setUserId(userId);
         count.setBlance(0);
         count.setCreateTime(DateUtil.getTime());
+        count.setUsername(username);
         String checkCode=DataMonitor.getValiateCode(count,"id","checkCode","exception","state");
         count.setCheckCode(checkCode);
         try {
@@ -132,13 +133,13 @@ public class CountServiceImpl implements ICountService {
         try {
             if(StringUtil.checkStrs(userid)){
                 List<Count> countList=countMapper.queryByUserId(Integer.parseInt(userid));
-                for (Count count:countList){
+               /* for (Count count:countList){
                     String checkCode=DataMonitor.getValiateCode(count,"id","checkCode","exception","state");
                     if(!checkCode.equals(count.getCheckCode())){
                         count.setState("0");
                         updateCount(String.valueOf(count.getId()),0,"0",null);
                     }
-                }
+                }*/
                 return JSONArray.fromObject(countList).toString();
             }else{
                 return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL)).toString();
@@ -152,13 +153,13 @@ public class CountServiceImpl implements ICountService {
     public List<Count> queryByUserId(int userid) {
         try {
                 List<Count> countList=countMapper.queryByUserId(userid);
-                for (Count count:countList){
+               /* for (Count count:countList){
                     String checkCode=DataMonitor.getValiateCode(count,"id","checkCode","exception","state");
                     if(!checkCode.equals(count.getCheckCode())){
                         count.setState("0");
                         updateCount(String.valueOf(count.getId()),0,ConstantUtil.COUNT_EXCEPTION,null);
                     }
-                }
+                }*/
                 return countList;
         } catch (Exception e) {
             logger.error("queryByUserId fail" + e.getMessage());
@@ -224,13 +225,13 @@ public class CountServiceImpl implements ICountService {
     public List<Count> queryCount(String userid){
         List<Count> countList=countMapper.queryByUserId(Integer.parseInt(userid));
         if(countList!=null){
-            for (Count count:countList){
+          /*  for (Count count:countList){
                 String checkCode=DataMonitor.getValiateCode(count,"id","checkCode","exception","state");
                 if(!checkCode.equals(count.getCheckCode())){
                     count.setState("0");
                     updateCount(String.valueOf(count.getId()),0,"0",null);
                 }
-            }
+            }*/
             return countList;
         }else {
             return null;

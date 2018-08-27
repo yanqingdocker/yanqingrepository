@@ -7,7 +7,7 @@ import cn.com.caogen.entity.Count;
  * Date:2018/4/20
  */
 public interface ICountService {
-    public String createCount(String countType, String payPwd,String userid);
+    public String createCount(String countType, String payPwd,String userid,String username);
 
     public String updateCount(String id, double blance, String state,String payPwd);
 

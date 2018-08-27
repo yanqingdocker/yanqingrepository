@@ -30,5 +30,7 @@ public class Count {
     private String createTime;
     //校验位
     private String checkCode;
+    //账户所属人
+    private String username;
 
 }

@@ -65,7 +65,7 @@ public class CountController {
         if (StringUtil.checkStrs(countType)) {
             if (checkUser(request.getSession().getAttribute("phone").toString())) {
                 payPwd = MD5Util.string2MD5(payPwd);
-                return countServiceImpl.createCount(countType, payPwd, String.valueOf(user.getUserid()));
+                return countServiceImpl.createCount(countType, payPwd, String.valueOf(user.getUserid()),user.getUsername());
 
             } else {
                 return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.NOT_AUTHENTION)).toString();

@@ -28,4 +28,6 @@ public class Count {
     private String createTime;
     //校验位
     private String checkCode;
+    //账户所属人呢
+    private String username;
 }

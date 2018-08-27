@@ -12,6 +12,7 @@
         <result column="paypwd" property="payPwd" jdbcType="VARCHAR" />
         <result column="createtime" property="createTime" jdbcType="VARCHAR" />
         <result column="checkcode" property="checkCode" jdbcType="VARCHAR" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
     </resultMap>
 
     <resultMap id="allInfo" type="java.util.Map">
@@ -21,11 +22,8 @@
 
 
     <sql id="Base_Column_List" >
-     id, cardid, counttype, state,userid,blance,paypwd,createtime,checkcode
+     id, cardid, counttype, state,userid,blance,paypwd,createtime,checkcode,username
      </sql>
-    <insert id="add" parameterType="cn.com.caogen.entity.Count">
-        insert into count (cardid,counttype,userid,paypwd,createtime,checkcode) values (#{cardId,jdbcType=INTEGER},#{countType,jdbcType=VARCHAR},#{userId,jdbcType=INTEGER},#{payPwd,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR},#{checkCode,jdbcType=INTEGER});
-    </insert>
 
     <delete id="delete" parameterType="int">
         delete from count where id=#{id,jdbcType=INTEGER }
