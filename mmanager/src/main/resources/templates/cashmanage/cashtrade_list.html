@@ -289,6 +289,11 @@
     }
     // 查询记录
     function submitform(types) {
+        //初始化表格
+        var resultDataTable=$('#newtable').dataTable();
+        resultDataTable.fnClearTable();
+        resultDataTable.fnDestroy();
+
         var net=$("#select_network").val();
         $("#branchname").val(net);
         $(".batch_play").css("top","0");
@@ -328,51 +333,109 @@
                         });
                 }
                 else {
-                    var obj=JSON.parse(data);
-                    $("#inNum").html( parseFloat(obj.region.inNum).toFixed(4));
+                    var obj = JSON.parse(data);
+                    $("#inNum").html(parseFloat(obj.region.inNum).toFixed(4));
                     $("#outNum").html(parseFloat(-obj.region.outNum).toFixed(4));
-                    var html="";
-                    if (obj.regionlist.length==0){
-                        $("#mytable").html("<tr class=\"odd\"><td valign=\"top\" colspan=\"14\" class=\"dataTables_empty tc\">暂无数据</td></tr>");
-                    }
-                    else {
-                        for (var i=0; i<obj.regionlist.length; i++){
-                            html='<tr role="row" > '+
-                                '<td class="tc">'+parseInt(i+1)+'</td>' +
-                                '<td>'+obj.regionlist[i].operaUser+'</td>' +
-                                '<td>'+obj.regionlist[i].countid+'</td>' +
-                                '<td>'+obj.regionlist[i].rate+'</td>' +
-                                '<td>'+income_type(obj.regionlist[i].oi)+'</td>' +
-                                '<td>'+income_num(obj.regionlist[i].num)+'</td>' +
-                                '<td>'+obj.regionlist[i].countType+'</td>' +
-                                '<td>'+obj.regionlist[i].operaType+'</td>' +
-                                '<td>'+obj.regionlist[i].operaIp+'</td>' +
-                                '<td>'+obj.regionlist[i].snumber+'</td>' +
-                                '<td>'+obj.regionlist[i].operaTime+'</td>' +
-                                '<td class="sorting_1">'+obj.regionlist[i].servicebranch+'</td>' +
-                                '<td>'+obj.regionlist[i].username+'</td>' +
-                                '<td>'+obj.regionlist[i].phone+'</td>' +
-                                '<td>'+obj.regionlist[i].cardUname+'</td>' +
-                                '<td>'+obj.regionlist[i].cardName+'</td>' +
-                                '<td>'+obj.regionlist[i].cardNum+'</td>' +
-                                '<td>'+obj.regionlist[i].remark+'</td>' +
-
-                                '</tr>';
-                            $("#mytable").append(html);
-                        }
-                    }
-
-
+                    loadnewTable(obj.regionlist);    //加载新表格
 
                 }
-
-            },
-            error: function () {
+            }, error: function () {
                 sweetAlert("", "请求失败！", "error");
             }
+
+        })
+
+    }
+    //加载新表格
+    function loadnewTable(arr){
+        $('#newtable').DataTable({
+            "order": [10, "desc"],
+            "serverSide": true,
+            searching: true,
+            lengthChange: true,
+            paging: true,
+            scrollCollapse: true,
+            serverSide: false,
+            search: true,
+            processing: true,
+            /* scrollY: 500,   表格的高度限制*/
+            scrollX: "100%",
+            scrollXInner: "100%",
+            scrollCollapse: true,
+            jQueryUI: false,
+            autoWidth: true,
+            autoSearch: false,
+            language: {
+                "sProcessing": "处理中....",
+                "sLengthMenu": "显示 _MENU_ 项搜索结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 条数据",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "暂无数据",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            },
+            "fnDrawCallback": function () {
+                this.api().column(0).nodes().each(function (cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            },
+            ajax: {
+                url: "/opera/queryCashLog", //非真正返回数组的接口
+                dataSrc: function (data) {
+                    return arr; //表格真正数组
+
+                },
+
+            },
+
+            "columns": [
+                {"data": "id"},
+                {"data": "operaUser"},
+                {"data": "countid"},
+                {"data": "rate"},
+                {
+                    "data": "oi",
+                    render: function (e, type, full, row) {
+                        return income_type(full.oi);
+                    }
+                },
+                {
+                    "data": "num",
+                    render: function (e, type, full, row) {
+                        return income_num(full.num);
+                    }
+                },
+                {"data": "countType"},
+                {"data": "operaType"},
+                {"data": "operaIp"},
+                {"data": "snumber"},
+                {"data": "operaTime"},
+                {"data": "servicebranch"},
+                {"data": "username"},
+                {"data": "phone"},
+                {"data": "cardUname"},
+                {"data": "cardName"},
+                {"data": "cardNum"},
+                {"data": "remark"}
+
+            ]
         });
     }
-
 
     // 加载网点
     function loadnetwork() {
