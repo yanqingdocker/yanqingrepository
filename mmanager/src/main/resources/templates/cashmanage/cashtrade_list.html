@@ -58,7 +58,7 @@
                                 <label class="col-form-label">选择网点<span class="warning">*</span></label>
                                 <div class="input-prepend input-group dateselect w100" >
                                     <select class="select_input  w100"  id="select_network">
-                                        <option value="全部">全部</option>
+                                        <option value="全部" selected>全部</option>
                                     </select>
                                 </div>
 
@@ -486,6 +486,10 @@
             success: function (data) {
                 if(data.servicebranch=="总部"){
                     $("#network").show();
+
+                }
+                else{
+                    $("#select_network").find("option:selected").val(data.servicebranch);
 
                 }
             }
