@@ -26,6 +26,11 @@
     <script  type="text/javascript" src="/js/sweet-alert.min.js"></script>
     <script  type="text/javascript" src="/js/jquery.notify.js"></script>
     <script  type="text/javascript" src="/js/common.js"></script>
+    <style>
+        .ml165{ margin-left: 165px;}
+        .ml60{ margin-left: 60px;}
+        .w180{ width: 180px}
+    </style>
 </head>
 
 <body class="flat-blue common_body">
@@ -175,16 +180,7 @@
                     }
                 },
                 {"data": "createTime"},
-                // {"data": "state",
-                //     render:function(e,type,full,row){
-                //         if(full.state==1){
-                //             return "<a href='javascript:;'  onclick='changestatus("+full.id+",0)'  class=\"blue\" title=\"冻结\">冻结</a>";
-                //         }
-                //         else{
-                //             return "<a href='javascript:;'  onclick='changestatus("+full.id+",1)'  class=\"blue\" title=\"解冻\">解冻</a>";
-                //         }
-                //     }
-                // }
+
             ],
             //多语言配置
             //set the initial value
@@ -232,9 +228,12 @@
                         var html='';
                         for(var i=0;i<obj.length;i++){
                             console.log(obj[i].countType)
-                            html = '<div class="mr30 tl mt5 mb5 ml30"><b>'+obj[i].countType+'账户：</b> <span style="width:70%">' + obj[i].cardId + '</span><b class="ml30">余额：</b> <span style="width:70%">' + obj[i].blance + '</span><b class="ml30">状态：</b> <span style="width:70%">' + states(obj[i].state) + '</span>' +
-                                '<button class="ml15" onclick="changestatus('+obj[i].id+','+obj[i].state+')">修改状态</button>' +
-                                '<b class="ml30">创建时间：</b> <span style="width:70%">' + obj[i].createTime + '</span></td></div>';
+                            html = '<div class="w100 inblock tl mt5 mb5 ">' +
+                                '<div class="l ml165"><b>'+obj[i].countType+'账户：</b> <span style="width:70%">' + obj[i].cardId + '</span></div>' +
+                                '<div class="l ml60 w180"><b >余额：</b> <span style="width:70%">' + obj[i].blance + '</span></div>' +
+                                '<div class="l ml30"><b >状态：</b> <span style="width:70%">' + states(obj[i].state) + '</span>' +
+                                '<button class="ml15" onclick="changestatus('+obj[i].id+','+obj[i].state+')">修改状态</button></div>' +
+                                '<div class="l ml60"><b >创建时间：</b> <span style="width:70%">' + obj[i].createTime + '</span></div></div>';
 
                             $(".html").append(html);
                         }
