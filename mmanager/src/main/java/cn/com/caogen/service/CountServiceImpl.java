@@ -19,6 +19,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,7 +124,22 @@ public class CountServiceImpl implements ICountService {
                     updateCount(String.valueOf(count.getId()),0,"0",null);
                 }
             }*/
-            return JSONArray.fromObject(countList).toString();
+            Map<String,Object> map=new HashMap<String,Object>();
+
+            for(Count count:countList){
+                if(map.get(count.getUserId())!=null){
+                    List<Count> list=(List<Count>) map.get(count.getUserId());
+                    list.add(count);
+                    map.put(count.getUserId(),list);
+                }else{
+                    List<Count> list=new ArrayList<Count>();
+                    list.add(count);
+                    map.put(count.getUserId(),list);
+
+                }
+
+            }
+            return JSONArray.fromObject(map).toString();
         } catch (Exception e) {
             logger.error("queryAllCount fail" + e.getMessage());
         }

@@ -51,7 +51,7 @@ public class OperaController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
         logger.info("queryAll start:");
-        Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
+
         return JSONArray.fromObject(operaServiceimpl.queryAll()).toString();
     }
 

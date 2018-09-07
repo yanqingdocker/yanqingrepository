@@ -456,6 +456,6 @@ button.close {
 }
 .dataTables_wrapper .col-sm-6{margin-bottom: 5px;}
 
-
-
-
+.dataTable .row-details-close{display: inline-block;  background: url(../images/open.png) no-repeat;width:15px;height: 15px;    vertical-align: middle;background-size: contain;}
+.dataTable .row-details-open{display: inline-block;  background: url(../images/close.png) no-repeat;width:15px;height: 15px;background-size: contain;    vertical-align: middle;}
+.dataTable  .details{background: #f5f5f5}

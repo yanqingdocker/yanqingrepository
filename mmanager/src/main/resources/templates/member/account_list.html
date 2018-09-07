@@ -55,22 +55,23 @@
                         <th>余额</th>
                         <th>账户状态</th>
                         <th>创建时间</th>
-                        <th>操作</th>
+                        <!--<th>操作</th>-->
                     </tr>
                     </thead>
 
                 </table>
+
             </div>
 
         </div>
     </div>
 </div>
-
+<div class="html" style="display: none"></div>
 
 <script type="text/javascript">
-
-    $(function () {
-        $('#table').DataTable({
+    var oTable;
+    $(function() {
+        oTable = $("#table").dataTable({
             "order": [6, "desc" ],
             "serverSide": true,
             searching: true,
@@ -111,6 +112,7 @@
                     "sSortDescending": ": 以降序排列此列"
                 }
             },
+
             "fnDrawCallback"    : function(){
                 this.api().column(0).nodes().each(function(cell, i) {
                     cell.innerHTML =  i + 1;
@@ -136,7 +138,17 @@
                                 }
                             });
                     }
-                    else{ return data;}
+                    else{
+                        var arrObj=data[0];
+                        var datas=[]
+                        for( key in arrObj){
+                            var obj= arrObj[key];
+                            datas.push(obj[0])
+                        }
+
+                        return datas;
+
+                        ;}
                 },
                 error: handleAjaxError //接口返回异常，超时登录
 
@@ -163,23 +175,97 @@
                     }
                 },
                 {"data": "createTime"},
-                {"data": "state",
-                    render:function(e,type,full,row){
-                        if(full.state==1){
-                            return "<a href='javascript:;'  onclick='changestatus("+full.id+",0)'  class=\"blue\" title=\"冻结\">冻结</a>";
+                // {"data": "state",
+                //     render:function(e,type,full,row){
+                //         if(full.state==1){
+                //             return "<a href='javascript:;'  onclick='changestatus("+full.id+",0)'  class=\"blue\" title=\"冻结\">冻结</a>";
+                //         }
+                //         else{
+                //             return "<a href='javascript:;'  onclick='changestatus("+full.id+",1)'  class=\"blue\" title=\"解冻\">解冻</a>";
+                //         }
+                //     }
+                // }
+            ],
+            //多语言配置
+            //set the initial value
+            "fnCreatedRow": function(nRow, columns, iDataIndex) {
+                $('td:eq(1)', nRow).html("<span class='row-details row-details-close' data_id='" + columns.userId + "'></span>&nbsp;" + columns.username);
+            }
+        });
+
+        $('.table').on('click', ' tbody td .row-details',
+            function() {
+
+                var nTr = $(this).parents('tr')[0];
+                if (oTable.fnIsOpen(nTr)) //判断是否已打开
+                {
+                    /* This row is already open - close it */
+                    $(this).addClass("row-details-close").removeClass("row-details-open");
+                    oTable.fnClose(nTr);
+                } else {
+                    /* Open this row */
+                    $(this).addClass("row-details-open").removeClass("row-details-close");
+                    //  alert($(this).attr("data_id"));
+                    //oTable.fnOpen( nTr,
+                    // 调用方法显示详细信息 data_id为自定义属性 存放配置ID
+                    fnFormatDetails(nTr, $(this).attr("data_id"));
+
+                }
+            });
+    });
+
+    function fnFormatDetails(nTr, pdataId) {
+        $(".html").html("");
+        //根据配置Id 异步查询数据
+        $.ajax({
+            url: '/count/queryAllCount',
+            data: null,
+            type: 'get',
+            success: function (data) {
+                var jsonObj = $.parseJSON(data);//json字符串转数组
+                var arrObj=jsonObj[0];
+                var sOut=''
+                for( key in arrObj){
+                    // console.log(key)
+                    if (pdataId ==key) {
+                        var obj= arrObj[key];
+                        var html='';
+                        for(var i=0;i<obj.length;i++){
+                            console.log(obj[i].countType)
+                            html = '<div class="mr30 tl mt5 mb5 ml30"><b>'+obj[i].countType+'账户：</b> <span style="width:70%">' + obj[i].cardId + '</span><b class="ml30">余额：</b> <span style="width:70%">' + obj[i].blance + '</span><b class="ml30">状态：</b> <span style="width:70%">' + states(obj[i].state) + '</span>' +
+                                '<button class="ml15" onclick="changestatus('+obj[i].id+','+obj[i].state+')">修改状态</button>' +
+                                '<b class="ml30">创建时间：</b> <span style="width:70%">' + obj[i].createTime + '</span></td></div>';
+
+                            $(".html").append(html);
                         }
-                        else{
-                            return "<a href='javascript:;'  onclick='changestatus("+full.id+",1)'  class=\"blue\" title=\"解冻\">解冻</a>";
-                        }
+                        sOut= $(".html").html();
+                        oTable.fnOpen(nTr, sOut, 'details');
                     }
                 }
-            ]
+            }
         });
-    })
+
+    }
+    function states(val) {
+        switch (val) {
+            case '1':
+                return "正常"
+                break;
+            case '0':
+                return "冻结"
+                break;
+        }
+
+    }
+    var realstute=0; //默认状态
     function changestatus(id,state) {
+        if(state==1){
+            realstute=0
+        }
+        else{ realstute=1}
         $.ajax({
             url: '/count/startOrstopCount',
-            data: {id:id,state:state},
+            data: {id:id,state:realstute},
             type: 'post',
             success: function (data) {
                 if (strToJson(data).code == "success") {

@@ -237,6 +237,8 @@ public class CountController {
 
         Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
         logger.info("user=:"+currentUser.getUsername());
+
+
         return countServiceImpl.queryAll();
     }
 
