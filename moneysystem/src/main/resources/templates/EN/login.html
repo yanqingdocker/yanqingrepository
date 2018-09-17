@@ -70,7 +70,14 @@
                     </div>
                 </div>
                 <div class="bs-component mt10"><button type="button"  class="btn btn-primary btn-lg btn-block red_bg register_btn" id="saveID" onclick="save()">Sign In</button></div>
-
+                <div class="w100 inblock mt10 ">
+                    <div class="l ">
+                        <a class="white" href="#">Use Help</a>
+                    </div>
+                    <div class="r">
+                        <div class="cursor white" onclick="loadownPhone()">Download Mobile Version</div>
+                    </div>
+                </div>
             </div>
         </form>
 
@@ -79,7 +86,27 @@
     <p class="tc g9 pb20"> Customer service hotline:+8550968888088</p>
 </div>
 
+<div id="phoneCode" style="display: none">
+    <div class="alert alert-dismissible alert-primary" style="background: #fff;">
+        <button type="button" class="close" >&times;</button>
+        <h3 class=" f18 ml5 mb5">Mobile Scan Code Download</h3>
+        <div class="row">
+            <div class="col-lg-6">
+                <img class="Android" src="https://yanqingresponstory.oss-cn-hongkong.aliyuncs.com/images/andriod.png">
+                <img class="iPhone" style="display: none" src="https://yanqingresponstory.oss-cn-hongkong.aliyuncs.com/images/andriod.png">
+            </div>
+            <div class="col-lg-6">
+                <div class="phone cur pt15">
+                    <i class="icon_Android "></i>Android
+                </div>
+                <div class="phone pt15">
+                    <i class="icon_iPhone"></i>iPhone
 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
     // 模拟重写select
     $("#area_select").click(function (event) {
@@ -200,6 +227,17 @@
         }
         return false;
     }
+    //手机扫码下载
+    function loadownPhone() {
+        $("#phoneCode").show();
+    }
+    $("#phoneCode .close").click(function () {
+        $("#phoneCode").hide()
+    })
+    $("#phoneCode .phone").click(function () {
+        $(this).addClass("cur").siblings().removeClass("cur");
+        $("#phoneCode img").hide().eq($(this).index()).show();
+    })
 </script>
 
 

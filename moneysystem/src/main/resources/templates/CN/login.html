@@ -22,6 +22,7 @@
     <script  type="text/javascript" src="/js/html5.min.js"></script>
     <script  type="text/javascript" src="/js/respond.min.js"></script>
     <![endif]-->
+
 </head>
 <body class="login_bg">
 <div class="m " style="width: 455px;margin-top: 6%">
@@ -70,7 +71,14 @@
                     </div>
                 </div>
                 <div class="bs-component mt10"><button type="button"  class="btn btn-primary btn-lg btn-block red_bg register_btn" id="saveID" onclick="save()">登  录</button></div>
-
+                <div class="w100 inblock mt10 ">
+                    <div class="l ">
+                        <a class="white" href="#">使用帮助</a>
+                    </div>
+                    <div class="r">
+                        <div class="cursor white" onclick="loadownPhone()">下载手机版</div>
+                    </div>
+                </div>
             </div>
         </form>
 
@@ -78,7 +86,28 @@
     <p class="tc mt30 g9">© 2018 Copyright 南方国际货币兑换</p>
     <p class="tc g9 pb20">客服热线：+8550968888088</p>
 </div>
+<div id="phoneCode" style="display: none">
+    <div class="alert alert-dismissible alert-primary" style="background: #fff;">
+        <button type="button" class="close" >&times;</button>
+        <div class="row">
+            <div class="col-lg-6">
+                <h3 class=" f18 ml5 mb5">手机扫码下载</h3>
+                <img class="Android" src="https://yanqingresponstory.oss-cn-hongkong.aliyuncs.com/images/andriod.png">
+                <img class="iPhone" style="display: none" src="https://yanqingresponstory.oss-cn-hongkong.aliyuncs.com/images/andriod.png">
+            </div>
+            <div class="col-lg-6">
+                <div class="phone cur pt5">
+                    <i class="icon_Android "></i>Android
+                    <p>仅支持4.3以上系统</p>
+                </div>
+                <div class="phone pt15">
+                    <i class="icon_iPhone"></i>iPhone
 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
     // 模拟重写select
@@ -199,6 +228,18 @@
         }
         return false;
     }
+
+    //手机扫码下载
+    function loadownPhone() {
+        $("#phoneCode").show();
+    }
+    $("#phoneCode .close").click(function () {
+        $("#phoneCode").hide()
+    })
+    $("#phoneCode .phone").click(function () {
+        $(this).addClass("cur").siblings().removeClass("cur");
+        $("#phoneCode img").hide().eq($(this).index()).show();
+    })
 </script>
 
 

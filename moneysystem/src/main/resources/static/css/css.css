@@ -726,8 +726,18 @@ table.table thead .sorting:after,table.table thead .sorting_asc:after{ backgroun
 .area_num_select.area_select .area_option{ position: absolute; top: 35px; left: 0; width: 125px;padding-top: 10px; background: #fff;z-index: 99999}
 .area_num_select.area_select .area_option a{ display: block;height: 30px; width: 100%; padding-left: 15px;}
 
-
-
+/*扫描二维下载手机版*/
+#phoneCode{ padding: 30px;width: 600px; height: 400px; position: absolute;top: 20%;right: 0%}
+#phoneCode .alert-primary{padding: 40px;}
+#phoneCode h3{ color: #00b4ff}
+#phoneCode img{ width: 200px}
+#phoneCode  .close:hover, .close:focus{ color: #d82828;    top: -24px;}
+#phoneCode  .alert-dismissable .close, .alert-dismissible .close{ top: -24px;}
+#phoneCode .phone{ border: 1px solid #999; padding-left:20px ; padding-right:20px ;height:80px;width: 90%; margin: 15px 0; border-radius: 10px;font-weight: bold;color: #00b4ff;font-size: 26px; cursor: pointer}
+#phoneCode .phone.cur{border: 1px solid #00b4ff;}
+#phoneCode .phone p{ font-size: 14px; margin-left: 20px}
+#phoneCode .phone  .icon_Android{ background: url('../images/Android.png') no-repeat; width: 32px; height: 32px; background-size: contain;display: inline-block; vertical-align: middle; margin-right: 5px}
+#phoneCode .phone  .icon_iPhone{ background: url('../images/iphone.png') no-repeat; width: 32px; height: 32px; background-size: contain;display: inline-block;vertical-align: middle; margin-right: 5px}
 
 
 
