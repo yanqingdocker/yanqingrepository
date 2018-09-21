@@ -60,7 +60,7 @@ public class UserController {
      * @param request
      * @return
      */
-    @RequestMapping(path = "/updatephone",method = RequestMethod.POST)
+    @RequestMapping(path = "/updatephone",method = RequestMethod.GET)
     public String updatephone(@RequestParam("checknum") String checknum,@RequestParam("newphone") String newphone, HttpServletRequest request) {
         logger.info("updatephone start:");
         if (!StringUtil.checkStrs(checknum,newphone)) {
@@ -175,6 +175,7 @@ public class UserController {
      */
     @RequestMapping(path="/login",method = RequestMethod.POST)
     public String login( @RequestParam("telphone") String telphone, @RequestParam("password") String password,HttpServletRequest request,HttpServletResponse response) throws Exception{
+
             logger.info("login: telphone="+telphone);
             if (!StringUtil.checkStrs(telphone,password)){
                 return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();

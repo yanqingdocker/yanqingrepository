@@ -87,12 +87,8 @@ public class SystemFilter implements Filter {
                     chain.doFilter(request,response);
                     return;
                 }else{
-                    user=JedisUtil.getUserbysessionid(httpServletRequest.getParameter("sessionid"));
-                    if(user!=null){
-                        chain.doFilter(request,response);
-                        return;
-                    }
-                    httpServletResponse.sendRedirect("/CN/login");
+                    httpServletRequest.getRequestDispatcher("/CN/login").forward(request,response);
+
                 }
             }
 
