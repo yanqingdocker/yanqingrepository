@@ -51,13 +51,12 @@ public class SystemFilter implements Filter {
                 Muser currentUser=(Muser) httpServletRequest.getSession().getAttribute("currentUser");
                 if(!StringUtils.isEmpty(currentUser)){
                     if(httpServletRequest.getSession(true)==null){
-
-                        httpServletResponse.sendRedirect("/login");
+                        httpServletRequest.getRequestDispatcher("/login").forward(request,response);
                         return;
                     }
                     chain.doFilter(request,response);
                 }else{
-                    httpServletResponse.sendRedirect("/login");
+                    httpServletRequest.getRequestDispatcher("/login").forward(request,response);
 
                 }
             }
