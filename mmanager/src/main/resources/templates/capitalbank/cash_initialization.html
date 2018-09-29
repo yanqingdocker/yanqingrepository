@@ -220,7 +220,7 @@
                     if (strToJson(data).code == "success") {
                         sweetAlert("", "恭喜您！资金库初始化成功！", "success");
                         setTimeout(function () {
-                            window.location.href = '/capitalbank/cash_bank?netaddress='+net+'';
+                            window.location.href = '/capitalbank/cash_initialization';
                         }, 1500);
                     }
                     else if(strToJson(data).code=="403") {
