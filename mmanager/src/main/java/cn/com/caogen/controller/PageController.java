@@ -453,7 +453,33 @@ public class PageController {
         return "capitalbank/daily_loss";
     }
 
-
+    /**
+     *APP管理--安卓url管理
+     *
+     * @return
+     */
+    @RequestMapping("/appmanage/androidurl")
+    public String androidurl() {
+        return "appmanage/androidurl";
+    }
+    /**
+     *APP管理--苹果url管理
+     *
+     * @return
+     */
+    @RequestMapping("/appmanage/iosurl")
+    public String iosurl() {
+        return "appmanage/iosurl";
+    }
+    /**
+     *APP管理--公告管理
+     *
+     * @return
+     */
+    @RequestMapping("/appmanage/announcement")
+    public String announcement() {
+        return "appmanage/announcement";
+    }
 
 
 

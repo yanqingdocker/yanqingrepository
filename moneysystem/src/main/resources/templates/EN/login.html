@@ -18,6 +18,8 @@
     <script  type="text/javascript" src="/js/bootstrapValidator.min.js"></script>
     <script  type="text/javascript" src="/js/sweet-alert.min.js"></script>
     <script  type="text/javascript" src="/js/common.js"></script>
+    <script  type="text/javascript" src="/js/jquery.qrcode.js"></script>
+    <script  type="text/javascript" src="/js/qrcode.js"></script>
     <!--[if lte IE 9]>
     <script  type="text/javascript" src="/js/html5.min.js"></script>
     <script  type="text/javascript" src="/js/respond.min.js"></script>
@@ -92,8 +94,8 @@
         <h3 class=" f18 ml5 mb5">Mobile Scan Code Download</h3>
         <div class="row">
             <div class="col-lg-6">
-                <img class="Android" src="https://yanqingresponstory.oss-cn-hongkong.aliyuncs.com/images/andriod.png">
-                <img class="iPhone" style="display: none" src="https://yanqingresponstory.oss-cn-hongkong.aliyuncs.com/images/andriod.png">
+                <div class="Android type" id="Android" >   </div>
+                <div class="iPhone type" id="iPhone" style="display: none" >   </div>
             </div>
             <div class="col-lg-6">
                 <div class="phone cur pt15">
@@ -170,6 +172,31 @@
         }
     }
     $(function () {
+        //生成二维码
+        $.ajax({
+            type: "get", // 用POST方式传输
+            dataType: 'json',
+            url: "/util/getAndriodUrl", // 目标地址
+            data: null,
+            error: function (data) {
+                sweetAlert("", "Request failed", "error");
+            },
+            success: function (data) {
+                $("#Android").qrcode(data.message); //生成二维码
+            }
+        });
+        $.ajax({
+            type: "get", // 用POST方式传输
+            dataType: 'json',
+            url: "/util/getIosUrl", // 目标地址
+            data: null,
+            error: function (data) {
+                sweetAlert("", "Request failed", "error");
+            },
+            success: function (data) {
+                $("#iPhone").qrcode(data.message); //生成二维码
+            }
+        });
         $('#registerForm').bootstrapValidator({
             feedbackIcons: {
                 //valid: 'glyphicon glyphicon-ok',
@@ -236,7 +263,7 @@
     })
     $("#phoneCode .phone").click(function () {
         $(this).addClass("cur").siblings().removeClass("cur");
-        $("#phoneCode img").hide().eq($(this).index()).show();
+        $("#phoneCode .type").hide().eq($(this).index()).show();
     })
 </script>
 

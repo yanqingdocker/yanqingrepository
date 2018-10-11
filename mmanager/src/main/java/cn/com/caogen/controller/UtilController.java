@@ -59,14 +59,14 @@ public class UtilController {
     @RequestMapping(path = "getAndriodUrl",method = RequestMethod.GET)
     public String getAndriodUrl(){
         logger.info("getAndriodUrl start:");
-        String url=stringRedisTemplate.opsForValue().get("url");
+        String url=stringRedisTemplate.opsForValue().get("andriodurl");
         logger.info("getAndriodUrl start url=:"+url);
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS,url)).toString();
     }
     @RequestMapping(path = "getIosUrl",method = RequestMethod.GET)
     public String getIosUrl(){
         logger.info("getIosUrl start:");
-        String url=stringRedisTemplate.opsForValue().get("url");
+        String url=stringRedisTemplate.opsForValue().get("iosurl");
         logger.info("getIosUrl start url=:"+url);
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS,url)).toString();
     }
