@@ -45,4 +45,22 @@ public class UtilController {
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS,null)).toString();
     }
 
+
+    @RequestMapping(path = "getUrl",method = RequestMethod.GET)
+    public String upUrl(){
+        logger.info("getUrl start:");
+        String url=stringRedisTemplate.opsForValue().get("url");
+        logger.info("getUrl start url=:"+url);
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS,url)).toString();
+    }
+
+
+    @RequestMapping(path = "getContent",method = RequestMethod.GET)
+    public String getContent(){
+        logger.info("getContent start:");
+        String content=stringRedisTemplate.opsForValue().get("content");
+        logger.info("getContent start content=:"+content);
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS,content)).toString();
+    }
+
 }
