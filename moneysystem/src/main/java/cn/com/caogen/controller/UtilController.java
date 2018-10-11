@@ -24,11 +24,18 @@ public class UtilController {
     private static Logger logger = LoggerFactory.getLogger(UtilController.class);
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
-    @RequestMapping(path = "getUrl",method = RequestMethod.GET)
-    public String upUrl(){
-        logger.info("getUrl start:");
+    @RequestMapping(path = "getAndriodUrl",method = RequestMethod.GET)
+    public String getAndriodUrl(){
+        logger.info("getAndriodUrl start:");
         String url=stringRedisTemplate.opsForValue().get("url");
-        logger.info("getUrl start url=:"+url);
+        logger.info("getAndriodUrl start url=:"+url);
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS,url)).toString();
+    }
+    @RequestMapping(path = "getIosUrl",method = RequestMethod.GET)
+    public String getIosUrl(){
+        logger.info("getIosUrl start:");
+        String url=stringRedisTemplate.opsForValue().get("url");
+        logger.info("getIosUrl start url=:"+url);
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS,url)).toString();
     }
 
