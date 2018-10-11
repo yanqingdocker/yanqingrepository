@@ -133,7 +133,7 @@ public class CashPoolController {
      * @return
      */
     @RequestMapping(path = "initCashPool",method = RequestMethod.POST)
-    public String initCashPool(@RequestParam("type") String type,@RequestParam("num") double num,@RequestParam("oi") int oi, HttpServletRequest request){
+    public String initCashPool(@RequestParam("type") String type,@RequestParam("num") double num,@RequestParam("oi") int oi, @RequestParam("branchname") String branchname,HttpServletRequest request){
         if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
@@ -145,7 +145,7 @@ public class CashPoolController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
 
-       CashPool cashPool=cashPoolService.queryByType(type,currentUser.getServicebranch()).get(0);
+       CashPool cashPool=cashPoolService.queryByType(type,branchname).get(0);
         if (oi==ConstantUtil.MONEY_OUT){
             if(cashPool.getBlance()<num){
                 return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.SYSTEMCOUNT_LESS)).toString();
