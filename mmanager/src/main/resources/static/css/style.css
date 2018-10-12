@@ -1252,9 +1252,7 @@ body.login-page .login-footer {
 .app-container .content-container .side-menu .navbar-nav li a .nav_network{background: url("../images/nav_network.png") no-repeat center; height:16px;background-size: contain;width: 40px;}
 .app-container .content-container .side-menu .navbar-nav li a .nav_loan{background: url("../images/nav_loan.png") no-repeat center; height:16px;background-size: contain;width: 40px;}
 .app-container .content-container .side-menu .navbar-nav li a .nav_task{background: url("../images/nav_task.png") no-repeat center; height:16px;background-size: contain;width: 40px;}
-/*.app-container.expanded .content-container .side-menu .navbar-nav li.dropdown > a.collapsed:after{*/
-/*content: "";background: url("../images/icon_down.png") no-repeat center; height:16px;background-size: contain;width: 16px;top: 14px;*/
-/*}*/
+
 .app-container .content-container .side-menu .navbar-nav>li.panel:hover>a{ background: #000;}
 .flat-blue .navbar .navbar-nav > li:hover > a, .flat-blue .navbar.navbar-default .navbar-nav > li:hover > a{color: #fff}
 .app-container.expanded .content-container .side-menu .navbar-nav li.dropdown > a:after{ }
