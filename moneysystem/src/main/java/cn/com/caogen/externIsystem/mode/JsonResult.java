@@ -5,25 +5,25 @@ import java.io.Serializable;
 public class JsonResult implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private String respCode;
-	
+
 	private String message;
-	
+
 	private Object data;
-	
+
 	public JsonResult(){}
-	
+
 	public JsonResult(String respCode, String message) {
 		super();
 		this.respCode = respCode;
 		this.message = message;
 	}
 	public JsonResult(String respCode, String message, Object data) {
-	    this(respCode,message) ;
+		this(respCode,message) ;
 		this.data = data;
 	}
-	
+
 	public String getRespCode() {
 		return respCode;
 	}

@@ -29,8 +29,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 public class MoneyApplication {
-    @Autowired
-    private StringRedisTemplate stringRedisTemplate;
 
     public static void main(String[] args) {
         SpringApplication.run(MoneyApplication.class, args);

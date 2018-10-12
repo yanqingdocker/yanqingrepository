@@ -1,5 +1,7 @@
-  
+
 package cn.com.caogen.externIsystem.util;
+
+
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,7 +23,6 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import cn.com.caogen.externIsystem.mode.HttpSendResult;
 import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
@@ -33,23 +34,24 @@ import org.apache.commons.httpclient.params.HttpConnectionParams;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.io.*;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import cn.com.caogen.externIsystem.mode.HttpSendResult;
 
 
 
-  
-/**  
- * @project  
+/**
+ * @project
  * @description 单向https请求处理
- * @author 
- * @modify  
- * @version  
+ * @author
+ * @modify
+ * @version
  */
 public class SimpleHttpsClient {
-	
+
 	private Map<Integer, Integer> registerPortList = new HashMap<Integer, Integer>();
-	
+
 	public SimpleHttpsClient() {
 		Protocol.registerProtocol("https", new Protocol("https", new SimpleHttpsSocketFactory(), 443));
 		registerPort(443);
@@ -92,13 +94,13 @@ public class SimpleHttpsClient {
 	}
 
 	/**
-	 * 
-	* @Title: appendUrlString
-	* @Description: 拼接http get "?"
-	* @param url
-	* @param getParamString
-	* @return    String
-	* @throws
+	 *
+	 * @Title: appendUrlString
+	 * @Description: 拼接http get "?"
+	 * @param url
+	 * @param getParamString
+	 * @return    String
+	 * @throws
 	 */
 	private String appendUrlString(String url,String getParamString)
 	{
@@ -111,24 +113,32 @@ public class SimpleHttpsClient {
 			} else {
 				sb.append("?");
 			}
-			
+
 			sb.append(getParamString);
 		}
 		return sb.toString();
-			
-	}
-	
-	
-	  
 
-	
+	}
+
+
+
+	/**
+	 * (non-Javadoc)
+	 * @see common.util.httpclient.impl.SimpleHttpsClient#getRequest(java.lang.String, java.lang.String, int)
+	 */
+
 	public HttpSendResult getRequest(String url, String getParamString,
-			int timeout) {
+									 int timeout) {
 		return getRequest(url, getParamString, timeout, false);
 	}
 
+	/**
+	 * getRequest
+	 * @param url
+	 * @param params
+	 * @return
+	 */
 
-	
 	public HttpSendResult getRequest(String url, String getParamString, int timeout, boolean followRedirects) {
 		HttpSendResult result = new HttpSendResult();
 		Integer port = this.getPort(url);
@@ -165,7 +175,7 @@ public class SimpleHttpsClient {
 
 		return result;
 	}
-	
+
 
 	private boolean isRegisterPort(Integer port) {
 		return registerPortList.get(port) != null;
@@ -227,16 +237,16 @@ public class SimpleHttpsClient {
 		private SSLContext createEasySSLContext() {
 			try {
 				X509TrustManager trustMgr = new X509TrustManager() {
-					@Override
+
 					public void checkClientTrusted(X509Certificate ax509certificate[], String s)
 							throws CertificateException {
 					}
-					@Override
+
 					public void checkServerTrusted(X509Certificate ax509certificate[], String s)
 							throws CertificateException {
 					}
-					@Override
-					public X509Certificate[] getAcceptedIssuers() {
+
+					public java.security.cert.X509Certificate[] getAcceptedIssuers() {
 						return null;
 					}
 
@@ -254,7 +264,7 @@ public class SimpleHttpsClient {
 
 		/**
 		 * Retrieves SSL context.
-		 * 
+		 *
 		 * @return SSLContext.
 		 */
 		private SSLContext getSSLContext() {
@@ -264,15 +274,17 @@ public class SimpleHttpsClient {
 			return this.sslcontext;
 		}
 
-		@Override
+		/**
+		 * @see SecureProtocolSocketFactory#createSocket(java.lang.String,int,java.net.InetAddress,int)
+		 */
 		public Socket createSocket(String host, int port, InetAddress clientHost, int clientPort)
 				throws IOException, UnknownHostException {
 
 			return getSSLContext().getSocketFactory().createSocket(host, port, clientHost, clientPort);
 		}
-		@Override
+
 		public Socket createSocket(final String host, final int port, final InetAddress localAddress,
-				final int localPort, final HttpConnectionParams params) throws IOException,
+								   final int localPort, final HttpConnectionParams params) throws IOException,
 				UnknownHostException, ConnectTimeoutException {
 			if (params == null) {
 				throw new IllegalArgumentException("Parameters may not be null");
@@ -290,7 +302,7 @@ public class SimpleHttpsClient {
 				return socket;
 			}
 		}
-		@Override
+
 		public Socket createSocket(String host, int port) throws IOException, UnknownHostException {
 			return getSSLContext().getSocketFactory().createSocket(host, port);
 		}
@@ -299,11 +311,11 @@ public class SimpleHttpsClient {
 				throws IOException, UnknownHostException {
 			return getSSLContext().getSocketFactory().createSocket(socket, host, port, autoClose);
 		}
-		@Override
+
 		public boolean equals(Object obj) {
 			return ((obj != null) && obj.getClass().equals(SSLSocketFactory.class));
 		}
-		@Override
+
 		public int hashCode() {
 			return SimpleHttpsSocketFactory.class.hashCode();
 		}

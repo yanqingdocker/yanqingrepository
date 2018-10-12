@@ -14,8 +14,12 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -38,39 +42,48 @@ public class PageController {
     /**
      * 支付后回调接口
      */
-    @RequestMapping("/goback")
+    @RequestMapping(value = "/goback",method = RequestMethod.POST)
     @Transactional //开启事务，两个账户都更新成功是才算成功
-    public String goBack(HttpServletRequest request) {
+    public void goBack(HttpServletRequest request, @RequestParam("userid") String userid, @RequestParam("cardid") String cardid, @RequestParam("blance") String blance, HttpServletResponse response) {
         logger.info("goBack start");
-        Lock lock = new ReentrantLock();
-        lock.lock();//加锁
+//        Lock lock = new ReentrantLock();
+//        lock.lock();//加锁
         try {
-            String userid=request.getParameter("userid");
-            if(StringUtil.checkStrs(userid)&&userid.equals(String.valueOf(JedisUtil.getUser(request).getUserid()))){
-                String cardid = request.getParameter("cardid");
-                Double num=Double.parseDouble(request.getParameter("blance"))/100+Double.parseDouble(request.getParameter("blance"))%1;
-                Count personCount = countServiceImpl.queryById(cardid);
-                //更新个人账户
-                countServiceImpl.updateCount(cardid, personCount.getBlance() + num, null,null);
-                Operation operation=new Operation();
-                operation.setOperaType(ConstantUtil.SERVICETYPE_RECHARGE);
-                operation.setCountid(personCount.getCardId());
-                operation.setSnumber(SerialnumberUtil.Getnum());
-                operation.setOi(ConstantUtil.MONEY_IN);
-                operation.setCountType(personCount.getCountType());
-                operation.setServicebranch(ConstantUtil.SYSTEM);
-                operation.setNum(num);
-                operation.setOperaTime(DateUtil.getTime());
-                operation.setOperaIp(IpUtil.getIpAddr(request));
-                operaService.add(operation);
+            logger.info("更新。。");
+
+            Double num=Double.parseDouble(blance)/100+Double.parseDouble(blance)%1;
+            Count personCount = countServiceImpl.queryById(cardid);
+            //更新个人账户
+            countServiceImpl.updateCount(cardid, personCount.getBlance() + num, null,null);
+            Operation operation=new Operation();
+            operation.setOperaType(ConstantUtil.SERVICETYPE_RECHARGE);
+            operation.setCountid(personCount.getCardId());
+            operation.setSnumber(SerialnumberUtil.Getnum());
+            operation.setOi(ConstantUtil.MONEY_IN);
+            operation.setCountType(personCount.getCountType());
+            operation.setServicebranch(ConstantUtil.SYSTEM);
+            operation.setNum(num);
+            operation.setOperaTime(DateUtil.getTime());
+            operation.setOperaIp(IpUtil.getIpAddr(request));
+            operaService.add(operation);
+        } catch (Exception e) {
+            logger.info("更新失败");
+            try {
+                response.sendRedirect("CN/more/trade_list");
+            } catch (IOException e1) {
+                e1.printStackTrace();
             }
 
-        } catch (Exception e) {
-            return "CN/more/trade_list";
-        } finally {
-            lock.unlock();
         }
-        return "CN/more/trade_list";
+//        finally {
+//            lock.unlock();
+//        }
+        logger.info("更新成功");
+        try {
+            response.sendRedirect("CN/more/trade_list");
+        } catch (IOException e2) {
+            e2.printStackTrace();
+        }
 
     }
 

@@ -1,5 +1,4 @@
 package cn.com.caogen.externIsystem.mode;
-
 import java.io.Serializable;
 
 /**
@@ -7,16 +6,12 @@ import java.io.Serializable;
  * @description http请求处理结果
  * @create time 2012-3-7 下午2:32:43
  * @modify time 2012-3-7 下午2:32:43
- * @modify comment 
+ * @modify comment
  * @version
  */
 public class HttpSendResult implements Serializable{
-	  
-	/**  
-	*  
-	* @since Ver 1.1  
-	*/  
-	
+
+
 	private static final long serialVersionUID = 1L;
 	private int status;
 	private String responseBody;
