@@ -35,10 +35,9 @@ import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import cn.com.caogen.externIsystem.mode.HttpSendResult;
-
+import org.apache.commons.lang.StringUtils;
 
 
 /**
@@ -124,7 +123,7 @@ public class SimpleHttpsClient {
 
 	/**
 	 * (non-Javadoc)
-	 * @see common.util.httpclient.impl.SimpleHttpsClient#getRequest(java.lang.String, java.lang.String, int)
+	 *
 	 */
 
 	public HttpSendResult getRequest(String url, String getParamString,
@@ -135,7 +134,7 @@ public class SimpleHttpsClient {
 	/**
 	 * getRequest
 	 * @param url
-	 * @param params
+	 *
 	 * @return
 	 */
 
@@ -237,15 +236,15 @@ public class SimpleHttpsClient {
 		private SSLContext createEasySSLContext() {
 			try {
 				X509TrustManager trustMgr = new X509TrustManager() {
-
+					@Override
 					public void checkClientTrusted(X509Certificate ax509certificate[], String s)
 							throws CertificateException {
 					}
-
+					@Override
 					public void checkServerTrusted(X509Certificate ax509certificate[], String s)
 							throws CertificateException {
 					}
-
+					@Override
 					public java.security.cert.X509Certificate[] getAcceptedIssuers() {
 						return null;
 					}
@@ -277,12 +276,13 @@ public class SimpleHttpsClient {
 		/**
 		 * @see SecureProtocolSocketFactory#createSocket(java.lang.String,int,java.net.InetAddress,int)
 		 */
+		@Override
 		public Socket createSocket(String host, int port, InetAddress clientHost, int clientPort)
 				throws IOException, UnknownHostException {
 
 			return getSSLContext().getSocketFactory().createSocket(host, port, clientHost, clientPort);
 		}
-
+		@Override
 		public Socket createSocket(final String host, final int port, final InetAddress localAddress,
 								   final int localPort, final HttpConnectionParams params) throws IOException,
 				UnknownHostException, ConnectTimeoutException {
@@ -302,7 +302,7 @@ public class SimpleHttpsClient {
 				return socket;
 			}
 		}
-
+		@Override
 		public Socket createSocket(String host, int port) throws IOException, UnknownHostException {
 			return getSSLContext().getSocketFactory().createSocket(host, port);
 		}
@@ -311,11 +311,11 @@ public class SimpleHttpsClient {
 				throws IOException, UnknownHostException {
 			return getSSLContext().getSocketFactory().createSocket(socket, host, port, autoClose);
 		}
-
+		@Override
 		public boolean equals(Object obj) {
 			return ((obj != null) && obj.getClass().equals(SSLSocketFactory.class));
 		}
-
+		@Override
 		public int hashCode() {
 			return SimpleHttpsSocketFactory.class.hashCode();
 		}

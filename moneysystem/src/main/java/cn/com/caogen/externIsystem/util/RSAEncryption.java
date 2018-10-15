@@ -18,7 +18,7 @@ import java.security.spec.X509EncodedKeySpec;
 import javax.crypto.Cipher;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang.ArrayUtils;
 
 public class RSAEncryption {
     public static final String RSA_ECB_PKCS1_PADDING = "RSA/ECB/PKCS1Padding";

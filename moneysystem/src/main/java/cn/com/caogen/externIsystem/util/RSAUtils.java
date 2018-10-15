@@ -2,12 +2,13 @@ package cn.com.caogen.externIsystem.util;
 
 
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 
 public class RSAUtils {
     private static final String CHAR_SET = "utf-8";

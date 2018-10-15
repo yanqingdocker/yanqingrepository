@@ -5,6 +5,8 @@ import cn.com.caogen.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -17,17 +19,25 @@ import java.util.Set;
 public class JedisUtil {
     private static Logger logger = LoggerFactory.getLogger(JedisUtil.class);
     public static Jedis jedis;
+    public static JedisPool pool;
+    static {
+        JedisPoolConfig config = new JedisPoolConfig();
+        pool = new JedisPool(config, "r-j6ce364c2198fca4.redis.rds.aliyuncs.com", 6379, 100000);
+    }
     public static Jedis getJedis(){
-        if(jedis!=null&&jedis.isConnected()==true){
+
+
+      /*  if(jedis!=null&&jedis.isConnected()==true){
 
             return jedis;
-        }
+        }*/
         //r-j6ce364c2198fca4.redis.rds.aliyuncs.com
         try {
 
-            jedis = new Jedis("127.0.0.1",6379);
+         /*   jedis = new Jedis("r-j6ce364c2198fca4.redis.rds.aliyuncs.com",6379);
 
-            jedis.auth("Admin123");
+            jedis.auth("Admin123");*/
+            jedis= pool.getResource();
 
             return jedis;
         }catch (Exception e){
@@ -44,10 +54,13 @@ public class JedisUtil {
             return null;
         }
         Map<String,Object> map=(Map)SerializeUtil.unserialize(jedis.get(ConstantUtil.SESSIONCOLLCTION.getBytes()));
-        if(map==null||map.get(request.getSession().getId())==null){
+
+        if(map==null){
             return null;
         }
-        User currentUser=(User)SerializeUtil.unserialize((byte[])map.get(request.getSession().getId()));
+        Object obj= map.get(request.getSession().getId());
+        User currentUser=(User)SerializeUtil.unserialize((byte[])obj);
+        jedis.close();
         return currentUser;
     }
 
@@ -60,6 +73,7 @@ public class JedisUtil {
         if(sessionMap==null){
             return null;
         }
+        jedis.close();
         return sessionMap;
     }
 }
