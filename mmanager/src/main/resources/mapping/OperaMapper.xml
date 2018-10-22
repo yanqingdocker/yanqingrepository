@@ -50,7 +50,7 @@
        delete from operalog where snumber=#{snumber}
     </select>
     <select id="queryConditionCount"   parameterType="Map" resultType="int">
-        select <include refid="Base_Column_List"/> from operalog where 1=1
+        select count(*) from operalog where 1=1
         <if test="countid != null">
             and countid =#{countid}
         </if>
