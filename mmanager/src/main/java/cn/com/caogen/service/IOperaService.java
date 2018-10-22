@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public interface IOperaService {
     void add(Operation operation);
-    List<Operation> queryAll(String servicebranch);
+    List<Operation> queryAll(String servicebranch,int page,int num);
     List<Operation> queryAll(Map<String, Object> parmMap);
     List<Operation> queryByDate(Map<String, Object> parmMap);
     List<Map<String,Object>> queryoperatype(int date,String servicebranch);

@@ -74,7 +74,7 @@
         <if test="oi != null">
             and oi =#{oi}
         </if>
-        Order By operatime Desc
+        Order By operatime Desc limit  #{page},#{num}
     </select>
 
     <select id="queryoperatype" resultMap="allInfo" parameterType="Map">

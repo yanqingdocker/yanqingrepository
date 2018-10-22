@@ -37,8 +37,10 @@ public class OperaServiceImpl implements IOperaService {
     }
 
     @Override
-    public List<Operation> queryAll(String servicebranch) {
+    public List<Operation> queryAll(String servicebranch,int page,int num ) {
         Map<String,Object> parmMap=new HashMap<String,Object>();
+        parmMap.put("page",page*num);
+        parmMap.put("num",num);
         if(ConstantUtil.SERVICE_BRANCH.equals(servicebranch)){
             return operaMapper.queryCondition(parmMap);
         }
