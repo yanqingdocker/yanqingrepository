@@ -274,7 +274,7 @@ public class CashPoolController {
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("starttime",starttime);
         parmMap.put("endtime",endtime);
-        parmMap.put("type",type);
+        parmMap.put("counttype",type);
         parmMap.put("page",page*num);
         parmMap.put("num",num);
 

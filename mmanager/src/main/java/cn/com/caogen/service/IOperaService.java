@@ -18,6 +18,6 @@ public interface IOperaService {
     List<Map<String ,Object>> queryoperacount(int date,String servicebranch);
     String queryScope(Map<String, Object> parmMap);
     int datarecover(String snumber);
-    int queryScopCount(Map<String,Object> parmMap,String servicebranch);
+    int queryScopeCount(Map<String,Object> parmMap);
     int queryConditionCount(Map<String, Object> parmMap,String servicebranch);
 }

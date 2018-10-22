@@ -89,7 +89,7 @@ public class OperaServiceImpl implements IOperaService {
 
     public String queryScope1(Map<String, Object> parmMap) {
         List<Operation> operationList=operaMapper.queryScope(parmMap);
-        int count=operaMapper.queryScopCount(parmMap);
+        int count=operaMapper.queryScopeCount(parmMap);
         List<Operation> inUSD=null;
         List<Operation> outUSD=null;
         String type=parmMap.get("type").toString();
@@ -147,7 +147,7 @@ public class OperaServiceImpl implements IOperaService {
     @Override
     public String queryScope(Map<String, Object> parmMap) {
         List<Operation> operationList=operaMapper.queryScope(parmMap);
-        int count=operaMapper.queryScopCount(parmMap);
+        int count=queryScopeCount(parmMap);
         List<Operation> inOperaList=operationList.stream().filter((e)->e.getNum()>0).collect(Collectors.toList());;
         List<Operation> outOperaList=operationList.stream().filter((e)->e.getNum()<0).collect(Collectors.toList());;;
 
@@ -276,12 +276,12 @@ public class OperaServiceImpl implements IOperaService {
     }
 
     @Override
-    public int queryScopCount(Map<String, Object> parmMap,String servicebranch) {
-        if(ConstantUtil.SERVICE_BRANCH.equals(servicebranch)){
+    public int queryScopeCount(Map<String, Object> parmMap) {
+       /* if(ConstantUtil.SERVICE_BRANCH.equals(servicebranch)){
             return operaMapper.queryScopCount(parmMap);
         }
-        parmMap.put("servicebranch",servicebranch);
-        return operaMapper.queryScopCount(parmMap);
+        parmMap.put("servicebranch",servicebranch);*/
+        return operaMapper.queryScopeCount(parmMap);
     }
 
     @Override

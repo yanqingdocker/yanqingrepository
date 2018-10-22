@@ -20,8 +20,11 @@ public interface OperaMapper {
     List<Map<String,Object>>  queryoperatype(Map<String, Object> parmMap);
     List<Map<String ,Object>> queryoperacount(Map<String, Object> parmMap);
     List<Operation> queryScope(Map<String,Object> parmMap);
-    int queryScopCount(Map<String,Object> parmMap);
+
+    int queryScopeCount(Map<String,Object> parmMap);
+
     int queryConditionCount(Map<String,Object> parmMap);
+
     List<Operation> queryByOrderNum(String snumber);
     void delete(String snumber);
 }
