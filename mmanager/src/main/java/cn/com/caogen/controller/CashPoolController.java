@@ -259,7 +259,7 @@ public class CashPoolController {
      * @return
      */
     @RequestMapping(path ="queryScope",method = RequestMethod.GET)
-    public String queryScope(@RequestParam("branchname") String servicebranch,@RequestParam("starttime") String starttime,@RequestParam("endtime") String endtime, @RequestParam("type") String type,HttpServletRequest request){
+    public String queryScope(@RequestParam("page") int page,@RequestParam("num") int num,@RequestParam("branchname") String servicebranch,@RequestParam("starttime") String starttime,@RequestParam("endtime") String endtime, @RequestParam("type") String type,HttpServletRequest request){
       /*  if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }*/
@@ -275,6 +275,9 @@ public class CashPoolController {
         parmMap.put("starttime",starttime);
         parmMap.put("endtime",endtime);
         parmMap.put("type",type);
+        parmMap.put("page",page*num);
+        parmMap.put("num",num);
+
 
         if(StringUtil.checkStrs(servicebranch)){
             if(!"全部".equals(servicebranch)){
@@ -282,8 +285,7 @@ public class CashPoolController {
             }
 
         }else{
-            Muser muser=(Muser)request.getSession().getAttribute("currentUser");
-            parmMap.put("servicebranch",muser.getServicebranch());
+            parmMap.put("servicebranch",currentUser.getServicebranch());
         }
         String rs=operaService.queryScope(parmMap);
         return rs;

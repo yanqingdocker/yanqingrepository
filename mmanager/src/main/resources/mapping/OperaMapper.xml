@@ -49,7 +49,7 @@
     <select id="delete"  parameterType="string">
        delete from operalog where snumber=#{snumber}
     </select>
-    <select id="queryConditionCount"  parameterType="Map">
+    <select id="queryConditionCount"   parameterType="Map" resultType="int">
         select <include refid="Base_Column_List"/> from operalog where 1=1
         <if test="countid != null">
             and countid =#{countid}
@@ -196,7 +196,7 @@
         </if>
           operatime Between #{starttime} And #{endtime};
     </select>
-    <select id="queryScopeCount" parameterType="Map" resultMap="BaseResultMap">
+    <select id="queryScopeCount" parameterType="Map" resultType="int">
         SELECT count(*)  FROM operalog where
         <if test="servicebranch != null">
             servicebranch =#{servicebranch} and
