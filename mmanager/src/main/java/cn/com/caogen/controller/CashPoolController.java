@@ -271,7 +271,7 @@ public class CashPoolController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL,ConstantUtil.ERROR_ARGS)).toString();
         }
 
-        Map<String,String> parmMap=new HashMap<String,String>();
+        Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("starttime",starttime);
         parmMap.put("endtime",endtime);
         parmMap.put("type",type);

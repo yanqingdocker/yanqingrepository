@@ -204,10 +204,17 @@ public class OperaController {
         }
         Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
         logger.info("user=:"+currentUser.getUsername());
-        Stream<Operation> list=operaServiceimpl .queryAll(currentUser.getServicebranch(),page,num).stream();
+        Map<String,Object> parmMap=new HashMap<String,Object>();
+        parmMap.put("page",page*num);
+        parmMap.put("num",num);
+        Stream<Operation> list=operaServiceimpl .queryAll(parmMap,currentUser.getServicebranch()).stream();
         List<Operation> operationList=list.filter((e)->e.getOperaType().contains("现金")).collect(Collectors.toList());
+        int count=operaServiceimpl.queryConditionCount(parmMap,currentUser.getServicebranch());
+        JSONObject jsonObject=new JSONObject();
 
-        return JSONArray.fromObject(operationList).toString();
+        jsonObject.element("count",count);
+        jsonObject.element("data",operationList);
+        return jsonObject.toString();
     }
 
     @RequestMapping(path="datarecover",method = RequestMethod.POST)

@@ -49,6 +49,27 @@
     <select id="delete"  parameterType="string">
        delete from operalog where snumber=#{snumber}
     </select>
+    <select id="queryConditionCount"  parameterType="Map">
+        select <include refid="Base_Column_List"/> from operalog where 1=1
+        <if test="countid != null">
+            and countid =#{countid}
+        </if>
+        <if test="operauser != null">
+            and operauser =#{operauser}
+        </if>
+        <if test="operatype != null">
+            and operatype =#{operatype}
+        </if>
+        <if test="counttype != null">
+            and counttype =#{counttype}
+        </if>
+        <if test="servicebranch != null">
+            and servicebranch =#{servicebranch}
+        </if>
+        <if test="oi != null">
+            and oi =#{oi}
+        </if>
+    </select>
 
     <select id="queryByOrderNum"  resultMap="BaseResultMap" parameterType="string">
         select <include refid="Base_Column_List"/> from operalog where snumber=#{snumber}
@@ -74,7 +95,7 @@
         <if test="oi != null">
             and oi =#{oi}
         </if>
-        Order By operatime Desc limit  #{page},#{num}
+        Order By operatime Desc limit #{page},#{num}
     </select>
 
     <select id="queryoperatype" resultMap="allInfo" parameterType="Map">
@@ -162,13 +183,25 @@
         and oi=#{oi} and servicebranch=#{servicebranch}  Order By operatime Desc;
 
     </select>
+
+
     
     <select id="queryScope" parameterType="Map" resultMap="BaseResultMap">
-          SELECT <include refid="Base_Column_List"/>  FROM operalog where
+          SELECT <include refid="Base_Column_List"/>  FROM operalog where ture
             <if test="servicebranch != null">
-               servicebranch =#{servicebranch} and
+                and servicebranch =#{servicebranch}
             </if>
+        <if test="counttype != null">
+            and  counttype =#{counttype}
+        </if>
           operatime Between #{starttime} And #{endtime};
+    </select>
+    <select id="queryScopeCount" parameterType="Map" resultMap="BaseResultMap">
+        SELECT count(*)  FROM operalog where
+        <if test="servicebranch != null">
+            servicebranch =#{servicebranch} and
+        </if>
+        operatime Between #{starttime} And #{endtime};
     </select>
 
 

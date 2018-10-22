@@ -37,10 +37,8 @@ public class OperaServiceImpl implements IOperaService {
     }
 
     @Override
-    public List<Operation> queryAll(String servicebranch,int page,int num ) {
-        Map<String,Object> parmMap=new HashMap<String,Object>();
-        parmMap.put("page",page*num);
-        parmMap.put("num",num);
+    public List<Operation> queryAll( Map<String,Object> parmMap,String servicebranch) {
+
         if(ConstantUtil.SERVICE_BRANCH.equals(servicebranch)){
             return operaMapper.queryCondition(parmMap);
         }
@@ -88,14 +86,15 @@ public class OperaServiceImpl implements IOperaService {
         return operaMapper.queryoperacount(parmMap);
     }
 
-    @Override
-    public String queryScope(Map<String, String> parmMap) {
+
+    public String queryScope1(Map<String, Object> parmMap) {
         List<Operation> operationList=operaMapper.queryScope(parmMap);
+        int count=operaMapper.queryScopCount(parmMap);
         List<Operation> inUSD=null;
         List<Operation> outUSD=null;
-        String type=parmMap.get("type");
+        String type=parmMap.get("type").toString();
         if(ConstantUtil.MONEY_USD.equals(type)){
-            if(StringUtil.checkStrs(parmMap.get("servicebranch"))){
+            if(StringUtil.checkStrs(parmMap.get("servicebranch").toString())){
                 inUSD=operationList.stream().filter((e)->ConstantUtil.USD_LIB.equals(e.getCountid())&&e.getNum()>0&&e.getServicebranch().equals(parmMap.get("servicebranch"))).collect(Collectors.toList());
                 outUSD=operationList.stream().filter((e)->ConstantUtil.USD_LIB.equals(e.getCountid())&&e.getNum()<0&&e.getServicebranch().equals(parmMap.get("servicebranch"))).collect(Collectors.toList());
             }else{
@@ -104,7 +103,7 @@ public class OperaServiceImpl implements IOperaService {
             }
 
         }else if(ConstantUtil.MONEY_CNY.equals(type)){
-            if(StringUtil.checkStrs(parmMap.get("servicebranch"))){
+            if(StringUtil.checkStrs(parmMap.get("servicebranch").toString())){
                 inUSD=operationList.stream().filter((e)->ConstantUtil.CNY_LIB.equals(e.getCountid())&&e.getNum()>0&&e.getServicebranch().equals(parmMap.get("servicebranch"))).collect(Collectors.toList());
                 outUSD=operationList.stream().filter((e)->ConstantUtil.CNY_LIB.equals(e.getCountid())&&e.getNum()<0&&e.getServicebranch().equals(parmMap.get("servicebranch"))).collect(Collectors.toList());
             }else{
@@ -127,7 +126,7 @@ public class OperaServiceImpl implements IOperaService {
         StringBuffer rs=new StringBuffer();
         rs.append("{'region':").append(JSONObject.fromObject(sb.toString())).append(",'regionlist':");
         if(ConstantUtil.MONEY_CNY.equals(type)){
-            if(StringUtil.checkStrs(parmMap.get("servicebranch"))){
+            if(StringUtil.checkStrs(parmMap.get("servicebranch").toString())){
                 operationList=operationList.stream().filter((e)->ConstantUtil.CNY_LIB.equals(e.getCountid())&&e.getServicebranch().equals(parmMap.get("servicebranch"))).collect(Collectors.toList());
             }else{
                 operationList=operationList.stream().filter((e)->ConstantUtil.CNY_LIB.equals(e.getCountid())).collect(Collectors.toList());
@@ -135,7 +134,7 @@ public class OperaServiceImpl implements IOperaService {
 
             rs.append(JSONArray.fromObject(operationList)).append("}");
         }else if(ConstantUtil.MONEY_USD.equals(type)){
-            if(StringUtil.checkStrs(parmMap.get("servicebranch"))){
+            if(StringUtil.checkStrs(parmMap.get("servicebranch").toString())){
                 operationList=operationList.stream().filter((e)->ConstantUtil.USD_LIB.equals(e.getCountid())&&e.getServicebranch().equals(parmMap.get("servicebranch"))).collect(Collectors.toList());
             }else{
                 operationList=operationList.stream().filter((e)->ConstantUtil.USD_LIB.equals(e.getCountid())).collect(Collectors.toList());
@@ -144,6 +143,35 @@ public class OperaServiceImpl implements IOperaService {
         }
 
         return JSONObject.fromObject(rs.toString()).toString();
+    }
+    @Override
+    public String queryScope(Map<String, Object> parmMap) {
+        List<Operation> operationList=operaMapper.queryScope(parmMap);
+        int count=operaMapper.queryScopCount(parmMap);
+        List<Operation> inOperaList=operationList.stream().filter((e)->e.getNum()>0).collect(Collectors.toList());;
+        List<Operation> outOperaList=operationList.stream().filter((e)->e.getNum()<0).collect(Collectors.toList());;;
+
+        double inNum=0;
+        for(Operation operation:inOperaList){
+            inNum+=operation.getNum();
+        }
+        double outNum=0;
+        for(Operation operation:outOperaList){
+            outNum+=operation.getNum();
+        }
+        StringBuffer sb=new StringBuffer();
+        sb.append("{'inNum':'").append(inNum).append("','outNum':'").append(outNum).append("'}");
+
+        StringBuffer rs=new StringBuffer();
+        rs.append("{'region':").append(JSONObject.fromObject(sb.toString())).append(",'regionlist':");
+
+        rs.append(JSONArray.fromObject(operationList)).append("}");
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.element("inNum",inNum);
+        jsonObject.element("outNum",outNum);
+        jsonObject.element("count",count);
+        jsonObject.element("data",operationList);
+        return jsonObject.toString();
     }
 
     @Override
@@ -245,6 +273,24 @@ public class OperaServiceImpl implements IOperaService {
         operaMapper.delete(snumber);
         taskMapper.deleteBysnum(snumber);
         return 0;
+    }
+
+    @Override
+    public int queryScopCount(Map<String, Object> parmMap,String servicebranch) {
+        if(ConstantUtil.SERVICE_BRANCH.equals(servicebranch)){
+            return operaMapper.queryScopCount(parmMap);
+        }
+        parmMap.put("servicebranch",servicebranch);
+        return operaMapper.queryScopCount(parmMap);
+    }
+
+    @Override
+    public int queryConditionCount(Map<String, Object> parmMap,String servicebranch) {
+        if(ConstantUtil.SERVICE_BRANCH.equals(servicebranch)){
+            return operaMapper.queryConditionCount(parmMap);
+        }
+        parmMap.put("servicebranch",servicebranch);
+        return operaMapper.queryConditionCount(parmMap);
     }
 
 }

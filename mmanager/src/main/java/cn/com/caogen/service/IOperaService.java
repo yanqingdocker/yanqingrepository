@@ -11,11 +11,13 @@ import java.util.Map;
  */
 public interface IOperaService {
     void add(Operation operation);
-    List<Operation> queryAll(String servicebranch,int page,int num);
     List<Operation> queryAll(Map<String, Object> parmMap);
+    List<Operation> queryAll(Map<String, Object> parmMap,String servicebranch);
     List<Operation> queryByDate(Map<String, Object> parmMap);
     List<Map<String,Object>> queryoperatype(int date,String servicebranch);
     List<Map<String ,Object>> queryoperacount(int date,String servicebranch);
-    String queryScope(Map<String, String> parmMap);
+    String queryScope(Map<String, Object> parmMap);
     int datarecover(String snumber);
+    int queryScopCount(Map<String,Object> parmMap,String servicebranch);
+    int queryConditionCount(Map<String, Object> parmMap,String servicebranch);
 }
