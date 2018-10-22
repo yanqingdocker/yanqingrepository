@@ -197,14 +197,14 @@ public class OperaController {
 
 
     @RequestMapping(path="queryCashLog",method = RequestMethod.GET)
-    public String queryCashLog(HttpServletRequest request){
+    public String queryCashLog(HttpServletRequest request,@RequestParam("page") int page,@RequestParam("num") int num){
         logger.info("queryCashLog start:");
        if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
         }
         Muser currentUser=(Muser)request.getSession().getAttribute("currentUser");
         logger.info("user=:"+currentUser.getUsername());
-        Stream<Operation> list=operaServiceimpl .queryAll(currentUser.getServicebranch()).stream();
+        Stream<Operation> list=operaServiceimpl .queryAll(currentUser.getServicebranch(),page,num).stream();
         List<Operation> operationList=list.filter((e)->e.getOperaType().contains("现金")).collect(Collectors.toList());
 
         return JSONArray.fromObject(operationList).toString();
