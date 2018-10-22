@@ -1,6 +1,7 @@
 package cn.com.caogen.util;
 
 import org.junit.jupiter.api.Test;
+import redis.clients.jedis.Jedis;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -59,5 +60,10 @@ public class MD5Util {
         String s = new String(a);
         return s;
 
+    }
+    @Test
+    public void test(){
+
+        System.out.println(string2MD5("liudehua"));
     }
 }

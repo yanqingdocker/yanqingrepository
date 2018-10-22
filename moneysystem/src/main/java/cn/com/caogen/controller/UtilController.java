@@ -22,14 +22,15 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/util")
 public class UtilController {
     private static Logger logger = LoggerFactory.getLogger(UtilController.class);
-
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
     @RequestMapping(path = "getAndriodUrl",method = RequestMethod.GET)
     public String getAndriodUrl(){
 
         logger.info("getAndriodUrl start:");
-     /*   String url=stringRedisTemplate.opsForValue().get("andriodurl");
-        logger.info("getAndriodUrl start url=:"+url);*/
-        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS,"http://yanqingresponstory.oss-cn-hongkong.aliyuncs.com/nfgjversion/app1-3.apk")).toString();
+       String url=stringRedisTemplate.opsForValue().get("andriodurl");
+        logger.info("getAndriodUrl start url=:"+url);
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS,url)).toString();
     }
     @RequestMapping(path = "getIosUrl",method = RequestMethod.GET)
     public String getIosUrl(){

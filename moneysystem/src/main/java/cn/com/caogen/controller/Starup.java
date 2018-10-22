@@ -37,6 +37,7 @@ public class Starup implements CommandLineRunner {
      */
     @Override
     public void run(String... args) {
+        logger.info("run ----------------------");
              Jedis jedis=JedisUtil.getJedis();
              if(jedis==null){
                  return;
