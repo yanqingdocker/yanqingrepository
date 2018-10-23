@@ -197,7 +197,7 @@ public class OperaController {
 
 
     @RequestMapping(path="queryCashLog",method = RequestMethod.GET)
-    public String queryCashLog(HttpServletRequest request,@RequestParam("page") int page,@RequestParam("num") int num){
+    public String queryCashLog(HttpServletRequest request,@RequestParam("page") int page,@RequestParam("num") int num,@RequestParam("search") String key){
         logger.info("queryCashLog start:");
        if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
@@ -207,6 +207,9 @@ public class OperaController {
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("page",page*num);
         parmMap.put("num",num);
+        if(StringUtil.checkStrs(key)){
+            parmMap.put("key","%"+key+"%");
+        }
         Stream<Operation> list=operaServiceimpl .queryAll(parmMap,currentUser.getServicebranch()).stream();
         List<Operation> operationList=list.filter((e)->e.getOperaType().contains("现金")).collect(Collectors.toList());
         int count=operaServiceimpl.queryConditionCount(parmMap,currentUser.getServicebranch());
