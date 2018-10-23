@@ -231,7 +231,7 @@
 
                     for (var key in d) {
                         if(key.indexOf("start")==0){
-                            d['page'] = d['start']/10;  //page传参
+                            d['page'] = d['start']/d['length'];  //page传参
                         }
                         if(key.indexOf("length")==0){
                             d['num'] = d['length'];  //num传参
@@ -418,7 +418,7 @@
                     // console.log(d)
                     for (var key in d) {
                         if(key.indexOf("start")==0){
-                            d['page'] = d['start']/10;  //page传参
+                            d['page'] = d['start']/d['length'];  //page传参
                         }
                         if(key.indexOf("length")==0){
                             d['num'] = d['length'];  //num传参
