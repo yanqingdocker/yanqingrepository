@@ -732,7 +732,7 @@ table.table thead .sorting:after,table.table thead .sorting_asc:after{ backgroun
 #phoneCode h3{ color: #00b4ff}
 #phoneCode img{ width: 200px}
 #phoneCode  .close:hover, .close:focus{ color: #d82828;    top: -24px;}
-#phoneCode  .alert-dismissable .close, .alert-dismissible .close{ top: -24px;}
+#phoneCode .alert-dismissable .close,#phoneCode .alert-dismissible .close{ top: -24px;}
 #phoneCode .phone{ border: 1px solid #999; padding-left:20px ; padding-right:20px ;height:80px;width: 90%; margin: 15px 0; border-radius: 10px;font-weight: bold;color: #00b4ff;font-size: 26px; cursor: pointer}
 #phoneCode .phone.cur{border: 1px solid #00b4ff;}
 #phoneCode .phone p{ font-size: 14px; margin-left: 20px}

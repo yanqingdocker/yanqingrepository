@@ -261,7 +261,7 @@ table.dataTable thead .sorting {background: none}
     color: #2f7a00;
 }
 
-div.dataTables_wrapper div.dataTables_processing{background: #fff;}
+div.dataTables_wrapper div.dataTables_processing{background: #fff;    line-height: 6px;}
 .red{color: #e73939}
 .green{ color: #23a220}
 

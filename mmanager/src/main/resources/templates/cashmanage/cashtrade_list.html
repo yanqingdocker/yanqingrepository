@@ -65,6 +65,8 @@
                             </div>
                         </div>
                         <input  type="hidden" id="branchname" name="branchname" value="">
+                        <input  type="hidden" id="page" name="page" value="1">
+                        <input  type="hidden" id="num" name="num" value="10">
                         <div class="col-lg-3 mb0">
                             <div class="form-group  ">
                                 <label class="col-form-label">开始时间<span class="warning">*</span></label>
@@ -98,30 +100,40 @@
                         <span id="totalzc"></span> <b id="outNum"></b>
                     </h4>
                 </div>
-                <table class="datatable table table-striped" id="table" cellspacing="0" width="100%">
-                    <thead>
-                    <tr>
-                        <th>序号</th>
-                        <th>账户操作人</th>
-                        <th>账户ID</th>
-                        <th>汇率</th>
-                        <th>收入/支出</th>
-                        <th>交易金额</th>
-                        <th>货币类型</th>
-                        <th>交易类型</th>
-                        <th>操作IP</th>
-                        <th>流水号</th>
-                        <th>创建时间</th>
-                        <th>交易网点</th>
-                        <th>客户姓名</th>
-                        <th>客户联系电话</th>
-                        <th>持卡人</th>
-                        <th>开户行</th>
-                        <th>卡号</th>
-                        <th>备注</th>
-                    </tr>
-                    </thead>
-                </table>
+                <div class="inblock w100" style="position: relative">
+                    <form id="queryForm" style="position: absolute;right: 0;top: 0;z-index: 999">
+                        <div  class="inblock ">
+                            <input type="text" id="keyword" name="keyword" size="40" class="form-control input-sm" placeholder="请输入客户姓名">
+                        </div>
+                        <button type="button" class="btn btn-default" id="btn-query">
+                            <i class="fa fa-search"></i> 查询
+                        </button>
+                    </form>
+                    <table class="datatable table table-striped" id="table" cellspacing="0" width="100%">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>账户操作人</th>
+                            <th>账户ID</th>
+                            <th>汇率</th>
+                            <th>收入/支出</th>
+                            <th>交易金额</th>
+                            <th>货币类型</th>
+                            <th>交易类型</th>
+                            <th>操作IP</th>
+                            <th>流水号</th>
+                            <th>创建时间</th>
+                            <th>交易网点</th>
+                            <th>客户姓名</th>
+                            <th>客户联系电话</th>
+                            <th>持卡人</th>
+                            <th>开户行</th>
+                            <th>卡号</th>
+                            <th>备注</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
                 <table class="datatable table table-striped" id="newtable"  cellspacing="0" width="100%" style="border-bottom: 1px solid #e7e7e7;display: none">
                     <thead>
                     <tr>
@@ -164,15 +176,16 @@
         loadnetwork();//加载网点
         information();//获取成员信息
 
-        $('#table').DataTable({
+        var table=$('#table').DataTable({
             "order": [ 10, "desc" ],
             "serverSide": true,
-            searching: true,
+            searching: false,
             lengthChange: true,
             paging: true,
             scrollCollapse: true,
-            serverSide: false,
-            search: true,
+            pagingType: "full_numbers",
+            serverSide: true, //启用服务器端分页
+            search: false,
             processing: true,
             /* scrollY: 500,   表格的高度限制*/
             scrollX: "100%",
@@ -189,6 +202,7 @@
                 "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
                 "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
                 "sInfoPostFix": "",
+                serverSide: true, //启用服务器端分页
                 "sSearch": "搜索:",
                 "sUrl": "",
                 "sEmptyTable": "暂无数据",
@@ -212,8 +226,42 @@
             },
             ajax: {
                 url: "/opera/queryCashLog",
-                dataSrc: function (data) {
-                    if (data.code=="403") {
+                "data": function (d) {  //data里的赋值都相当于传参
+                    console.log(d);
+
+                    for (var key in d) {
+                        if(key.indexOf("start")==0){
+                            d['page'] = d['start']/10;  //page传参
+                        }
+                        if(key.indexOf("length")==0){
+                            d['num'] = d['length'];  //num传参
+
+                        }
+                        if (key.indexOf("columns") == 0 || key.indexOf("search") == 0) { //以columns开头的参数删除 如果不要order 判断中再加 key.indexOf("order") == 0 ||
+                            delete d[key];
+                        }
+
+
+                    }
+                    d = $.extend(d, {
+                        search:$("#keyword").val()
+                    });
+
+                    return d;
+                },
+                "dataType": "json",
+                "dataFilter": function (json) { //json是服务器端返回的数据
+                    json = JSON.parse(json);
+                    // console.log(json);
+                    var returnData = {};
+                    returnData.draw =0;  //从0开始才能翻页
+                    returnData.recordsTotal = json.count; //返回数据全部记录
+                    returnData.recordsFiltered = json.count; //后台不实现过滤功能，每次查询均视作全部结果
+                    returnData.data = json.data; //返回的数据列表
+                    return JSON.stringify(returnData); //这几个参数都是datatable需要的，必须要
+                },
+                dataSrc: function (json) {
+                    if (json.data.code=="403") {
                         sweetAlert({
                                 title: "",
                                 text: "您的账号权限不足，无法操作此页面！",
@@ -230,7 +278,7 @@
                                 }
                             });
                     }
-                    else{ return data;}
+                    else{ return json.data;}
                 },
                 error: handleAjaxError //接口返回异常，超时登录
             },
@@ -263,8 +311,13 @@
                 {"data": "cardNum"},
                 {"data": "remark"}
 
-            ]
+            ],
+
+
         });
+        $("#btn-query").on("click", function () {
+            table.ajax.reload(function () { }, true); // user paging is not reset on reload 这样设置page不会刷新
+        })
     })
     function income_type(types) {
         switch(types)
@@ -287,8 +340,8 @@
             return '<span class="red">'+num+'</span>'
         }
     }
-    // 查询记录
-    function submitform(types) {
+    //加载新表格
+    function submitform(types){
         //初始化表格
         var resultDataTable=$('#newtable').dataTable();
         resultDataTable.fnClearTable();
@@ -299,6 +352,7 @@
         $(".batch_play").css("top","0");
         $("#mytable").html("");
         $("#table_wrapper").hide();
+        $("#queryForm").hide();
         $("#newtable").show();
         $("#moneytype").val(types);
         $("#dollar_num").show();
@@ -310,53 +364,16 @@
             $("#totalsr").html("美金总收入");
             $("#totalzc").html("美金总支出");
         }
-        $.ajax({
-            url: '/cashpool/queryScope',
-            data: $('#myform').serialize(),
-            type: 'get',
-            success: function (data) {
-                if(strToJson(data).code=="403") {
-                    sweetAlert({
-                            title: "",
-                            text: "您的账号权限不足，无法操作此页面！",
-                            type: "warning",
-                            showCancelButton: false,
-                            confirmButtonText: "确定",
-                            cancelButtonText: "取消",
-                            closeOnConfirm: false,
-                            closeOnCancel: true
-                        },
-                        function(isConfirm){
-                            if (isConfirm) {
-                                window.location.href = "/mainframe";
-                            }
-                        });
-                }
-                else {
-                    var obj = JSON.parse(data);
-                    $("#inNum").html(parseFloat(obj.region.inNum).toFixed(4));
-                    $("#outNum").html(parseFloat(-obj.region.outNum).toFixed(4));
-                    loadnewTable(obj.regionlist);    //加载新表格
-
-                }
-            }, error: function () {
-                sweetAlert("", "请求失败！", "error");
-            }
-
-        })
-
-    }
-    //加载新表格
-    function loadnewTable(arr){
         $('#newtable').DataTable({
-            "order": [10, "desc"],
+            "order": [ 10, "desc" ],
             "serverSide": true,
-            searching: true,
+            searching: false,
             lengthChange: true,
             paging: true,
             scrollCollapse: true,
-            serverSide: false,
-            search: true,
+            pagingType: "full_numbers",
+            serverSide: true, //启用服务器端分页
+            search: false,
             processing: true,
             /* scrollY: 500,   表格的高度限制*/
             scrollX: "100%",
@@ -373,6 +390,7 @@
                 "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
                 "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
                 "sInfoPostFix": "",
+                serverSide: true, //启用服务器端分页
                 "sSearch": "搜索:",
                 "sUrl": "",
                 "sEmptyTable": "暂无数据",
@@ -389,15 +407,51 @@
                     "sSortDescending": ": 以降序排列此列"
                 }
             },
-            "fnDrawCallback": function () {
-                this.api().column(0).nodes().each(function (cell, i) {
-                    cell.innerHTML = i + 1;
+            "fnDrawCallback"    : function(){
+                this.api().column(0).nodes().each(function(cell, i) {
+                    cell.innerHTML =  i + 1;
                 });
             },
             ajax: {
-                url: "/opera/queryCashLog", //非真正返回数组的接口
-                dataSrc: function (data) {
-                    return arr; //表格真正数组
+                url: " /cashpool/queryScope",
+                "data": function (d) {
+                    // console.log(d)
+                    for (var key in d) {
+                        if(key.indexOf("start")==0){
+                            d['page'] = d['start']/10;  //page传参
+                        }
+                        if(key.indexOf("length")==0){
+                            d['num'] = d['length'];  //num传参
+
+                        }
+                    }
+
+                    d = $.extend(d, {
+                        starttime:$("#txtstarDate").val(),
+                        endtime:$("#txtEndDate").val(),
+                        type:types,
+                        branchname:$("#branchname").val(),
+                        search: $("#searchkeyword").val()
+                    });
+
+                    return d;
+                },
+                "dataType": "json",
+                "dataFilter": function (json) { //json是服务器端返回的数据
+                    json = JSON.parse(json);
+                    var returnData = {};
+                    returnData.draw = 0; //从0开始才能翻页
+                    returnData.recordsTotal = json.count; //返回数据全部记录
+                    returnData.recordsFiltered = json.count; //后台不实现过滤功能，每次查询均视作全部结果
+                    returnData.data = json.data; //返回的数据列表
+                    returnData.inNum = json.inNum; //返回的收入
+                    returnData.outNum = json.outNum; //返回的支出
+                    return JSON.stringify(returnData); //这几个参数都是datatable需要的，必须要
+                },
+                dataSrc: function (json) {
+                    $("#inNum").html(parseFloat(json.inNum).toFixed(4));
+                    $("#outNum").html(parseFloat(json.outNum).toFixed(4));
+                    return json.data; //表格真正数组
 
                 },
 
@@ -436,6 +490,7 @@
             ]
         });
     }
+
 
     // 加载网点
     function loadnetwork() {
