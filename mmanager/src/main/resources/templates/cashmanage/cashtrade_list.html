@@ -161,9 +161,9 @@
 
                     </tbody>
                 </table>
-                <div class="batch_play inblock">
-                    <a href="/loanManage/add_loan">添加</a>
-                </div>
+                <!--<div class="batch_play inblock">-->
+                    <!--<a href="/loanManage/add_loan">添加</a>-->
+                <!--</div>-->
             </div>
 
         </div>
@@ -317,6 +317,8 @@
         });
         $("#btn-query").on("click", function () {
             table.ajax.reload(function () { }, true); // user paging is not reset on reload 这样设置page不会刷新
+            $("#table_wrapper").show();
+            $("#newtable_wrapper").hide();
         })
     })
     function income_type(types) {
@@ -352,7 +354,6 @@
         $(".batch_play").css("top","0");
         $("#mytable").html("");
         $("#table_wrapper").hide();
-        $("#queryForm").hide();
         $("#newtable").show();
         $("#moneytype").val(types);
         $("#dollar_num").show();
