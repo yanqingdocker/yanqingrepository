@@ -30,7 +30,7 @@ public class UtilController {
         logger.info("getAndriodUrl start:");
        String url=stringRedisTemplate.opsForValue().get("andriodurl");
         logger.info("getAndriodUrl start url=:"+url);
-        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS,url)).toString();
+        return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS,"111")).toString();
     }
     @RequestMapping(path = "getIosUrl",method = RequestMethod.GET)
     public String getIosUrl(){
