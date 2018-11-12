@@ -52,6 +52,9 @@ public class SystemFilter implements Filter {
     private Pattern pattern17=Pattern.compile("util/getAndriodUrl");
     private Pattern pattern18=Pattern.compile("util/getIosUrl");
     private Pattern pattern19=Pattern.compile("goback");
+    private Pattern pattern20=Pattern.compile("code/getcode");
+    private Pattern pattern21=Pattern.compile("code/check");
+    private Pattern pattern22=Pattern.compile("user/code");
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         patterns.add(pattern1);
@@ -72,6 +75,9 @@ public class SystemFilter implements Filter {
         patterns.add(pattern17);
         patterns.add(pattern18);
         patterns.add(pattern19);
+        patterns.add(pattern20);
+        patterns.add(pattern21);
+        patterns.add(pattern22);
 
     }
 
