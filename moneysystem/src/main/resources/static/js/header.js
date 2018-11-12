@@ -16,10 +16,10 @@ document.writeln(" <a class=\"dropdown-item\" href=\"/CN/my/my_account\">我的�
 document.writeln(" <a class=\"dropdown-item\" href=\"/CN/my/my_money\">我的余额</a>");
 document.writeln("<a class=\"dropdown-item\" href=\"/CN/my/authentication\">我的资料</a>");
 document.writeln("<a class=\"dropdown-item\" href=\"javascript:;\" onclick=\"logout()\">退出</a>");
-document.writeln(" </div>");
-document.writeln(" </div>");
-document.writeln(" </div>");
-document.writeln("  </div>");
+document.writeln("</div>");
+document.writeln("</div>");
+document.writeln("</div>");
+document.writeln("</div>");
 document.writeln("</div>");
 document.writeln(" </div>");
 document.writeln(" <div class=\"navbar_block\">");
@@ -165,21 +165,21 @@ $("#navbarblock").on("click", function(e){
 function logout() {
     $.ajax({
         url: "/user/logout",
-        type: "post",
+        type:"post",
         data: null,
         dataType: 'json',
         async: false,
         contentType: 'application/json',
         success: function (data) {
             if (data.code=="success") {
-                sweetAlert("", "退出成功！", "success");
-                setTimeout(function(){ window.location.href = "/CN/login";},1500);
+                sweetAlert("","退出成功！","success");
+                setTimeout(function(){ window.location.href ="/CN/login";},1500);
             }
             else {
             }
         },
         error: function () {
-            window.location.href = "/CN/login";
+            window.location.href ="/CN/login";
         },
     });
 
