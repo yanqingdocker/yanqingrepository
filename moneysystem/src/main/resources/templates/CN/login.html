@@ -20,6 +20,7 @@
     <script  type="text/javascript" src="/js/common.js"></script>
     <script  type="text/javascript" src="/js/jquery.qrcode.js"></script>
     <script  type="text/javascript" src="/js/qrcode.js"></script>
+    <script  type="text/javascript" src="/js/json.js"></script>
     <!--[if lte IE 9]>
     <script  type="text/javascript" src="/js/html5.min.js"></script>
     <script  type="text/javascript" src="/js/respond.min.js"></script>
@@ -30,7 +31,7 @@
 <body class="login_bg">
 <div class="m " style="width: 455px;margin-top: 6%">
     <div class="login_logo tc"><a href="/"><img src="/images/logo.png" ></a></div>
-    <div class="w100 inblock">
+    <div class="w100 inblock"  id="nocode">
         <form id="registerForm">
             <div class="login_form">
                 <div class="form-group  login_input mb15">
@@ -41,7 +42,7 @@
                             <div id="area_option" class="area_option" style="display: none">
                                 <a data-id="">中国大陆(默认)</a>
                                 <a data-id="852">中国香港</a>
-                                <a data-id="855 ">柬埔寨</a>
+                                <a data-id="855">柬埔寨</a>
                                 <a data-id="65 ">新加坡</a>
                                 <a data-id="60 ">马来西亚</a>
                                 <a data-id="66 ">泰国</a>
@@ -62,6 +63,8 @@
                     <i class="icon password"></i>
                     <input type="password" class="form-control" name="password" onkeydown="enter_down( event);"   placeholder="密码"/>
                 </div>
+
+
                 <div class="w100 inblock ">
                     <div class="l ">
                         <!--<div class="custom-control custom-checkbox">-->
@@ -79,13 +82,36 @@
                         <a class="white" href="#">使用帮助</a>
                     </div>
                     <div class="r">
-                        <div class="cursor white" onclick="loadownPhone()">下载手机版</div>
+
+                        <a  class="white" href="#" onclick="loadownPhone()">下载手机版</a><span class="white mr5 ml5">|</span> <a href="#" class="white" onclick="codeup()">扫码登录</a>
+
                     </div>
                 </div>
             </div>
         </form>
-
     </div>
+
+    <div id="code" class="w100 inblock" style="display:none">
+        <div class="login_form" align="center">
+            <div id="codepictuer" class="inblock w100">
+            <!--<img src="http://192.168.31.106/eweima/63dbf247-7f7e-4514-92a9-e3da349c716f.png" id="QrCodeImg" style=""/>-->
+                <div  class="CodeImg" id="CodeImg"></div>
+            </div>
+            <div class="w100 inblock mt10 ">
+                <div class="l ">
+                    <a class="white" href="#">使用帮助</a>
+                </div>
+                <div class="r">
+
+                    <a class="white" href="#" onclick="loadownPhone()">下载手机版</a><span class="white mr5 ml5">|</span> <a href="#" class="white" onclick="phoneup()">扫码登录</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <p class="tc mt30 g9">© 2018 Copyright 南方国际货币兑换</p>
     <p class="tc g9 pb20">客服热线：+8550968888088</p>
 </div>
@@ -112,6 +138,11 @@
     </div>
 </div>
 
+
+
+
+
+
 <script type="text/javascript">
     // 模拟重写select
     $("#area_select").click(function (event) {
@@ -125,6 +156,7 @@
         $("#areanum").val(areanum);
         var number=$("#phone").val()
         $("#Telephone").val($("#areanum").val()+number);
+
     });
     $(document).bind("click",function(){
         $("#area_option").hide();
@@ -261,8 +293,6 @@
     function loadownPhone() {
         $("#phoneCode").show();
 
-
-
     }
     $("#phoneCode .close").click(function () {
         $("#phoneCode").hide()
@@ -271,6 +301,79 @@
         $(this).addClass("cur").siblings().removeClass("cur");
         $("#phoneCode .type").hide().eq($(this).index()).show();
     })
+    function codeup() {
+        $("#code").show();
+
+        $("#nocode").hide();
+        codeshow();
+    }
+    function phoneup() {
+        $("#code").hide();
+        $("#nocode").show();
+    }
+
+    function codeshow() {
+        var uuid;
+        $.get("/code/getcode", function(data, status) {
+            var obj=JSON.parse(data);
+            //存储UUID
+            uuid=obj.uuid;
+            //显示二维码
+            //$("#QrCodeImg").attr("src", "http://192.168.31.106/eweima/"+obj.uuid+".png");
+            $("#CodeImg").qrcode(obj.key);
+            //开始验证登录
+            validateLogin();
+        });
+        function validateLogin(){
+            $.get("/code/check?uuid=" + uuid , function(data, status) {
+                if(data == ""){
+                    validateLogin();
+                }else{
+                    var obj = JSON.parse(data);
+                    //alert("登录成功了:" + obj.telphone);
+
+                    $.ajax({
+                        type: "post", // 用POST方式传输
+                        dataType: 'json',
+                        url: "/user/login", // 目标地址
+                        data:  obj,
+                        error: function (data) {
+                            sweetAlert("", "请求失败！", "error");
+                        },
+                        success: function (data) {
+                            if (data.code=="fail") {
+                                sweetAlert("", data.message, "error");
+                                // $('#loginbtn').prop('disabled', false);
+                            }
+                            else {
+                                sweetAlert({
+                                        title: "登陆成功！",
+                                        text: "1秒后自动跳转。",
+                                        type: "success",
+                                        showConfirmButton: false
+                                    },
+                                    function(isConfirm){
+                                        if (isConfirm) {
+                                            window.location.href = "/CN/index";
+                                        }
+                                    });
+                                setTimeout(function(){ window.location.href = "/CN/index";},1000);
+                            }
+                        }
+                    })
+
+
+                }
+            });
+        }
+
+
+
+     }
+
+
+
+
 </script>
 
 
