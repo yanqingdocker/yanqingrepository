@@ -222,9 +222,7 @@ public class UserController {
         String uuid = request.getParameter("uuid");
        String phone =request.getParameter("phone");
        String pwd = request.getParameter("pwd");
-        System.out.println(uuid);
-        System.out.println(phone);
-        System.out.println(pwd);
+        logger.info("二维码手机端登录信息：uuid="+uuid+";phone="+phone+";pwd="+pwd);
         //TODO 验证登录
         boolean bool = true;
         if(bool){
