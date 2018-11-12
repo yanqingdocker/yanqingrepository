@@ -27,6 +27,7 @@ import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.PrintWriter;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -160,6 +161,7 @@ public class UserController {
             user.setPhone(telphone);
             user.setCreatetime(DateUtil.getTime());
             userServiceImpl.addUser(user);
+
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
         } else {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.CHECKERROR_NUM)).toString();
@@ -211,6 +213,41 @@ public class UserController {
 
 
     }
+    /**
+     * 二维码手机端登录
+     */
+    @RequestMapping(path="/code",method = RequestMethod.POST)
+    public void  PhoneLoginServlet(HttpServletRequest request,HttpServletResponse response) throws Exception{
+        logger.info("二维码手机端登录 ");
+        String uuid = request.getParameter("uuid");
+       String phone =request.getParameter("phone");
+       String pwd = request.getParameter("pwd");
+        System.out.println(uuid);
+        System.out.println(phone);
+        System.out.println(pwd);
+        //TODO 验证登录
+        boolean bool = true;
+        if(bool){
+            //将登陆信息存入map
+            HashMap<String, User> loginUserMap = new HashMap<String, User>();
+            User userVo = LoginUser.getLoginUserMap().get(uuid);
+            if(userVo == null){
+                userVo = new User();
+                userVo.setPhone(phone);
+                userVo.setPassword(pwd);
+                LoginUser.getLoginUserMap().put(uuid, userVo);
+            }
+        }
+        PrintWriter out = response.getWriter();
+        out.print(bool);
+        out.flush();
+        out.close();
+    }
+
+
+
+
+
 
 
 
@@ -235,6 +272,12 @@ public class UserController {
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.FAIL, ConstantUtil.CHECKERROR_NUM)).toString();
         }
     }
+
+    /**
+     * 扫码登录
+     */
+
+
 
     /**
      * 重置密码 pc端
@@ -455,6 +498,8 @@ public class UserController {
         taskService.addTask(task);
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS)).toString();
     }
+
+
 
 
 }
