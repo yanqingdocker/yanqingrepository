@@ -28,10 +28,12 @@ public class SystemFilter implements Filter {
     private  Pattern pattern1=Pattern.compile("login");
 
     private  Pattern pattern2=Pattern.compile(".*[(\\.js)||(\\.css)||(\\.png)||(\\.jpg)]");
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         patterns.add(pattern1);
         patterns.add(pattern2);
+
     }
 
     @Override
