@@ -197,7 +197,7 @@ public class OperaController {
 
 
     @RequestMapping(path="queryCashLog",method = RequestMethod.GET)
-    public String queryCashLog(HttpServletRequest request,@RequestParam("page") int page,@RequestParam("num") int num,@RequestParam("search") String key){
+    public String queryCashLog(HttpServletRequest request,@RequestParam("page") int page,@RequestParam("num") int num,@RequestParam("search") String key,@RequestParam("state") int state){
         logger.info("queryCashLog start:");
        if(!FilterAuthUtil.checkAuth(request)){
             return JSONObject.fromObject(new ResponseMessage(ConstantUtil.NO_AUTH,ConstantUtil.FAIL)).toString();
@@ -207,6 +207,7 @@ public class OperaController {
         Map<String,Object> parmMap=new HashMap<String,Object>();
         parmMap.put("page",page*num);
         parmMap.put("num",num);
+        parmMap.put("state",state);
         if(StringUtil.checkStrs(key)){
             parmMap.put("key","%"+key+"%");
         }
