@@ -140,7 +140,9 @@ public class CountController {
         cashPoolService.update(cashPool);
 
         String operuser="操作员-"+currentUser.getUsername();
+
         Operation operation=countServiceImpl.saveOperaLog(currentUser.getServicebranch(),count.getCardId(),count.getCountType(),Double.parseDouble(num),ConstantUtil.SERVICETYPE_INMONEY,operuser,ConstantUtil.MONEY_IN,IpUtil.getIpAddr(request));
+
         return JSONObject.fromObject(new ResponseMessage(ConstantUtil.SUCCESS,JSONObject.fromObject(operation).toString())).toString();
     }
 
