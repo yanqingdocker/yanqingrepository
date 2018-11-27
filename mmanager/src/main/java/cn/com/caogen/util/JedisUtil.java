@@ -18,8 +18,9 @@ public class JedisUtil {
         }
         //r-j6ce364c2198fca4.redis.rds.aliyuncs.com
         try {
-            jedis = new Jedis("r-j6ce364c2198fca4.redis.rds.aliyuncs.com",6379);
+            //jedis = new Jedis("r-j6ce364c2198fca4.redis.rds.aliyuncs.com",6379);
             //jedis.auth("Admin123");
+            jedis = new Jedis("127.0.0.1",6379);
             return jedis;
         }catch (Exception e){
 
