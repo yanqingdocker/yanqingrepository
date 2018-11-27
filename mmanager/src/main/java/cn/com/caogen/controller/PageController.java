@@ -415,6 +415,17 @@ public class PageController {
     public String data_recovery() {
         return "cashmanage/data_recovery";
     }
+    /**
+     *现金柜台-数据恢复记录
+     *
+     * @return
+     */
+    @RequestMapping("/cashmanage/date_list")
+    public String date_list() {
+        return "cashmanage/date_list";
+    }
+
+
 
     /**
      *资金库-利润分配列表
