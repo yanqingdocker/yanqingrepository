@@ -49,6 +49,8 @@ public class Operation {
     private String cardNum;
     //汇率
     private String rate;
+    //状态
+    private int state;
 
 
 
