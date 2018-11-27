@@ -270,7 +270,7 @@ public class OperaServiceImpl implements IOperaService {
                     break;
             }
         }
-        operaMapper.delete(snumber);
+        operaMapper.update(snumber);
         taskMapper.deleteBysnum(snumber);
         return 0;
     }
