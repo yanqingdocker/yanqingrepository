@@ -23,6 +23,7 @@
         <result column="rate" property="rate" jdbcType="VARCHAR" />
 
 
+
     </resultMap>
 
     <resultMap id="allInfo" type="java.util.Map">
@@ -49,6 +50,10 @@
     <select id="delete"  parameterType="string">
        delete from operalog where snumber=#{snumber}
     </select>
+    <update id="update" parameterType="string">
+        update operalog set state='0' where snumber=#{snumber}
+    </update>
+
     <select id="queryConditionCount"   parameterType="Map" resultType="int">
         select count(*) from operalog where 1=1
         <if test="countid != null">
@@ -69,9 +74,11 @@
         <if test="oi != null">
             and oi =#{oi}
         </if>
+
         <if test="key != null">
             and  username like #{key}
         </if>
+
     </select>
 
     <select id="queryByOrderNum"  resultMap="BaseResultMap" parameterType="string">
@@ -97,6 +104,9 @@
         </if>
         <if test="oi != null">
             and oi =#{oi}
+        </if>
+        <if test="state != null">
+            and  state = #{state}
         </if>
         <if test="key != null">
             and  username like #{key}
