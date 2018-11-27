@@ -27,4 +27,5 @@ public interface OperaMapper {
 
     List<Operation> queryByOrderNum(String snumber);
     void delete(String snumber);
+   void update(String snumber);
 }
